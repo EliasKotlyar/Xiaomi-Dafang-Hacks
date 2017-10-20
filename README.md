@@ -48,7 +48,7 @@ The complete portscan can be found in portscan.txt
 
 ## Testpoints on Board:
 
-Should be normal TTL. 
+![Headers](/teardown/headers_sample.jpg)
 
 
 
