@@ -35,6 +35,16 @@ The Hardware should be similar to [Icamera Keep](https://www.ismartalarm.com/dev
 
 Source of this Information: [Source](https://xiaomi.eu/community/threads/cant-open-camera-plugin-xiaomi-mijia-dafang-home-1080p-hd.41855/#post-391171)
 
+## Software Infos:
+
+Opened Ports:
+1. Port 80: Probably "Boa HTTPd 0.94.13" according to Nmap
+2. Port 10002 : No Clue yet, but it responds with the following Sequence if you send a simple
+"GET"-Request:
+
+ICAM�������������ÿ����s���àÖÑv�����TÑv
+
+The complete portscan can be found in portscan.txt
 
 ## Testpoints on Board:
 
