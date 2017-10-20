@@ -26,6 +26,11 @@ Main Processor:
 Wifi:
 Something from Realtek(assuming from the Logo - need to take a better picture)
 
+LED Driver:
+[ULN2803](http://www.ti.com/lit/ds/symlink/uln2803a.pdf)
+
+
+
 The Hardware should be similar to [Icamera Keep](https://www.ismartalarm.com/devices/cameras/icamera-keep/ISA00008.html)
 
 Source of this Information: [Source](https://xiaomi.eu/community/threads/cant-open-camera-plugin-xiaomi-mijia-dafang-home-1080p-hd.41855/#post-391171)
