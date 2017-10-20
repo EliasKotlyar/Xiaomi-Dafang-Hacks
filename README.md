@@ -6,7 +6,7 @@ This repository is a collection of Informations about the Dafang Camera
 
 ## Teardown
 
-![Teardown](/teardown/mainboard_teardown.png)
+![Teardown](/teardown/mainboard_teardown.jpg)
 
 Can be found in the "teardown"-folder
 
