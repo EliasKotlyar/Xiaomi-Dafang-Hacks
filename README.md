@@ -16,12 +16,17 @@ Can be found in the "pics"-folder
 Any contribution to the development is highly welcome. The best possibility to provide any change is to open a pull request on GitHub.
 
 
-## Hardware infos of Amazon Dash V2
+## Hardware infos 
 Main Processor:
 [Ingenic T20](ftp://ftp.ingenic.com/SOC/T20/T20_PB.PDF)
 
 Wifi:
 Something from Realtek(assuming from the Logo - need to take a better picture)
+
+The Hardware should be similar to [Icamera Keep](https://www.ismartalarm.com/devices/cameras/icamera-keep/ISA00008.html)
+
+Source of this Information: [Source](https://xiaomi.eu/community/threads/cant-open-camera-plugin-xiaomi-mijia-dafang-home-1080p-hd.41855/#post-391171)
+
 
 ## Testpoints on Board:
 
@@ -30,13 +35,13 @@ Should be a normal TTL
 
 
 ## Hardware required for debugging:
-TTL-Adapter
+FTDI-Adapter
 
 
 
 
 ## List of sources:
-A Hack of a similar Device(Camare using the Ingenico T10):
+A Hack of a similar Device(Camera using the Ingenico T10):
 
 [Part1](http://nm-projects.de/2016/12/hacking-digoo-bb-m2-mini-wifi-part-1-identify-the-serial-interface/)
 [Part2](http://nm-projects.de/2017/01/hacking-ip-camera-digoo-bb-m2-part-2-analyzing-the-boot-process/)
