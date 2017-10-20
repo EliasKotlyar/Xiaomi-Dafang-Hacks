@@ -2,6 +2,8 @@
 
 This repository is a collection of Informations about the Dafang Camera
 
+![GitHub Logo](/pics/dafang.png)
+
 ## Teardown
 
 Can be found in the "pics"-folder
