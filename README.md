@@ -33,7 +33,7 @@ Source of this Information: [Source](https://xiaomi.eu/community/threads/cant-op
 
 ## Testpoints on Board:
 
-Should be a normal TTL
+Should be normal TTL. 
 
 
 
