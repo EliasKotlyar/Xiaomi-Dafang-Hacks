@@ -52,7 +52,6 @@ The complete portscan can be found in portscan.txt
 
 have a look at mod_serial folder for a example setup of the serial-console
 
-
 ## Hardware required for debugging:
 FTDI-Adapter with 3.3V
 
