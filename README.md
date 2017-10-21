@@ -24,7 +24,7 @@ Main Processor:
 [Ingenic T20](ftp://ftp.ingenic.com/SOC/T20/T20_PB.PDF)
 
 Wifi:
-Something from Realtek(assuming from the Logo - need to take a better picture)
+[Realtek 8192](http://www.realtek.com.tw/products/productsView.aspx?Langid=1&PFid=48&Level=5&Conn=4&ProdID=277)
 
 LED Driver:
 [ULN2803](http://www.ti.com/lit/ds/symlink/uln2803a.pdf)
@@ -50,10 +50,11 @@ The complete portscan can be found in portscan.txt
 
 ![Headers](/teardown/headers_sample.jpg)
 
+have a look at mod_serial folder for a example setup of the serial-console
 
 
 ## Hardware required for debugging:
-FTDI-Adapter
+FTDI-Adapter with 3.3V
 
 
 
