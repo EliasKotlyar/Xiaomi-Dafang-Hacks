@@ -12,7 +12,10 @@ Can be found in the "teardown"-folder
 
 ## Usage
 
----no hacks known for the moment, for information only---
+[Getting Root-Access using Serial](/mod_getroot/getroot.md)
+
+[Dumping-Firmware](/mod_getroot/firmware-dump.md)
+
 
 ## Contribution
 
