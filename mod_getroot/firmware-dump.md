@@ -20,17 +20,23 @@ mtd10: 00010000 00008000 "flag"
 Attention: The Values are in Hex. Convert into Decimal for using DD
 `
 
-## Dump Kernel:
-dd if=/dev/mtdblock1 of=kernel.bin bs=2097152
-
-## Dump Rootfs:
-dd if=/dev/mtdblock2 of=rootfs.bin bs=3473408
-
-## Dump U-Boot:
+## Dump everything:
+```
 dd if=/dev/mtdblock0 of=uboot.bin bs=262144
-
-## Dump appfs
+dd if=/dev/mtdblock1 of=kernel.bin bs=2097152
+dd if=/dev/mtdblock2 of=rootfs.bin bs=3473408
+dd if=/dev/mtdblock3 of=driver.bin bs=655360
 dd if=/dev/mtdblock4 of=appfs.bin bs=4849664
+dd if=/dev/mtdblock5 of=backupk.bin bs=2097152
+dd if=/dev/mtdblock6 of=backupd.bin bs=655360
+dd if=/dev/mtdblock7 of=backupa.bin bs=2097152
+dd if=/dev/mtdblock8 of=config.bin bs=262144
+dd if=/dev/mtdblock9 of=para.bin bs=262144
+dd if=/dev/mtdblock10 of=flag.bin bs=65536
+```
+
+
+
 
 ## Extract Kernel:
 The Kernel is compressed using lzma. Use the following Instructions for extracting it:
