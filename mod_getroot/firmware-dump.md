@@ -45,4 +45,4 @@ https://stackoverflow.com/questions/37672417/getting-kernel-version-from-the-com
 
 ## Extract AppFS:
 Use following Tutorial:
-https://integriography.wordpress.com/2015/03/16/mounting-a-jffs2-dd-image-in-linux/
+http://wiki.emacinc.com/wiki/Mounting_JFFS2_Images_on_a_Linux_PC
