@@ -6,6 +6,7 @@
 4. Plug in the USB-Cable
 5. Wait for 5 minutes
 
+Log of flashing the demo_5.5.1.194.bin File.
 
 ```
 Hit any key to stop autoboot:  0 
