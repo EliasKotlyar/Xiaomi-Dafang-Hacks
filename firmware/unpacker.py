@@ -19,9 +19,9 @@ def cli(file):
     ]
     file = "demo_5.5.1.194.bin"
     fullflash = open(file, 'rb')
-    fullflash.seek(128)
+    fullflash.seek(64)
     for name, size in dic:
-        filename = "flash/" + name + ".zip"
+        filename = "flash/" + name + ".bin"
         buffer = fullflash.read(size)
         f = open(filename, "wb")
         f.write(buffer)
