@@ -17,7 +17,7 @@ def cli(file):
         ("para", 0x40000),
         ("flag", 0x10000)
     ]
-    file = "demo_5.5.1.194.bin"
+    #file = "demo_5.5.1.194.bin"
     fullflash = open(file, 'rb')
     fullflash.seek(64)
     for name, size in dic:
