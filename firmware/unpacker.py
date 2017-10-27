@@ -7,15 +7,9 @@ import click
 def cli(file):
     dic = [
         ("kernel", 0x200000),
-        ("root", 0x350000),
+        ("rootfs", 0x350000),
         ("driver", 0xa0000),
         ("appfs", 0x4a0000),
-        ("backupk", 0x200000),
-        ("backupd", 0xa0000),
-        ("backupa", 0x200000),
-        ("config", 0x40000),
-        ("para", 0x40000),
-        ("flag", 0x10000)
     ]
     file = "demo_5.5.1.194.bin"
     fullflash = open(file, 'rb')
