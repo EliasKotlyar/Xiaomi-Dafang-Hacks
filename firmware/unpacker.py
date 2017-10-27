@@ -3,16 +3,16 @@ import click
 
 
 @click.command()
-@click.argument('file', default="")
-def cli(file):
+@click.argument('inputfile', default="demo_5.5.1.194.bin",type=click.Path(exists=True))
+def cli(inputfile):
     dic = [
         ("kernel", 0x200000),
         ("rootfs", 0x350000),
         ("driver", 0xa0000),
         ("appfs", 0x4a0000),
     ]
-    file = "demo_5.5.1.194.bin"
-    fullflash = open(file, 'rb')
+    inputfile = click.format_filename(inputfile)
+    fullflash = open(inputfile, 'rb')
     fullflash.seek(64)
     for name, size in dic:
         filename = "flash/" + name + ".bin"
