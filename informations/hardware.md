@@ -1,5 +1,17 @@
 ## Infos
 
+## Hardware infos 
+Main Processor:
+[Ingenic T20](ftp://ftp.ingenic.com/SOC/T20/T20_PB.PDF)
+
+Wifi:
+[Realtek 8192](http://www.realtek.com.tw/products/productsView.aspx?Langid=1&PFid=48&Level=5&Conn=4&ProdID=277)
+
+LED Driver:
+[ULN2803](http://www.ti.com/lit/ds/symlink/uln2803a.pdf)
+
+
+
 ## Some Information about the System:
 ```
 [root@Ingenic-uc1_1:mmc]# cat /proc/cpuinfo 
@@ -30,30 +42,12 @@ It is a little-Endian System
 
 ```
 
+The Hardware should be similar to [Icamera Keep](https://www.ismartalarm.com/devices/cameras/icamera-keep/ISA00008.html)
+
+Source of this Information: [Source](https://xiaomi.eu/community/threads/cant-open-camera-plugin-xiaomi-mijia-dafang-home-1080p-hd.41855/#post-391171)
+
+
+
 Here is a 
 
 
-```
-Add Sensor:
-
- insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
-
-
-Insmod Motor:
-hmaxstep = 2600
-hmotor2vmotor = 1
-vmaxstep = 700
-
-
-Get Info about the Sensor:
-echo 1 >/proc/jz/sinfo/info
-
-
-
-echo 100 > /proc/sys/vm/swappiness
-echo 16777216 > /sys/block/zram0/disksize
-mkswap /dev/zram0
-swapon /dev/zram0
-
-
-```

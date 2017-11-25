@@ -1,20 +1,21 @@
-## Xiaomi Dafang Teardown
+## Xiaomi Dafang Hacks
 
-This repository is a collection of Informations about the Dafang Camera
+This repository is a collection of informations&software for the Dafang Camera
 
 ![Dafang](/dafang.png)
 
-## Teardown
 
-![Teardown](/teardown/mainboard_teardown.jpg)
+## Informations:
+[Teardown](/teardown)
+[Hardware](/informations/hardware.md)
+[Portscan of original Software](/informations/portscan.md)
 
-Can be found in the "teardown"-folder
-
-## Usage
-
+## Hacks
+[Installation of Serial-Headers](/mod_serial)
 [Getting Root-Access using Serial](/mod_getroot/getroot.md)
-
 [Dumping-Firmware](/mod_getroot/firmware-dump.md)
+[Installing Telnet & configuring Wifi](/mod_getroot/install_telnetandwifi.md)
+
 
 
 ## Contribution
@@ -22,21 +23,8 @@ Can be found in the "teardown"-folder
 Any contribution to the development is highly welcome. The best possibility to provide any change is to open a pull request on GitHub.
 
 
-## Hardware infos 
-Main Processor:
-[Ingenic T20](ftp://ftp.ingenic.com/SOC/T20/T20_PB.PDF)
-
-Wifi:
-[Realtek 8192](http://www.realtek.com.tw/products/productsView.aspx?Langid=1&PFid=48&Level=5&Conn=4&ProdID=277)
-
-LED Driver:
-[ULN2803](http://www.ti.com/lit/ds/symlink/uln2803a.pdf)
 
 
-
-The Hardware should be similar to [Icamera Keep](https://www.ismartalarm.com/devices/cameras/icamera-keep/ISA00008.html)
-
-Source of this Information: [Source](https://xiaomi.eu/community/threads/cant-open-camera-plugin-xiaomi-mijia-dafang-home-1080p-hd.41855/#post-391171)
 
 ## Software Infos:
 
