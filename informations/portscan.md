@@ -1,3 +1,13 @@
+## Software Infos:
+
+Opened Ports:
+1. Port 80: Probably "Boa HTTPd 0.94.13" according to Nmap
+2. Port 10002 : No Clue yet, but it responds with the following Sequence if you send a simple
+"GET"-Request:
+
+ICAM�������������ÿ����s���àÖÑv�����TÑv
+
+The complete portscan:
 
 Starting Nmap 7.60 ( https://nmap.org ) at 2017-10-20 22:16 CEST
 NSE: Loaded 146 scripts for scanning.
