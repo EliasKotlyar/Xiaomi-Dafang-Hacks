@@ -25,6 +25,9 @@ This repository is a collection of informations&software for the Dafang Camera
 
 
 ## Original Firmware:
+[5.5.1.177](/firmware_original/demo_5.5.1.177.bin)
+
+[5.5.1.194](/firmware_original/demo_5.5.1.194.bin)
 
 
 ## Custom Firmware
