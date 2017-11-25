@@ -2,7 +2,7 @@
 import click
 import os
 from sys import getsizeof
-
+import subprocess
 
 @click.command()
 @click.argument('kernel', default="kernel.bin", type=click.Path(exists=True))
@@ -22,21 +22,29 @@ def cli(kernel, rootfs, driver, appfs, outfile):
     fullflash = open(tmpfile, 'wb')
     for name, size, filename in dic:
         buffersize = os.path.getsize(filename)
-        if (size != buffersize):
-            click.echo('Size mismatch. The provided %s has a size of %s, but it need to have the size %s ' % (name,
+        if (size < buffersize):
+            click.echo('Size mismatch. The provided %s has a size of %s, but it need to have the size %s. Please try to free some space!' % (name,
                                                                                                               buffersize,
                                                                                                               size))
             return
 
         part = open(filename, "rb")
         buffer = part.read(size)
-
-
         fullflash.write(buffer)
+        # Padding with zeros:
+        if (buffersize < size):
+            padsize = size - buffersize
+            for x in range(0, padsize):
+                fullflash.write(bytearray.fromhex('00'))
+
     cmd = "mkimage -A MIPS -O linux -T firmware -C none -a 0 -e 0 -n jz_fw -d " + tmpfile + " " + outfile
-    os.system(cmd)
+    #os.system(cmd)
+
+    subprocess.check_output(cmd, shell=True)
+
     os.remove(tmpfile)
 
+    click.echo('Firmware %s was sucessfully created!' % (outfile))
 
 if __name__ == '__main__':
     cli()
