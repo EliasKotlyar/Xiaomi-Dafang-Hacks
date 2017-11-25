@@ -22,17 +22,17 @@ Attention: The Values are in Hex. Convert into Decimal for using DD
 
 ## Dump everything:
 ```
-dd if=/dev/mtdblock0 of=uboot.bin bs=262144
-dd if=/dev/mtdblock1 of=kernel.bin bs=2097152
-dd if=/dev/mtdblock2 of=rootfs.bin bs=3473408
-dd if=/dev/mtdblock3 of=driver.bin bs=655360
-dd if=/dev/mtdblock4 of=appfs.bin bs=4849664
-dd if=/dev/mtdblock5 of=backupk.bin bs=2097152
-dd if=/dev/mtdblock6 of=backupd.bin bs=655360
-dd if=/dev/mtdblock7 of=backupa.bin bs=2097152
-dd if=/dev/mtdblock8 of=config.bin bs=262144
-dd if=/dev/mtdblock9 of=para.bin bs=262144
-dd if=/dev/mtdblock10 of=flag.bin bs=65536
+dd if=/dev/mtdblock0 of=uboot.bin 
+dd if=/dev/mtdblock1 of=kernel.bin
+dd if=/dev/mtdblock2 of=rootfs.bin 
+dd if=/dev/mtdblock3 of=driver.bin 
+dd if=/dev/mtdblock4 of=appfs.bin 
+dd if=/dev/mtdblock5 of=backupk.bin 
+dd if=/dev/mtdblock6 of=backupd.bin 
+dd if=/dev/mtdblock7 of=backupa.bin
+dd if=/dev/mtdblock8 of=config.bin 
+dd if=/dev/mtdblock9 of=para.bin 
+dd if=/dev/mtdblock10 of=flag.bin
 ```
 
 

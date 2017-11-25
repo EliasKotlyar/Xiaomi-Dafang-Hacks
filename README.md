@@ -6,11 +6,13 @@ This repository is a collection of informations&software for the Dafang Camera
 
 
 ## Informations:
-[Teardown](/teardown/teardown.md)
+[Teardown](/informations/teardown.md)
 
 [Hardware](/informations/hardware.md)
 
 [Portscan of original Software](/informations/portscan.md)
+
+[Bootlog of original Software](/informations/bootlog.md)
 
 ## Hacks
 [Installation of Serial-Headers](/hacks/serial.md)
@@ -21,7 +23,13 @@ This repository is a collection of informations&software for the Dafang Camera
 
 [Installing Telnet & configuring Wifi](/hacks/install_telnetandwifi.md)
 
-[Custom Firmware with Telnet](https://www.youtube.com/redirect?redir_token=rgCRlyS92YuVeJzyOD5SGjwwkZt8MTUxMTczNDg4MUAxNTExNjQ4NDgx&q=https%3A%2F%2Fwww.dropbox.com%2Fs%2F9t9op698fza1tl2%2Fdemo.bin%3Fdl%3D0&event=video_description&v=BF8UFTz5BoQ)
+
+## Original Firmware:
+
+
+## Custom Firmware
+
+[Custom Firmware with Telnet](https://www.dropbox.com/s/9t9op698fza1tl2/demo.bin?dl=0)
 
 [Custom Firmware with SSH & FTP-Server]()
 

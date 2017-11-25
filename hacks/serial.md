@@ -1,6 +1,6 @@
 ## Testpoints on Board:
 
-![Headers](/serial/headers_sample.jpg)
+![Headers](/hacks/serial/headers_sample.jpg)
 
 
 ## Hardware required for debugging:
