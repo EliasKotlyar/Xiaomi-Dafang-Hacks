@@ -23,6 +23,12 @@ This repository is a collection of informations&software for the Dafang Camera
 
 [Installing Telnet & configuring Wifi](/hacks/install_telnetandwifi.md)
 
+[Flashing Firmware](/hacks/howto_firmwareflash.md)
+
+[Modifying Firmware](/hacks/howto_modfirmware.md)
+
+
+
 
 ## Original Firmware:
 [5.5.1.177](/firmware_original/demo_5.5.1.177.bin)
