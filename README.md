@@ -28,7 +28,11 @@ This repository is a collection of informations&software for the Dafang Camera
 [Modifying Firmware](/hacks/howto_modfirmware.md)
 
 
+## Software Development:
 
+[Toolchain](https://github.com/dim08/Ingenic-T10_20)
+
+[Software Compilation Repository](https://github.com/EliasKotlyar/Xiaomi-Dafang-Software)
 
 ## Original Firmware:
 [5.5.1.177](/firmware_original/demo_5.5.1.177.bin)
