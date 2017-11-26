@@ -38,11 +38,3 @@ dd if=/dev/mtdblock10 of=flag.bin
 
 
 
-## Extract Kernel:
-The Kernel is compressed using lzma. Use the following Instructions for extracting it:
-https://stackoverflow.com/questions/37672417/getting-kernel-version-from-the-compressed-kernel-image
-
-
-## Extract AppFS:
-Use following Tutorial:
-http://wiki.emacinc.com/wiki/Mounting_JFFS2_Images_on_a_Linux_PC
