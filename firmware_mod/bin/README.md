@@ -35,7 +35,10 @@ Usage
 1. Download some example file from http://www.live555.com/liveMedia/public/264/
 2. Stream it using cat <file> > ./h264streamer 
 
+Attention: Dont try to combine it the the h264snap - it wont work. I tested it first. 
+
 ## Motor
+
 
 1. Remove the old Module from Xiaomi: rmmod sample_motor
 2. Insert the new Kernel Module : insmod ./sample_motor.ko
