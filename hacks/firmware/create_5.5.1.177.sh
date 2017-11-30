@@ -1,1 +1,0 @@
-./packer.py "5.5.1.177/kernel.bin" "5.5.1.177/rootfs.bin" "5.5.1.177/driver.bin" "5.5.1.177/appfs.bin" "demo_5.5.1.177.bin"
