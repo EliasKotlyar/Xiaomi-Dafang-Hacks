@@ -1,6 +1,8 @@
 #!/bin/sh
 CONFIGPATH=/system/sdcard/config
 SAMPLE_CONFIGPATH=/system/sdcard/sample_config
+
+echo "Starting up CFW"
 ## Copy Configs:
 if [  ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
 	cp $SAMPLE_CONFIGPATH/wpa_supplicant.conf $CONFIGPATH/wpa_supplicant.conf
@@ -22,5 +24,5 @@ insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 senso
 /system/sdcard/bin/bftpd -d
 
 
-
+echo "Startup finished!"
 

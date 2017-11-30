@@ -44,3 +44,5 @@ Attention: Dont try to combine it the the h264snap - it wont work. I tested it f
 2. Insert the new Kernel Module : insmod ./sample_motor.ko
 3. Run the Test-Application : ./motor
 
+## Sample-Audio
+Plays a wav file. Provide it as file.wav
