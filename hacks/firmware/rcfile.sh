@@ -68,9 +68,23 @@ if [ ! -f /system/.system ]; then
     echo "Done"
 fi
 
-mount /dev/mmcblk0p1 /system/sdcard
-if [ -f /system/sdcard/run.sh ]; then
-	/system/sdcard/run.sh &
-elif [ -f /system/init/app_init.sh ]; then
+i="0"
+while 1
+do
+    if [ -f /dev/mmcblk0p1 ]; then
+        mount /dev/mmcblk0p1 /system/sdcard
+        if [ -f /system/sdcard/run.sh ]; then
+	        /system/sdcard/run.sh &
+	    fi
+        break
+    elif [ $i -lt 5 ]; then
+        break
+    fi
+   sleep 1
+   i=$[$i+1]
+done
+
+
+if [ -f /system/init/app_init.sh ]; then
     /system/init/app_init.sh &
 fi
