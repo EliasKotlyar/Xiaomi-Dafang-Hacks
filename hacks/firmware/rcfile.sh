@@ -77,7 +77,7 @@ do
 	        /system/sdcard/run.sh &
 	    fi
         break
-    elif [ $i -lt 5 ]; then
+    elif [ $i -gt 5 ]; then
         break
     fi
    sleep 1
