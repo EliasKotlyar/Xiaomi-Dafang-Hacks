@@ -13,10 +13,14 @@ fi
 
 
 ## Start Wifi:
-wpa_supplicant -B -i wlan0 -c /system/sdcard/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
+insmod /driver/8189es.ko
+wpa_supplicant -B -i wlan0 -c $SAMPLE_CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
 udhcpc -i wlan0 -p /var/run/udhcpc.pid -b
 
+## Start Audio:
+insmod /driver/audio.ko
 ## Start Sensor:
+insmod /driver/tx-isp.ko isp_clk=100000000
 insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 
 ## Start FTP & SSH

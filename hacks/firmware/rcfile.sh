@@ -69,20 +69,28 @@ if [ ! -f /system/.system ]; then
 fi
 
 i="0"
-while 1
+while true
 do
-    if [ -f /dev/mmcblk0p1 ]; then
+    echo "Trying to mount SDCard..."
+    if [ -e /dev/mmcblk0p1 ]; then
+        mkdir /system/sdcard
         mount /dev/mmcblk0p1 /system/sdcard
+        sleep 1
+        echo "Mount sucessful"
         if [ -f /system/sdcard/run.sh ]; then
-	        /system/sdcard/run.sh &
-	        exit 0
-	    fi
+            echo "Starting run.sh from sdcard"
+            /system/sdcard/run.sh &
+            exit 0
+        else
+            echo "Couldnt find run.sh, starting normal..."
+        fi
         break
     elif [ $i -gt 5 ]; then
+        echo "Couldnt mount, starting normal..."
         break
     fi
-   sleep 1
-   i=$[$i+1]
+    sleep 1
+    let i=i+1
 done
 
 
