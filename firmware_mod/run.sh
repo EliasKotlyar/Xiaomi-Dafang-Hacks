@@ -10,7 +10,9 @@ fi
 if [  ! -f $CONFIGPATH/bftpd.conf ]; then
 	cp $SAMPLE_CONFIGPATH/bftpd.conf $CONFIGPATH/bftpd.conf
 fi
-
+if [  ! -f $CONFIGPATH/boa.conf ]; then
+	cp $SAMPLE_CONFIGPATH/boa.conf $CONFIGPATH/boa.conf
+fi
 
 ## Start Wifi:
 insmod /driver/8189es.ko
@@ -27,6 +29,8 @@ insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 senso
 /system/sdcard/bin/dropbearmulti dropbear -R
 /system/sdcard/bin/bftpd -d
 
+## Start Webserver:
+/system/sdcard/bin/boa -c /system/sdcard/config/
 
 echo "Startup finished!"
 
