@@ -14,7 +14,7 @@ fi
 
 ## Start Wifi:
 insmod /driver/8189es.ko
-wpa_supplicant -B -i wlan0 -c $SAMPLE_CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
+wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
 udhcpc -i wlan0 -p /var/run/udhcpc.pid -b
 
 ## Start Audio:
