@@ -75,6 +75,7 @@ do
         mount /dev/mmcblk0p1 /system/sdcard
         if [ -f /system/sdcard/run.sh ]; then
 	        /system/sdcard/run.sh &
+	        exit 0
 	    fi
         break
     elif [ $i -gt 5 ]; then
