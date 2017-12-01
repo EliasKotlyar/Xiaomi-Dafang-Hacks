@@ -1,5 +1,8 @@
 #!/bin/sh
 
+export LD_LIBRARY_PATH=/system/lib
+export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
+
 echo "Content-type: image/jpeg"
 echo ""
 /system/sdcard/bin/jpegSnap
