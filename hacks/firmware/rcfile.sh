@@ -68,16 +68,25 @@ if [ ! -f /system/.system ]; then
     echo "Done"
 fi
 
+
+# Start Pin:
+echo 39 > /sys/class/gpio/export
+echo out > /sys/class/gpio/gpio39/direction
+echo 0 > /sys/class/gpio/gpio39/active_low
+echo 0 > /sys/class/gpio/gpio39/value
 i="0"
 while true
 do
     echo "Trying to mount SDCard..."
     if [ -e /dev/mmcblk0p1 ]; then
+
         mkdir /system/sdcard
         mount /dev/mmcblk0p1 /system/sdcard
         sleep 1
         echo "Mount sucessful"
         if [ -f /system/sdcard/run.sh ]; then
+            echo 1 > /sys/class/gpio/gpio39/value
+            echo 39 > /sys/class/gpio/unexport
             echo "Starting run.sh from sdcard"
             /system/sdcard/run.sh &
             exit 0
@@ -92,6 +101,8 @@ do
     sleep 1
     let i=i+1
 done
+echo 1 > /sys/class/gpio/gpio39/value
+echo 39 > /sys/class/gpio/unexport
 
 
 if [ -f /system/init/app_init.sh ]; then
