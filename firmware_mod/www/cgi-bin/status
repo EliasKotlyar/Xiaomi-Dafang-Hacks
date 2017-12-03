@@ -39,61 +39,10 @@ button, input[type=submit] { background-color: #ddeaff; }
 <br/>
 </div>
 EOF
-HACKS_HOME="/media/mmcblk0p2/data"
-if [ -x "/etc/fang_hacks.sh" ]; then
-   echo "Script is already installed!<br/>" 
-   if [ ! $(mount |grep /media/mmcblk0p2) ]; then
-       echo "<span class='err'>Error: Nothing is mounted on /media/mmcblk0p2!</span>"
-       echo "<button title='Try to mount the hacks partition manually' type='button' onClick=\"window.location.href='action?cmd=manual_mount'\">Manual Mount</button>"
-       echo "<br/>"
-   elif [ ! -d "$HACKS_HOME" ]; then
-       echo "<span class='err'>Error: No 'data' directory found in /media/mmcblk0p2!</span>"
-       echo "<br/>"
-   else
-       if [ -e "/etc/.resize_runonce" ]; then
-         echo "<span class='err'>Reboot required to apply new partition layout!</span>"
-         echo "<br/>"
-       elif [ -e "$HACKS_HOME/.resize" ]; then
-         echo "Expand data partition (/media/mmcblk0p2)?"
-         echo "<button title='Expand data partition' type='button' onClick=\"window.location.href='action?cmd=expandfs'\">Yes</button>"
-         echo "<br/>"
-       fi
-   fi
-   if [ -e /etc/fang_hacks.cfg ]; then
-    source /etc/fang_hacks.cfg
-    echo "<form action='/cgi-bin/action?cmd=apply_cfg' method='post'>"
-    echo "<input type='hidden' name='none'/><!-- never post an empty form -->" 
-    if [ "$HACKS_ENABLED" -eq 1 ]; then checked="checked"; fi
-    echo "<input name='hacks_enable' type='checkbox' $checked/>"
-    echo "<label for='cb_hacks_enable'>Hacks enabled</label>"
-    echo "<br/>"
-    unset checked
-
-    if [ "$DISABLE_CLOUD" -eq 1 ]; then
-      checked="checked"
-    else
-      if [ "$NETWORK_MODE" -eq 0 ]; then
-        disabled="disabled"
-        title="Cannot disable when network is set to Cloud Mode!"
-      fi
-    fi
-    echo "<input name='disable_cloud' type='checkbox' title='$title' $checked $disabled/>"
-    echo "<label for='cb_cloud_disable'>Disable cloud applications</label>"
-    echo "<br/>"
-    echo "<input type='submit' value='Apply'/><br/>"
-    echo "</form>"
-   fi
-   echo "Apply updates from sd-card?"
-   echo "<button title='Copy updates from sd-card to device' type='button' onClick=\"window.location.href='action?cmd=update'\">Update</button>"
-else
-   echo "Do you want to apply Xiao Fang hacks?<br/>"
-   echo "<button title='Copy the fang_hacks.sh script to the device' type='button' onClick=\"window.location.href='action?cmd=apply'\">Apply</button>"
-fi
 
 cat << EOF
 </p>
 <hr/>
-<button title='Start default telnetd on port 23' type='button' onClick="window.location.href='action?cmd=telnetd'">Start rescue telnetd</button>
 <button title='Reboot the device' type='button' onClick="window.location.href='action?cmd=reboot'">Reboot</button>
 <button title='Manage scripts' type='button' onClick="window.location.href='scripts'">Manage scripts</button>
 <button title='Network' type='button' onClick="window.location.href='network'">Network</button>
@@ -114,16 +63,8 @@ cat << EOF
   </td>
 </tr>
 <tr>
-  <th>System uptime:</th>
-  <td>$(uptime)</td>
-</tr>
-<tr>
   <th>Version:</th>
   <td>$(cat /etc/os-release | cut -d'=' -f2)</td>
-</tr>
-<tr>
-  <th>Kernel:</th>
-  <td>$(uname -a)</td>
 </tr>
 <tr>
   <th>Process list:</th>
