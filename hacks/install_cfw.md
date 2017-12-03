@@ -44,7 +44,10 @@ Remove the "run.sh" file from microsd.
 - Webserver
 
 - Image-Snap functionality:
+
 http://IP/cgi-bin/currentpic
+
 -Fang-Hacks(not working correctly for now):
+
 http://IP/cgi-bin/status
 
