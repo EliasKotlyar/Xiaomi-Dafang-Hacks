@@ -9,7 +9,19 @@ The CFW will boot only if the SDCard is plugged in and has a "run.sh" file on it
 3. Hold the Setup-Button on the Dafang
 4. Plug in the Power-Cable(USB)
 5. Wait for 5 minutes(dont unplug the camera until it will bootup to the normal firmware)
-6. Unplug the Camera, put everything from "firmware_mod" Folder into the root of the microsd
+6. Unplug the Camera, put everything from "firmware_mod" Folder into the **root** of the microsd
+
+It should look like this:
+```
+E:/
+├── bin
+├── config
+├── run.sh
+├── sample_config
+├── scripts
+└── www
+
+```
 7. Modify the file wpa_supplicant.conf from the CFW to match your wifi network.
 8. Reboot the Camera - it will boot now into CFW
 
