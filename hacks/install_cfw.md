@@ -16,7 +16,8 @@ The CFW will boot only if the SDCard is plugged in and has a "run.sh" file on it
 
 ## Installation of the new Firmware
 
-1. Put everything from "firmware_mod" Folder into the **root** of the microsd
+1. Download the Repository as Zip-File. Dont try to get it with git if you are on windows!
+2. Put everything from "firmware_mod" Folder into the **root** of the microsd
 
 It should look like this:
 ```
@@ -24,14 +25,13 @@ E:/
 ├── bin
 ├── config
 ├── run.sh
-├── sample_config
 ├── scripts
 └── www
 
 ```
 
-2. Modify the file config/wpa_supplicant.conf on the sdcard, to match your wifi-settings
-3. Insert the SDcard and start the camera.
+3. Modify the file config/wpa_supplicant.conf on the sdcard, to match your wifi-settings
+4. Insert the SDcard and start the camera.
 
 
 ## Uninstallation
