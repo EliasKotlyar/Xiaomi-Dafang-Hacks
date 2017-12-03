@@ -291,7 +291,7 @@ while read x; do
          <input type='hidden' id=\"${SSID}_ADDR\" value=\"$ADDR\"/>"
 
 done <<EOT
-$(iwlist wlan0 scan 2>/dev/null | /media/mmcblk0p1/bootstrap/iwlist.awk | sort -rgk4)
+$(iwlist wlan0 scan 2>/dev/null | /system/sdcard/scripts/iwlist.awk | /system/sdcard/bin/busybox sort -rgk4)
 EOT
 echo "</select>"
 echo "$hidden"
