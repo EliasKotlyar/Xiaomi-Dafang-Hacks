@@ -4,6 +4,9 @@ This repository is a collection of informations&software for the Dafang Camera
 
 ![Dafang](/dafang.png)
 
+## Custom Firmware:
+[Modifying Firmware](/hacks/install_cfw.md)
+
 
 ## Informations:
 [Teardown](/informations/teardown.md)
