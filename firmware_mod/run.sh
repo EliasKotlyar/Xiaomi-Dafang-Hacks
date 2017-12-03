@@ -1,18 +1,7 @@
 #!/bin/sh
 CONFIGPATH=/system/sdcard/config
-SAMPLE_CONFIGPATH=/system/sdcard/sample_config
-
 echo "Starting up CFW"
-## Copy Configs:
-if [  ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
-	cp $SAMPLE_CONFIGPATH/wpa_supplicant.conf $CONFIGPATH/wpa_supplicant.conf
-fi
-if [  ! -f $CONFIGPATH/bftpd.conf ]; then
-	cp $SAMPLE_CONFIGPATH/bftpd.conf $CONFIGPATH/bftpd.conf
-fi
-if [  ! -f $CONFIGPATH/boa.conf ]; then
-	cp $SAMPLE_CONFIGPATH/boa.conf $CONFIGPATH/boa.conf
-fi
+
 
 ## Start Wifi:
 insmod /driver/8189es.ko
