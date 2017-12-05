@@ -24,10 +24,22 @@ if [ -n "$F_cmd" ]; then
     /sbin/reboot
     ;;
   blue_led_on)
-    setgpio 39 1
+    setgpio 39 0
     ;;
   blue_led_off)
-    setgpio 39 0
+    setgpio 39 1
+    ;;
+  yellow_led_on)
+    setgpio 38 0
+    ;;
+  yellow_led_off)
+    setgpio 38 1
+    ;;
+  ir_led_on)
+    setgpio 49 0
+    ;;
+  ir_led_off)
+    setgpio 49 1
     ;;
   *)
     echo "Unsupported command '$F_cmd'"

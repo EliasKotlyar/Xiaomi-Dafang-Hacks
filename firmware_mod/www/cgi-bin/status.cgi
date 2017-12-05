@@ -43,16 +43,16 @@ EOF
 cat << EOF
 </p>
 <hr/>
-<button title='Reboot the device' type='button' onClick="window.location.href='action?cmd=reboot'">Reboot</button>
+<button title='Reboot the device' type='button' onClick="window.location.href='action.cgi?cmd=reboot'">Reboot</button>
 <button title='Manage scripts' type='button' onClick="window.location.href='scripts'">Manage scripts</button>
 <button title='Network' type='button' onClick="window.location.href='network'">Network</button>
-<button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action?cmd=showlog'">View log</button>
+<button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
 <hr/>
 <table class='tbl'>
 <tr>
   <th>Date:</th>
   <td>
-      <form style="margin: 0px" action="/cgi-bin/action?cmd=settz" method="post">
+      <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=settz" method="post">
         $(date)
         <label style="margin-left: 1em" for="tz">TZ:</label>
         <input id="tz" name="tz" type="text" size="25" value="$(cat /etc/TZ)"/>
@@ -72,8 +72,32 @@ cat << EOF
 </tr>
 <tr>
   <th>Mounts:</th>
-  <td><pre>$(echo 1 >/proc/jz/sinfo/info; cat /proc/jz/sinfo/info)</td>
+  <td><pre>$(mount)</td>
 </tr>
+
+<tr>
+  <th>Blue LED:</th>
+  <td>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=blue_led_on'">On</button>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=blue_led_off'">Off</button>
+  </td>
+</tr>
+<tr>
+  <th>Yellow LED:</th>
+  <td>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=yellow_led_on'">On</button>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=yellow_led_off'">Off</button>
+  </td>
+</tr>
+<tr>
+  <th>IR LED:</th>
+  <td>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=ir_led_on'">On</button>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=ir_led_off'">Off</button>
+  </td>
+</tr>
+
+
 </table>
 </div>
 </body>

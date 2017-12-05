@@ -21,6 +21,8 @@ echo 1 > /sys/class/gpio/gpio$GPIOPIN/value
 }
 # IR-LED
 setgpio 49
+echo 1 > /sys/class/gpio/gpio49/active_low
+echo 1 > /sys/class/gpio/gpio49/value
 # Yellow-LED
 setgpio 38
 # Blue-LED
