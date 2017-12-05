@@ -97,6 +97,13 @@ cat << EOF
   </td>
 </tr>
 
+<tr>
+  <th>Motor:</th>
+  <td>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_left'">Left</button>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_right'">Right</button>
+  </td>
+</tr>
 
 </table>
 </div>

@@ -41,6 +41,12 @@ if [ -n "$F_cmd" ]; then
   ir_led_off)
     setgpio 49 1
     ;;
+  motor_left)
+    /system/sdcard/bin/motor left 100
+    ;;
+  motor_right)
+    /system/sdcard/bin/motor right 100
+    ;;
   *)
     echo "Unsupported command '$F_cmd'"
     ;;

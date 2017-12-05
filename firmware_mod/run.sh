@@ -29,7 +29,7 @@ setgpio 38
 setgpio 39
 
 # Startup Motor:
-insmod /system/sdcard/driver/sample_motor
+insmod /system/sdcard/driver/sample_motor.ko
 
 
 
