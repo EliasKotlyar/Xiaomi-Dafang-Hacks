@@ -42,10 +42,16 @@ if [ -n "$F_cmd" ]; then
     setgpio 49 1
     ;;
   motor_left)
-    /system/sdcard/bin/motor left 100
+    /system/sdcard/bin/motor -d l -s 100
     ;;
   motor_right)
-    /system/sdcard/bin/motor right 100
+    /system/sdcard/bin/motor -d r -s 100
+    ;;
+  motor_up)
+    /system/sdcard/bin/motor -d u -s 100
+    ;;
+  motor_down)
+    /system/sdcard/bin/motor -d d -s 100
     ;;
   *)
     echo "Unsupported command '$F_cmd'"
