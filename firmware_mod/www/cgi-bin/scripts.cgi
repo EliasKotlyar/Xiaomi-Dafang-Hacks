@@ -28,7 +28,7 @@ button, input[type=submit] { background-color: #ddeaff; }
 <hr/>
 EOF
 
-SCRIPT_HOME="/media/mmcblk0p2/data/etc/scripts"
+SCRIPT_HOME="/media/mmcblk0p2/data/etc/scripts.cgi"
 source "/media/mmcblk0p2/data/etc/profile" >/dev/null 2>&1
 if [ -n "$F_script" ]; then
   script="${F_script##*/}"
@@ -66,7 +66,7 @@ if [ -n "$F_script" ]; then
 fi
 
 if [ ! -d "$SCRIPT_HOME" ]; then
-  echo "No scripts found in $SCRIPT_HOME<br/>"
+  echo "No scripts.cgi found in $SCRIPT_HOME<br/>"
 else
   SCRIPTS=$(ls -A "$SCRIPT_HOME")
   echo "<table class='tbl'>"
@@ -94,30 +94,30 @@ else
 
       if [ $(grep "^start\(\)" "$SCRIPT_HOME/$i") ]; then
         if [ -z "$status" ]; then
-          echo "<td><button title='Start script' type='button' onClick=\"window.location.href='scripts?cmd=start&script=$i'\">Start</button</td>"
+          echo "<td><button title='Start script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=start&script=$i'\">Start</button</td>"
         else
           echo "<td><button title='Already running' disabled>Start</button>"
         fi
       else
-        echo "<td><button title='Run script' type='button' onClick=\"window.location.href='scripts?cmd=start&script=$i'\">Run</button></td>"
+        echo "<td><button title='Run script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=start&script=$i'\">Run</button></td>"
       fi
 
       if [ $(grep "^stop\(\)" "$SCRIPT_HOME/$i") ]; then
         if [ -n "$status" ]; then
-          echo "<td><button title='Stop script' type='button' onClick=\"window.location.href='scripts?cmd=stop&script=$i'\">Stop</button></td>"
+          echo "<td><button title='Stop script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=stop&script=$i'\">Stop</button></td>"
         else
           echo "<td><button title='Not running' disabled>Stop</button>"
         fi
       else
         echo "<td></td>"
       fi
-      echo "<td><button title='Disable script' type='button' onClick=\"window.location.href='scripts?cmd=disable&script=$i'\">Disable</button></td>"
+      echo "<td><button title='Disable script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=disable&script=$i'\">Disable</button></td>"
      else
       echo "<td/>"
-      echo "<td><button title='Enable script' type='button' onClick=\"window.location.href='scripts?cmd=enable&script=$i'\">Enable</button></td>"
+      echo "<td><button title='Enable script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=enable&script=$i'\">Enable</button></td>"
       echo "<td/><td/>"
     fi
-    echo "<td><button title='View script' type='button' onClick=\"window.location.href='scripts?cmd=view&script=$i'\">View</button></td>"
+    echo "<td><button title='View script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=view&script=$i'\">View</button></td>"
     echo "</tr>"
   done
   echo "</table>"

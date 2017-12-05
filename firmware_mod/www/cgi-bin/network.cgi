@@ -17,7 +17,7 @@ if [ -n "$F_action" ]; then
     connect)
       client_ssid=$(printf '%b' "${F_ssid//%/\\x}")
       client_key=$(printf '%b' "${F_key//%/\\x}")
-      ACTION_MSG="$(/media/mmcblk0p2/data/etc/scripts/01-network connect "$client_ssid" "$client_key")"
+      ACTION_MSG="$(/media/mmcblk0p2/data/etc/scripts/01-network.cgi connect "$client_ssid" "$client_key")"
       ACTION_RC=$?
       CFG_MODE=1
       ;;
@@ -64,11 +64,11 @@ if [ -n "$F_action" ]; then
           ;;
       esac
       if [ $ACTION_RC -eq 0 ]; then
-        # apply network mode
+        # apply network.cgi mode
         sed -i.bak 's/^NETWORK_MODE=[0-9]/NETWORK_MODE='$CFG_MODE'/' /etc/fang_hacks.cfg
-        ACTION_MSG="$ACTION_MSG<br/>Applying network mode $CFG_MODE"
+        ACTION_MSG="$ACTION_MSG<br/>Applying network.cgi mode $CFG_MODE"
         echo "Restarting Network..."
-        ACTION_MSG="$ACTION_MSG<br/><pre>$(/media/mmcblk0p2/data/etc/scripts/01-network start 2>&1)</pre>"
+        ACTION_MSG="$ACTION_MSG<br/><pre>$(/media/mmcblk0p2/data/etc/scripts/01-network.cgi start 2>&1)</pre>"
       fi
       ;;
   esac
@@ -228,7 +228,7 @@ function onLoad() {
 EOF
   if [ "$ACTION_RC" == 0 ]; then
     if [ "$F_action" == "connect" ]; then
-      echo "document.getElementById('network-list').value = \"$client_ssid\";"
+      echo "document.getElementById('network.cgi-list').value = \"$client_ssid\";"
       echo "updateNetworkDetails();"
       echo "document.getElementById('ssid_key').value = \"$client_key\";"
     fi
@@ -273,9 +273,9 @@ if [ -n "$SSID" ]; then
   echo "<hr/>"
 fi
 echo "<div style='float: left'>"
-echo "<form name='network-info'>"
+echo "<form name='network.cgi-info'>"
 echo "Select Access Point:<br/>"
-echo "<select id='network-list' size='5' onChange='updateNetworkDetails()' style='width: 20em'>"
+echo "<select id='network.cgi-list' size='5' onChange='updateNetworkDetails()' style='width: 20em'>"
 echo "<option value='' disabled selected style='display:none;'>Label</option>"
 
 hidden=""
@@ -324,13 +324,13 @@ EOF
 if [ "$DISABLE_CLOUD" -eq 1 ]; then
   echo "<span class='error'>"
   echo "Warning: Cloud apps are disabled!<br/>"
-  echo "If you apply this mode network will NOT be initialized after reboot!"
+  echo "If you apply this mode network.cgi will NOT be initialized after reboot!"
   echo "</span>"
 fi
 echo "<hr/>"
 
 echo "<div style='float: left'>"
-echo "<form name='network-info'>"
+echo "<form name='network.cgi-info'>"
 echo "Cloud WiFi Settings:<br/>"
 echo "<label for='cloud_ssid' style='display: inline-block; width: 8em'>Network SSID:</label>"
 echo "<input id='cloud_ssid' value='$(cat /etc/config/.wifissid)' type='text'/><br/>"
@@ -350,7 +350,7 @@ ap_addr="$(cat $CFG_DHCPD | grep ^opt.*router | awk '{print $3}')"
 ap_ssid="$(cat $CFG_AP | grep ^ssid= | cut -d'=' -f2)"
 ap_key="$(cat $CFG_AP | grep ^wpa_passphrase= | cut -d'=' -f2)"
 echo "<div style='float: left'>"
-echo "<form name='network-info'>"
+echo "<form name='network.cgi-info'>"
 echo "Hotspot settings:<br/>"
 echo "<label for='ap_addr' style='display: inline-block; width: 8em'>IP Address:</label>"
 echo "<input id='ap_addr' value='$ap_addr' type='text' disabled title='You must manually edit configs to change addressing!'/><br/>"

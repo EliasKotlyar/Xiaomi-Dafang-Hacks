@@ -72,7 +72,7 @@ cat << EOF
 </tr>
 <tr>
   <th>Mounts:</th>
-  <td><pre>$(mount)</td>
+  <td><pre>$(echo 1 >/proc/jz/sinfo/info; cat /proc/jz/sinfo/info)</td>
 </tr>
 </table>
 </div>
