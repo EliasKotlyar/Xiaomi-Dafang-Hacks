@@ -53,6 +53,11 @@ if [ -n "$F_cmd" ]; then
   motor_down)
     /system/sdcard/bin/motor -d d -s 100
     ;;
+  audio_test)
+    export LD_LIBRARY_PATH=/system/lib
+    export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
+    /system/sdcard/bin/audioplay /usr/share/notify/CN/init_ok.wav
+    ;;
   *)
     echo "Unsupported command '$F_cmd'"
     ;;

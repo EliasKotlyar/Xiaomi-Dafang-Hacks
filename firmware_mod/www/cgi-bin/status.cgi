@@ -105,6 +105,13 @@ cat << EOF
   </td>
 </tr>
 
+<tr>
+  <th>Audio:</th>
+  <td>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=audio_test'">Test</button>
+  </td>
+</tr>
+
 </table>
 </div>
 </body>

@@ -32,9 +32,16 @@ E:/
 
 3. Modify the file config/wpa_supplicant.conf on the sdcard, to match your wifi-settings
 4. Insert the SDcard and start the camera.
+## Updating:
 
+You just need to update the content of the sdcard if you have already the right firmware installed.
 
-## Uninstallation
+1. Backup the wpa_config/wpa_supplicant.conf
+2. Remove all files from the microsd
+3. Put everything from "firmware_mod" Folder into the **root** of the microsd
+4. Copy the the wpa_supplicant.conf from step 1 to the config folder
+
+## Uninstllation
 
 Remove the "run.sh" file from microsd.
 
@@ -42,12 +49,20 @@ Remove the "run.sh" file from microsd.
 - SSH-Server
 - FTP-Server
 - Webserver
+- Image-Snap functionality
+- Fang-Hacks(not working correctly for now):
+- Horizontal Motor rotation
+- Turn on/off LEDs
+- RTSP with mJPEG (low quality):
+```
+/system/sdcard/bin/mjpegStreamer 10
+```
+- Local h264 recording:
+```
+/system/sdcard/bin/h264Snap > /system/sdcard/video.h264
+```
 
-- Image-Snap functionality:
-
-http://IP/cgi-bin/currentpic
-
--Fang-Hacks(not working correctly for now):
-
-http://IP/cgi-bin/status
-
+- Audio-Test:
+```
+/system/sdcard/bin/audioplay /usr/share/notify/CN/init_ok.wav
+```
