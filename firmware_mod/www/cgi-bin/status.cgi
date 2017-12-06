@@ -55,49 +55,58 @@ cat << EOF
 </tr>
 
 
+<script>
+function call(url){
+        var xhr = new XMLHttpRequest();
+        xhr.open('GET', url, true);
+        xhr.send();
+}
+</script>
+
 <tr>
   <th>Blue LED:</th>
   <td>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=blue_led_on'">On</button>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=blue_led_off'">Off</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=blue_led_on')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=blue_led_off')">Off</button>
   </td>
 </tr>
 <tr>
   <th>Yellow LED:</th>
   <td>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=yellow_led_on'">On</button>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=yellow_led_off'">Off</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=yellow_led_on')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=yellow_led_off')">Off</button>
   </td>
 </tr>
 <tr>
   <th>IR LED:</th>
   <td>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=ir_led_on'">On</button>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=ir_led_off'">Off</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=ir_led_on')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=ir_led_off')">Off</button>
   </td>
 </tr>
 
 <tr>
   <th>Motor:</th>
   <td>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_left'">Left</button>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_right'">Right</button>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_up'">Up</button>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_down'">Down</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=motor_left')">Left</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=motor_right')">Right</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=motor_up')">Up</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=motor_right')">Down</button>
+
   </td>
 </tr>
 
 <tr>
   <th>Audio:</th>
   <td>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=audio_test'">Test</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=audio_test')">Test</button>
   </td>
 </tr>
 
 <tr>
   <th>Get Image</th>
   <td>
-  <button title='' type='button' onClick="window.location.href='currentpic.cgi?width=1920&height=1080'">Get</button>
+  <a href='currentpic.cgi?width=1920&height=1080' target='_blank'>Get</a>
   </td>
 </tr>
 
@@ -105,10 +114,11 @@ cat << EOF
 <tr>
   <th>Start RTSP</th>
   <td>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=rtsp_start'">Start</button>
-  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=rtsp_stop'">Stop</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_start')">Start</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
   </td>
 </tr>
+
 
 
 <tr>
