@@ -88,11 +88,12 @@ function call(url){
 <tr>
   <th>Motor:</th>
   <td>
-  <button title='' type='button' onClick="call('action.cgi?cmd=motor_left')">Left</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=motor_right')">Right</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=motor_up')">Up</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=motor_down')">Down</button>
-
+  &nbsp;&nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_up')">&nbsp;Up&nbsp;</button>
+  <br>
+  <button title="" type="button" onclick="call('action.cgi?cmd=motor_left')">Left</button>&nbsp;
+  <button title="" type="button" onclick="call('action.cgi?cmd=motor_right')">Right</button>
+  <br>
+  &nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_down')">Down</button>
   </td>
 </tr>
 
