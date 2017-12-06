@@ -60,17 +60,32 @@ if [ -n "$F_cmd" ]; then
   audio_test)
     /system/sdcard/bin/audioplay /usr/share/notify/CN/init_ok.wav
     ;;
-    rtsp_start)
+  rtsp_start)
         /system/sdcard/bin/busybox nohup /system/sdcard/bin/h264streamer &>/dev/null &
     ;;
-    rtsp_stop)
+  rtsp_stop)
         killall h264streamer
+    ;;
+   settz)
+    tz=$(printf '%b' "${F_tz//%/\\x}")
+    if [ $(cat /etc/TZ) != "$tz" ]; then
+    echo "Setting TZ to '$tz'...<br/>"
+    echo "$tz" > /etc/TZ
+    echo "Syncing time...<br/>"
+    /system/sdcard/bin/busybox ntpd -q -n -p time.google.com 2>&1
+    fi
+    hst=$(printf '%b' "${F_hostname//%/\\x}")
+    if [ $(cat /etc/hostname) != "$hst" ]; then
+    echo "Setting hostname to '$hst'...<br/>"
+    echo "$hst" > /etc/hostname
+    fi
+    if [ $? -eq 0 ]; then echo "<br/>Success<br/>"; else echo "<br/>Failed<br/>"; fi
     ;;
   *)
     echo "Unsupported command '$F_cmd'"
     ;;
   esac
-fi
+  fi
 
 echo "<hr/>"
 echo "<button title='Return to status page' onClick=\"window.location.href='status.cgi'\">Back</button>"
