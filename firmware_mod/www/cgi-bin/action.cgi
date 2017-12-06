@@ -61,7 +61,7 @@ if [ -n "$F_cmd" ]; then
     /system/sdcard/bin/audioplay /usr/share/notify/CN/init_ok.wav
     ;;
     rtsp_start)
-        /system/sdcard/bin/h264streamer &
+        /system/sdcard/bin/busybox nohup /system/sdcard/bin/h264streamer &
     ;;
     rtsp_stop)
         killall h264streamer
