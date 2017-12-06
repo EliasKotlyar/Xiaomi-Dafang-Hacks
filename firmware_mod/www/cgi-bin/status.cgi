@@ -82,6 +82,8 @@ cat << EOF
   <td>
   <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_left'">Left</button>
   <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_right'">Right</button>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_up'">Up</button>
+  <button title='' type='button' onClick="window.location.href='action.cgi?cmd=motor_down'">Down</button>
   </td>
 </tr>
 
