@@ -2,9 +2,11 @@
 CONFIGPATH=/system/sdcard/config
 echo "Starting up CFW"
 
+## Get real Mac address from config file:
+MAC=`cat /params/config/.product_config | grep MAC | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//'`
 
 ## Start Wifi:
-insmod /driver/8189es.ko
+insmod /driver/8189es.ko rtw_initmac="$MAC"
 wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
 udhcpc -i wlan0 -p /var/run/udhcpc.pid -b
 
