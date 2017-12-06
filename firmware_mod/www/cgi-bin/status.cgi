@@ -117,6 +117,15 @@ function call(url){
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_start')">Start</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
+  EOF
+
+PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
+
+IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
+echo "Path to feed : <a href='rtsp://$IP:8554/testStream'>rtsp://$IP:8554/testStream</a>"
+
+cat << EOF
+
   </td>
 </tr>
 
