@@ -91,7 +91,7 @@ function call(url){
   <button title='' type='button' onClick="call('action.cgi?cmd=motor_left')">Left</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=motor_right')">Right</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=motor_up')">Up</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=motor_right')">Down</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=motor_down')">Down</button>
 
   </td>
 </tr>
