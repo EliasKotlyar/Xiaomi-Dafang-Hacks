@@ -11,12 +11,14 @@ echo $2 > /sys/class/gpio/gpio$GPIOPIN/value
 }
 
 echo "<br/>"
+export LD_LIBRARY_PATH=/system/lib
+export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
 if [ -n "$F_cmd" ]; then
   case "$F_cmd" in
   showlog)
-    echo "Contents of /tmp/hacks.log:<br/>"
+    echo "Contents of all log files:<br/>"
     echo "<pre>"
-    cat /tmp/hacks.log
+    tail /var/log/*
     echo "</pre>"
     ;;
   reboot)
@@ -24,6 +26,7 @@ if [ -n "$F_cmd" ]; then
     /sbin/reboot
     ;;
   blue_led_on)
+    setgpio 38 1
     setgpio 39 0
     ;;
   blue_led_off)
@@ -31,6 +34,7 @@ if [ -n "$F_cmd" ]; then
     ;;
   yellow_led_on)
     setgpio 38 0
+    setgpio 39 1
     ;;
   yellow_led_off)
     setgpio 38 1
@@ -54,9 +58,13 @@ if [ -n "$F_cmd" ]; then
     /system/sdcard/bin/motor -d d -s 100
     ;;
   audio_test)
-    export LD_LIBRARY_PATH=/system/lib
-    export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
     /system/sdcard/bin/audioplay /usr/share/notify/CN/init_ok.wav
+    ;;
+    rtsp_start)
+        /system/sdcard/bin/h264streamer &
+    ;;
+    rtsp_stop)
+        killall h264streamer
     ;;
   *)
     echo "Unsupported command '$F_cmd'"
@@ -65,4 +73,4 @@ if [ -n "$F_cmd" ]; then
 fi
 
 echo "<hr/>"
-echo "<button title='Return to status page' onClick=\"window.location.href='status'\">Back</button>"
+echo "<button title='Return to status page' onClick=\"window.location.href='status.cgi'\">Back</button>"
