@@ -75,9 +75,10 @@ if [ -n "$F_cmd" ]; then
     /system/sdcard/bin/busybox ntpd -q -n -p time.google.com 2>&1
     fi
     hst=$(printf '%b' "${F_hostname//%/\\x}")
-    if [ $(cat /etc/hostname) != "$hst" ]; then
+    if [ $(cat /system/sdcard/config/hostname.conf) != "$hst" ]; then
     echo "Setting hostname to '$hst'...<br/>"
-    echo "$hst" > /etc/hostname
+    echo "$hst" > /system/sdcard/config/hostname.conf
+    hostname $hst
     fi
     if [ $? -eq 0 ]; then echo "<br/>Success<br/>"; else echo "<br/>Failed<br/>"; fi
     ;;
