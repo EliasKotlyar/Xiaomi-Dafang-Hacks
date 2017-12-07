@@ -44,7 +44,7 @@ cat << EOF
         <label style="margin-left: 1em" for="tz">TZ:</label>
         <input id="tz" name="tz" type="text" size="25" value="$(cat /etc/TZ)"/>
         <label  for="hostname">Hostname:</label>
-        <input id="hostname" name="hostname" type="text" size="15" value="$(cat /etc/hostname)"/>
+        <input id="hostname" name="hostname" type="text" size="15" value="$(hostname)"/>
         <input type="submit" value="Set"/>
       </form>
   </td>
