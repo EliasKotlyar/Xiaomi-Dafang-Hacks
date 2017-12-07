@@ -2,6 +2,9 @@
 CONFIGPATH=/system/sdcard/config
 echo "Starting up CFW"
 
+## Update hostname:
+hostname -F $CONFIGPATH/hostname.conf
+
 ## Get real Mac address from config file:
 MAC=`cat /params/config/.product_config | grep MAC | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//'`
 
