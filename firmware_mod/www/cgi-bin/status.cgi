@@ -107,7 +107,7 @@ function call(url){
 <tr>
   <th>Get Image</th>
   <td>
-  <a href='currentpic.cgi?width=1920&height=1080' target='_blank'>Get</a>
+  <a href='currentpic.cgi?width=1920&height=1080&nightvision=0' target='_blank'>Get</a>
   </td>
 </tr>
 
@@ -117,14 +117,14 @@ function call(url){
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_start')">Start</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
-  EOF
+EOF
 
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
 
 IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
-echo "Path to feed : <a href='rtsp://$IP:8554/testStream'>rtsp://$IP:8554/testStream</a>"
-
+echo "Path to feed : <a href='rtsp://$(echo $IP):8554/testStream'>rtsp://$(echo $IP):8554/testStream</a>"
 cat << EOF
+
 
   </td>
 </tr>
