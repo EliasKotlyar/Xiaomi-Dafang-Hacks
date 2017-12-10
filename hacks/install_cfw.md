@@ -4,7 +4,7 @@ The custom firmware (CFW) bootloader will boot from microSD only if a microSD is
 
 ## Installation of the custom firmware with the microSD bootloader
 
-1. Download [CFW-Binary](/hacks/cfw/cfw-1.1.bin)
+1. Download [CFW-Binary](/hacks/cfw/cfw-1.2.bin)
 2. Format your microSD to FAT. NTFS, EXFAT etc. won't work.
 2. Put it to microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
 3. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
