@@ -14,7 +14,7 @@ wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_su
 udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:`hostname`
 
 ## Start Audio:
-insmod /driver/audio.ko
+insmod /system/sdcard/driver/audio.ko
 
 ## Start GPIO:
 setgpio () {

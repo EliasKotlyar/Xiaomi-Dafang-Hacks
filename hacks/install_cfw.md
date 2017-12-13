@@ -65,7 +65,12 @@ Remove the "run.sh" file from microSD.
 /system/sdcard/bin/h264Snap > /system/sdcard/video.h264
 ```
 
-- Audio-Test:
+- Audio:
 ```
-/system/sdcard/bin/audioplay /usr/share/notify/CN/init_ok.wav
+Playing Audio:
+/system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
+
+Recording Audio:
+/system/sdcard/bin/ossrecord /system/sdcard/test.wav 
 ```
+

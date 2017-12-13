@@ -58,7 +58,7 @@ if [ -n "$F_cmd" ]; then
     /system/sdcard/bin/motor -d d -s 100
     ;;
   audio_test)
-    /system/sdcard/bin/audioplay /usr/share/notify/CN/init_ok.wav
+    /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
     ;;
   rtsp_start)
         /system/sdcard/bin/busybox nohup /system/sdcard/bin/h264streamer &>/dev/null &
