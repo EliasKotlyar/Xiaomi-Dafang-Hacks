@@ -84,6 +84,13 @@ function call(url){
   <button title='' type='button' onClick="call('action.cgi?cmd=ir_led_off')">Off</button>
   </td>
 </tr>
+<tr>
+  <th>IR Cut:</th>
+  <td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=ir_cut_on')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=ir_cut_off')">Off</button>
+  </td>
+</tr>
 
 <tr>
   <th>Motor:</th>

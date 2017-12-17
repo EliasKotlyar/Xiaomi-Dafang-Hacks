@@ -45,6 +45,14 @@ if [ -n "$F_cmd" ]; then
   ir_led_off)
     setgpio 49 1
     ;;
+  ir_cut_on)
+    setgpio 25 1
+    setgpio 26 0
+    ;;
+  ir_cut_off)
+    setgpio 25 0
+    setgpio 26 1
+    ;;
   motor_left)
     /system/sdcard/bin/motor -d l -s 100
     ;;

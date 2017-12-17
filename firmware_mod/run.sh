@@ -33,6 +33,9 @@ setgpio 38
 echo 0 > /sys/class/gpio/gpio38/value
 # Blue-LED
 setgpio 39
+# IR-Cut:
+setgpio 25
+setgpio 26
 
 # Startup Motor:
 insmod /system/sdcard/driver/sample_motor.ko
