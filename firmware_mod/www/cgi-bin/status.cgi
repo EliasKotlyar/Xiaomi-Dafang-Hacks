@@ -101,7 +101,12 @@ function call(url){
   <button title="" type="button" onclick="call('action.cgi?cmd=motor_right')">Right</button>
   <br>
   &nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_down')">Down</button>
+
+&nbsp;&nbsp;&nbsp;
+    <button title='' type='button' onClick="call('action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
   </td>
+
 </tr>
 
 <tr>
