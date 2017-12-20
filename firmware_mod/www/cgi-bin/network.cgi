@@ -243,10 +243,10 @@ window.onload = onLoad;
 <body>
 <h1>Network Settings</h1>
 <hr/>
-<button title='Status page' type='button' onClick="window.location.href='status'">Status</button>
-<button title='Reboot the device' type='button' onClick="window.location.href='action?cmd=reboot'">Reboot</button>
-<button title='Info' type='button' onClick="window.location.href='scripts'">Scripts</button>
-<button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action?cmd=showlog'">View log</button>
+<button title='Status page' type='button' onClick="window.location.href='status.cgi'">Status</button>
+<button title='Reboot the device' type='button' onClick="window.location.href='action.cgi?cmd=reboot'">Reboot</button>
+<button title='Info' type='button' onClick="window.location.href='scripts.cgi'">Scripts</button>
+<button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
 <hr/>
 <div style='clear: both;'><pre>$ACTION_MSG</pre></div>
 <div style='clear: both;'>
