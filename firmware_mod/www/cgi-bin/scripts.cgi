@@ -21,10 +21,10 @@ button, input[type=submit] { background-color: #ddeaff; }
 <body>
 <h1>Boot Scripts</h1>
 <hr/>
-<button title='Status page' type='button' onClick="window.location.href='status'">Status</button>
-<button title='Reboot the device' type='button' onClick="window.location.href='action?cmd=reboot'">Reboot</button>
-<button title='Network' type='button' onClick="window.location.href='network'">Network</button>
-<button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action?cmd=showlog'">View log</button>
+<button title='Status page' type='button' onClick="window.location.href='status.cgi'">Status</button>
+<button title='Reboot the device' type='button' onClick="window.location.href='action.cgi?cmd=reboot'">Reboot</button>
+<button title='Network' type='button' onClick="window.location.href='network.cgi'">Network</button>
+<button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
 <hr/>
 EOF
 
