@@ -75,7 +75,7 @@ if [ -n "$F_cmd" ]; then
     /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
     ;;
   h264_start)
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -S -Q 25 &>/dev/null &
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -S &>/dev/null &
     ;;
   mjpeg_start)
     /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG -W 640 -H 480 &>/dev/null &
