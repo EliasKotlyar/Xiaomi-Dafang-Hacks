@@ -74,11 +74,14 @@ if [ -n "$F_cmd" ]; then
   audio_test)
     /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
     ;;
-  rtsp_start)
-        /system/sdcard/bin/busybox nohup /system/sdcard/bin/h264streamer &>/dev/null &
+  h264_start)
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -S -Q 25 &>/dev/null &
     ;;
+  mjpeg_start)
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG -W 640 -H 480 &>/dev/null &
+  ;;
   rtsp_stop)
-        killall h264streamer
+        killall v4l2rtspserver-master
     ;;
    settz)
     tz=$(printf '%b' "${F_tz//%/\\x}")

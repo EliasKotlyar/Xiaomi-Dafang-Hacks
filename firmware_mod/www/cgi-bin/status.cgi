@@ -125,16 +125,36 @@ function call(url){
 
 
 <tr>
-  <th>Start RTSP</th>
+  <th>Start H264 RTSP</th>
   <td>
-  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_start')">Start</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=h264_start')">Start</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
+  <br>
+EOF
+
+PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
+
+IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
+echo "Path to feed : <a href='rtsp://$(echo $IP):8554/unicast'>rtsp://$(echo $IP):8554/unicast</a></br>"
+echo "HLS : <a href='http://$(echo $IP):8554/unicast.m3u8'>http://$(echo $IP):8554/unicast.m3u8</a></br>"
+echo "MPEG-DASH : <a href='http://$(echo $IP):8554/unicast.mpd'>http://$(echo $IP):8554/unicast.mpd</a></br>"
+cat << EOF
+
+
+  </td>
+</tr>
+
+<tr>
+  <th>Start MJPEG RTSP</th>
+  <td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=mjpeg_start')">Start</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
 EOF
 
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
 
 IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
-echo "Path to feed : <a href='rtsp://$(echo $IP):8554/testStream'>rtsp://$(echo $IP):8554/testStream</a>"
+echo "Path to feed : <a href='rtsp://$(echo $IP):8554/unicast'>rtsp://$(echo $IP):8554/unicast</a></br>"
 cat << EOF
 
 
