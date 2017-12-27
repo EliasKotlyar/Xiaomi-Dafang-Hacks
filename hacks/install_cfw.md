@@ -48,24 +48,18 @@ If you already have a current custom firmware with custom bootloader installed, 
 Remove the "run.sh" file from microSD.
 
 ## Features
-
-- SSH-Server with username: root password: ismart12
-- FTP-Server with username: root password: ismart12
-- Webserver
-- Image-Snap functionality: http://dafanghacks/cgi-bin/currentpic.cgi?width=1920&height=1080&nightvision=0
-- Fang-Hacks (work in progress): http://dafanghacks/cgi-bin/status.cgi
-- Horizontal/vertical motor rotation
-- Turn on/off blue/yellow/IR LEDs
-- RTSP with mJPEG (low quality):
-```
-/system/sdcard/bin/mjpegStreamer 10
-```
-- Local h264 recording:
+- Full working RTSP with H264/MJPEG. Based on https://github.com/mpromonet/v4l2rtspserver
+- SSH-Server(dropbear) with username: root password: ismart12
+- FTP-Server(bftpd) with username: root password: ismart12
+- Webserver(boa)
+- Image-Snap(Get Jpeg Image) 
+- Horizontal/vertical motor rotation / move to center
+- Turn on/off blue/yellow/IR LEDs/IR-Cut
+- Local h264 recording possible:
 ```
 /system/sdcard/bin/h264Snap > /system/sdcard/video.h264
 ```
-
-- Audio:
+- Audio recording/playing possible:
 ```
 Playing Audio:
 /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
