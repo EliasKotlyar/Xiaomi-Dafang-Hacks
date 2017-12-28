@@ -78,7 +78,7 @@ if [ -n "$F_cmd" ]; then
     /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -S &>/dev/null &
     ;;
   mjpeg_start)
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG -W 640 -H 480 &>/dev/null &
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG &>/dev/null &
   ;;
   rtsp_stop)
         killall v4l2rtspserver-master
