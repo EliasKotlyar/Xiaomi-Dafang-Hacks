@@ -80,6 +80,14 @@ if [ -n "$F_cmd" ]; then
   mjpeg_start)
     /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG &>/dev/null &
   ;;
+  xiaomi_start)
+    busybox insmod /driver/sinfo.ko  2>&1
+    busybox rmmod sample_motor  2>&1
+    #/system/sdcard/bin/busybox insmod /driver/sinfo.ko
+    #rmmod sample_motor
+    #cd /
+    /system/sdcard/bin/busybox nohup /system/bin/iCamera &  &>/dev/null &
+  ;;
   rtsp_stop)
         killall v4l2rtspserver-master
     ;;

@@ -165,7 +165,12 @@ cat << EOF
   </td>
 </tr>
 
-
+<tr>
+  <th>Start original Xiaomi Software:</th>
+  <td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=xiaomi_start')">Start</button>
+  </td>
+</tr>
 
 <tr>
   <th>Process list:</th>
