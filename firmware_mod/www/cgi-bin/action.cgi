@@ -107,6 +107,12 @@ if [ -n "$F_cmd" ]; then
     fi
     if [ $? -eq 0 ]; then echo "<br/>Success<br/>"; else echo "<br/>Failed<br/>"; fi
     ;;
+    auto_night_mode_start)
+        /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &
+    ;;
+    auto_night_mode_stop)
+       killall ldr.sh
+    ;;
   *)
     echo "Unsupported command '$F_cmd'"
     ;;

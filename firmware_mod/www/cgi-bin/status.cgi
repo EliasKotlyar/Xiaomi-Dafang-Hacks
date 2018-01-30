@@ -91,7 +91,14 @@ function call(url){
   <button title='' type='button' onClick="call('action.cgi?cmd=ir_cut_off')">Off</button>
   </td>
 </tr>
-
+<tr>
+  <th>Auto Night Mode:</th>
+    <td>
+    <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_start')">On</button>
+    <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_stop')">Off</button>
+    $(if [ `ps | grep ldr.sh | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
+    </td>
+</tr>
 <tr>
   <th>Motor:</th>
   <td>
