@@ -74,10 +74,10 @@ if [ -n "$F_cmd" ]; then
   audio_test)
     /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
     ;;
-  h264_start)
+  h264_start) # when changing this you have to change run.sh until the autostart is modified 
     /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -S &>/dev/null &
     ;;
-  mjpeg_start)
+  mjpeg_start) # when changing this you have to change run.sh until the autostart is modified
     /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG &>/dev/null &
   ;;
   xiaomi_start)
@@ -107,13 +107,37 @@ if [ -n "$F_cmd" ]; then
     fi
     if [ $? -eq 0 ]; then echo "<br/>Success<br/>"; else echo "<br/>Failed<br/>"; fi
     ;;
+    
     auto_night_mode_start)
-        /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &
-    ;;
+	/system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &
+	;;
     auto_night_mode_stop)
-       killall ldr.sh
-    ;;
-  *)
+        killall ldr.sh
+	;;
+  
+    autostart-auto-night-mode-on)
+	touch /system/sdcard/config/autostart/auto-night-mode
+	;;
+    autostart-auto-night-mode-off)
+	rm /system/sdcard/config/autostart/auto-night-mode
+	;; 
+    autostart-h264-rtsp-on)
+	rm /system/sdcard/config/autostart/mjpeg-rtsp
+        touch /system/sdcard/config/autostart/h264-rtsp
+     	;;
+     autostart-h264-rtsp-off)
+	rm /system/sdcard/config/autostart/h264-rtsp
+       	;;
+    autostart-mjpeg-rtsp-on)
+        rm /system/sdcard/config/autostart/h264-rtsp
+        touch /system/sdcard/config/autostart/mjpeg-rtsp
+        ;;
+     autostart-mjpeg-rtsp-off)
+        rm /system/sdcard/config/autostart/mjpeg-rtsp
+        ;;
+
+
+   *)
     echo "Unsupported command '$F_cmd'"
     ;;
   esac

@@ -56,5 +56,20 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 ## Start Webserver:
 /system/sdcard/bin/boa -c /system/sdcard/config/
 
+## Autostart		
+if [ -f /system/sdcard/config/autostart/mjpeg-rtsp ]; then 
+	/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG &>/dev/null &
+fi
+
+if [ -f /system/sdcard/config/autostart/h264-rtsp ]; then 
+	/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -S &>/dev/null &
+fi
+
+if [ -f /system/sdcard/config/autostart/auto-night-mode ]; then 
+	/system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &
+fi
+
+#Start 
+
 echo "Startup finished!"
 

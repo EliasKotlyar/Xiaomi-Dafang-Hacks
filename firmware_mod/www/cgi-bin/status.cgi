@@ -93,12 +93,17 @@ function call(url){
 </tr>
 <tr>
   <th>Auto Night Mode:</th>
-    <td>
-    <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_start')">On</button>
-    <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_stop')">Off</button>
-    $(if [ `ps | grep ldr.sh | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
-    </td>
+  <td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_start')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_stop')">Off</button>
+  $(if [ `ps | grep ldr.sh | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
+  | 
+  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-auto-night-mode-on')">Enable on Boot</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-auto-night-mode-off')">Disable on Boot</button>
+  $(if [ -f /system/sdcard/config/autostart/auto-night-mode ]; then echo "currently enabled"; else echo "currently disabled"; fi)
+  </td>
 </tr>
+
 <tr>
   <th>Motor:</th>
   <td>
@@ -139,7 +144,12 @@ function call(url){
   <th>Start H264 RTSP</th>
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=h264_start')">Start</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button> 
+  $(if [ `ps | grep "v4l2rtspserver-master -S" | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
+  |
+  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-h264-rtsp-on')">Enable on Boot</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-h264-rtsp-off')">Disable on Boot</button>
+  $(if [ -f /system/sdcard/config/autostart/h264-rtsp ]; then echo "currently enabled"; else echo "currently disabled"; fi)
   <br>
 EOF
 
@@ -160,6 +170,12 @@ cat << EOF
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=mjpeg_start')">Start</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
+    $(if [ `ps | grep "v4l2rtspserver-master -fMJPG" | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
+  |
+  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-mjpeg-rtsp-on')">Enable on Boot</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-mjpeg-rtsp-off')">Disable on Boot</button>
+  $(if [ -f /system/sdcard/config/autostart/mjpeg-rtsp ]; then echo "currently enabled"; else echo "currently disabled"; fi)
+  <br>
 EOF
 
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
