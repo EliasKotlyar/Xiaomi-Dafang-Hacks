@@ -101,7 +101,15 @@ function call(url){
   <button title='' type='button' onClick="call('action.cgi?cmd=autostart-auto-night-mode-on')">Enable on Boot</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=autostart-auto-night-mode-off')">Disable on Boot</button>
   $(if [ -f /system/sdcard/config/autostart/auto-night-mode ]; then echo "currently enabled"; else echo "currently disabled"; fi)
-  </td>
+<hr>  <br>
+  <b> Attention!</b> The next option will interrupt the stream when switching from day to night or vice versa. Please make sure that your clients tolerate such a behaviour. The option will survive a reboot.  
+  <br><br>
+  <button title='' type='button' onClick="call('action.cgi?cmd=toggle-rtsp-nightvision-on')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=toggle-rtsp-nightvision-off')">Off</button>
+  Automatically toggle RTSP-Server Nightvision |
+  $(if [ -f /system/sdcard/config/rtsp-toggle-night-day ]; then echo "currently enabled"; else echo "currently disabled"; fi)
+
+</td>
 </tr>
 
 <tr>

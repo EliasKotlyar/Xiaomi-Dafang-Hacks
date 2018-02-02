@@ -135,8 +135,12 @@ if [ -n "$F_cmd" ]; then
      autostart-mjpeg-rtsp-off)
         rm /system/sdcard/config/autostart/mjpeg-rtsp
         ;;
-
-
+     toggle-rtsp-nightvision-on)
+     	touch /system/sdcard/config/rtsp-toggle-night-day
+	;;
+     toggle-rtsp-nightvision-off)
+	rm /system/sdcard/config/rtsp-toggle-night-day
+	;;
    *)
     echo "Unsupported command '$F_cmd'"
     ;;
