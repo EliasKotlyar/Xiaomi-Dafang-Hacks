@@ -28,8 +28,7 @@ button, input[type=submit] { background-color: #ddeaff; }
 <hr/>
 EOF
 
-SCRIPT_HOME="/media/mmcblk0p2/data/etc/scripts.cgi"
-source "/media/mmcblk0p2/data/etc/profile" >/dev/null 2>&1
+SCRIPT_HOME="/system/sdcard/controlscripts/"
 if [ -n "$F_script" ]; then
   script="${F_script##*/}"
   if [ -e "$SCRIPT_HOME/$script" ]; then
@@ -40,7 +39,7 @@ if [ -n "$F_script" ]; then
         ;;  
       disable)
         echo "Disable script '$script'...<br/>"
-        chmod a-x "$SCRIPT_HOME/$script" 2>&1
+        rm /system/sdcard/config/autostart/$script
         ;;
       stop)
         echo "Stop script '$script'...<br/>"
@@ -49,8 +48,9 @@ if [ -n "$F_script" ]; then
         ;;
       enable)
         echo "Enable script '$script'...<br/>"
-        chmod a+x "$SCRIPT_HOME/$script" 2>&1
-        ;;
+		echo "#!/bin/sh" > "/system/sdcard/config/autostart/$script"
+		echo "$SCRIPT_HOME$script" >> "/system/sdcard/config/autostart/$script"
+	    ;;
       view)
         echo "Contents of script '$script':<br/>"
         echo "<pre>$(cat $SCRIPT_HOME/$script 2>&1)</pre>"
@@ -70,12 +70,12 @@ if [ ! -d "$SCRIPT_HOME" ]; then
 else
   SCRIPTS=$(ls -A "$SCRIPT_HOME")
   echo "<table class='tbl'>"
-  echo "<tr><th>Service</th><th>Status</th><th/><th/><th/></tr>"
+  echo "<tr><th>Service</th><th>Status</th><th/><th/><th>Autostart</th></tr>"
   for i in $SCRIPTS; do
     echo "<tr>"
     echo "<td>$i</td>"
     if [ -x "$SCRIPT_HOME/$i" ]; then
-      if [ $(grep "^status\(\)" "$SCRIPT_HOME/$i") ]; then
+      if [ $(grep "^status()" "$SCRIPT_HOME/$i") ]; then
         status="$($SCRIPT_HOME/$i status)"
         if [ $? -eq 0 ]; then
           if [ -n "$status" ]; then
@@ -92,7 +92,7 @@ else
         echo "<td/>"
       fi
 
-      if [ $(grep "^start\(\)" "$SCRIPT_HOME/$i") ]; then
+      if [ $(grep "^start()" "$SCRIPT_HOME/$i") ]; then
         if [ -z "$status" ]; then
           echo "<td><button title='Start script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=start&script=$i'\">Start</button</td>"
         else
@@ -111,12 +111,15 @@ else
       else
         echo "<td></td>"
       fi
-      echo "<td><button title='Disable script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=disable&script=$i'\">Disable</button></td>"
-     else
-      echo "<td/>"
-      echo "<td><button title='Enable script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=enable&script=$i'\">Enable</button></td>"
-      echo "<td/><td/>"
-    fi
+	fi
+	if [ -f /system/sdcard/config/autostart/$i ]; then
+			echo "<td><button title='Disable script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=disable&script=$i'\">Disable</button></td>"
+		else   
+			echo "<td><button title='Enable script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=enable&script=$i'\">Enable</button></td>"
+      fi
+    #  echo "<td/>"
+     # echo "<td/><td/>"
+    #fi
     echo "<td><button title='View script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=view&script=$i'\">View</button></td>"
     echo "</tr>"
   done
@@ -125,6 +128,8 @@ fi
 
 cat << EOF
 <hr/>
+<b>Attention!</b> Enabling "auto-toggle-nightvision" will interrupt the stream when switching from day to night or vice versa. Please make sure that your clients tolerate such a behaviour. 
+
 </body>
 </html>
 EOF

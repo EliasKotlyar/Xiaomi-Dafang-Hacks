@@ -96,18 +96,18 @@ function call(url){
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_start')">On</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_stop')">Off</button>
-  $(if [ `ps | grep ldr.sh | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
-  | 
-  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-auto-night-mode-on')">Enable on Boot</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-auto-night-mode-off')">Disable on Boot</button>
-  $(if [ -f /system/sdcard/config/autostart/auto-night-mode ]; then echo "currently enabled"; else echo "currently disabled"; fi)
-<hr>  <br>
-  <b> Attention!</b> The next option will interrupt the stream when switching from day to night or vice versa. Please make sure that your clients tolerate such a behaviour. The option will survive a reboot.  
-  <br><br>
+</td>
+</tr>
+<tr>
+<th>Automatically toggle RTSP-Server Nightvision</th>
+<td>
   <button title='' type='button' onClick="call('action.cgi?cmd=toggle-rtsp-nightvision-on')">On</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=toggle-rtsp-nightvision-off')">Off</button>
-  Automatically toggle RTSP-Server Nightvision |
-  $(if [ -f /system/sdcard/config/rtsp-toggle-night-day ]; then echo "currently enabled"; else echo "currently disabled"; fi)
+
+
+  <br>
+  <b> Attention!</b> This  option will interrupt the stream when switching from day to night or vice versa. Please make sure that your clients tolerate such a behaviour.  
+  
 
 </td>
 </tr>
@@ -153,11 +153,6 @@ function call(url){
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=h264_start')">Start</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button> 
-  $(if [ `ps | grep "v4l2rtspserver-master -S" | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
-  |
-  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-h264-rtsp-on')">Enable on Boot</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-h264-rtsp-off')">Disable on Boot</button>
-  $(if [ -f /system/sdcard/config/autostart/h264-rtsp ]; then echo "currently enabled"; else echo "currently disabled"; fi)
   <br>
 EOF
 
@@ -178,11 +173,6 @@ cat << EOF
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=mjpeg_start')">Start</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
-    $(if [ `ps | grep "v4l2rtspserver-master -fMJPG" | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
-  |
-  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-mjpeg-rtsp-on')">Enable on Boot</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=autostart-mjpeg-rtsp-off')">Disable on Boot</button>
-  $(if [ -f /system/sdcard/config/autostart/mjpeg-rtsp ]; then echo "currently enabled"; else echo "currently disabled"; fi)
   <br>
 EOF
 
@@ -195,7 +185,23 @@ cat << EOF
 
   </td>
 </tr>
+<tr>
+  <th>Start H264 RTSP without segmentation</th>
+  <td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=h264_noseg_start')">Start</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
+  <br>
+EOF
 
+PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
+
+IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
+echo "Path to feed : <a href='rtsp://$(echo $IP):8554/unicast'>rtsp://$(echo $IP):8554/unicast</a></br>"
+cat << EOF
+
+
+  </td>
+</tr>
 <tr>
   <th>Start original Xiaomi Software:</th>
   <td>

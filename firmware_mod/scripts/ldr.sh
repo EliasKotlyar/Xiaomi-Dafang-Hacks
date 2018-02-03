@@ -22,25 +22,56 @@ do
 	
 	fi
 
-	# Toggle nightvision in v4l2rtspserver
-	if [ -f /system/sdcard/config/rtsp-toggle-night-day ]; then
+# Toggle nightvision in v4l2rtspserver
+	if [ -f /var/run/auto-toggle-nightvision ]; then
 	# Check if the configuration-option is set
 
-		if [ `cat /sys/class/gpio/gpio49/value` -eq 0 ] && [ `ps w | grep /v4l2rtspserver-master | grep -v grep |  wc -l` -eq 1 ] && [ `ps w | grep /v4l2rtspserver-master | grep -v grep |  grep "\-n" | wc -l` -eq 0 ] ; then
-			# if IR LEDs on, v4l2rtspserver running, but without nightvision 
-			# switch to b&w
-			V4L2RTSPSERVERMASTER=`ps w | grep /v4l2rtspserver-master | grep -v grep | sed -e "s/.*\///"`
-			killall v4l2rtspserver-master
-			/system/sdcard/bin/busybox nohup /system/sdcard/bin/$V4L2RTSPSERVERMASTER -n &>/dev/null &
+ # MJPeg
+ 
+                 if [ `cat /sys/class/gpio/gpio49/value` -eq 0 ] && [ -f /var/run/v4l2rtspserver-master-mjpeg.pid ] && [ ! -f /var/run/v4l2rtspserver-master-mjpeg.night ] ; then
+                        # if IR LEDs on, v4l2rtspserver-master-mjpeg running, but without nightvision
+                        # switch to night-mode
+			/system/sdcard/controlscripts/rtsp-mjpeg stop
+			/system/sdcard/controlscripts/rtsp-mjpeg startnight                 
+	         fi
+
+		if [ `cat /sys/class/gpio/gpio49/value` -eq 1 ]&& [ -f /var/run/v4l2rtspserver-master-mjpeg.night ]  ; then
+			# if IR LED off, v4l2rtspserver-master-mjpeg running with nightvision
+			/system/sdcard/controlscripts/rtsp-mjpeg stop
+			/system/sdcard/controlscripts/rtsp-mjpeg start
 		fi
 
-		if [ `cat /sys/class/gpio/gpio49/value` -eq 1 ] && [ `ps w | grep /v4l2rtspserver-master | grep -v grep |  wc -l` -eq 1 ] && [ `ps w | grep /v4l2rtspserver-master | grep -v grep |  grep "\-n" | wc -l` -eq 1 ]; then
-			# if IR LEDs off, v4l2rtspserver running, and v4l2rtspserver running with nightvision
-			# switch to color
-			V4L2RTSPSERVERMASTER=`ps w | grep /v4l2rtspserver-master | grep -v grep | sed -e "s/.*\///" | sed -e "s/\-n//`
-			killall v4l2rtspserver-master
-			/system/sdcard/bin/busybox nohup /system/sdcard/bin/$V4L2RTSPSERVERMASTER &>/dev/null &
-	fi
+# H264 with segmentation
+
+                 if [ `cat /sys/class/gpio/gpio49/value` -eq 0 ] && [ -f /var/run/v4l2rtspserver-master-h264-s.pid ] && [ ! -f /var/run/v4l2rtspserver-master-h264-s.night ] ; then
+                        # if IR LEDs on, v4l2rtspserver-master-h264-s running, but without nightvision
+                        # switch to night-mode
+                        /system/sdcard/controlscripts/rtsp-h264-with-segmentation stop
+                        /system/sdcard/controlscripts/rtsp-h264-with-segmentation startnight
+                 fi
+
+                if [ `cat /sys/class/gpio/gpio49/value` -eq 1 ]&& [ -f v4l2rtspserver-master-h264-s.night ]  ; then
+                        # if IR LED off, v4l2rtspserver-master-h264-s running with nightvision
+                        /system/sdcard/controlscripts/rtsp-h264-with-segmentation stop
+                        /system/sdcard/controlscripts/rtsp-h264-with-segmentation start
+                fi
+
+
+# H264
+
+                 if [ `cat /sys/class/gpio/gpio49/value` -eq 0 ] && [ -f /var/run/v4l2rtspserver-master-h264.pid ] && [ ! -f /var/run/v4l2rtspserver-master-h264.night ] ; then
+                        # if IR LEDs on, v4l2rtspserver-master-h264 running, but without nightvision
+                        # switch to night-mode
+                        /system/sdcard/controlscripts/rtsp-h264 stop
+                        /system/sdcard/controlscripts/rtsp-h264 startnight
+                 fi
+
+                if [ `cat /sys/class/gpio/gpio49/value` -eq 1 ]&& [ -f v4l2rtspserver-master-h264.night ]  ; then
+                        # if IR LED off, v4l2rtspserver-master-h264 running with nightvision
+                        /system/sdcard/controlscripts/rtsp-h264 stop
+                        /system/sdcard/controlscripts/rtsp-h264 start
+                fi
+
 
 fi
 
