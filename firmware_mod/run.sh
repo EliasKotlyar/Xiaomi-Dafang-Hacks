@@ -58,6 +58,6 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 
 ## Start MJPG Server:
 
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -D DafangHacks -d UP &>/dev/null &
+/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -D "DafangHacks %I:%M:%S %d.%m.%Y" -d UP &>/dev/null &
 echo "Startup finished!"
 
