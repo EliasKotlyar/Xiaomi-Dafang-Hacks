@@ -93,12 +93,25 @@ function call(url){
 </tr>
 <tr>
   <th>Auto Night Mode:</th>
-    <td>
-    <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_start')">On</button>
-    <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_stop')">Off</button>
-    $(if [ `ps | grep ldr.sh | grep -v grep | wc -l` -eq 1 ]; then echo "State: active"; fi)
-    </td>
+  <td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_start')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_stop')">Off</button>
+</td>
 </tr>
+<tr>
+<th>Automatically toggle RTSP-Server Nightvision</th>
+<td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=toggle-rtsp-nightvision-on')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=toggle-rtsp-nightvision-off')">Off</button>
+
+
+  <br>
+  <b> Attention!</b> This  option will interrupt the stream when switching from day to night or vice versa. Please make sure that your clients tolerate such a behaviour.  
+  
+
+</td>
+</tr>
+
 <tr>
   <th>Motor:</th>
   <td>
@@ -139,7 +152,7 @@ function call(url){
   <th>Start H264 RTSP</th>
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=h264_start')">Start</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button> 
   <br>
 EOF
 
@@ -160,6 +173,7 @@ cat << EOF
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=mjpeg_start')">Start</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
+  <br>
 EOF
 
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
@@ -171,7 +185,23 @@ cat << EOF
 
   </td>
 </tr>
+<tr>
+  <th>Start H264 RTSP without segmentation</th>
+  <td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=h264_noseg_start')">Start</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
+  <br>
+EOF
 
+PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
+
+IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
+echo "Path to feed : <a href='rtsp://$(echo $IP):8554/unicast'>rtsp://$(echo $IP):8554/unicast</a></br>"
+cat << EOF
+
+
+  </td>
+</tr>
 <tr>
   <th>Start original Xiaomi Software:</th>
   <td>

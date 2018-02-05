@@ -56,8 +56,10 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 ## Start Webserver:
 /system/sdcard/bin/boa -c /system/sdcard/config/
 
-## Start MJPG Server:
+## Autostart
+ for i in `ls /system/sdcard/config/autostart/`; do /system/sdcard/config/autostart/$i; done
 
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -D "DafangHacks %I:%M:%S %d.%m.%Y" -d UP &>/dev/null &
+#Start
+
 echo "Startup finished!"
 

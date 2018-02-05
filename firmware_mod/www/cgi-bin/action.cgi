@@ -74,12 +74,22 @@ if [ -n "$F_cmd" ]; then
   audio_test)
     /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
     ;;
-  h264_start)
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -S &>/dev/null &
+  h264_start)  
+    /system/sdcard/controlscripts/rtsp-h264-with-segmentation start
     ;;
-  mjpeg_start)
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG &>/dev/null &
+  h264_noseg_start)
+    /system/sdcard/controlscripts/rtsp-h264 start
+    ;;
+
+
+  mjpeg_start) 
+     /system/sdcard/controlscripts/rtsp-mjpeg start
   ;;
+  h264_nosegmentation_start)
+  /system/sdcard/controlscripts/rtsp-h264 start
+ ;;
+
+
   xiaomi_start)
     busybox insmod /driver/sinfo.ko  2>&1
     busybox rmmod sample_motor  2>&1
@@ -88,9 +98,12 @@ if [ -n "$F_cmd" ]; then
     #cd /
     /system/sdcard/bin/busybox nohup /system/bin/iCamera &  &>/dev/null &
   ;;
+
   rtsp_stop)
-        killall v4l2rtspserver-master
-    ;;
+    /system/sdcard/controlscripts/rtsp-h264-with-segmentation stop
+     /system/sdcard/controlscripts/rtsp-mjpeg stop
+     /system/sdcard/controlscripts/rtsp-h264 stop
+ ;;
    settz)
     tz=$(printf '%b' "${F_tz//%/\\x}")
     if [ $(cat /etc/TZ) != "$tz" ]; then
@@ -107,13 +120,20 @@ if [ -n "$F_cmd" ]; then
     fi
     if [ $? -eq 0 ]; then echo "<br/>Success<br/>"; else echo "<br/>Failed<br/>"; fi
     ;;
+    
     auto_night_mode_start)
-        /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &
-    ;;
+	/system/sdcard/controlscripts/auto-night-detection start	
+	;;
     auto_night_mode_stop)
-       killall ldr.sh
-    ;;
-  *)
+        /system/sdcard/controlscripts/auto-night-detection stop
+	;;
+     toggle-rtsp-nightvision-on)
+	/system/sdcard/controlscripts/auto-toggle-nightvision start     	
+	;;
+     toggle-rtsp-nightvision-off)
+       /system/sdcard/controlscripts/auto-toggle-nightvision stop
+	;;
+   *)
     echo "Unsupported command '$F_cmd'"
     ;;
   esac
