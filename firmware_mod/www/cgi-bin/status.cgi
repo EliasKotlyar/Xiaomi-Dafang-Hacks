@@ -198,10 +198,22 @@ PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/
 IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
 echo "Path to feed : <a href='rtsp://$(echo $IP):8554/unicast'>rtsp://$(echo $IP):8554/unicast</a></br>"
 cat << EOF
+</td>
 
-
+<tr>
+  <th>OSD-Display</th>
+  <td> 
+  <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=osd" method="post"> 
+  <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd ]; then echo checked; fi)> Enable 
+  <input type="radio" id="up" name="Position" value="UP"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "UP" ]; then echo checked; fi)>Up 
+  <input type="radio" id="down" name="Position" value="DOWN"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "DOWN" ]; then echo checked; fi)>Down
+  Text: <input id="osdtext" name="osdtext" type="text" size="25" value="$(cat /system/sdcard/config/osd | sed -e s/".*-D "// | sed -e s/" *-d.*$"//)"/>
+  <input type="submit" value="Set"/><br>
+  Enter time-variables in <a href="http://strftime.org/" target="_blank">strftime</a> format 
   </td>
+
 </tr>
+
 <tr>
   <th>Start original Xiaomi Software:</th>
   <td>
