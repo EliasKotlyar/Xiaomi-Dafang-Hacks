@@ -121,6 +121,28 @@ if [ -n "$F_cmd" ]; then
     if [ $? -eq 0 ]; then echo "<br/>Success<br/>"; else echo "<br/>Failed<br/>"; fi
     ;;
     
+	osd)
+	enabled=$(printf '%b' "${F_OSDenable}")
+	position=$(printf '%b' "${F_Position}")
+	osdtext=$(printf '%b' "${F_osdtext//%/\\x}")
+	osdtext=$(echo $osdtext | sed -e "s/\+/_/g")
+	osdtext=$(echo $osdtext | sed -e "s/$/ /g")
+	if [ ! -z $enabled ]; then
+		echo  "OSD=\"-D ${osdtext} -d ${position}\"" > /system/sdcard/config/osd
+		echo "OSD set, please restart the rtsp-server"
+	else
+		echo "OSD removed, please restart the rtsp-server"
+		rm /system/sdcard/config/osd
+	fi
+	;;
+	
+	setldravg)
+	ldravg=´$(printf '%b' "${F_avg/%/\\x}")
+	ldravg=$(echo $ldravg | sed "s/[^0-9]//g")
+	echo AVG=$ldravg > /system/sdcard/config/ldr-average
+	echo "Average set to $ldravg iterations."
+	;;
+	
     auto_night_mode_start)
 	/system/sdcard/controlscripts/auto-night-detection start	
 	;;
