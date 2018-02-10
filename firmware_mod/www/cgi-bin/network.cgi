@@ -4,7 +4,7 @@ echo "Content-type: text/html"
 echo ""
 source func.cgi
 if [ -e "/etc/fang_hacks.cfg" ]; then source /etc/fang_hacks.cfg; fi
-PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
+PATH="/bin:/sbin:/usr/bin:/system/bin"
 
 CFG_MODE="${NETWORK_MODE:-0}"
 CFG_CLIENT="/media/mmcblk0p2/data/etc/wpa_supplicant.conf"
@@ -247,7 +247,7 @@ window.onload = onLoad;
 <button title='Reboot the device' type='button' onClick="window.location.href='action.cgi?cmd=reboot'">Reboot</button>
 <button title='Info' type='button' onClick="window.location.href='scripts.cgi'">Scripts</button>
 <button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
-<hr/>
+<!-- <hr/>
 <div style='clear: both;'><pre>$ACTION_MSG</pre></div>
 <div style='clear: both;'>
 <fieldset style='display: inline-block;'>
@@ -327,7 +327,7 @@ if [ "$DISABLE_CLOUD" -eq 1 ]; then
   echo "If you apply this mode network.cgi will NOT be initialized after reboot!"
   echo "</span>"
 fi
-echo "<hr/>"
+echo "<hr/> "
 
 echo "<div style='float: left'>"
 echo "<form name='network.cgi-info'>"
@@ -365,7 +365,7 @@ cat << EOF
 </div> <!-- ap-pnl -->
 <hr/>
 <button type='button' id='btn_apply' disabled onClick="apply_config()">Apply</button>
-<hr/>
+<hr/> -->
 Information:
 <pre>Interfaces:<br/>$(ifconfig; iwconfig)</pre>
 <pre>Routes:<br/>$(route)</pre>
