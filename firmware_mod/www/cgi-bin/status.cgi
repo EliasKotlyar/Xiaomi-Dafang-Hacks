@@ -96,7 +96,19 @@ function call(url){
   <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_start')">On</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=auto_night_mode_stop')">Off</button>
-</td>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+Use average measurement on switching. Number of measurements: <form style="display: inline;" action="/cgi-bin/action.cgi?cmd=setldravg" method="post">
+  <select name="avg">
+    <option value="1" $(if [ `cat /system/sdcard/config/ldr-average | sed s/AVG=//` -eq 1 ]; then echo selected; fi)>1</option>
+    <option value="2" $(if [ `cat /system/sdcard/config/ldr-average | sed s/AVG=//` -eq 2 ]; then echo selected; fi)>2</option>
+    <option value="3" $(if [ `cat /system/sdcard/config/ldr-average | sed s/AVG=//` -eq 3 ]; then echo selected; fi)>3</option>
+    <option value="4" $(if [ `cat /system/sdcard/config/ldr-average | sed s/AVG=//` -eq 4 ]; then echo selected; fi)>4</option>
+	<option value="5" $(if [ `cat /system/sdcard/config/ldr-average | sed s/AVG=//` -eq 5 ]; then echo selected; fi)>5</option>
+	<option value="10" $(if [ `cat /system/sdcard/config/ldr-average | sed s/AVG=//` -eq 10 ]; then echo selected; fi)>10</option>
+	<option value="15" $(if [ `cat /system/sdcard/config/ldr-average | sed s/AVG=//` -eq 15 ]; then echo selected; fi)>15</option>
+  </select>
+ <input type="submit" value="Set"/>  </form>	
+  </td>
 </tr>
 <tr>
 <th>Automatically toggle RTSP-Server Nightvision</th>
@@ -198,10 +210,22 @@ PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/
 IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
 echo "Path to feed : <a href='rtsp://$(echo $IP):8554/unicast'>rtsp://$(echo $IP):8554/unicast</a></br>"
 cat << EOF
+</td>
 
-
+<tr>
+  <th>OSD-Display</th>
+  <td> 
+  <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=osd" method="post"> 
+  <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd ]; then echo checked; fi)> Enable 
+  <input type="radio" id="up" name="Position" value="UP"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "UP" ]; then echo checked; fi)>Up 
+  <input type="radio" id="down" name="Position" value="DOWN"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "DOWN" ]; then echo checked; fi)>Down
+  Text: <input id="osdtext" name="osdtext" type="text" size="25" value="$(cat /system/sdcard/config/osd | sed -e s/".*-D "// | sed -e s/" *-d.*$"//)"/>
+  <input type="submit" value="Set"/><br>
+  Enter time-variables in <a href="http://strftime.org/" target="_blank">strftime</a> format 
   </td>
+
 </tr>
+
 <tr>
   <th>Start original Xiaomi Software:</th>
   <td>

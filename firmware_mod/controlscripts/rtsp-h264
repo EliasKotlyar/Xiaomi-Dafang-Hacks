@@ -3,6 +3,10 @@ PIDFILE="/run/v4l2rtspserver-master-h264.pid"
 NIGHTFILE="/run/v4l2rtspserver-master-h264.night"
 export LD_LIBRARY_PATH='/thirdlib:/system/lib'
 
+if [ -f /system/sdcard/config/osd ]; then
+source /system/sdcard/config/osd  2>/dev/null
+fi
+
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
@@ -21,7 +25,7 @@ else
  	/system/sdcard/controlscripts/rtsp-mjpeg stop
 	/system/sdcard/controlscripts/rtsp-h264-with-segmentation stop	
 	killall v4l2rtspserver-master # As the run.sh starts a v4l2rtspserver as well
-      	/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master  &>/dev/null &
+      	/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master $OSD &>/dev/null &
   echo "$!" > "$PIDFILE"
 fi
 }
@@ -36,7 +40,7 @@ else
   /system/sdcard/controlscripts/rtsp-mjpeg stop
   /system/sdcard/controlscripts/rtsp-h264-with-segmentation stop
   touch $NIGHTFILE
-  /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -n &>/dev/null &
+  /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -n $OSD &>/dev/null &
   echo "$!" > "$PIDFILE"
 fi
 }
