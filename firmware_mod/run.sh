@@ -1,4 +1,5 @@
 #!/bin/sh
+
 CONFIGPATH=/system/sdcard/config
 echo "Starting up CFW"
 
