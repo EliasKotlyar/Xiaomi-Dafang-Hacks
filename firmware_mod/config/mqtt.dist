@@ -1,0 +1,24 @@
+############################################################
+# edit this file and move it to /system/sdcard/config/mqtt #
+############################################################
+
+# Options for mosquitto_sub & mosquitto_pub
+
+USER=mqtt-user
+PASS=mqtt-password
+HOST=mqtt-host
+PORT=1883
+
+TOPIC=topic/dafang/
+# the topic used. send a message to topic/dafang/set with the payload help for help. 
+# Results will be placed in topic/dafang/${command} or topic/dafang/error - so please subscribe topic/dafang/# for testing purposes
+
+MOSQUITTOOPTS=""
+# add Options for Mosquitto here. For example --cafile /system/sdcard/config/DST_Root_CA_X3.pem --tls-version tlsv1
+# or using a special id to connect to brokers like azure  
+
+CURLOPTS="" 
+# add options for curl here e.g --user user:password
+
+FIFO=/var/run/mqtt-sub
+# the FIFO used. Change it if you like to
