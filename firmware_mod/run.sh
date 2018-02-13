@@ -67,7 +67,7 @@ fi
 
 #Start
 
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master $OSD &>/dev/null &
+/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
 
 echo "Startup finished!"
 
