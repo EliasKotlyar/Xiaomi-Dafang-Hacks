@@ -15,8 +15,15 @@ do
 case $line in
 
 help)
+/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "possible commands: status_text status_json `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
+;;
 
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "possible commands: `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
+status_text)
+/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "`/system/sdcard/scripts/mqtt-plain-status.sh`"
+;;
+
+status_json)
+/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "JSON Status coming soon"
 ;;
 
 *)
