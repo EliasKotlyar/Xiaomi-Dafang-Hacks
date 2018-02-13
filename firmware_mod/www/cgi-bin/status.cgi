@@ -152,10 +152,7 @@ Use average measurement on switching. Number of measurements: <form style="displ
 <tr>
   <th>Get Image</th>
   <td>
-   <a href='currentpic.cgi?width=1920&height=1080' target='_blank'><button title='' type='button' onClick="">Normal</button></a></br>
-   <a href='currentpic.cgi?width=1920&height=1080&nightvision=1' target='_blank'><button title='' type='button' onClick="">Nightvision</button></a></br>
-   <a href='currentpic.cgi?width=1920&height=1080&flip=1' target='_blank'><button title='' type='button' onClick="">Flip</button></a></br>
-
+   <a href='currentpic.cgi' target='_blank'><button title='' type='button' onClick="">Get</button></a></br>
 
   </td>
 </tr>

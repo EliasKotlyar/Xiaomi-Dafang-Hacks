@@ -91,12 +91,17 @@ if [ -n "$F_cmd" ]; then
 
 
   xiaomi_start)
+
+    echo 1 > /sys/class/gpio/gpio39/value
+    echo 39 > /sys/class/gpio/unexport
+    #echo 49 > /sys/class/gpio/unexport
+    killall v4l2rtspserver-master
     busybox insmod /driver/sinfo.ko  2>&1
     busybox rmmod sample_motor  2>&1
     #/system/sdcard/bin/busybox insmod /driver/sinfo.ko
     #rmmod sample_motor
     #cd /
-    /system/sdcard/bin/busybox nohup /system/bin/iCamera &  &>/dev/null &
+    /system/init/app_init.sh &
   ;;
 
   rtsp_stop)
