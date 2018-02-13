@@ -111,16 +111,17 @@ Use average measurement on switching. Number of measurements: <form style="displ
   </td>
 </tr>
 <tr>
-<th>Automatically toggle RTSP-Server Nightvision</th>
+<th>RTSP-Server Nightvision</th>
 <td>
   <button title='' type='button' onClick="call('action.cgi?cmd=toggle-rtsp-nightvision-on')">On</button>
   <button title='' type='button' onClick="call('action.cgi?cmd=toggle-rtsp-nightvision-off')">Off</button>
-
-
-  <br>
-  <b> Attention!</b> This  option will interrupt the stream when switching from day to night or vice versa. Please make sure that your clients tolerate such a behaviour.  
-  
-
+</td>
+</tr>
+<tr>
+<th>RTSP-Flip</th>
+<td>
+  <button title='' type='button' onClick="call('action.cgi?cmd=flip-on')">On</button>
+  <button title='' type='button' onClick="call('action.cgi?cmd=flip-off')">Off</button>
 </td>
 </tr>
 

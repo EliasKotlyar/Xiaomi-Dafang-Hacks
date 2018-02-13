@@ -128,11 +128,11 @@ if [ -n "$F_cmd" ]; then
 	osdtext=$(echo $osdtext | sed -e "s/\+/_/g")
 	osdtext=$(echo $osdtext | sed -e "s/$/ /g")
 	if [ ! -z $enabled ]; then
-		echo  "OSD=\"-D ${osdtext} -d ${position}\"" > /system/sdcard/config/osd
-		echo "OSD set, please restart the rtsp-server"
+		/system/sdcard/bin/setconf -k o -v "$osdtext"
+		echo "OSD set"
 	else
-		echo "OSD removed, please restart the rtsp-server"
-		rm /system/sdcard/config/osd
+		echo "OSD removed"
+		/system/sdcard/bin/setconf -k o -v ""
 	fi
 	;;
 	
@@ -150,11 +150,18 @@ if [ -n "$F_cmd" ]; then
         /system/sdcard/controlscripts/auto-night-detection stop
 	;;
      toggle-rtsp-nightvision-on)
-	/system/sdcard/controlscripts/auto-toggle-nightvision start     	
+	/system/sdcard/bin/setconf -k n -v 1
 	;;
      toggle-rtsp-nightvision-off)
-       /system/sdcard/controlscripts/auto-toggle-nightvision stop
+     /system/sdcard/bin/setconf -k n -v 0
 	;;
+	 flip-on)
+	/system/sdcard/bin/setconf -k f -v 1
+	;;
+     flip-off)
+     /system/sdcard/bin/setconf -k f -v 0
+	;;
+
    *)
     echo "Unsupported command '$F_cmd'"
     ;;
