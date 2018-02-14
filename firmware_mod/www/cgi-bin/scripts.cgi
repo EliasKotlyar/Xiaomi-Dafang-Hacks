@@ -127,8 +127,6 @@ else
 fi
 
 cat << EOF
-<hr/>
-<b>Attention!</b> Enabling "auto-toggle-nightvision" will interrupt the stream when switching from day to night or vice versa. Please make sure that your clients tolerate such a behaviour. 
 
 </body>
 </html>
