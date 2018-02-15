@@ -1,15 +1,20 @@
 ## Xiaomi Dafang Hacks
 
-This repository is a collection of information & software for the Xiaomi Dafang Camera
+This repository contains a Custom Firmware for the Xiaomi Dafang Camera.
+ 
+It also has a collection of information & software.
 
 ![Dafang](/dafang.png)
+## How to install the CFW
 
-## Custom Firmware:
-[Installing the Current Dafang Hacks Custom Firmware](/hacks/install_cfw.md)
+Before you try to install it, please read the [FAQ](/hacks/faq.md)
 
-[Old Custom Firmware with Telnet](https://www.dropbox.com/s/9t9op698fza1tl2/demo.bin?dl=0)
+After that, continue to the 
+[Installation](/hacks/install_cfw.md)
 
-## Information:
+
+## Information about the Dafang:
+
 [Teardown](/informations/teardown.md)
 
 [Hardware](/informations/hardware.md)
@@ -18,7 +23,7 @@ This repository is a collection of information & software for the Xiaomi Dafang 
 
 [Bootlog of the Original Firmware](/informations/bootlog.md)
 
-## Hacks:
+## Hacks for the Development:
 [Installation of Serial Headers](/hacks/serial.md)
 
 [Getting Root Access using the Serial Connection](/hacks/getroot.md)
@@ -30,6 +35,8 @@ This repository is a collection of information & software for the Xiaomi Dafang 
 [Modifying the Firmware](/hacks/howto_modfirmware.md)
 
 [Flashing the Firmware](/hacks/howto_firmwareflash.md)
+
+[Old Custom Firmware with Telnet](https://www.dropbox.com/s/9t9op698fza1tl2/demo.bin?dl=0)
 
 ## Software Development:
 [The Ingenic T20 Toolchain](https://github.com/dim08/Ingenic-T10_20)
