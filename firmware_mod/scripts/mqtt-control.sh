@@ -15,16 +15,13 @@ do
 case $line in
 
 help)
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "possible commands: status_text status_json `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
+/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "possible commands: status `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
 ;;
 
-status_text)
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "`/system/sdcard/scripts/mqtt-plain-status.sh`"
+status)
+/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}status -m "`/system/sdcard/scripts/mqtt-status.sh`"
 ;;
 
-status_json)
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "JSON Status coming soon"
-;;
 
 *)
 /system/sdcard/bin/curl -m 2 ${CURLOPTS} -s http://127.0.0.1/cgi-bin/action.cgi\?cmd\=${line} -o /dev/null 2>/dev/null
