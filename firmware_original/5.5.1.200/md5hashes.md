@@ -1,0 +1,12 @@
+0b2f13ac387e6b9b4e0a8d0f1ceb1bc5  backupa.bin
+f3ca9b7d63bf38a6fc299c3720a23f10  config.bin
+83df94ebab0add927a663a64ec412a99  backupd.bin
+d5bafe736e18c54ff208b0a3aef82e54  backupk.bin
+1cb8dd6843c89871f398e9510eb2688e  md5hashes.md
+d5bafe736e18c54ff208b0a3aef82e54  kernel.bin
+fc4a050822df047d1b329e3ea502fb48  uboot.bin
+83df94ebab0add927a663a64ec412a99  driver.bin
+947adc5b148d5bd4376f9e81ea3cdd9b  para.bin
+f608f864fbdc25a281878769f046519d  appfs.bin
+ecb99e6ffea7be1e5419350f725da86b  flag.bin
+b40a658ca382fa67c32cf5480be4d282  rootfs.bin
