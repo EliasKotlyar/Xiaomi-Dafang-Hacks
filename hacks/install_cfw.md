@@ -30,7 +30,16 @@ E:/
 3. Modify the file config/wpa_supplicant.conf on the microSD to match your wifi-settings
 4. Insert the microSD and start the camera.
 
-## Updating:
+## Updating the microsd-bootloader
+
+Usually, its not required to update the microsd-bootloader. However, if you are using the original Firmware, you may be interessted in the new Version.
+You can just update trough the MI-Home App.
+
+If you are on original Firmware below 5.5.200, you will have to "reflash" the microsd-bootloader afterwards
+If you are on original Firmware 5.5.200 and update to 5.5.243, the bootloader wont be affected.
+
+
+## Updating Firmware
 
 If you already have a current custom firmware with custom bootloader installed, you only need to update the content of the microSD
 
