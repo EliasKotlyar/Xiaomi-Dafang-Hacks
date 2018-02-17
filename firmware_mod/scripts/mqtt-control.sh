@@ -7,7 +7,7 @@ killall mosquitto_sub.bin 2> /dev/null
 
 export LD_LIBRARY_PATH='/thirdlib:/system/lib:/system/sdcard/lib'
 
-/system/sdcard/bin/mosquitto_sub.bin -h $HOST -u $USER -P $PASS -t ${TOPIC}set ${MOSQUITTOOPTS} > $FIFO 2> /dev/null &
+/system/sdcard/bin/mosquitto_sub.bin -h $HOST -u $USER -P $PASS -t ${TOPIC}set ${MOSQUITTOOPTS} ${MOSQUITTOSUBOPTS} > $FIFO 2> /dev/null &
 
 
 while read line < $FIFO

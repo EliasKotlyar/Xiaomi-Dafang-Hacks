@@ -1,8 +1,4 @@
-## General informations:
-
-The custom firmware (CFW) bootloader will boot from microSD only if a microSD is plugged in and has a "run.sh" file on it. Otherwise it will load the stock firmware from the flash memory.
-
-## Installation of the custom firmware with the microSD bootloader
+## Installation of the microSD bootloader
 
 1. Download [CFW-Binary](/hacks/cfw/cfw-1.2.bin)
 2. Format your microSD to FAT. NTFS, EXFAT etc. won't work.
@@ -47,24 +43,5 @@ If you already have a current custom firmware with custom bootloader installed, 
 
 Remove the "run.sh" file from microSD.
 
-## Features
-- Full working RTSP with H264/MJPEG. Based on https://github.com/mpromonet/v4l2rtspserver
-- SSH-Server(dropbear) with username: root password: ismart12
-- FTP-Server(bftpd) with username: root password: ismart12
-- Webserver(boa)
-- Image-Snap(Get Jpeg Image) 
-- Horizontal/vertical motor rotation / move to center
-- Turn on/off blue/yellow/IR LEDs/IR-Cut
-- Local h264 recording possible:
-```
-/system/sdcard/bin/h264Snap > /system/sdcard/video.h264
-```
-- Audio recording/playing possible:
-```
-Playing Audio:
-/system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
 
-Recording Audio:
-/system/sdcard/bin/ossrecord /system/sdcard/test.wav 
-```
 
