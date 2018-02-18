@@ -15,13 +15,18 @@ do
 case $line in
 
 help)
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "possible commands: status `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
+/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "possible commands: status, osd (followed by new osd-text),  `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
 ;;
 
 status)
 /system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}status -m "`/system/sdcard/scripts/mqtt-status.sh`"
 ;;
 
+osd*)
+	osdtext=`echo "$line" | sed -e "s/^osd //"`
+	/system/sdcard/bin/setconf -k o -v "$osdtext"
+	echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd
+;;
 
 *)
 /system/sdcard/bin/curl -m 2 ${CURLOPTS} -s http://127.0.0.1/cgi-bin/action.cgi\?cmd\=${line} -o /dev/null 2>/dev/null
