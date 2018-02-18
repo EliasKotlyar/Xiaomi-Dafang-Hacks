@@ -15,14 +15,29 @@ BITRATE=`/system/bin/iwconfig 2>/dev/null | grep "Bit R" | sed -e "s/   S.*//" |
 QUALITY=`/system/bin/iwconfig 2>/dev/null | grep "Quali" | sed -e "s/  *//"`
 
 ## LED Status - (@pplucky &  @lolouk44)
+
 # Blue Led
 blue=$(getgpio 39)
+if [ "$blue" == "0" ]; then blue="on"; fi
+if [ "$blue" == "1" ]; then blue="off"; fi
+
 # Yellow Led
 yellow=$(getgpio 38)
+if [ "$yellow" == "0" ]; then yellow="on"; fi
+if [ "$yellow" == "1" ]; then $yellow="off"; fi
+
 # IR Cut
 ir_cut=$(getgpio 26)
+if [ "$ir_cut" == "0" ]; then ir_cut="off"; fi
+if [ "$ir_cut" == "1" ]; then ir_cut="on"; fi
+
+
 # IR Led
 ir_led=$(getgpio 49)
+if [ "$ir_led" == "0" ]; then ir_led="on"; fi
+if [ "$ir_led" == "1" ]; then ir_led="off"; fi
+
+
 
 ## RTSP status
 string=$(pidof v4l2rtspserver-master)
