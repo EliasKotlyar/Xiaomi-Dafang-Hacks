@@ -130,14 +130,16 @@ if [ -n "$F_cmd" ]; then
 	enabled=$(printf '%b' "${F_OSDenable}")
 	position=$(printf '%b' "${F_Position}")
 	osdtext=$(printf '%b' "${F_osdtext//%/\\x}")
-	osdtext=$(echo $osdtext | sed -e "s/\+/_/g")
-	osdtext=$(echo $osdtext | sed -e "s/$/ /g")
+	osdtext=$(echo $osdtext | sed -e "s/\+/ /g")
+#	osdtext=$(echo $osdtext | sed -e "s/$/ /g")
 	if [ ! -z $enabled ]; then
 		/system/sdcard/bin/setconf -k o -v "$osdtext"
+		echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd
 		echo "OSD set"
 	else
 		echo "OSD removed"
 		/system/sdcard/bin/setconf -k o -v ""
+		echo "OSD=\"\" " > /system/sdcard/config/osd
 	fi
 	;;
 	

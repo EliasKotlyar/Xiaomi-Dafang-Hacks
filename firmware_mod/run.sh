@@ -69,5 +69,11 @@ fi
 
 /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
 
+if [ -f /system/sdcard/config/osd ]; then
+	source /system/sdcard/config/osd
+	/system/sdcard/bin/setconf -k o -v "${OSD}"
+fi;
+
+
 echo "Startup finished!"
 

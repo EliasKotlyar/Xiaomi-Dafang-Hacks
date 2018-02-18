@@ -215,9 +215,9 @@ cat << EOF
   <td> 
   <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=osd" method="post"> 
   <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd ]; then echo checked; fi)> Enable 
-  <input type="radio" id="up" name="Position" value="UP"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "UP" ]; then echo checked; fi)>Up 
-  <input type="radio" id="down" name="Position" value="DOWN"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "DOWN" ]; then echo checked; fi)>Down
-  Text: <input id="osdtext" name="osdtext" type="text" size="25" value="$(cat /system/sdcard/config/osd | sed -e s/".*-D "// | sed -e s/" *-d.*$"//)"/>
+<!--  <input type="radio" id="up" name="Position" value="UP"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "UP" ]; then echo checked; fi)>Up 
+  <input type="radio" id="down" name="Position" value="DOWN"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "DOWN" ]; then echo checked; fi)>Down -->
+  Text: <input id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd && echo $OSD)"/>
   <input type="submit" value="Set"/><br>
   Enter time-variables in <a href="http://strftime.org/" target="_blank">strftime</a> format 
   </td>
