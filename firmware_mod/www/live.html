@@ -105,7 +105,7 @@ function closeNav() {
 }
 
 setInterval(function(){
-	$("#liveview").attr("src", "http://cam_entree/cgi-bin/currentpic.cgi?" + new Date().getTime());
+	$("#liveview").attr("src", "/cgi-bin/currentpic.cgi?" + new Date().getTime());
 },4000);
 
 
@@ -139,7 +139,7 @@ setInterval(function(){
 <h2>Xiaomi Dafang Hack</h2>
 </div>
 <div id="content" align="center">
-<img id="liveview" src="http://cam_entree/cgi-bin/currentpic.cgi" width="640" height="360"/>
+<img id="liveview" src="/cgi-bin/currentpic.cgi" width="640" height="360"/>
 </div>
 <!--<div id="log" align="center"></div>  /-->
 <script>
@@ -161,34 +161,34 @@ for (i = 0; i < dropdown.length; i++) {
 
 //LIVE VIEW
 $("#live").click(function(){
- $("#content").html("<img id='liveview' src='http://cam_entree/cgi-bin/currentpic.cgi' width='640' height='360'/>")
+ $("#content").html("<img id='liveview' src='/cgi-bin/currentpic.cgi' width='640' height='360'/>")
 })
 
 		
 //PTZ COMMAND
 // UP COMMAND
 $("#up").click(function(){
-  $.get( "http://cam_entree/cgi-bin/action.cgi?cmd=motor_up").done(function( data ) {
+  $.get( "/cgi-bin/action.cgi?cmd=motor_up").done(function( data ) {
   });
  $("#log").html("<b>Send UP Command</b>")
 })
 // DOWN COMMAND
 $("#down").click(function(){
-  $.get( "http://cam_entree/cgi-bin/action.cgi?cmd=motor_down").done(function( data ) {
+  $.get( "/cgi-bin/action.cgi?cmd=motor_down").done(function( data ) {
   });
  $("#log").html("<b>Send DOWN Command</b>")
 })
 
 // LEFT COMMAND
 $("#left").click(function(){
-  $.get( "http://cam_entree/cgi-bin/action.cgi?cmd=motor_left").done(function( data ) {
+  $.get( "/cgi-bin/action.cgi?cmd=motor_left").done(function( data ) {
   });
  $("#log").html("<b>Send LEFT Command</b>")
 })
 
 // RIGHT COMMAND
 $("#right").click(function(){
-  $.get( "http://cam_entree/cgi-bin/action.cgi?cmd=motor_right").done(function( data ) {
+  $.get( "/cgi-bin/action.cgi?cmd=motor_right").done(function( data ) {
   });
  $("#log").html("<b>Send RIGHT Command</b>")
 })
@@ -201,7 +201,7 @@ $("#conf").click(function(){
 //ADMIN COMMAND
 //REBOOT
 $("#reboot").click(function(){
- $("#content").html("<h1>Are you sure you want to reboot ?</h1> <br /><button onclick=\"window.location.href='http://cam_entree/cgi-bin/action.cgi?cmd=reboot'\">YES</button> <button onclick=\"window.location.href='livestream.html'\">NO</button>")
+ $("#content").html("<h1>Are you sure you want to reboot ?</h1> <br /><button onclick=\"window.location.href='/cgi-bin/action.cgi?cmd=reboot'\">YES</button> <button onclick=\"window.location.href='livestream.html'\">NO</button>")
 })
 
 
