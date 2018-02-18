@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+    font-family: "Lato", sans-serif;
+}
+
+.sidenav {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+.sidenav a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.sidenav a:hover {
+    color: #f1f1f1;
+}
+
+.sidenav .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+}
+
+@media screen and (max-height: 450px) {
+  .sidenav {padding-top: 15px;}
+  .sidenav a {font-size: 18px;}
+}
+</style>
+		<script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+function openNav() {
+    document.getElementById("mySidenav").style.width = "250px";
+}
+
+function closeNav() {
+    document.getElementById("mySidenav").style.width = "0";
+}
+
+
+
+		setInterval(function(){
+				$("#liveview").attr("src", "cgi-bin/currentpic.cgi?width=800&height=480"+new Date().getTime());
+			},2000);
+</script>
+
+</head>
+<body>
+
+<div id="mySidenav" class="sidenav">
+  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+  <a id="up" href="javascript:void(0)">UP</a>
+  <a id="down" href="javascript:void(0)">DOWN</a>
+  <a id="left" href="javascript:void(0)">LEFT</a>
+  <a id="right" href="javascript:void(0)">RIGHT</a>
+</div>
+<div id="log" align="center"></div>
+<span style="font-size:30px;cursor:pointer" onclick="openNav()">&#9776; PTZ</span>
+
+<div id="header" align="center">
+<h2>Xiaomi Dafang Hack</h2>
+</div>
+<div id="content" align="center">
+<img id="liveview" src="cgi-bin/currentpic.cgi?width=800&height=480" width="800" height="480"/>
+</div>
+
+<script>
+//MOTOR COMMAND
+// UP COMMAND
+$("#up").click(function(){
+  $.get( "cgi-bin/action.cgi?cmd=motor_up").done(function( data ) {
+  });
+ $("#log").html("<b>Send UP Command</b>")
+})
+// DOWN COMMAND
+$("#down").click(function(){
+  $.get( "cgi-bin/action.cgi?cmd=motor_down").done(function( data ) {
+  });
+ $("#log").html("<b>Send DOWN Command</b>")
+})
+
+// LEFT COMMAND
+$("#left").click(function(){
+  $.get( "cgi-bin/action.cgi?cmd=motor_left").done(function( data ) {
+  });
+ $("#log").html("<b>Send LEFT Command</b>")
+})
+
+// RIGHT COMMAND
+$("#right").click(function(){
+  $.get( "cgi-bin/action.cgi?cmd=motor_right").done(function( data ) {
+  });
+ $("#log").html("<b>Send RIGHT Command</b>")
+})
+</script>
+</body>
+</html>
