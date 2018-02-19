@@ -23,6 +23,9 @@ CURLOPTS=""
 FIFO=/var/run/mqtt-sub
 # the FIFO used. Change it if you like to
 
+STATUSINTERVAL=30
+# Send a mqtt statusupdate every 30 seconds
+
 STATUSFORMAT=json
 # Configure format of status. Standard is text, uncomment this line for json
 
