@@ -24,7 +24,7 @@ if [ "$blue" == "1" ]; then blue="off"; fi
 # Yellow Led
 yellow=$(getgpio 38)
 if [ "$yellow" == "0" ]; then yellow="on"; fi
-if [ "$yellow" == "1" ]; then $yellow="off"; fi
+if [ "$yellow" == "1" ]; then yellow="off"; fi
 
 # IR Cut
 ir_cut=$(getgpio 26)
