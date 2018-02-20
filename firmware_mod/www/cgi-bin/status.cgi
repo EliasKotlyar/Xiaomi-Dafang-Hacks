@@ -129,12 +129,12 @@ Use average measurement on switching. Number of measurements: <form style="displ
 <tr>
   <th>Motor:</th>
   <td>
-  &nbsp;&nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_up')">&nbsp;Up&nbsp;</button>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_up&val='+document.getElementById('val').value)">&nbsp;Up&nbsp;</button>
   <br>
-  <button title="" type="button" onclick="call('action.cgi?cmd=motor_left')">Left</button>&nbsp;
-  <button title="" type="button" onclick="call('action.cgi?cmd=motor_right')">Right</button>
+  <button title="" type="button" onclick="call('action.cgi?cmd=motor_left&val='+document.getElementById('val').value)">Left</button>&nbsp;
+  <button title="" type="button" onclick="call('action.cgi?cmd=motor_right&val='+document.getElementById('val').value)">Right</button>
   <br>
-  &nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_down')">Down</button>
+  &nbsp;&nbsp;&nbsp;<input type="text" id="val" name="val" value="100"><button title="" type="button" onclick="call('action.cgi?cmd=motor_down&val='+document.getElementById('val').value)">Down</button>
 
 &nbsp;&nbsp;&nbsp;
     <button title='' type='button' onClick="call('action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
