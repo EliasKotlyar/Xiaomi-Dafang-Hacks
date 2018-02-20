@@ -14,6 +14,9 @@ echo "<br/>"
 export LD_LIBRARY_PATH=/system/lib
 export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
 if [ -n "$F_cmd" ]; then
+  if [ -z "$F_val" ]; then
+    F_val=100
+  fi
   case "$F_cmd" in
   showlog)
     echo "Contents of all log files:<br/>"
@@ -54,16 +57,16 @@ if [ -n "$F_cmd" ]; then
     setgpio 26 1
     ;;
   motor_left)
-    /system/sdcard/bin/motor -d l -s 100
+    /system/sdcard/bin/motor -d l -s $F_val
     ;;
   motor_right)
-    /system/sdcard/bin/motor -d r -s 100
+    /system/sdcard/bin/motor -d r -s $F_val
     ;;
   motor_up)
-    /system/sdcard/bin/motor -d u -s 100
+    /system/sdcard/bin/motor -d u -s $F_val
     ;;
   motor_down)
-    /system/sdcard/bin/motor -d d -s 100
+    /system/sdcard/bin/motor -d d -s $F_val
     ;;
   motor_vcalibrate)
      /system/sdcard/bin/motor -d v -s 100
