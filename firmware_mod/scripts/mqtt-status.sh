@@ -28,8 +28,8 @@ if [ "$yellow" == "1" ]; then yellow="off"; fi
 
 # IR Cut
 ir_cut=$(getgpio 26)
-if [ "$ir_cut" == "0" ]; then ir_cut="off"; fi
-if [ "$ir_cut" == "1" ]; then ir_cut="on"; fi
+if [ "$ir_cut" == "0" ]; then ir_cut="on"; fi
+if [ "$ir_cut" == "1" ]; then ir_cut="off"; fi
 
 
 # IR Led
