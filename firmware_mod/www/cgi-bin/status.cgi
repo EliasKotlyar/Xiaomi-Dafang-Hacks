@@ -176,7 +176,7 @@ echo "MPEG-DASH : <a href='http://$(echo $IP):8554/unicast.mpd'>http://$(echo $I
 cat << EOF
 
 
-  </td>
+</td>
 </tr>
 
 <tr>
@@ -196,21 +196,6 @@ cat << EOF
 
   </td>
 </tr>
-<tr>
-  <th>Start H264 RTSP without segmentation</th>
-  <td>
-  <button title='' type='button' onClick="call('action.cgi?cmd=h264_noseg_start')">Start</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
-  <br>
-EOF
-
-PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
-
-IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
-echo "Path to feed : <a href='rtsp://$(echo $IP):8554/unicast'>rtsp://$(echo $IP):8554/unicast</a></br>"
-cat << EOF
-</td>
-
 <tr>
   <th>OSD-Display</th>
   <td> 
