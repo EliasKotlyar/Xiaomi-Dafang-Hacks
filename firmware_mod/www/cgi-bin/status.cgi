@@ -134,11 +134,12 @@ Use average measurement on switching. Number of measurements: <form style="displ
   <button title="" type="button" onclick="call('action.cgi?cmd=motor_left&val='+document.getElementById('val').value)">Left</button>&nbsp;
   <button title="" type="button" onclick="call('action.cgi?cmd=motor_right&val='+document.getElementById('val').value)">Right</button>
   <br>
-  &nbsp;&nbsp;&nbsp;<input type="text" id="val" name="val" value="100"><button title="" type="button" onclick="call('action.cgi?cmd=motor_down&val='+document.getElementById('val').value)">Down</button>
+  &nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_down&val='+document.getElementById('val').value)">Down</button>
 
 &nbsp;&nbsp;&nbsp;
+    <input type="text" id="val" name="val" value="100">
     <button title='' type='button' onClick="call('action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
+    <button title='' type='button' onClick="call('action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
   </td>
 
 </tr>
