@@ -7,7 +7,7 @@ killall mosquitto_sub.bin 2> /dev/null
 
 export LD_LIBRARY_PATH='/thirdlib:/system/lib:/system/sdcard/lib'
 
-/system/sdcard/bin/mosquitto_sub.bin -h $HOST -u $USER -P $PASS -t ${TOPIC}set ${MOSQUITTOOPTS} ${MOSQUITTOSUBOPTS} > $FIFO 2> /dev/null &
+/system/sdcard/bin/mosquitto_sub.bin -h $HOST -u $USER -P $PASS -t ${TOPIC}set ${MOSQUITTOOPTS}  > $FIFO 2> /dev/null &
 
 
 while read line < $FIFO
@@ -15,11 +15,11 @@ do
 case $line in
 
 help)
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help -m "possible commands: status, osd (followed by new osd-text),  `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
+/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help  ${MOSQUITTOOPTS} -m "possible commands: status, osd (followed by new osd-text),  `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
 ;;
 
 status)
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}status -m "`/system/sdcard/scripts/mqtt-status.sh`"
+/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}status ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "`/system/sdcard/scripts/mqtt-status.sh`"
 ;;
 
 osd*)
@@ -33,10 +33,10 @@ osd*)
 if [ $? -eq "0" ];
 	then
 
-		/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}${line} -m "OK (this means: action.cgi invoke with parameter ${line}, nothing more, nothing less)"
+		/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}${line} ${MOSQUITTOOPTS} -m "OK (this means: action.cgi invoke with parameter ${line}, nothing more, nothing less)"
 
 	else
-		/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}error -m "An error occured when executing ${line}"
+		/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}error ${MOSQUITTOOPTS} -m "An error occured when executing ${line}"
 
 fi
 ;;
