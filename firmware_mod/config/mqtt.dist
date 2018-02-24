@@ -17,6 +17,9 @@ MOSQUITTOOPTS=""
 # add Options for Mosquitto here. For example --cafile /system/sdcard/config/DST_Root_CA_X3.pem --tls-version tlsv1
 # or using a special id to connect to brokers like azure  
 
+MOSQUITTOPUBOPTS=""
+# add options for mosquitto_pub like -r for retaining messages
+
 CURLOPTS="" 
 # add options for curl here e.g --user user:password
 
