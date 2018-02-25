@@ -34,6 +34,7 @@ cat << EOF
 <button title='Manage scripts' type='button' onClick="window.location.href='scripts.cgi'">Manage scripts</button>
 <button title='Network' type='button' onClick="window.location.href='network.cgi'">Network</button>
 <button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
+<button title='live view' type='button' onClick="window.open('/live.html')">Live view</button>
 <hr/>
 <table class='tbl'>
 <tr>
@@ -128,16 +129,17 @@ Use average measurement on switching. Number of measurements: <form style="displ
 <tr>
   <th>Motor:</th>
   <td>
-  &nbsp;&nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_up')">&nbsp;Up&nbsp;</button>
+  &nbsp;&nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_up&val='+document.getElementById('val').value)">&nbsp;Up&nbsp;</button>
   <br>
-  <button title="" type="button" onclick="call('action.cgi?cmd=motor_left')">Left</button>&nbsp;
-  <button title="" type="button" onclick="call('action.cgi?cmd=motor_right')">Right</button>
+  <button title="" type="button" onclick="call('action.cgi?cmd=motor_left&val='+document.getElementById('val').value)">Left</button>&nbsp;
+  <button title="" type="button" onclick="call('action.cgi?cmd=motor_right&val='+document.getElementById('val').value)">Right</button>
   <br>
-  &nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_down')">Down</button>
+  &nbsp;&nbsp;&nbsp;<button title="" type="button" onclick="call('action.cgi?cmd=motor_down&val='+document.getElementById('val').value)">Down</button>
 
 &nbsp;&nbsp;&nbsp;
+    <input type="text" id="val" name="val" value="100">
     <button title='' type='button' onClick="call('action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
+    <button title='' type='button' onClick="call('action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
   </td>
 
 </tr>
@@ -175,7 +177,7 @@ echo "MPEG-DASH : <a href='http://$(echo $IP):8554/unicast.mpd'>http://$(echo $I
 cat << EOF
 
 
-  </td>
+</td>
 </tr>
 
 <tr>
@@ -196,28 +198,13 @@ cat << EOF
   </td>
 </tr>
 <tr>
-  <th>Start H264 RTSP without segmentation</th>
-  <td>
-  <button title='' type='button' onClick="call('action.cgi?cmd=h264_noseg_start')">Start</button>
-  <button title='' type='button' onClick="call('action.cgi?cmd=rtsp_stop')">Stop</button>
-  <br>
-EOF
-
-PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
-
-IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
-echo "Path to feed : <a href='rtsp://$(echo $IP):8554/unicast'>rtsp://$(echo $IP):8554/unicast</a></br>"
-cat << EOF
-</td>
-
-<tr>
   <th>OSD-Display</th>
   <td> 
   <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=osd" method="post"> 
   <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd ]; then echo checked; fi)> Enable 
-  <input type="radio" id="up" name="Position" value="UP"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "UP" ]; then echo checked; fi)>Up 
-  <input type="radio" id="down" name="Position" value="DOWN"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "DOWN" ]; then echo checked; fi)>Down
-  Text: <input id="osdtext" name="osdtext" type="text" size="25" value="$(cat /system/sdcard/config/osd | sed -e s/".*-D "// | sed -e s/" *-d.*$"//)"/>
+<!--  <input type="radio" id="up" name="Position" value="UP"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "UP" ]; then echo checked; fi)>Up 
+  <input type="radio" id="down" name="Position" value="DOWN"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "DOWN" ]; then echo checked; fi)>Down -->
+  Text: <input id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd && echo $OSD)"/>
   <input type="submit" value="Set"/><br>
   Enter time-variables in <a href="http://strftime.org/" target="_blank">strftime</a> format 
   </td>
