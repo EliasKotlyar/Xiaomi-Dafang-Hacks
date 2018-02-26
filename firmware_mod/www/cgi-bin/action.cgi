@@ -78,7 +78,7 @@ if [ -n "$F_cmd" ]; then
     /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
     ;;
   h264_start)  
-    /system/sdcard/controlscripts/rtsp-h264-with-segmentation start
+    /system/sdcard/controlscripts/rtsp-h264 start
     ;;
   h264_noseg_start)
     /system/sdcard/controlscripts/rtsp-h264 start
