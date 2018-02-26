@@ -1,33 +1,50 @@
 #!/bin/sh
-PIDFILE="/run/auto-night-detection.pid"
+returnLog(){
+  if [ $1 == "s" ]; then
+    echo "[`date +"%Y-%m-%d %H:%M:%S"`][SUCCESS] - $2"
+  elif [ $1 == "i" ]; then
+    echo "[`date +"%Y-%m-%d %H:%M:%S"`][INFO] - $2"
+  elif [ $1 == "e" ]; then
+    echo "[`date +"%Y-%m-%d %H:%M:%S"`][ERROR] - $2"
+  fi
+}
+# returnLog "s" "Log data"
 
-status()
-{
-  pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+PIDFILE="/run/nightvision-detection.pid"
+PID="$(cat "$PIDFILE" 2>/dev/null)"
+
+status(){
+  if [ "$PID" ]; then
+    returnLog "s" "Daemon Night Vision Detection is running. PID: $PID" || return 1
+  else
+    returnLog "i" "Daemon Night Vision Detection is stopped." || return 0
   fi
 }
 
-start()
-{
-if [ -f /run/auto-night-detection.pid ]; then
-echo "Auto Night Detection already running";
-
-else
-
-  LOG=/dev/null
-  echo "Starting Auto Night Detection"
-  /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &  
-  echo "$!" > "$PIDFILE"
-fi
+start(){
+  if ! [ -f $PIDFILE ]; then
+    /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &
+    echo "$!" > "$PIDFILE"
+    if [ `ps | grep ldr.sh | grep -v grep | wc -l` -eq 1 ]; then
+      returnLog "i" "Starting Daemon Night Vision Detection. PID: $(cat "$PIDFILE" 2>/dev/null)."
+    else
+      returnLog "e" "An error occurred while starting Daemon Night Vision Detection."
+    fi
+  else
+    returnLog "i" "Daemon Night Vision Detection already running. PID: $PID."
+  fi
 }
 
-stop()
-{
-  pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-     kill $pid &&  rm "$PIDFILE"
+stop(){
+  if [ "$PID" ]; then
+     kill $PID &&  rm "$PIDFILE"
+     if [ $? -eq 0 ]; then
+       returnLog "s" "Stoping Daemon Night Vision Detection."
+     else
+       returnLog "e" "An error occurred while stopping Daemon Night Vision Detection."
+     fi
+  else
+    returnLog "i" "Daemon Night Vision Detection already stopped."
   fi
 }
 
@@ -39,4 +56,3 @@ else
     ;;
   esac
 fi
-
