@@ -29,8 +29,8 @@ do
 	# this may cause some flickering when starting up
 
 	SUM=`awk '{s+=$1} END {printf "%.0f", s}' /var/run/ldr`
-	AVGMEASUREMENT=$(( $SUM / $AVG ))
-	# calculate the average
+	#AVGMEASUREMENT=$(( $SUM / $AVG )) # when use and SUM=0, return error divide by zero, solution below:
+	[[ ! $SUM -eq 0 -o ! $CONFIG_LDR_AVG -eq 0 ]] && AVGMEASUREMENT=$(( $SUM / $CONFIG_LDR_AVG )) || AVGMEASUREMENT=0 # calculate the average
 
 
 	if [ $AVGMEASUREMENT -lt 50 ]; # Light detected
