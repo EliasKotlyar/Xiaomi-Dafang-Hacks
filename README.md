@@ -12,7 +12,6 @@ Before you try to install it, please read the [FAQ](/hacks/faq.md)
 After that, continue to the 
 [Installation](/hacks/install_cfw.md)
 
-
 ## Information about the Dafang:
 
 [Teardown](/informations/teardown.md)
@@ -47,6 +46,10 @@ After that, continue to the
 [5.5.1.177](/firmware_original/demo_5.5.1.177.bin)
 
 [5.5.1.194](/firmware_original/demo_5.5.1.194.bin)
+
+## Viewer and control solution:
+
+After install, you can use this [android application](https://play.google.com/apps/testing/io.ext.medinvention.dafangcam) developed by [@medinvention](https://github.com/mmohamed) and available at [GitLab](https://gitlab.com/mmohamed/DafangCam)
 
 ## Contributions:
 Any contribution to the development is highly welcome. The best possibility is to open a pull request on GitHub.
