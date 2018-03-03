@@ -198,17 +198,40 @@ cat << EOF
   </td>
 </tr>
 <tr>
-  <th>OSD-Display</th>
-  <td> 
-  <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=osd" method="post"> 
-  <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd ]; then echo checked; fi)> Enable 
-<!--  <input type="radio" id="up" name="Position" value="UP"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "UP" ]; then echo checked; fi)>Up 
-  <input type="radio" id="down" name="Position" value="DOWN"  $(if [ `cat /system/sdcard/config/osd | awk '{print $NF}' | sed -e s/\"//` == "DOWN" ]; then echo checked; fi)>Down -->
-  Text: <input id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd && echo $OSD)"/>
-  <input type="submit" value="Set"/><br>
-  Enter time-variables in <a href="http://strftime.org/" target="_blank">strftime</a> format 
-  </td>
+ <th>OSD-Display</th>                                                                                                                                                
+   <td>                                                                                                       
+   <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=osd" method="post">                              
+   <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd ]; then echo checked; fi)> Enable
+   Text: <input id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd && echo $OSD)"/>    
+  (Enter time-variables in <a href="http://strftime.org/" target="_blank">strftime</a> format)                                 
+  <br>                                                                                                                         
+  Osd color <select name="color">                                                                                              
+  <option value="0" $(if [ `cat /system/sdcard/config/osd | grep COLOR | sed s/COLOR=//` -eq 0 ]; then echo selected; fi)>White</option>
+  <option value="1" $(if [ `cat /system/sdcard/config/osd | grep COLOR | sed s/COLOR=//` -eq 1 ]; then echo selected; fi)>Black</option>
+  <option value="2" $(if [ `cat /system/sdcard/config/osd | grep COLOR | sed s/COLOR=//` -eq 2 ]; then echo selected; fi)>Red</option>  
+  <option value="3" $(if [ `cat /system/sdcard/config/osd | grep COLOR | sed s/COLOR=//` -eq 3 ]; then echo selected; fi)>Green</option>
+  <option value="4" $(if [ `cat /system/sdcard/config/osd | grep COLOR | sed s/COLOR=//` -eq 4 ]; then echo selected; fi)>Blue</option> 
+  <option value="5" $(if [ `cat /system/sdcard/config/osd | grep COLOR | sed s/COLOR=//` -eq 5 ]; then echo selected; fi)>Cyan</option> 
+  <option value="6" $(if [ `cat /system/sdcard/config/osd | grep COLOR | sed s/COLOR=//` -eq 6 ]; then echo selected; fi)>Yellow</option>
+  <option value="7" $(if [ `cat /system/sdcard/config/osd | grep COLOR | sed s/COLOR=//` -eq 7 ]; then echo selected; fi)>Purple</option>
+  </select>                                                                                                                                
+						                                                                                                                                            
+  OSD text size <select name="size">                                                                                                     
+  <option value="0" $(if [ `cat /system/sdcard/config/osd | grep SIZE | sed s/SIZE=//` -eq 0 ]; then echo selected; fi)>Small</option> 
+  <option value="1" $(if [ `cat /system/sdcard/config/osd | grep SIZE | sed s/SIZE=//` -eq 1 ]; then echo selected; fi)>Bigger</option>
+  </select>                                                                                                                              
+  Y position <input id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd && echo $POSY)"/>             
+  Pixels between chars (can be negative)<input id="spacepixels" name="spacepixels" type="number" size="4" value="$(source /system/sdcard/config/osd && echo $SPACE)"/>
 
+  Fixed width <select name="fixedw">                                                                                                                                  
+  <option value="0" $(if [ `cat /system/sdcard/config/osd | grep FIXEDW | sed s/FIXEDW=//` -eq 0 ]; then echo selected; fi)>No</option>                             
+  <option value="1" $(if [ `cat /system/sdcard/config/osd | grep FIXEDW | sed s/FIXEDW=//` -eq 1 ]; then echo selected; fi)>Yes</option>                            
+  </select>                                                                                                                                                           
+  <BR><BR>                                                                                                                                                            
+  <input type="submit" value=" Set "/>                                                                                                                                
+
+  </form>                                                                                                                                                                
+  </td>                            
 </tr>
 
 <tr>

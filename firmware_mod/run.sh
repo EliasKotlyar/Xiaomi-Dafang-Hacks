@@ -72,6 +72,11 @@ fi
 if [ -f /system/sdcard/config/osd ]; then
 	source /system/sdcard/config/osd
 	/system/sdcard/bin/setconf -k o -v "${OSD}"
+        /system/sdcard/bin/setconf -k c -v ${COLOR}
+        /system/sdcard/bin/setconf -k s -v ${SIZE}
+        /system/sdcard/bin/setconf -k x -v ${POSY}
+        /system/sdcard/bin/setconf -k w -v ${FIXEDW}
+	/system/sdcard/bin/setconf -k p -v ${SPACE}
 fi;
 
 
