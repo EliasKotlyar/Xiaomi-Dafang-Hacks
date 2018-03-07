@@ -144,6 +144,20 @@ if [ -n "$F_cmd" ]; then
 		/system/sdcard/bin/setconf -k o -v ""
 		echo "OSD=\"\" " > /system/sdcard/config/osd
 	fi
+	echo "COLOR=${F_color}" >> /system/sdcard/config/osd                        
+	/system/sdcard/bin/setconf -k c -v ${F_color}                               
+		                                                                                      
+	echo "SIZE=${F_size}" >> /system/sdcard/config/osd                          
+	/system/sdcard/bin/setconf -k s -v ${F_size}                                
+
+	echo "POSY=${F_posy}" >> /system/sdcard/config/osd           
+	/system/sdcard/bin/setconf -k x -v ${F_posy}                 
+
+	echo "FIXEDW=${F_fixedw}" >> /system/sdcard/config/osd       
+	/system/sdcard/bin/setconf -k w -v ${F_fixedw}               
+
+	echo "SPACE=${F_spacepixels}" >> /system/sdcard/config/osd   
+	/system/sdcard/bin/setconf -k p -v ${F_spacepixels}       
 	;;
 	
 	setldravg)
