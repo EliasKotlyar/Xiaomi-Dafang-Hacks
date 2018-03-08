@@ -30,10 +30,10 @@ do
 
 	SUM=`awk '{s+=$1} END {printf "%.0f", s}' /var/run/ldr`
 	#AVGMEASUREMENT=$(( $SUM / $AVG )) # when use and SUM=0, return error divide by zero, solution below:
-	[[ ! $SUM -eq 0 -o ! $CONFIG_LDR_AVG -eq 0 ]] && AVGMEASUREMENT=$(( $SUM / $CONFIG_LDR_AVG )) || AVGMEASUREMENT=0 # calculate the average
+	[[ ! $SUM -eq 0 -o ! $AVG -eq 0 ]] && AVGMEASUREMENT=$(( $SUM / $AVG )) || AVGMEASUREMENT=0 # calculate the average
 
 
-	if [ $AVGMEASUREMENT -lt 50 ]; # Light detected
+	if [ $AVGMEASUREMENT -lt 50 ] # Light detected
 	
 	then
 		setgpio 49 1 # IR-LED Off
