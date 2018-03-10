@@ -161,7 +161,7 @@ if [ -n "$F_cmd" ]; then
 	;;
 	
 	setldravg)
-	ldravg=´$(printf '%b' "${F_avg/%/\\x}")
+	ldravg=$(printf '%b' "${F_avg/%/\\x}")
 	ldravg=$(echo $ldravg | sed "s/[^0-9]//g")
 	echo AVG=$ldravg > /system/sdcard/config/ldr-average
 	echo "Average set to $ldravg iterations."
