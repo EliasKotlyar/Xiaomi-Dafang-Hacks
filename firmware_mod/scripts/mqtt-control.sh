@@ -7,33 +7,56 @@ killall mosquitto_sub.bin 2> /dev/null
 
 export LD_LIBRARY_PATH='/thirdlib:/system/lib:/system/sdcard/lib'
 
-/system/sdcard/bin/mosquitto_sub.bin -h $HOST -u $USER -P $PASS -t ${TOPIC}set ${MOSQUITTOOPTS}  > $FIFO 2> /dev/null &
+/system/sdcard/bin/mosquitto_sub.bin -v -h $HOST -u $USER -P $PASS -t ${TOPIC}# ${MOSQUITTOOPTS}  > $FIFO 2> /dev/null &
 
 
 while read line < $FIFO
 do
 case $line in
 
-help)
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help  ${MOSQUITTOOPTS} -m "possible commands: status, osd (followed by new osd-text),  `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
+"${TOPIC}set help")
+	/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}help  ${MOSQUITTOOPTS} -m "possible commands: configured topic + Yellow_LED/set on\/off, configured topic + Blue_LED/set on\/off,  configured topic + set with the following commands: status,  `grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v \= | grep -v \* | sed -e "s/ //g" | grep -v osd | grep -v setldr | grep -v settz | grep -v showlog | sed -e "s/)//g"`"
 ;;
 
-status)
-/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}status ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "`/system/sdcard/scripts/mqtt-status.sh`"
+"${TOPIC}set status")
+	/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}status ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "`/system/sdcard/scripts/mqtt-status.sh`"
 ;;
 
-osd*)
-	osdtext=`echo "$line" | sed -e "s/^osd //"`
-	/system/sdcard/bin/setconf -k o -v "$osdtext"
-	echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd
+"${TOPIC}Blue_LED/set on")
+	/system/sdcard/bin/curl -m 2 ${CURLOPTS} -s http://127.0.0.1/cgi-bin/action.cgi\?cmd\=blue_led_on -o /dev/null 2>/dev/null
+	/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}Blue_LED -m "on"
+	/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}Yellow_LED -m "off"
+
 ;;
 
-*)
-/system/sdcard/bin/curl -m 2 ${CURLOPTS} -s http://127.0.0.1/cgi-bin/action.cgi\?cmd\=${line} -o /dev/null 2>/dev/null
+"${TOPIC}Blue_LED/set off")
+        /system/sdcard/bin/curl -m 2 ${CURLOPTS} -s http://127.0.0.1/cgi-bin/action.cgi\?cmd\=blue_led_off -o /dev/null 2>/dev/null
+        /system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}Blue_LED -m "off"
+;;
+
+"${TOPIC}Yellow_LED/set on")
+        /system/sdcard/bin/curl -m 2 ${CURLOPTS} -s http://127.0.0.1/cgi-bin/action.cgi\?cmd\=yellow_led_on -o /dev/null 2>/dev/null
+        /system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}Yellow_LED -m "on"
+        /system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}Blue_LED -m "off"
+
+;;
+
+"${TOPIC}Yellow_LED/set off")
+        /system/sdcard/bin/curl -m 2 ${CURLOPTS} -s http://127.0.0.1/cgi-bin/action.cgi\?cmd\=yellow_led_off -o /dev/null 2>/dev/null
+        /system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}Yellow_LED -m "off"
+;;
+
+
+
+${TOPIC}set*)
+COMMAND=`echo $line | awk {' print $2 '}`
+echo $COMMAND
+/system/sdcard/bin/curl -m 2 ${CURLOPTS} -s http://127.0.0.1/cgi-bin/action.cgi\?cmd\=${COMMAND} -o /dev/null 2>/dev/null
 if [ $? -eq "0" ];
 	then
 
-		/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}${line} ${MOSQUITTOOPTS} -m "OK (this means: action.cgi invoke with parameter ${line}, nothing more, nothing less)"
+		/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}${COMMAND} ${MOSQUITTOOPTS} -m "OK (this means: action.cgi invoke with parameter ${COMMAND}, nothing more, nothing less)"
+
 
 	else
 		/system/sdcard/bin/mosquitto_pub.bin  -h $HOST -u $USER -P $PASS -t ${TOPIC}error ${MOSQUITTOOPTS} -m "An error occured when executing ${line}"
