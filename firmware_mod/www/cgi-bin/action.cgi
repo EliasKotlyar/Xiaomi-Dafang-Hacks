@@ -185,7 +185,20 @@ if [ -n "$F_cmd" ]; then
      flip-off)
      /system/sdcard/bin/setconf -k f -v 0
 	;;
+    setRegion)
+        /system/sdcard/bin/setconf -k r -v ${F_X0},${F_Y0},${F_X1},${F_Y1}
+        /system/sdcard/bin/setconf -k m -v ${F_Sensitivity}
+        if [ ${F_Display} == "on" ]
+        then
+            /system/sdcard/bin/setconf -k z -v 1
+        else
+            /system/sdcard/bin/setconf -k z -v 0
+        fi
 
+        echo "Motion Configuration done"
+        echo "<BR>"
+        echo "<button title='Return to motion configuration page' onClick=\"window.location.href='/configmotion.html'\">Back to motion configuration</button>"
+    ;;
    *)
     echo "Unsupported command '$F_cmd'"
     ;;

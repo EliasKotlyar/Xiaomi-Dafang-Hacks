@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "
+http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!-- Use http://odyniec.net/projects/imgareaselect/ -->
+  <head>
+    <link rel="stylesheet" type="text/css" href="css/imgareaselect-animated.css" />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script type="text/javascript" src="scripts/jquery.imgareaselect.pack.js"></script>
+<title>Motion Configuration</title>
+<style type="text/css">
+body { background-color: #B0E0E6; font-family: verdana, sans-serif; }
+.err { color: red; }
+hr { height: 1px; border: 0; border-top: 1px solid #aaa; }
+button, input[type=submit] { background-color: #ddeaff; }
+.tbl { border-collapse: collapse; border-spacing: 0;}
+.tbl th { text-align: left; vertical-align: top; font-weight: bold; padding: 10px 5px; border-style: solid; border-width: 1px; overflow: hidden; word-break: normal; }
+.tbl td { padding: 10px 5px; border-style: solid; border-width: 1px; overflow: hidden; word-break: normal; }
+</style>
+
+<script type="text/javascript">
+
+function preview(img, selection) {
+    if (!selection.width || !selection.height)
+        return;
+
+    var scaleX = 100 / selection.width;
+    var scaleY = 100 / selection.height;
+
+    $('#X0').val(selection.x1);
+    $('#Y0').val(selection.y1);
+    $('#X1').val(selection.x2);
+    $('#Y1').val(selection.y2);
+}
+
+$(function () {
+    var httpRequest = new XMLHttpRequest();
+    httpRequest.open('GET', 'cgi-bin/getMotionInfo.cgi', false);
+    httpRequest.send(null);
+    eval(httpRequest.responseText)
+    $('#picture').imgAreaSelect({ handles: true, fadeSpeed: 200, onSelectChange: preview,movable:true,persistent:true });
+    var ias = $('#picture').imgAreaSelect({ instance: true });
+    ias.setSelection(RegionSize[0],RegionSize[1],RegionSize[2],RegionSize[3], false);
+    ias.setOptions({ show: true });
+    ias.update();
+
+    $('#X0').val(RegionSize[0]);
+    $('#Y0').val(RegionSize[1]);
+    $('#X1').val(RegionSize[2]);
+    $('#Y1').val(RegionSize[3]);
+
+    $('#Display').prop("checked", enabled);
+    $('#Sensitivity').val(sens).change();
+});
+</script>
+
+
+</head>
+
+<body onload="">
+    <div id="content" class="container">
+
+<div class="container demo">
+  <div style="float: left; width: 50%;">
+    <p class="instructions">
+      Select motion detection region
+    </p>
+
+    <div class="frame" style="margin: 0 0.3em;">
+      <img id="picture" src="/cgi-bin/currentpic.cgi" />
+    </div>
+    <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=setRegion" method="post">
+      <input id="X0" name="X0" type="hidden" />
+      <input id="Y0" name="Y0" type="hidden" />
+      <input id="X1" name="X1" type="hidden"  />
+      <input id="Y1" name="Y1" type="hidden"  />
+
+      Set Sensitivity
+      <select name="Sensitivity" id="Sensitivity">
+        <option value="-1">Motion deactivated</option>
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+      </select>
+      <br>Display red circle when motion detected
+
+      <input id="Display" type="checkbox" name="Display">
+      <br>
+      <input type="submit" value="Configure motion"/>
+
+    </form>
+  </div>
+  </div>
+ </body>

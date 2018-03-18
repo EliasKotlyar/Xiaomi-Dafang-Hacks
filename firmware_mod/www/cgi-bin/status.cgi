@@ -34,6 +34,7 @@ cat << EOF
 <button title='Manage scripts' type='button' onClick="window.location.href='scripts.cgi'">Manage scripts</button>
 <button title='Network' type='button' onClick="window.location.href='network.cgi'">Network</button>
 <button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
+<button title='Motion Configuration' type='button' onClick="window.open('/configmotion.html')">ConfigMotion</button>
 <button title='live view' type='button' onClick="window.open('/live.html')">Live view</button>
 <hr/>
 <table class='tbl'>
