@@ -6,6 +6,9 @@ echo "Starting up CFW"
 ## Update hostname:
 hostname -F $CONFIGPATH/hostname.conf
 
+#read v4l2config (username, password)
+v4l2config=$(cat $CONFIGPATH/v4l2rtspserver.conf)
+
 ## Get real Mac address from config file:
 MAC=`cat /params/config/.product_config | grep MAC | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//'`
 
@@ -67,7 +70,10 @@ fi
 
 #Start
 
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
+# /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
+# /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -U user1:password1 &>/dev/null &
+# /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master `</system/sdcard/config/v4l2rtspserver.conf` &>/dev/null &
+/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master $v4l2config &>/dev/null &
 
 if [ -f /system/sdcard/config/osd ]; then
 	source /system/sdcard/config/osd
