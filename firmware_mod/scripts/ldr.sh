@@ -2,7 +2,7 @@
 
 setgpio(){
   GPIOPIN=$1
-  echo "$2" > /sys/class/gpio/gpio"$GPIOPIN"/value
+  echo "$2" > "/sys/class/gpio/gpio$GPIOPIN/value"
 }
 
 

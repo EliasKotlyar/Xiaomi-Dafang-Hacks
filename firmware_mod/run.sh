@@ -21,9 +21,9 @@ insmod /system/sdcard/driver/audio.ko
 setgpio () {
   GPIOPIN=$1
   echo "$GPIOPIN" > /sys/class/gpio/export
-  echo out > /sys/class/gpio/gpio"$GPIOPIN"/direction
-  echo 0 > /sys/class/gpio/gpio"$GPIOPIN"/active_low
-  echo 1 > /sys/class/gpio/gpio"$GPIOPIN"/value
+  echo out > "/sys/class/gpio/gpio$GPIOPIN/direction"
+  echo 0 > "/sys/class/gpio/gpio$GPIOPIN/active_low"
+  echo 1 > "/sys/class/gpio/gpio$GPIOPIN/value"
 }
 
 # IR-LED
