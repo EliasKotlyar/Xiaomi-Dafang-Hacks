@@ -58,7 +58,7 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 
 ## Get OSD-Information
 if [ -f /system/sdcard/config/osd ]; then
-  source /system/sdcard/config/osd  2>/dev/null
+  source /system/sdcard/config/osd 2>/dev/null
 fi
 
 ## Autostart
