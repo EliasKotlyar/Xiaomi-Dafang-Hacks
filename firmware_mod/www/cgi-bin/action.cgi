@@ -188,11 +188,27 @@ if [ -n "$F_cmd" ]; then
     setRegion)
         /system/sdcard/bin/setconf -k r -v ${F_X0},${F_Y0},${F_X1},${F_Y1}
         /system/sdcard/bin/setconf -k m -v ${F_Sensitivity}
-        if [ ${F_Display} == "on" ]
+        /system/sdcard/bin/setconf -k z -v ${F_osdColor}
+        # Changed the detection region, need to restart the server
+        if [ ${F_restartServer} == "1" ]
         then
-            /system/sdcard/bin/setconf -k z -v 1
-        else
-            /system/sdcard/bin/setconf -k z -v 0
+            processName="v4l2rtspserver-master"
+            #get the process pid
+            processId=`ps | grep ${processName} | grep -v grep | awk '{ printf $1 }'`
+            if [ "${processId}X" != "X" ]
+            then
+                    #found the process, now get the full path and the parameters in order to restart it
+                    executable=`ls -l /proc/${processId}/exe | awk '{print $NF}'`
+                    cmdLine=`tr '\0' ' ' < /proc/${processId}/cmdline | awk '{$1=""}1'`
+
+                    kill ${processId} 2>/dev/null
+                    sleep 2
+                    cmdLine="/system/sdcard/bin/busybox nohup "${executable}${cmdLine} 2>/dev/null
+                    ${cmdLine} &>/dev/null
+
+            else
+                    echo "Not found"
+            fi
         fi
 
         echo "Motion Configuration done"

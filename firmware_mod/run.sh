@@ -62,6 +62,8 @@ if [ -f /system/sdcard/config/osd ]; then
 source /system/sdcard/config/osd  2>/dev/null
 fi
 
+# Set the socket option in order to restart easily the server (socket in use)
+echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle  
 ## Autostart
  for i in `ls /system/sdcard/config/autostart/`; do /system/sdcard/config/autostart/$i; done
 
