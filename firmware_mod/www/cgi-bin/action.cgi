@@ -191,7 +191,7 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     auto_night_mode_stop)
-          /system/sdcard/controlscripts/auto-night-detection stop
+      /system/sdcard/controlscripts/auto-night-detection stop
     ;;
 
     toggle-rtsp-nightvision-on)
@@ -209,9 +209,43 @@ if [ -n "$F_cmd" ]; then
     flip-off)
       /system/sdcard/bin/setconf -k f -v 0
     ;;
+    
+    setRegion)
+         echo "Region=${F_X0},${F_Y0},${F_X1},${F_Y1}" >  /system/sdcard/config/motion
+         echo "Sens=${F_Sensitivity}" >>  /system/sdcard/config/motion
+         echo "OsdColor=${F_osdColor}" >>  /system/sdcard/config/motion
 
-    *)
-      echo "Unsupported command '$F_cmd'"
+        /system/sdcard/bin/setconf -k r -v ${F_X0},${F_Y0},${F_X1},${F_Y1}
+        /system/sdcard/bin/setconf -k m -v ${F_Sensitivity}
+        /system/sdcard/bin/setconf -k z -v ${F_osdColor}
+        # Changed the detection region, need to restart the server
+        if [ ${F_restartServer} == "1" ]
+        then
+            processName="v4l2rtspserver-master"
+            #get the process pid
+            processId=`ps | grep ${processName} | grep -v grep | awk '{ printf $1 }'`
+            if [ "${processId}X" != "X" ]
+            then
+                    #found the process, now get the full path and the parameters in order to restart it
+                    executable=`ls -l /proc/${processId}/exe | awk '{print $NF}'`
+                    cmdLine=`tr '\0' ' ' < /proc/${processId}/cmdline | awk '{$1=""}1'`
+
+                    kill ${processId} 2>/dev/null
+                    sleep 2
+                    cmdLine="/system/sdcard/bin/busybox nohup "${executable}${cmdLine} 2>/dev/null
+                    ${cmdLine} &>/dev/null
+
+            else
+                    echo "Not found"
+            fi
+        fi
+
+        echo "Motion Configuration done"
+        echo "<BR>"
+        echo "<button title='Return to motion configuration page' onClick=\"window.location.href='/configmotion.html'\">Back to motion configuration</button>"
+    ;;
+   *)
+    echo "Unsupported command '$F_cmd'"
     ;;
 
   esac
