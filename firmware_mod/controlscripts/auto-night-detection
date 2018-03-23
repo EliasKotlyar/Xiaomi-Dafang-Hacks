@@ -11,23 +11,20 @@ status()
 
 start()
 {
-if [ -f /run/auto-night-detection.pid ]; then
-echo "Auto Night Detection already running";
-
-else
-
-  LOG=/dev/null
-  echo "Starting Auto Night Detection"
-  /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &  
-  echo "$!" > "$PIDFILE"
-fi
+  if [ -f /run/auto-night-detection.pid ]; then
+    echo "Auto Night Detection already running";
+  else
+    echo "Starting Auto Night Detection"
+    /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &
+    echo "$!" > "$PIDFILE"
+  fi
 }
 
 stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
-     kill $pid &&  rm "$PIDFILE"
+     kill "$pid" && rm "$PIDFILE"
   fi
 }
 
