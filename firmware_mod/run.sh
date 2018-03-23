@@ -7,24 +7,25 @@ echo "Starting up CFW"
 hostname -F $CONFIGPATH/hostname.conf
 
 ## Get real Mac address from config file:
-MAC=`cat /params/config/.product_config | grep MAC | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//'`
+MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 
 ## Start Wifi:
 insmod /driver/8189es.ko rtw_initmac="$MAC"
 wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
-udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:`hostname`
+udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)"
 
 ## Start Audio:
 insmod /system/sdcard/driver/audio.ko
 
 ## Start GPIO:
 setgpio () {
-GPIOPIN=$1
-echo $GPIOPIN > /sys/class/gpio/export
-echo out > /sys/class/gpio/gpio$GPIOPIN/direction
-echo 0 > /sys/class/gpio/gpio$GPIOPIN/active_low
-echo 1 > /sys/class/gpio/gpio$GPIOPIN/value
+  GPIOPIN=$1
+  echo "$GPIOPIN" > /sys/class/gpio/export
+  echo out > "/sys/class/gpio/gpio$GPIOPIN/direction"
+  echo 0 > "/sys/class/gpio/gpio$GPIOPIN/active_low"
+  echo 1 > "/sys/class/gpio/gpio$GPIOPIN/value"
 }
+
 # IR-LED
 setgpio 49
 echo 1 > /sys/class/gpio/gpio49/active_low
@@ -40,8 +41,6 @@ setgpio 26
 
 # Startup Motor:
 insmod /system/sdcard/driver/sample_motor.ko
-
-
 
 ## Start Sensor:
 insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
@@ -69,11 +68,12 @@ fi
 
 
 ## Autostart
- for i in `ls /system/sdcard/config/autostart/`; do /system/sdcard/config/autostart/$i; done
-
+for i in /system/sdcard/config/autostart/*; do
+  $i
+done
 
 #Start
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null&
+/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
 
 
 echo "Startup finished!"
