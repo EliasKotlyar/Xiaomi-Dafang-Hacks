@@ -57,30 +57,23 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 ## Start Webserver:
 /system/sdcard/bin/boa -c /system/sdcard/config/
 
-## Get OSD-Information
-if [ -f /system/sdcard/config/osd ]; then
-source /system/sdcard/config/osd  2>/dev/null
+## Configure OSD
+if [ -f /system/sdcard/controlscripts/configureOsd ]; then
+    source /system/sdcard/controlscripts/configureOsd  2>/dev/null
 fi
 
-# Set the socket option in order to restart easily the server (socket in use)
-echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle  
+## Configure Motion
+if [ -f /system/sdcard/controlscripts/configureMotion ]; then
+    source /system/sdcard/controlscripts/configureMotion  2>/dev/null
+fi
+
+
 ## Autostart
  for i in `ls /system/sdcard/config/autostart/`; do /system/sdcard/config/autostart/$i; done
 
+
 #Start
-
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
-
-if [ -f /system/sdcard/config/osd ]; then
-	source /system/sdcard/config/osd
-	/system/sdcard/bin/setconf -k o -v "${OSD}"
-        /system/sdcard/bin/setconf -k c -v ${COLOR}
-        /system/sdcard/bin/setconf -k s -v ${SIZE}
-        /system/sdcard/bin/setconf -k x -v ${POSY}
-        /system/sdcard/bin/setconf -k w -v ${FIXEDW}
-	/system/sdcard/bin/setconf -k p -v ${SPACE}
-fi;
+/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null&
 
 
 echo "Startup finished!"
-

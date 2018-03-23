@@ -186,6 +186,10 @@ if [ -n "$F_cmd" ]; then
      /system/sdcard/bin/setconf -k f -v 0
 	;;
     setRegion)
+         echo "Region=${F_X0},${F_Y0},${F_X1},${F_Y1}" >  /system/sdcard/config/motion
+         echo "Sens=${F_Sensitivity}" >>  /system/sdcard/config/motion
+         echo "OsdColor=${F_osdColor}" >>  /system/sdcard/config/motion
+
         /system/sdcard/bin/setconf -k r -v ${F_X0},${F_Y0},${F_X1},${F_Y1}
         /system/sdcard/bin/setconf -k m -v ${F_Sensitivity}
         /system/sdcard/bin/setconf -k z -v ${F_osdColor}
