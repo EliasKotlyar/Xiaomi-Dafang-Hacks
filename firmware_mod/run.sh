@@ -51,7 +51,7 @@ insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 
 ## Update time
-/system/sdcard/bin/busybox ntpd -q -n -p time.google.com
+/system/sdcard/bin/busybox ntpd -q -n -p fritz.box
 
 ## Start FTP & SSH
 /system/sdcard/bin/dropbearmulti dropbear -R
