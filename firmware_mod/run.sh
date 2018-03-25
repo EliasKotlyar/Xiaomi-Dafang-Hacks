@@ -73,7 +73,7 @@ for i in /system/sdcard/config/autostart/*; do
 done
 
 #Start
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
+#/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
 
 
 echo "Startup finished!"
