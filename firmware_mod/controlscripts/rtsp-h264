@@ -1,5 +1,6 @@
 #!/bin/sh
 PIDFILE="/run/v4l2rtspserver-master-h264.pid"
+CONFIGPATH="/system/sdcard/config"
 export LD_LIBRARY_PATH='/thirdlib:/system/lib'
 
 if [ -f /system/sdcard/config/osd ]; then
@@ -31,7 +32,8 @@ start()
       if [ -f /system/sdcard/controlscripts/configureMotion ]; then
         source /system/sdcard/controlscripts/configureMotion  2>/dev/null
       fi
-      /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
+      video_size="$(cat "$CONFIGPATH/video_size.conf" 2>/dev/null)"
+	  /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master "$video_size" &>/dev/null &
       echo "$!" > "$PIDFILE"
   fi
 }
