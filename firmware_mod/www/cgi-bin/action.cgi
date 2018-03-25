@@ -125,12 +125,31 @@ if [ -n "$F_cmd" ]; then
        /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
     settz)
-      tz=$(printf '%b' "${F_tz//%/\\x}")
+	
+	ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
+	
+	#lecture fichier ntp_serv.conf
+	conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
+
+    if [ $conf_ntp_srv != "$ntp_srv" ]; then
+    echo "Setting NTP Server to '$ntp_srv'...<br/>"
+    echo "$ntp_srv" > /system/sdcard/config/ntp_srv.conf
+    echo "Syncing time on '$ntp_srv'...<br/>"
+        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv 2>&1)" -eq 0 ]; then
+          echo "<br/>Success<br/>"
+        else echo "<br/>Failed<br/>"
+		fi
+    fi
+
+	#lecture fichier ntp_serv.conf
+	conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
+
+	tz=$(printf '%b' "${F_tz//%/\\x}")
       if [ "$(cat /etc/TZ)" != "$tz" ]; then
         echo "Setting TZ to '$tz'...<br/>"
         echo "$tz" > /etc/TZ
         echo "Syncing time...<br/>"
-        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p time.google.com 2>&1)" -eq 0 ]; then
+        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p $conf_ntp_srv 2>&1)" -eq 0 ]; then
           echo "<br/>Success<br/>"
         else echo "<br/>Failed<br/>"
         fi

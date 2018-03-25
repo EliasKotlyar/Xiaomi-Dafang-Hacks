@@ -46,6 +46,8 @@ cat << EOF
                 $(date)
                 <label style="margin-left: 1em" for="tz">TZ:</label>
                 <input id="tz" name="tz" type="text" size="25" value="$(cat /etc/TZ)" />
+				<label  for="ntp_srv">NTP Server:</label>
+				<input id="ntp_srv" name="ntp_srv" type="text" size="25" value="$(cat /system/sdcard/config/ntp_srv.conf)"/>
                 <label for="hostname">Hostname:</label>
                 <input id="hostname" name="hostname" type="text" size="15" value="$(hostname)" />
                 <input type="submit" value="Set" />
@@ -159,7 +161,20 @@ cat << EOF
         </td>
     </tr>
 
+<tr>
+  <th>Resolution</th>
+  <td>
+   Select video size: <select name="video_size">                                                                                              
+  <option value="-W 640 -H 360" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
+  <option value="-W 1280 -H 720" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
+  <option value="-W 1600 -H 900" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>  
+  <option value="-W 1920 -H 1080" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
+  </select>                                                                                                                                
+   
 
+  </td>
+</tr>
+	
     <tr>
         <th>Start H264 RTSP</th>
         <td>
