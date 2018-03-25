@@ -6,6 +6,9 @@ echo "Starting up CFW"
 ## Update hostname:
 hostname -F $CONFIGPATH/hostname.conf
 
+## NTP Server
+ntp_srv=cat $CONFIGPATH/ntp_srv.conf
+
 ## Get real Mac address from config file:
 MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 
@@ -47,7 +50,7 @@ insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 
 ## Update time
-/system/sdcard/bin/busybox ntpd -q -n -p time.google.com
+/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv
 
 ## Start FTP & SSH
 /system/sdcard/bin/dropbearmulti dropbear -R
