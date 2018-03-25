@@ -1,0 +1,42 @@
+#!/bin/sh
+PIDFILE="/run/recording.pid"
+
+status()
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+  fi
+}
+
+start()
+{
+if [ -f /run/auto-night-detection.pid ]; then
+echo "Auto Night Detection already running";
+
+else
+
+  LOG=/dev/null
+  echo "Starting Auto Night Detection"
+  /system/sdcard/bin/busybox nohup FILE=`date +%Y-%m-%d_%H.%M.mov` && /system/sdcard/bin/avconv -rtsp_transport tcp -y -i rtsp://root@ismart12:0.0.0.0:8554/unicast -vcodec copy -c:a aac -strict experimental -t 10 /system/sdcard/DCIM/VideoRecorder/$FILE  &>/dev/null &  ##change me
+  echo "$!" > "$PIDFILE"
+fi
+}
+
+stop()
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+     kill $pid &&  rm "$PIDFILE"
+  fi
+}
+
+if [ $# -eq 0 ]; then
+  start
+else
+  case $1 in start|stop|status)
+    $1
+    ;;
+  esac
+fi
+
