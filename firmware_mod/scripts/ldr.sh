@@ -28,7 +28,7 @@ while true; do
   # this may cause some flickering when starting up
 
   SUM=$(awk '{s+=$1} END {printf "%.0f", s}' /var/run/ldr)
-  [[ ! $SUM -eq 0 || ! $AVG -eq 0 ]] && AVGMEASUREMENT=$("$SUM"/"$AVG") || AVGMEASUREMENT=0 # calculate the average
+  [[ ! $SUM -eq 0 || ! $AVG -eq 0 ]] && AVGMEASUREMENT=$(($SUM/$AVG)) || AVGMEASUREMENT=0 # calculate the average
 
 
   if [ "$AVGMEASUREMENT" -lt 50 ]; then  # Light detected
