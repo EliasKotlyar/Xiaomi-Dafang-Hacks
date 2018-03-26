@@ -7,7 +7,7 @@ echo "Starting up CFW"
 hostname -F $CONFIGPATH/hostname.conf
 
 ## NTP Server
-ntp_srv=cat $CONFIGPATH/ntp_srv.conf
+ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
 
 ## Get real Mac address from config file:
 MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
