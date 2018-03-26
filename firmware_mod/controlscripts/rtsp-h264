@@ -32,7 +32,7 @@ start()
       if [ -f /system/sdcard/controlscripts/configureMotion ]; then
         source /system/sdcard/controlscripts/configureMotion  2>/dev/null
       fi
-      video_size="$(cat "$CONFIGPATH/video_size.conf" 2>/dev/null)"
+      video_size="$(cat "$CONFIGPATH/video_size.conf")"
 	  /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master "$video_size" &>/dev/null &
       echo "$!" > "$PIDFILE"
   fi
