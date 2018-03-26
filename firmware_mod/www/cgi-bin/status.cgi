@@ -170,8 +170,7 @@ cat << EOF
   <option value="-W 1600 -H 900" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>  
   <option value="-W 1920 -H 1080" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
   </select>                                                                                                                                
-   
-
+  <input type="submit" value="Set" /> 
   </td>
 </tr>
 	
