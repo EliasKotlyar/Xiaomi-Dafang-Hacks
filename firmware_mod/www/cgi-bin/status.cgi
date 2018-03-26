@@ -164,6 +164,7 @@ cat << EOF
 <tr>
   <th>Resolution</th>
   <td>
+  <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=setvideosize" method="post">
    Select video size: <select name="video_size">                                                                                              
   <option value="-W 640 -H 360" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
   <option value="-W 1280 -H 720" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
@@ -171,6 +172,7 @@ cat << EOF
   <option value="-W 1920 -H 1080" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
   </select>                                                                                                                                
   <input type="submit" value="Set" /> 
+  </form>
   </td>
 </tr>
 	
