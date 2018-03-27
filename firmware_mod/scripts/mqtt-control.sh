@@ -7,7 +7,7 @@ killall mosquitto_sub.bin 2> /dev/null
 
 export LD_LIBRARY_PATH='/thirdlib:/system/lib:/system/sdcard/lib'
 
-/system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"
+/system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"#
 
 while read -r line < "$FIFO"; do
   case $line in
