@@ -7,8 +7,7 @@ echo "Starting up CFW"
 hostname -F $CONFIGPATH/hostname.conf
 
 #read v4l2config (username, password)
-v4l2config=$(cat $CONFIGPATH/v4l2rtspserver.conf)
-
+v4l2config=$(cat $CONFIGPATH/v4l2rtspserver.conf)									 
 ## Get real Mac address from config file:
 MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 
@@ -51,7 +50,6 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 
 ## Update time
 /system/sdcard/bin/busybox ntpd -q -n -p fritz.box
-echo $(date) > /system/sdcard/log/ntp.txt
 
 ## Start FTP & SSH
 /system/sdcard/bin/dropbearmulti dropbear -R
@@ -77,15 +75,7 @@ for i in /system/sdcard/config/autostart/*; do
 done
 
 #Start
-<<<<<<< HEAD
-
-# /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
-# /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -U user1:password1 &>/dev/null &
-# /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master `</system/sdcard/config/v4l2rtspserver.conf` &>/dev/null &
 /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master $v4l2config &>/dev/null &
-=======
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
->>>>>>> c011c4cbfbdafbb859e48320393990c8b58ba3f8
 
 
 echo "Startup finished!"

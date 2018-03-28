@@ -45,3 +45,5 @@ fabric.properties
 
 .idea/*
 firmware_mod/config/wpa_supplicant.conf
+firmware_mod/System Volume Information/IndexerVolumeGuid
+firmware_mod/System Volume Information/WPSettings.dat
