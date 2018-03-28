@@ -28,7 +28,7 @@ if [ -n "$F_action" ]; then
       case "$F_mode" in
         0)
           # apply cloud settings
-          if [ -n "$apply_ssid" -a -n "${apply_key}" ]; then
+          if [ -n "$apply_ssid" ] && [ -n "${apply_key}" ]; then
             ACTION_MSG="Updating cloud settings..."
             echo -n "$apply_ssid" > /etc/config/.wifissid
             echo -n "$apply_key" > /etc/config/.wifipasswd
@@ -38,10 +38,10 @@ if [ -n "$F_action" ]; then
           ;;
         1)
           # apply wpa_supplicant settings
-          if [ -n "$apply_ssid" -a -n "${apply_key}" ]; then
+          if [ -n "$apply_ssid" ] && [ -n "${apply_key}" ]; then
             if [ -e "$CFG_CLIENT" ]; then
               ACTION_MSG="Updating wpa_supplicant..."
-              sed -i.bak 's/^\(\sssid\).*/\1="'${apply_ssid}'"/; s/^\(\spsk\).*/\1="'${apply_key}'"/' "$CFG_CLIENT" 2>&1
+              sed -i.bak 's/^\(\sssid\).*/\1="'"${apply_ssid}"'"/; s/^\(\spsk\).*/\1="'"${apply_key}"'"/' "$CFG_CLIENT" 2>&1
               ACTION_RC=$?
               CFG_MODE=1 
             else
@@ -51,10 +51,10 @@ if [ -n "$F_action" ]; then
           ;;
         2)
           # apply hostapd settings
-          if [ -n "$apply_ssid" -a -n "$apply_key" ]; then
+          if [ -n "$apply_ssid" ] && [ -n "$apply_key" ]; then
             if [ -e "$CFG_AP" ]; then
               ACTION_MSG="Updating hostapd..."
-              sed -i.bak 's/^\(ssid\).*/\1='${apply_ssid}'/; s/^\(wpa_passphrase\).*/\1='${apply_key}'/' "$CFG_AP" 2>&1
+              sed -i.bak 's/^\(ssid\).*/\1='"${apply_ssid}"'/; s/^\(wpa_passphrase\).*/\1='"${apply_key}"'/' "$CFG_AP" 2>&1
               ACTION_RC=$?
               CFG_MODE=2
             else
@@ -75,7 +75,7 @@ if [ -n "$F_action" ]; then
 fi
 
 if [ -e "$CFG_CLIENT" ]; then
-	CFG_SSID="$(cat "$CFG_CLIENT")"
+    CFG_SSID="$(cat "$CFG_CLIENT")"
 fi
 
 cat << EOF
@@ -219,12 +219,12 @@ function connect_ssid() {
 }
 
 function onLoad() {
-	var id = $(case $CFG_MODE in 
-				0) echo -n \'mode_cloud\' ;;
-				1) echo -n \'mode_client\' ;;
-				2) echo -n \'mode_ap\' ;;
-			 esac);
-	document.getElementById(id).checked = true;
+    var id = $(case $CFG_MODE in
+                0) echo -n \'mode_cloud\' ;;
+                1) echo -n \'mode_client\' ;;
+                2) echo -n \'mode_ap\' ;;
+             esac);
+    document.getElementById(id).checked = true;
 EOF
   if [ "$ACTION_RC" == 0 ]; then
     if [ "$F_action" == "connect" ]; then
@@ -234,9 +234,9 @@ EOF
     fi
   fi
 cat << EOF
-	updatePanel();
+    updatePanel();
 }
-	
+
 window.onload = onLoad;
 </script>
 </head>
@@ -279,7 +279,7 @@ echo "<select id='network.cgi-list' size='5' onChange='updateNetworkDetails()' s
 echo "<option value='' disabled selected style='display:none;'>Label</option>"
 
 hidden=""
-while read x; do
+while read -r x; do
   SSID=$(echo "$x" | cut -f1)
   ADDR=$(echo "$x" | cut -f2)
   ENC=$(echo "$x" | cut -f3)
@@ -346,9 +346,9 @@ cat << EOF
 Create a Wireless Hotspot.<br/>
 EOF
 echo "<hr/>"
-ap_addr="$(cat $CFG_DHCPD | grep ^opt.*router | awk '{print $3}')"
-ap_ssid="$(cat $CFG_AP | grep ^ssid= | cut -d'=' -f2)"
-ap_key="$(cat $CFG_AP | grep ^wpa_passphrase= | cut -d'=' -f2)"
+ap_addr="$(grep "^opt.*router" $CFG_DHCPD | awk '{print $3}')"
+ap_ssid="$(grep "^ssid=" $CFG_AP | cut -d'=' -f2)"
+ap_key="$(grep "^wpa_passphrase=" $CFG_AP | cut -d'=' -f2)"
 echo "<div style='float: left'>"
 echo "<form name='network.cgi-info'>"
 echo "Hotspot settings:<br/>"
