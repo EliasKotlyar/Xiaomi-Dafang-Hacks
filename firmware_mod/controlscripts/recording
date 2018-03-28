@@ -11,8 +11,9 @@ status()
 
 start()
 {
-if [ -f /run/auto-night-detection.pid ]; then
-echo "Auto Night Detection already running";
+//if [ -f /run/auto-night-detection.pid ]; then
+if [ -f $PIDFILE ]; then
+echo "recording already running";
 
 else
 
