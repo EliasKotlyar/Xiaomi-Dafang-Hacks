@@ -6,7 +6,7 @@
 
 USER=mqtt-user
 PASS=mqtt-password
-HOST=mqtt-host
+HOST=raspberrypi
 PORT=1883
 
 TOPIC=topic/dafang/
