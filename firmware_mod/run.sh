@@ -52,6 +52,7 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 
 ## Update time
 /system/sdcard/bin/busybox ntpd -q -n -p fritz.box
+echo $(date) > /system/sdcard/log/ntp.txt
 
 ## Start FTP & SSH
 /system/sdcard/bin/dropbearmulti dropbear -R
