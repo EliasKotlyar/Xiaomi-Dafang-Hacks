@@ -44,3 +44,4 @@ crashlytics-build.properties
 fabric.properties
 
 .idea/*
+firmware_mod/config/wpa_supplicant.conf
