@@ -244,6 +244,17 @@ if [ -n "$F_cmd" ]; then
         echo "<BR>"
         echo "<button title='Return to motion configuration page' onClick=\"window.location.href='/configmotion.html'\">Back to motion configuration</button>"
     ;;
+    offDebug)                                                                        
+        /system/sdcard/controlscripts/debug-on-osd stop                                           
+        if [ -f /system/sdcard/controlscripts/configureOsd ]; then               
+            source /system/sdcard/controlscripts/configureOsd                          
+        fi                                                      
+                                                                                                  
+    ;;                                                                                                 
+    onDebug)                                                                     
+        /system/sdcard/controlscripts/debug-on-osd start                  
+    ;;                    
+   
    *)
     echo "Unsupported command '$F_cmd'"
     ;;
