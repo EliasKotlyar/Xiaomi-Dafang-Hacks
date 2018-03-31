@@ -162,7 +162,7 @@
       }
     }
   </style>
-  <script type="text/javascript" src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
   <script>
     function openNav() {
       document.getElementById("mySidenav").style.width = "300px";
@@ -192,7 +192,7 @@
           });
       }
 
-      var entities = ["yellow_led", "blue_led", "ir_led", "ir_cut", "rtsp_h264", "rtsp_mjpeg", "auto_night_detection", "mqtt_status", "mqtt_control", "sound_on_startup"];
+      var entities = ["yellow_led", "blue_led", "ir_led", "ir_cut", "rtsp_h264", "rtsp_mjpeg", "auto_night_detection", "mqtt_status", "mqtt_control", "sound_on_startup", "motion_detection"];
       for (var i in entities) {
         sync_toggle(entities[i]);
       }
@@ -246,6 +246,12 @@
           <span class="slider round"></span>
         </label>
       </a>
+      <a id="motion_detection" href="javascript:void(0)">Motion Detection
+        <label class="switch">
+          <input id="motion_detection_toggle" type="checkbox" checked>
+          <span class="slider round"></span>
+        </label>
+      </a>
       <a id="rtsp_h264" href="javascript:void(0)">RTSP H264 Server
         <label class="switch">
           <input id="rtsp_h264_toggle" type="checkbox" checked>
@@ -281,6 +287,7 @@
     <div class="dropdown-container">
       <a id="conf" href="javascript:void(0)">Configuration</a>
       <a id="scripts" href="javascript:void(0)">Scripts</a>
+      <a id="motion" href="javascript:void(0)">Motion detection</a>
       <a id="network" href="javascript:void(0)">Network</a>
       <a id="logs" href="javascript:void(0)">Logs</a>
       <a id="reboot" href="javascript:void(0)">Reboot</a>
@@ -420,6 +427,22 @@
         });
     })
 
+    // MOTION DETECTION TOGGLE
+    $("#motion_detection").click(function() {
+      $.get("/cgi-bin/state.cgi", {
+          cmd: "motion_detection"
+        })
+        .done(function(status) {
+          if (status.trim() == "on") {
+            $.get("/cgi-bin/action.cgi?cmd=motion_detection_off").done(function(data) {});
+            $('#motion_detection_toggle').prop('checked', false);
+          } else {
+            $.get("/cgi-bin/action.cgi?cmd=motion_detection_on").done(function(data) {});
+            $('#motion_detection_toggle').prop('checked', true);
+          }
+        });
+    })
+
     // RTSP H264 TOGGLE
     $("#rtsp_h264").click(function() {
       $.get("/cgi-bin/state.cgi", {
@@ -508,6 +531,11 @@
     //MANAGE RUNNING SCRIPTS
     $("#scripts").click(function() {
       $("#content").load("/cgi-bin/scripts.cgi");
+    })
+
+    //CONFIGURE MOTION
+    $("#motion").click(function() {
+      $("#content").load("/configmotion.html");
     })
 
     //NETWORK
