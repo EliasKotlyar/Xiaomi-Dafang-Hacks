@@ -215,7 +215,7 @@ cat << EOF
   </select> OSD text size <select name="size">
   <option value="0" $(if [ "$(grep SIZE /system/sdcard/config/osd | sed s/SIZE=//)" -eq 0 ]; then echo selected; fi)>Small</option>
   <option value="1" $(if [ "$(grep SIZE /system/sdcard/config/osd | sed s/SIZE=//)" -eq 1 ]; then echo selected; fi)>Bigger</option>
-  </select> Y position <input id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd && echo " $POSY ")"/>
+  </select> Y position <input id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd && echo "$POSY")"/>
   Pixels between chars (can be negative)<input id="spacepixels" name="spacepixels" type="number" size="4" value="$(source /system/sdcard/config/osd && echo "$SPACE")"/>
   Fixed width <select name="fixedw">
   <option value="0" $(if [ "$(grep FIXEDW /system/sdcard/config/osd | sed s/FIXEDW=//)" -eq 0 ]; then echo selected; fi)>No</option>
@@ -228,7 +228,13 @@ cat << EOF
         </form>
     </td>
 </tr>
-
+ <tr>
+        <th>Display debug info on OSD</th>
+        <td>
+            <button title='' type='button' onClick="call('/cgi-bin/action.cgi?cmd=onDebug')">On</button>
+            <button title='' type='button' onClick="call('/cgi-bin/action.cgi?cmd=offDebug')">Off</button> 
+        </td>
+    </tr>
 <tr>
     <th>Start original Xiaomi Software:</th>
     <td>
