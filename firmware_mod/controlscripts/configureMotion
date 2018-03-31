@@ -3,10 +3,9 @@
 # Set the socket option in order to restart easily the server (socket in use)
 echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle
 
-if [ -f /system/sdcard/config/motion ] ; then
-    source /system/sdcard/config/motion 2>/dev/null
-    /system/sdcard/bin/setconf -k r -v ${Region} 2>/dev/null
-    /system/sdcard/bin/setconf -k m -v ${Sens} 2>/dev/null
-    /system/sdcard/bin/setconf -k z -v ${OsdColor} 2>/dev/null
+if [ -f /system/sdcard/config/motion.conf ] ; then
+    source /system/sdcard/config/motion.conf 2>/dev/null
+    /system/sdcard/bin/setconf -k r -v ${region_of_interest} 2>/dev/null
+    /system/sdcard/bin/setconf -k m -v ${motion_sensitivity} 2>/dev/null
+    /system/sdcard/bin/setconf -k z -v ${motion_indicator_color} 2>/dev/null
 fi;
-
