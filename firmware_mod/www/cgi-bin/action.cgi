@@ -6,8 +6,15 @@ echo ""
 source func.cgi
 
 setgpio(){
-GPIOPIN=$1
-echo "$2" > "/sys/class/gpio/gpio$GPIOPIN/value"
+  GPIOPIN=$1
+  echo "$2" > "/sys/class/gpio/gpio$GPIOPIN/value"
+}
+
+rewrite_config(){
+  cfg_path=$1
+  cfg_key=$2
+  new_value=$3
+  sed -i -e "/$cfg_key=/ s/=.*/=$new_value/" $cfg_path
 }
 
 echo "<br/>"
@@ -209,17 +216,30 @@ if [ -n "$F_cmd" ]; then
     flip-off)
       /system/sdcard/bin/setconf -k f -v 0
     ;;
-    
-    setRegion)
-         echo "Region=${F_X0},${F_Y0},${F_X1},${F_Y1}" >  /system/sdcard/config/motion
-         echo "Sens=${F_Sensitivity}" >>  /system/sdcard/config/motion
-         echo "OsdColor=${F_osdColor}" >>  /system/sdcard/config/motion
 
-        /system/sdcard/bin/setconf -k r -v ${F_X0},${F_Y0},${F_X1},${F_Y1}
-        /system/sdcard/bin/setconf -k m -v ${F_Sensitivity}
-        /system/sdcard/bin/setconf -k z -v ${F_osdColor}
+    motion_detection_on)
+      /system/sdcard/bin/setconf -k m -v 4
+    ;;
+
+    motion_detection_off)
+      /system/sdcard/bin/setconf -k m -v -1
+    ;;
+
+    set_region_of_interest)
+        rewrite_config /system/sdcard/config/motion.conf region_of_interest "${F_x0},${F_y0},${F_x1},${F_y1}"
+        rewrite_config /system/sdcard/config/motion.conf motion_sensitivity "${F_motion_sensitivity}"
+        rewrite_config /system/sdcard/config/motion.conf motion_indicator_color "${F_motion_indicator_color}"
+
+        # echo "region_of_interest=${F_x0},${F_y0},${F_x1},${F_y1}" >  /system/sdcard/config/motion.conf
+        # echo "motion_sensitivity=${F_motion_sensitivity}" >>  /system/sdcard/config/motion.conf
+        # echo "motion_indicator_color=${F_motion_indicator_color}" >>  /system/sdcard/config/motion.conf
+
+        /system/sdcard/bin/setconf -k r -v ${F_x0},${F_y0},${F_x1},${F_y1}
+        /system/sdcard/bin/setconf -k m -v ${F_motion_sensitivity}
+        /system/sdcard/bin/setconf -k z -v ${F_motion_indicator_color}
+
         # Changed the detection region, need to restart the server
-        if [ ${F_restartServer} == "1" ]
+        if [ ${F_restart_server} == "1" ]
         then
             processName="v4l2rtspserver-master"
             #get the process pid
@@ -236,7 +256,7 @@ if [ -n "$F_cmd" ]; then
                     ${cmdLine} &>/dev/null
 
             else
-                    echo "Not found"
+                    echo "process v4l2rtspserver-master was not found"
             fi
         fi
 

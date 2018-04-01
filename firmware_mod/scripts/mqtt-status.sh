@@ -36,7 +36,7 @@ ir_led=$(getgpio 49)
 if [ "$ir_led" == "0" ]; then ir_led="on"; fi
 if [ "$ir_led" == "1" ]; then ir_led="off"; fi
 
-## RTSP status
+# RTSP status
 string=$(pidof v4l2rtspserver-master)
 if [[ ${#string} == "0" ]]; then
   RTSPRUNNING="not running"
@@ -44,17 +44,26 @@ else
   RTSPRUNNING="running"
 fi
 
+# Motion detection status
+motion_sensitivity=`/system/sdcard/bin/setconf -g m 2>/dev/null`
+if test $motion_sensitivity -lt 0;
+  then motion_detection="off";
+else
+  motion_detection="on";
+fi
+
 if [ "$STATUSFORMAT" == "json" ]; then
   NOISELEVEL=$(echo "$QUALITY" | awk '{ print $6}' | sed -e 's/.*=//' | sed -e 's/\/100/\%/')
   LINKQUALITY=$(echo "$QUALITY" | awk '{ print $2}' | sed -e 's/.*=//' | sed -e 's/\/100/\%/')
   SIGNALLEVEL=$(echo "$QUALITY" | awk '{ print $4}' | sed -e 's/.*=//' | sed -e 's/\/100/\%/')
-  echo "{\"Uptime\":\"$UPTIME\", \"RTSP-Server\":\"$RTSPRUNNING\", \"IR-Cut\":\"$ir_cut\", \"Wifi\":{\"SSID\":\"$SSID\", \"Bitrate\":\"$BITRATE\", \"SignalLevel\":\"$SIGNALLEVEL\", \"Linkquality\":\"$LINKQUALITY\", \"NoiseLevel\":\"$NOISELEVEL\"}, \"LEDs\":{\"Blue\":\"$blue\", \"Yellow\":\"$yellow\", \"Infrared\":\"$ir_led\"}}"
+  echo "{\"Uptime\":\"$UPTIME\", \"RTSP-Server\":\"$RTSPRUNNING\", \"motion_detection\":\"$motion_detection\", \"IR-Cut\":\"$ir_cut\", \"Wifi\":{\"SSID\":\"$SSID\", \"Bitrate\":\"$BITRATE\", \"SignalLevel\":\"$SIGNALLEVEL\", \"Linkquality\":\"$LINKQUALITY\", \"NoiseLevel\":\"$NOISELEVEL\"}, \"LEDs\":{\"Blue\":\"$blue\", \"Yellow\":\"$yellow\", \"Infrared\":\"$ir_led\"}}"
 else
   echo "$UPTIME - "
   echo "SSID: $SSID, Bitrate: $BITRATE, $QUALITY - "
   echo "LEDs: blue=$blue, yellow=$yellow, IR=$ir_led - "
   echo "IR-Cut=$ir_cut - "
-  echo "RTSP-Server: $RTSPRUNNING"
+  echo "RTSP-Server: $RTSPRUNNING - "
+  echo "motion_detection: $motion_detection"
 fi
 
 ## enable this for the format used before
