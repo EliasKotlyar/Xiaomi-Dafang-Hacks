@@ -72,10 +72,6 @@ for i in /system/sdcard/config/autostart/*; do
   $i
 done
 
-#Start rtsp server
-# Choose only one of the servers below to uncomment if desired
-#/system/sdcard/controlscripts/rtsp-mjpeg start
-/system/sdcard/controlscripts/rtsp-h264 start
-
+# Removing rtsp server startup here since it should be started if necessary in config/autostart
 
 echo "Startup finished!"
