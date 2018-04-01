@@ -46,6 +46,16 @@ export LD_LIBRARY_PATH='/thirdlib:/system/lib:/system/sdcard/lib'
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"status ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(/system/sdcard/scripts/mqtt-status.sh)"
     ;;
 
+    "${TOPIC}motion_detection/set on")
+      /system/sdcard/bin/curl -m 2 "${CURLOPTS}" -s http://127.0.0.1/cgi-bin/action.cgi\?cmd=motion_detection_on -o /dev/null 2>/dev/null
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"motion_detection ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "on"
+    ;;
+
+    "${TOPIC}motion_detection/set off")
+      /system/sdcard/bin/curl -m 2 "${CURLOPTS}" -s http://127.0.0.1/cgi-bin/action.cgi\?cmd=motion_detection_off -o /dev/null 2>/dev/null
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"motion_detection ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "off"
+    ;;
+
     "${TOPIC}set "*)
       COMMAND=$(echo "$line" | awk '{print $2}')
       #echo "$COMMAND"

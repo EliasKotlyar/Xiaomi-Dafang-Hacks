@@ -95,7 +95,19 @@ if [ -n "$F_cmd" ]; then
     fi
     echo $sound_on_startup
     ;;
-    
+
+  motion_detection)
+    motion_sensitivity=`/system/sdcard/bin/setconf -g m 2>/dev/null`
+    if [ "${motion_sensitivity}X" == "X" ];
+      then motion_sensitivity="0"
+    fi
+    if test $motion_sensitivity -lt 0;
+      then motion_detection="off";
+    else
+      motion_detection="on";
+    fi
+    echo $motion_detection
+    ;;
   *)
     echo "Unsupported command '$F_cmd'"
     ;;

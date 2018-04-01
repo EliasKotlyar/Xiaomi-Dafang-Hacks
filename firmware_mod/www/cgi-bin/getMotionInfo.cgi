@@ -1,26 +1,27 @@
 #!/bin/sh
 echo "Content-type: text/plain"
 echo
-color=`/system/sdcard/bin/setconf -g z 2>/dev/null`
-if [ "${color}X" == "X" ]
-then
-    color="0"
-fi
-echo "osdColor=${color};"
 
-sens=`/system/sdcard/bin/setconf -g m 2>/dev/null`
-if [ "${sens}X" == "X" ]
+motion_indicator_color=`/system/sdcard/bin/setconf -g z 2>/dev/null`
+if [ "${motion_indicator_color}X" == "X" ]
 then
-    sens="0"
+    motion_indicator_color="0"
 fi
-echo "sens=${sens};"
+echo "motion_indicator_color=${motion_indicator_color};"
 
-region=`/system/sdcard/bin/setconf -g r 2>/dev/null`
-if [ "${region}X" == "X" ]
+motion_sensitivity=`/system/sdcard/bin/setconf -g m 2>/dev/null`
+if [ "${motion_sensitivity}X" == "X" ]
 then
-    region="0,0,0,0"
+    motion_sensitivity="0"
 fi
-echo "RegionSize=[${region}];"
+echo "motion_sensitivity=${motion_sensitivity};"
+
+region_of_interest=`/system/sdcard/bin/setconf -g r 2>/dev/null`
+if [ "${region_of_interest}X" == "X" ]
+then
+    region_of_interest="0,0,0,0"
+fi
+echo "region_of_interest=[${region_of_interest}];"
 
 
 
