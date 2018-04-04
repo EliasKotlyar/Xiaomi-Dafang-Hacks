@@ -184,7 +184,7 @@
           })
           .done(function(status) {
             console.log(entity + " status " + status);
-            if (status.trim() == "on") {
+            if (status.trim() == "ON") {
               $('#' + entity + '_toggle').prop('checked', true);
             } else {
               $('#' + entity + '_toggle').prop('checked', false);
@@ -353,7 +353,7 @@
           cmd: "ir_led"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/action.cgi?cmd=ir_led_off").done(function(data) {});
             $('#ir_led_toggle').prop('checked', false);
           } else {
@@ -369,7 +369,7 @@
           cmd: "ir_cut"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/action.cgi?cmd=ir_cut_off").done(function(status) {});
             $('#ir_cut_toggle').prop('checked', false);
           } else {
@@ -385,7 +385,7 @@
           cmd: "auto_night_detection"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/scripts.cgi?cmd=stop&script=auto-night-detection").done(function(status) {});
             $('#auto_night_detection_toggle').prop('checked', false);
           } else {
@@ -401,7 +401,7 @@
           cmd: "blue_led"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/action.cgi?cmd=blue_led_off").done(function(data) {});
             $('#blue_led_toggle').prop('checked', false);
           } else {
@@ -417,7 +417,7 @@
           cmd: "yellow_led"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/action.cgi?cmd=yellow_led_off").done(function(data) {});
             $('#yellow_led_toggle').prop('checked', false);
           } else {
@@ -433,7 +433,7 @@
           cmd: "motion_detection"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/action.cgi?cmd=motion_detection_off").done(function(data) {});
             $('#motion_detection_toggle').prop('checked', false);
           } else {
@@ -449,7 +449,7 @@
           cmd: "rtsp_h264"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/scripts.cgi?cmd=stop&script=rtsp-h264").done(function(data) {});
             $('#rtsp_h264_toggle').prop('checked', false);
           } else {
@@ -465,7 +465,7 @@
           cmd: "rtsp_mjpeg"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/scripts.cgi?cmd=stop&script=rtsp-mjpeg").done(function(data) {});
             $('#rtsp_mjpeg_toggle').prop('checked', false);
           } else {
@@ -481,7 +481,7 @@
           cmd: "mqtt_status"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/scripts.cgi?cmd=stop&script=mqtt-status").done(function(data) {});
             $('#mqtt_status_toggle').prop('checked', false);
           } else {
@@ -497,7 +497,7 @@
           cmd: "mqtt_control"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/scripts.cgi?cmd=stop&script=mqtt-control").done(function(data) {});
             $('#mqtt_control_toggle').prop('checked', false);
           } else {
@@ -513,7 +513,7 @@
           cmd: "sound_on_startup"
         })
         .done(function(status) {
-          if (status.trim() == "on") {
+          if (status.trim() == "ON") {
             $.get("/cgi-bin/scripts.cgi?cmd=stop&script=sound-on-startup").done(function(data) {});
             $('#sound_on_startup_toggle').prop('checked', false);
           } else {

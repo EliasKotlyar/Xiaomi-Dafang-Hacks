@@ -3,11 +3,8 @@
 # A very light-weight interface just for responsive ui to get states
 
 source func.cgi
+source /system/sdcard/scripts/common_functions.sh
 
-getgpio(){
-  GPIOPIN=$1
-  cat /sys/class/gpio/gpio"$GPIOPIN"/value
-}
 
 echo "Content-type: text"
 echo ""
@@ -15,98 +12,67 @@ echo ""
 if [ -n "$F_cmd" ]; then
   case "$F_cmd" in
   blue_led)
-    blue=$(getgpio 39)
-    if [ "$blue" == "0" ]; then blue="on"; fi
-    if [ "$blue" == "1" ]; then blue="off"; fi
-    echo $blue
+    echo $(blue_led status)
     ;;
 
   yellow_led)
-    yellow=$(getgpio 38)
-    if [ "$yellow" == "0" ]; then yellow="on"; fi
-    if [ "$yellow" == "1" ]; then yellow="off"; fi
-    echo $yellow
+    echo $(yellow_led status)
     ;;
 
   ir_led)
-    ir_led=$(getgpio 49)
-    if [ "$ir_led" == "0" ]; then ir_led="on"; fi
-    if [ "$ir_led" == "1" ]; then ir_led="off"; fi
-    echo $ir_led
+    echo $(ir_led status)
     ;;
 
   ir_cut)
-    ir_cut=$(getgpio 26)
-    if [ "$ir_cut" == "1" ]; then ir_cut="on"; fi
-    if [ "$ir_cut" == "0" ]; then ir_cut="off"; fi
-    echo $ir_cut
+    echo $(ir_cut status)
     ;;
 
   rtsp_h264)
-    if [ -f /run/v4l2rtspserver-master-h264.pid ];
-      then rtsp_h264="on";
-    else
-      rtsp_h264="off";
-    fi
-    echo $rtsp_h264
+    echo $(rtsp_server status)
     ;;
 
   rtsp_mjpeg)
     if [ -f /run/v4l2rtspserver-master-mjpeg.pid ];
-      then rtsp_mjpeg="on";
+      then rtsp_mjpeg="ON";
     else
-      rtsp_mjpeg="off";
+      rtsp_mjpeg="OFF";
     fi
     echo $rtsp_mjpeg
     ;;
 
   auto_night_detection)
-    if [ -f /run/auto-night-detection.pid ];
-      then auto_night_mode="on";
-    else
-      auto_night_mode="off";
-    fi
-    echo $auto_night_mode
+    echo $(auto_night_mode status)
     ;;
 
   mqtt_status)
     if [ -f /run/mqtt-status.pid ];
-      then mqtt_status="on";
+      then mqtt_status="ON";
     else
-      mqtt_status="off";
+      mqtt_status="OFF";
     fi
     echo $mqtt_status
     ;;
 
   mqtt_control)
     if [ -f /run/mqtt-control.pid ];
-      then mqtt_control="on";
+      then mqtt_control="ON";
     else
-      mqtt_control="off";
+      mqtt_control="OFF";
     fi
     echo $mqtt_control
     ;;
 
   sound_on_startup)
     if [ -f /system/sdcard/config/autostart/sound-on-startup ];
-      then sound_on_startup="on";
+      then sound_on_startup="ON";
     else
-      sound_on_startup="off";
+      sound_on_startup="OFF";
     fi
     echo $sound_on_startup
     ;;
 
   motion_detection)
-    motion_sensitivity=`/system/sdcard/bin/setconf -g m 2>/dev/null`
-    if [ "${motion_sensitivity}X" == "X" ];
-      then motion_sensitivity="0"
-    fi
-    if test $motion_sensitivity -lt 0;
-      then motion_detection="off";
-    else
-      motion_detection="on";
-    fi
-    echo $motion_detection
+    echo $(motion_detection status)
     ;;
   *)
     echo "Unsupported command '$F_cmd'"
