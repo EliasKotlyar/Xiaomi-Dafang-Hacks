@@ -45,5 +45,6 @@ fabric.properties
 
 .idea/*
 
-# avoid uploading you wpa keys
+# avoid uploading your wpa keys and personal adjustments
 firmware_mod/config/wpa_supplicant.conf
+firmware_mod/config/motion.conf

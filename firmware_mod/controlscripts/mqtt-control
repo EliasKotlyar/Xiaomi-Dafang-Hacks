@@ -17,9 +17,9 @@ start()
     echo "You have to configure mqtt first. Please see /system/sdcard/config/mqtt.dist for further instructions"
   else
     if [ -z ${AUTODISCOVERY_PREFIX+x} ];
-      then echo "MQTT autodiscovery in not enabled";
+      then echo "MQTT autodiscovery is not enabled";
     else
-      echo "MQTT autodiscovery in enabled - publishing initial configurations";
+      echo "MQTT autodiscovery is enabled - now publishing initial configurations";
       /system/sdcard/scripts/mqtt-autodiscovery.sh
     fi
     echo "Starting MQTT - Control"
