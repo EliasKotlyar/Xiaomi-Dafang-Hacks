@@ -29,5 +29,5 @@ source /system/sdcard/scripts/common_functions.sh
 # RTSP Server
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/rtsp_server/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "{\"name\": \"$DEVICE_NAME rtsp server\", \"icon\": \"mdi:cctv\", \"state_topic\": \"$TOPIC/rtsp_server\", \"command_topic\": \"$TOPIC/rtsp_server/set\"}"
 
-# Motion Snapshots (not yet supported with auto autodiscovery)
-# /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/camera/$DEVICE_NAME/motion_snapshots/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "{\"name\": \"$DEVICE_NAME motion snapshots\", \"topic\": \"$TOPIC/motion_snapshots\"}"
+# Motion Snapshots (soon supported with auto autodiscovery)
+/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/camera/$DEVICE_NAME/motion_snapshots/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "{\"name\": \"$DEVICE_NAME motion snapshots\", \"topic\": \"$TOPIC/motion_snapshots\"}"
