@@ -52,6 +52,16 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       overflow: hidden;
       word-break: normal;
     }
+    .img h2 {
+
+      position: absolute;
+      top: 20%;
+      left: 20%;
+      font-size: 28pt;
+      text-align: center;
+      background-color: #B0E0E6
+  }
+
   </style>
 
   <script type="text/javascript">
@@ -69,6 +79,37 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       $('#restart_server').val(1);
     }
 
+    function setTracking(obj,init) {
+
+        var ias = $('#picture').imgAreaSelect({
+          instance: true
+        });
+
+      if($(obj).is(":checked")){
+        ias.setOptions({
+          hide: true
+        });
+        $('#picture').css('opacity',0.5);
+        $("#RegionDisabled").show();
+        document.getElementById('motion_timeout').readOnly = false;
+        document.getElementById('motion_timeout').style.backgroundColor = "#FFFFFF";
+
+      }else{
+        ias.setOptions({
+          show: true
+        });
+         $('#picture').css('opacity',1);
+         $("#RegionDisabled").hide();
+         document.getElementById('motion_timeout').readOnly = true;
+         document.getElementById('motion_timeout').style.backgroundColor = "#B0E0E6";
+    }
+    ias.update();
+
+    if (init == false) {
+      $('#restart_server').val(1);
+    }
+
+  }
     $(function() {
       var httpRequest = new XMLHttpRequest();
       httpRequest.open('GET', 'cgi-bin/getMotionInfo.cgi', false);
@@ -84,15 +125,16 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       var ias = $('#picture').imgAreaSelect({
         instance: true
       });
-      ias.setOptions({
-        show: true
-      });
-      ias.update();
 
-      if (region_of_interest[0] == 0 && region_of_interest[1] == 0 && region_of_interest[2] == 0 && region_of_interest[3] == 0)
-        ias.setSelection(0, 0, width, height, true);
+      if ((region_of_interest[0] == 0 && region_of_interest[1] == 0 && region_of_interest[2] == 0 && region_of_interest[3] == 0) ||
+          (region_of_interest[0] > width || region_of_interest[1] > height || region_of_interest[2] > width || region_of_interest[3] > height))
+      {
+            ias.setSelection(0, 0, width, height, true);
+      }
       else
+      {
         ias.setSelection(region_of_interest[0], region_of_interest[1], region_of_interest[2], region_of_interest[3], false);
+      }
 
       $('#x0').val(region_of_interest[0]);
       $('#y0').val(region_of_interest[1]);
@@ -101,7 +143,15 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
       $('#restart_server').val(0);
       $('#motion_indicator_color').val(motion_indicator_color).change();
       $('#motion_sensitivity').val(motion_sensitivity).change();
+      console.log(motion_tracking);
+      $('#motion_tracking').prop('checked',motion_tracking);
+      $('#motion_timeout').val(motion_timeout).change();
+      setTracking( $('#motion_tracking').get(0), true);
     });
+
+
+
+
   </script>
 
 
@@ -114,8 +164,11 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         Select motion detection region (changing region will restart the rtsp server)
       </p>
 
-      <div class="frame" style="margin: 0 0.3em;">
+      <div class="img" style="margin: 0 0.3em;">
         <img id="picture" src="/cgi-bin/currentpic.cgi" />
+        <span id="RegionDisabled">
+          <h2> Region disabled</h2>
+        </span>
       </div>
       <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=set_region_of_interest" method="post">
         <input id="x0" name="x0" type="hidden" />
@@ -124,27 +177,31 @@ http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
         <input id="y1" name="y1" type="hidden" />
         <input id="restart_server" name="restart_server" type="hidden" /> Set sensitivity or deactivate
         <select name="motion_sensitivity" id="motion_sensitivity">
-        <option value="-1">Motion deactivated</option>
-        <option value="0">0</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-        <option value="4">4</option>
-      </select>
+          <option value="-1">Motion deactivated</option>
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
 
         <br>Display motion indicator if motion is detected
         <select name="motion_indicator_color" id="motion_indicator_color">
-        <option value="-1">Deactivated</option>
-        <option value="0">White</option>
-        <option value="1">Black</option>
-        <option value="2">Red</option>
-        <option value="3">Green</option>
-        <option value="4">Blue</option>
-        <option value="5">Cyan</option>
-        <option value="6">Yellow</option>
-        <option value="7">Purple</option>
-      </select>
-
+          <option value="-1">Deactivated</option>
+          <option value="0">White</option>
+          <option value="1">Black</option>
+          <option value="2">Red</option>
+          <option value="3">Green</option>
+          <option value="4">Blue</option>
+          <option value="5">Cyan</option>
+          <option value="6">Yellow</option>
+          <option value="7">Purple</option>
+         </select>
+        <br>
+        Enable motion tracking (when enabled no region of interest is no more used)
+        <input type="checkbox" name="motion_tracking" id="motion_tracking" onchange="setTracking(this, false)">
+        <br> Motion Timeout (restore camera position after x seconds) -1 to deactivate
+        <input id="motion_timeout" name="motion_timeout" type="number" size="6">
         <br>
         <input type="submit" value="Configure motion" />
 

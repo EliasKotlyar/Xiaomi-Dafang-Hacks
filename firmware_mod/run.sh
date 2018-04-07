@@ -72,8 +72,6 @@ for i in /system/sdcard/config/autostart/*; do
   $i
 done
 
-#Start
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
-
+# Removing rtsp server startup here since it should be started if necessary in config/autostart
 
 echo "Startup finished!"

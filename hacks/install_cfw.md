@@ -29,8 +29,9 @@ E:/
 
 ```
 
-3. Modify the file config/wpa_supplicant.conf on the microSD to match your wifi-settings
-4. Insert the microSD and start the camera.
+3. Copy config/wpa_supplicant.dist to config/wpa_supplicant.conf
+4. Modify the file config/wpa_supplicant.conf on the microSD to match your wifi-settings
+5. Insert the microSD and start the camera.
 
 ## Updating the microsd-bootloader
 
