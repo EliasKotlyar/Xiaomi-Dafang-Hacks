@@ -275,6 +275,17 @@ if [ -n "$F_cmd" ]; then
         /system/sdcard/controlscripts/debug-on-osd start                  
     ;;                    
    
+    conf_timelapse)
+      tlinterval=$(printf '%b' "${F_tlinterval/%/\\x}")
+      tlinterval=$(echo "$tlinterval" | sed "s/[^0-9\.]//g")
+      if [ "$tlinterval" ]; then
+        echo "TIMELAPSE_INTERVAL=$tlinterval" > /system/sdcard/config/timelapse.conf
+        echo "Timelapse interval set to $tlinterval seconds."
+      else
+        echo "Invalid timelapse interval"
+      fi
+    ;;
+
    *)
     echo "Unsupported command '$F_cmd'"
     ;;

@@ -236,6 +236,14 @@ cat << EOF
         </td>
     </tr>
 <tr>
+    <th>Timelapse</th>
+    <td>
+        <form style="display: inline;" action="/cgi-bin/action.cgi?cmd=conf_timelapse" method="post">
+        Interval: <input id="tlinterval" name="tlinterval" type="text" size="5" value="$(source /system/sdcard/config/timelapse.conf && echo "$TIMELAPSE_INTERVAL")"/>seconds (minimum: 1.0)
+        <input type="submit" value="Set" />
+    </td>
+</tr>
+<tr>
     <th>Start original Xiaomi Software:</th>
     <td>
         <button title='' type='button' onClick="call('action.cgi?cmd=xiaomi_start')">Start</button>
