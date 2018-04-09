@@ -279,10 +279,18 @@ if [ -n "$F_cmd" ]; then
       tlinterval=$(printf '%b' "${F_tlinterval/%/\\x}")
       tlinterval=$(echo "$tlinterval" | sed "s/[^0-9\.]//g")
       if [ "$tlinterval" ]; then
-        echo "TIMELAPSE_INTERVAL=$tlinterval" > /system/sdcard/config/timelapse.conf
+        rewrite_config /system/sdcard/config/timelapse.conf TIMELAPSE_INTERVAL "$tlinterval"
         echo "Timelapse interval set to $tlinterval seconds."
       else
         echo "Invalid timelapse interval"
+      fi
+      tlduration=$(printf '%b' "${F_tlduration/%/\\x}")
+      tlduration=$(echo "$tlduration" | sed "s/[^0-9\.]//g")
+      if [ "$tlduration" ]; then
+        rewrite_config /system/sdcard/config/timelapse.conf TIMELAPSE_DURATION "$tlduration"
+        echo "Timelapse duration set to $tlduration minutes."
+      else
+        echo "Invalid timelapse duration"
       fi
     ;;
 

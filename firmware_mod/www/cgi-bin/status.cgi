@@ -239,7 +239,8 @@ cat << EOF
     <th>Timelapse</th>
     <td>
         <form style="display: inline;" action="/cgi-bin/action.cgi?cmd=conf_timelapse" method="post">
-        Interval: <input id="tlinterval" name="tlinterval" type="text" size="5" value="$(source /system/sdcard/config/timelapse.conf && echo "$TIMELAPSE_INTERVAL")"/>seconds (minimum: 1.0)
+        Interval: <input id="tlinterval" name="tlinterval" type="text" size="5" value="$(source /system/sdcard/config/timelapse.conf && echo "$TIMELAPSE_INTERVAL")"/>seconds,
+        Duration: <input id="tlduration" name="tlduration" type="text" size="5" value="$(source /system/sdcard/config/timelapse.conf && echo "$TIMELAPSE_DURATION")"/>minutes (set to 0 for unlimited)
         <input type="submit" value="Set" />
     </td>
 </tr>
