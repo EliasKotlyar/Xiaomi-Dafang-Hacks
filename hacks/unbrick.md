@@ -35,9 +35,6 @@ You can watch the update working over the serial connection
 0x000000ff0000-0x000001000000 : "flag"
 ```
 
-The addresses of the firmware can be found here:  
-https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/hacks/firmware-dump.md#the-partition-table
-
 ## Loading and booting a kernel without flashing (for advanced users)
 e.g. https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/firmware_original/5.5.1.177/kernel.bin
 ```
