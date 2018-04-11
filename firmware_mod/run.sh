@@ -6,6 +6,9 @@ echo "Starting up CFW"
 ## Update hostname:
 hostname -F $CONFIGPATH/hostname.conf
 
+## NTP Server
+ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
+
 #read v4l2config (username, password)
 v4l2config=$(cat $CONFIGPATH/v4l2rtspserver.conf)
 ## Get real Mac address from config file:
@@ -49,7 +52,7 @@ insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 
 ## Update time
-/system/sdcard/bin/busybox ntpd -q -n -p time.google.com
+/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv
 
 ## Start FTP & SSH
 /system/sdcard/bin/dropbearmulti dropbear -R
