@@ -6,7 +6,10 @@ if [ -f /system/sdcard/config/rtspserver.conf ]; then
   source /system/sdcard/config/rtspserver.conf
 fi
 
-if [ -f /system/sdcard/config/osd ]; then 
+#read v4l2config (username, password)
+v4l2config=$(cat /system/sdcard/config/v4l2rtspserver.conf)
+
+if [ -f /system/sdcard/config/osd ]; then
   source /system/sdcard/config/osd 2>/dev/null
 fi
 

@@ -6,6 +6,8 @@ echo "Starting up CFW"
 ## Update hostname:
 hostname -F $CONFIGPATH/hostname.conf
 
+#read v4l2config (username, password)
+v4l2config=$(cat $CONFIGPATH/v4l2rtspserver.conf)
 ## Get real Mac address from config file:
 MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 
