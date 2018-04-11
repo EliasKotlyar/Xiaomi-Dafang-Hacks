@@ -26,3 +26,8 @@ if [ "$publish_mqtt_message" = true ] ; then
 	/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion_snapshots ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f $save_dir/$filename
 
 fi
+
+# Send emails ...
+if [ "$sendemail" = true ] ; then
+    /system/sdcard/scripts/sendPictureMail.sh&
+fi

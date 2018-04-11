@@ -237,6 +237,15 @@ if [ -n "$F_cmd" ]; then
         rewrite_config /system/sdcard/config/motion.conf region_of_interest "${F_x0},${F_y0},${F_x1},${F_y1}"
         rewrite_config /system/sdcard/config/motion.conf motion_sensitivity "${F_motion_sensitivity}"
         rewrite_config /system/sdcard/config/motion.conf motion_indicator_color "${F_motion_indicator_color}"
+        rewrite_config /system/sdcard/config/motion.conf motion_timeout "${F_motion_timeout}"
+        if [ "${F_motion_tracking}X" == "X" ]
+        then
+            rewrite_config /system/sdcard/config/motion.conf motion_tracking off
+             /system/sdcard/bin/setconf -k t -v off
+        else
+            rewrite_config /system/sdcard/config/motion.conf motion_tracking on
+            /system/sdcard/bin/setconf -k t -v on
+        fi
 
         # echo "region_of_interest=${F_x0},${F_y0},${F_x1},${F_y1}" >  /system/sdcard/config/motion.conf
         # echo "motion_sensitivity=${F_motion_sensitivity}" >>  /system/sdcard/config/motion.conf
@@ -245,10 +254,12 @@ if [ -n "$F_cmd" ]; then
         /system/sdcard/bin/setconf -k r -v ${F_x0},${F_y0},${F_x1},${F_y1}
         /system/sdcard/bin/setconf -k m -v ${F_motion_sensitivity}
         /system/sdcard/bin/setconf -k z -v ${F_motion_indicator_color}
+        /system/sdcard/bin/setconf -k u -v ${F_motion_timeout}
 
         # Changed the detection region, need to restart the server
         if [ ${F_restart_server} == "1" ]
         then
+
             processName="v4l2rtspserver-master"
             #get the process pid
             processId=`ps | grep ${processName} | grep -v grep | awk '{ printf $1 }'`
@@ -257,14 +268,18 @@ if [ -n "$F_cmd" ]; then
                     #found the process, now get the full path and the parameters in order to restart it
                     executable=`ls -l /proc/${processId}/exe | awk '{print $NF}'`
                     cmdLine=`tr '\0' ' ' < /proc/${processId}/cmdline | awk '{$1=""}1'`
-
                     kill ${processId} 2>/dev/null
+
+                    # Set the socket option in order to restart easily the server (socket in use)
+                    echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle
+
                     sleep 2
                     cmdLine="/system/sdcard/bin/busybox nohup "${executable}${cmdLine} 2>/dev/null
-                    ${cmdLine} &>/dev/null
+                    ${cmdLine}  2>/dev/null >/dev/null &
 
             else
                     echo "process v4l2rtspserver-master was not found"
+                    echo "<BR>"
             fi
         fi
 
