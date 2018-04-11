@@ -4,18 +4,7 @@ echo "Content-type: text/html"
 echo ""
 
 source func.cgi
-
-setgpio(){
-  GPIOPIN=$1
-  echo "$2" > "/sys/class/gpio/gpio$GPIOPIN/value"
-}
-
-rewrite_config(){
-  cfg_path=$1
-  cfg_key=$2
-  new_value=$3
-  sed -i -e "/$cfg_key=/ s/=.*/=$new_value/" $cfg_path
-}
+source /system/sdcard/scripts/common_functions.sh
 
 echo "<br/>"
 export LD_LIBRARY_PATH=/system/lib
@@ -283,17 +272,17 @@ if [ -n "$F_cmd" ]; then
         echo "<BR>"
         echo "<button title='Return to motion configuration page' onClick=\"window.location.href='/configmotion.html'\">Back to motion configuration</button>"
     ;;
-    offDebug)                                                                        
-        /system/sdcard/controlscripts/debug-on-osd stop                                           
-        if [ -f /system/sdcard/controlscripts/configureOsd ]; then               
-            source /system/sdcard/controlscripts/configureOsd                          
-        fi                                                      
-                                                                                                  
-    ;;                                                                                                 
-    onDebug)                                                                     
-        /system/sdcard/controlscripts/debug-on-osd start                  
-    ;;                    
-   
+    offDebug)
+        /system/sdcard/controlscripts/debug-on-osd stop
+        if [ -f /system/sdcard/controlscripts/configureOsd ]; then
+            source /system/sdcard/controlscripts/configureOsd
+        fi
+
+    ;;
+    onDebug)
+        /system/sdcard/controlscripts/debug-on-osd start
+    ;;
+
    *)
     echo "Unsupported command '$F_cmd'"
     ;;
