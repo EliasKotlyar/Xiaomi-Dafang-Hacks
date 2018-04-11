@@ -55,6 +55,7 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 
 ## Start Webserver:
 /system/sdcard/bin/boa -c /system/sdcard/config/
+#/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
 
 ## Configure OSD
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
