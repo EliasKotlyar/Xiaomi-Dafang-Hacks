@@ -31,3 +31,8 @@ if [ "$publish_mqtt_message" = true ] ; then
 	export LD_LIBRARY_PATH='/thirdlib:/system/lib:/system/sdcard/lib'
 	/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"motion ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -m "on"
 fi
+
+# Send emails ...
+if [ "$sendemail" = true ] ; then
+    /system/sdcard/scripts/sendPictureMail.sh&
+fi
