@@ -23,6 +23,20 @@ then
 fi
 echo "region_of_interest=[${region_of_interest}];"
 
+motion_tracking=`/system/sdcard/bin/setconf -g t 2>/dev/null`
+if [ "${motion_tracking}X" == "X" ]
+then
+    motion_tracking=false
+fi
+echo "motion_tracking=${motion_tracking};"
+
+
+motion_timeout=`/system/sdcard/bin/setconf -g u 2>/dev/null`
+if [ "${motion_timeout}X" == "X" ]
+then
+    motion_tracking=60
+fi
+echo "motion_timeout=${motion_timeout};"
 
 
 
