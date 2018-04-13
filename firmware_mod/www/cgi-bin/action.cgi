@@ -4,18 +4,7 @@ echo "Content-type: text/html"
 echo ""
 
 source func.cgi
-
-setgpio(){
-  GPIOPIN=$1
-  echo "$2" > "/sys/class/gpio/gpio$GPIOPIN/value"
-}
-
-rewrite_config(){
-  cfg_path=$1
-  cfg_key=$2
-  new_value=$3
-  sed -i -e "/$cfg_key=/ s/=.*/=$new_value/" $cfg_path
-}
+source /system/sdcard/scripts/common_functions.sh
 
 echo "<br/>"
 export LD_LIBRARY_PATH=/system/lib
@@ -132,12 +121,31 @@ if [ -n "$F_cmd" ]; then
        /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
     settz)
-      tz=$(printf '%b' "${F_tz//%/\\x}")
+
+	ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
+
+	#lecture fichier ntp_serv.conf
+	conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
+
+    if [ $conf_ntp_srv != "$ntp_srv" ]; then
+    echo "Setting NTP Server to '$ntp_srv'...<br/>"
+    echo "$ntp_srv" > /system/sdcard/config/ntp_srv.conf
+    echo "Syncing time on '$ntp_srv'...<br/>"
+        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv 2>&1)" -eq 0 ]; then
+          echo "<br/>Success<br/>"
+        else echo "<br/>Failed<br/>"
+		fi
+    fi
+
+	#lecture fichier ntp_serv.conf
+	conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
+
+	tz=$(printf '%b' "${F_tz//%/\\x}")
       if [ "$(cat /etc/TZ)" != "$tz" ]; then
         echo "Setting TZ to '$tz'...<br/>"
         echo "$tz" > /etc/TZ
         echo "Syncing time...<br/>"
-        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p time.google.com 2>&1)" -eq 0 ]; then
+        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p $conf_ntp_srv 2>&1)" -eq 0 ]; then
           echo "<br/>Success<br/>"
         else echo "<br/>Failed<br/>"
         fi
@@ -279,17 +287,35 @@ if [ -n "$F_cmd" ]; then
         echo "<BR>"
         echo "<button title='Return to motion configuration page' onClick=\"window.location.href='/configmotion.html'\">Back to motion configuration</button>"
     ;;
-    offDebug)                                                                        
-        /system/sdcard/controlscripts/debug-on-osd stop                                           
-        if [ -f /system/sdcard/controlscripts/configureOsd ]; then               
-            source /system/sdcard/controlscripts/configureOsd                          
-        fi                                                      
-                                                                                                  
-    ;;                                                                                                 
-    onDebug)                                                                     
-        /system/sdcard/controlscripts/debug-on-osd start                  
-    ;;                    
-   
+    offDebug)
+        /system/sdcard/controlscripts/debug-on-osd stop
+        if [ -f /system/sdcard/controlscripts/configureOsd ]; then
+            source /system/sdcard/controlscripts/configureOsd
+        fi
+
+    ;;
+    onDebug)
+        /system/sdcard/controlscripts/debug-on-osd start
+    ;;
+    conf_timelapse)
+      tlinterval=$(printf '%b' "${F_tlinterval/%/\\x}")
+      tlinterval=$(echo "$tlinterval" | sed "s/[^0-9\.]//g")
+      if [ "$tlinterval" ]; then
+        rewrite_config /system/sdcard/config/timelapse.conf TIMELAPSE_INTERVAL "$tlinterval"
+        echo "Timelapse interval set to $tlinterval seconds."
+      else
+        echo "Invalid timelapse interval"
+      fi
+      tlduration=$(printf '%b' "${F_tlduration/%/\\x}")
+      tlduration=$(echo "$tlduration" | sed "s/[^0-9\.]//g")
+      if [ "$tlduration" ]; then
+        rewrite_config /system/sdcard/config/timelapse.conf TIMELAPSE_DURATION "$tlduration"
+        echo "Timelapse duration set to $tlduration minutes."
+      else
+        echo "Invalid timelapse duration"
+      fi
+    ;;
+
    *)
     echo "Unsupported command '$F_cmd'"
     ;;

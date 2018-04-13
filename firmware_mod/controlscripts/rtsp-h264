@@ -1,6 +1,10 @@
 #!/bin/sh
 PIDFILE="/run/v4l2rtspserver-master-h264.pid"
+CONFIGPATH="/system/sdcard/config"
 export LD_LIBRARY_PATH='/thirdlib:/system/lib'
+
+#read v4l2config (username, password)
+v4l2config=$(cat /system/sdcard/config/v4l2rtspserver.conf)
 
 if [ -f /system/sdcard/config/rtspserver.conf ]; then
   source /system/sdcard/config/rtspserver.conf

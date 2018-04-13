@@ -1,4 +1,4 @@
-#/bin/sh
+#!/bin/sh
 IF=wlan0
 
 while true
@@ -22,4 +22,3 @@ do
         /system/sdcard/bin/setconf -k o -v "${string}"
 
 done
-
