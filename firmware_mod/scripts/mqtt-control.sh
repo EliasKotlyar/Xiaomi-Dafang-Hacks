@@ -1,7 +1,7 @@
 #!/bin/sh
 
-source /system/sdcard/config/mqtt.conf
-source /system/sdcard/scripts/common_functions.sh
+. /system/sdcard/config/mqtt.conf
+. /system/sdcard/scripts/common_functions.sh
 
 killall mosquitto_sub 2> /dev/null
 killall mosquitto_sub.bin 2> /dev/null
@@ -104,18 +104,18 @@ killall mosquitto_sub.bin 2> /dev/null
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(night_mode status)"
     ;;
 
-    "${TOPIC}/auto_night_mode")
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/auto_night_mode ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
+    "${TOPIC}/night_mode/auto")
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode/auto ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
     ;;
 
-    "${TOPIC}/auto_night_mode/set ON")
+    "${TOPIC}/night_mode/auto/set ON")
       auto_night_mode on
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/auto_night_mode ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode/auto ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
     ;;
 
-    "${TOPIC}/auto_night_mode/set OFF")
+    "${TOPIC}/night_mode/auto/set OFF")
       auto_night_mode off
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/auto_night_mode ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode/auto ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
     ;;
 
     "${TOPIC}/motion/detection")
@@ -130,6 +130,20 @@ killall mosquitto_sub.bin 2> /dev/null
     "${TOPIC}/motion/detection/set OFF")
       motion_detection off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/detection ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_detection status)"
+    ;;
+
+    "${TOPIC}/motion/tracking")
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/tracking ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_tracking status)"
+    ;;
+
+    "${TOPIC}/motion/tracking/set ON")
+      motion_tracking on
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/tracking ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_tracking status)"
+    ;;
+
+    "${TOPIC}/motion/tracking/set OFF")
+      motion_tracking off
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/tracking ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_tracking status)"
     ;;
 
     "${TOPIC}/set "*)

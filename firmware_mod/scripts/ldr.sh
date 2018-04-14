@@ -1,10 +1,10 @@
 #!/bin/sh
 
-source /system/sdcard/scripts/common_functions.sh
+. /system/sdcard/scripts/common_functions.sh
 
 while true; do
   if [ -f /system/sdcard/config/ldr-average.conf ]; then
-    source /system/sdcard/config/ldr-average.conf 2>/dev/null
+    . /system/sdcard/config/ldr-average.conf 2>/dev/null
     #read config in every iteration, so we can change the average online
   fi
 
