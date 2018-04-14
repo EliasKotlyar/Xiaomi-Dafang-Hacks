@@ -8,7 +8,7 @@ TIMELAPSE_CONF='/system/sdcard/config/timelapse.conf'
 SAVE_DIR='/system/sdcard/DCIM/timelapse'
 
 if [ -f "$TIMELAPSE_CONF" ]; then
-    source "$TIMELAPSE_CONF" 2>/dev/null
+    . "$TIMELAPSE_CONF" 2>/dev/null
 fi
 
 if [ -z "$TIMELAPSE_INTERVAL" ]; then TIMELAPSE_INTERVAL=2.0; fi

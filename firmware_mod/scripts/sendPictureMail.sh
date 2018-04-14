@@ -3,7 +3,7 @@
 boundary="ZZ_/afg6432dfgkl.94531q"
 FILENAME=capture.jpg
 
-source /system/sdcard/config/sendmail.conf
+. /system/sdcard/config/sendmail.conf
 
 # Build headers of the emails
 {
@@ -22,9 +22,9 @@ Content-Disposition: inline
 ${BODY}
 "
 for i in $(seq 1 ${NUMBEROFPICTURES})
-do  
-	# now loop over 
-	# and produce the corresponding part, 
+do
+	# now loop over
+	# and produce the corresponding part,
 	printf '%s\n' "--${boundary}
 Content-Type: image/jpeg
 Content-Transfer-Encoding: uuencode
