@@ -173,6 +173,28 @@ motion_detection(){
   esac
 }
 
+# Control the motion tracking function
+motion_tracking(){
+  case "$1" in
+  on)
+    /system/sdcard/bin/setconf -k t -v on
+    ;;
+  off)
+    /system/sdcard/bin/setconf -k t -v off
+    ;;
+  status)
+    status=$(/system/sdcard/bin/setconf -g t 2>/dev/null)
+    case $status in
+      true)
+        echo "ON"
+        ;;
+      *)
+        echo "OFF"
+        ;;
+    esac
+  esac
+}
+
 # Control the night mode
 night_mode(){
   case "$1" in

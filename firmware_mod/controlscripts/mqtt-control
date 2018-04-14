@@ -16,6 +16,7 @@ start()
   elif [ ! -f /system/sdcard/config/mqtt.conf ]; then
     echo "You have to configure mqtt first. Please see /system/sdcard/config/mqtt.dist for further instructions"
   else
+    . /system/sdcard/config/mqtt.conf
     if [ -z ${AUTODISCOVERY_PREFIX+x} ];
       then echo "MQTT autodiscovery is not enabled";
     else

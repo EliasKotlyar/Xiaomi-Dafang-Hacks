@@ -74,6 +74,11 @@ if [ -n "$F_cmd" ]; then
   motion_detection)
     echo $(motion_detection status)
     ;;
+
+  motion_tracking)
+    echo $(motion_tracking status)
+    ;;
+
   *)
     echo "Unsupported command '$F_cmd'"
     ;;
