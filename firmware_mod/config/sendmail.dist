@@ -27,3 +27,8 @@ BODY="This is an alert from `hostname`"
 NUMBEROFPICTURES=5
 # Time in seconds between captures
 TIMEBETWEENSNAPSHOT=5
+
+# Quality of compression (Valid quality values: 0 - 100, 100% is best)
+# Set to -1 for no compression
+QUALITY=50
+

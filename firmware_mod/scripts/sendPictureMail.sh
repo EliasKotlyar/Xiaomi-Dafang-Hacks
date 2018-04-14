@@ -30,9 +30,17 @@ Content-Type: image/jpeg
 Content-Transfer-Encoding: uuencode
 Content-Disposition: attachment; filename=\"${i}${FILENAME}\"
 "
-        /system/sdcard/bin/getimage | /system/sdcard/bin/busybox uuencode ${i}${FILENAME}
 
-        echo
+    if [ ${QUALITY} -eq -1 ]
+    then
+        /system/sdcard/bin/getimage | /system/sdcard/bin/busybox uuencode ${i}${FILENAME}
+    else
+       /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout  | /system/sdcard/bin/busybox uuencode ${i}${FILENAME}
+
+    fi
+
+    echo
+
 	if [ ${i} -lt ${NUMBEROFPICTURES} ]
 	then
 		sleep ${TIMEBETWEENSNAPSHOT}
@@ -44,4 +52,5 @@ printf '%s\n' "--${boundary}--"
 
 } |  /system/sdcard/bin/busybox sendmail \
 -H"exec /system/sdcard/bin/openssl s_client -quiet -connect $SERVER:$PORT -tls1 -starttls smtp" \
--f"$FROM" -au"$AUTH" -ap"$PASS" $TO
+-f"$FROM" -au"$AUTH" -ap"$PASS" $TO 2>/dev/null
+
