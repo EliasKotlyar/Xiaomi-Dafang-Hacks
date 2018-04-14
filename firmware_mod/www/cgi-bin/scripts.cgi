@@ -1,34 +1,6 @@
 #!/bin/sh
-echo "Content-type: text/html"
-echo ""
 source func.cgi
 
-cat << EOF
-<!DOCTYPE html>
-<html>
-
-<head>
-    <title>Fang Hacks</title>
-    <style type="text/css">
-        body { background-color: #B0E0E6; font-family: verdana, sans-serif; }
-        .err { color: red; }
-        hr { height: 1px; border: 0; border-top: 1px solid #aaa; }
-        button, input[type=submit] { background-color: #ddeaff; }
-        .tbl { border-collapse: collapse; border-spacing: 0;}
-        .tbl th { text-align: left; vertical-align: top; font-weight: bold; padding: 10px 5px; border-style: solid; border-width: 1px; overflow: hidden; word-break: normal; }
-        .tbl td { padding: 10px 5px; border-style: solid; border-width: 1px; overflow: hidden; word-break: normal; }
-    </style>
-</head>
-
-<body>
-    <h1>Boot Scripts</h1>
-    <hr/>
-    <button title='Status page' type='button' onClick="window.location.href='status.cgi'">Status</button>
-    <button title='Reboot the device' type='button' onClick="window.location.href='action.cgi?cmd=reboot'">Reboot</button>
-    <button title='Network' type='button' onClick="window.location.href='network.cgi'">Network</button>
-    <button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
-    <hr/>
-EOF
 
 SCRIPT_HOME="/system/sdcard/controlscripts/"
 if [ -n "$F_script" ]; then
@@ -36,96 +8,135 @@ if [ -n "$F_script" ]; then
   if [ -e "$SCRIPT_HOME/$script" ]; then
     case "$F_cmd" in
       start)
-        echo "Running script '$script'...<br/>"
+        echo "Content-type: text/html"
+        echo ""
+
+        echo "Running script '$script'..."
         echo "<pre>$("$SCRIPT_HOME/$script" 2>&1)</pre>"
         ;;  
       disable)
-        echo "Disable script '$script'...<br/>"
         rm "/system/sdcard/config/autostart/$script"
+        echo "Content-type: application/json"
+        echo ""
+        echo "{\"status\": \"ok\"}"
         ;;
       stop)
-        echo "Stop script '$script'...<br/>"
+        echo "Content-type: text/html"
+        echo ""
+        status='unknown'
+        echo "Stopping script '$script'..."
+        echo "<pre>"
         "$SCRIPT_HOME/$script" stop 2>&1 && echo "OK" || echo "NOK"
-        echo "<br/>"
+        echo "</pre>"
         ;;
       enable)
-        echo "Enable script '$script'...<br/>"
         echo "#!/bin/sh" > "/system/sdcard/config/autostart/$script"
         echo "$SCRIPT_HOME$script" >> "/system/sdcard/config/autostart/$script"
+        echo "Content-type: application/json"
+        echo ""
+        echo "{\"status\": \"ok\"}"
         ;;
       view)
-        echo "Contents of script '$script':<br/>"
+        echo "Content-type: text/html"
+        echo ""
+        echo "Contents of script '$script':"
         echo "<pre>$(cat "$SCRIPT_HOME/$script" 2>&1)</pre>"
         ;;
       *)
-        echo "Unsupported command '$F_cmd'<br/>"
+        echo "Content-type: text/html"
+        echo ""
+        echo "<p>Unsupported command '$F_cmd'</p>"
         ;;
     esac
-    echo "<hr/>"
   else
-    echo "$F_script is not a valid script!<br/>"
+    echo "Content-type: text/html"
+    echo ""
+    echo "<p>$F_script is not a valid script!</p>"
   fi
+  return
 fi
 
+echo "Content-type: text/html"
+echo ""
+
 if [ ! -d "$SCRIPT_HOME" ]; then
-  echo "No scripts.cgi found in $SCRIPT_HOME<br/>"
+  echo "<p>No scripts.cgi found in $SCRIPT_HOME</p>"
 else
   SCRIPTS=$(ls -A "$SCRIPT_HOME")
-  echo "<table class='tbl'>"
-  echo "<tr><th>Service</th><th>Status</th><th/><th/><th>Autostart</th></tr>"
+
   for i in $SCRIPTS; do
-    echo "<tr>"
-    echo "<td>$i</td>"
+    # Card - start
+    echo "<div class='card script_card'>"
+    # Header
+    echo "<header class='card-header'><p class='card-header-title'>"
+    # echo "<div class='card-content'>"
     if [ -x "$SCRIPT_HOME/$i" ]; then
       if grep -q "^status()" "$SCRIPT_HOME/$i"; then
         status=$("$SCRIPT_HOME/$i" status)
         if [ $? -eq 0 ]; then
           if [ -n "$status" ]; then
-            bgcolor="green";
+            badge="";
           else 
-            bgcolor="orange";
+            badge="is-badge-warning";
           fi
         else
-          bgcolor="red"
+          badge="is-badge-danger"
           status="NOK"
         fi
-        echo "<td bgcolor='$bgcolor'>$status</td>";
+        echo "<span class='badge $badge' data-badge='$status'>$i</span>"
       else
-        echo "<td/>"
+        echo "$i"
       fi
+      # echo "</div>"
+      echo "</p></header>"
 
+      # Footer
+      echo "<footer class='card-footer'>"
+      echo "<span class='card-footer-item'>"
+
+      # Start / Stop / Run buttons
+      echo "<div class='buttons'>"
       if grep -q "^start()" "$SCRIPT_HOME/$i"; then
-        if [ -z "$status" ]; then
-          echo "<td><button title='Start script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=start&script=$i'\">Start</button</td>"
-        else
-          echo "<td><button title='Already running' disabled>Start</button>"
+        echo "<button data-target='/cgi-bin/scripts.cgi?cmd=start&script=$i' class='button is-link script_action_start' data-script='$i' "
+        if [ ! -z "$status" ]; then
+          echo "disabled"
         fi
+        echo ">Start</button>"
       else
-        echo "<td><button title='Run script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=start&script=$i'\">Run</button></td>"
+        echo "<button data-target='/cgi-bin/scripts.cgi?cmd=start&script=$i' class='button is-link script_action_start' data-script='$i' "
+        echo ">Run</button>"
       fi
 
       if grep -q "^stop()" "$SCRIPT_HOME/$i"; then
-        if [ -n "$status" ]; then
-          echo "<td><button title='Stop script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=stop&script=$i'\">Stop</button></td>"
-        else
-          echo "<td><button title='Not running' disabled>Stop</button>"
+        echo "<button data-target='/cgi-bin/scripts.cgi?cmd=stop&script=$i' class='button is-danger script_action_stop' data-script='$i' "
+        if [ ! -n "$status" ]; then
+          echo "disabled"
         fi
-      else
-        echo "<td></td>"
+        echo ">Stop</button>"
       fi
+      echo "</div>"
+      echo "</span>"
+
+      # Autostart Switch
+      echo "<span class='card-footer-item'>"
+      echo "<input type='checkbox' id='autorun_$i' name='autorun_$i' class='switch is-rtl autostart' data-script='$i' "
+        echo " data-unchecked='/cgi-bin/scripts.cgi?cmd=disable&script=$i'"
+        echo " data-checked='/cgi-bin/scripts.cgi?cmd=enable&script=$i'"
+      if [ -f "/system/sdcard/config/autostart/$i" ]; then
+        echo " checked='checked'"
+      fi
+      echo "'>"
+      echo "<label for='autorun_$i'>Autorun</label>"
+      echo "</span>"
+
+      # View link
+      echo "<a href='/cgi-bin/scripts.cgi?cmd=view&script=$i' class='card-footer-item view_script' data-script="$i">View</a>"
+      echo "</footer>"
     fi
-    if [ -f "/system/sdcard/config/autostart/$i" ]; then
-      echo "<td><button title='Disable script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=disable&script=$i'\">Disable</button></td>"
-    else
-      echo "<td><button title='Enable script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=enable&script=$i'\">Enable</button></td>"
-    fi
-    echo "<td><button title='View script' type='button' onClick=\"window.location.href='scripts.cgi?cmd=view&script=$i'\">View</button></td>"
-    echo "</tr>"
+    # Card - End
+    echo "</div>"
   done
-  echo "</table>"
 fi
 
-cat << EOF
-</body>
-</html>
-EOF
+script=$(cat /system/sdcard/www/scripts/scripts.cgi.js)
+echo "<script>$script</script>"
