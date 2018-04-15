@@ -1,7 +1,7 @@
 ## Xiaomi Dafang Hacks
 
 This repository contains a Custom Firmware for the Xiaomi Dafang Camera.
- 
+
 It also has a collection of information & software.
 
 ![Dafang](/dafang.png)
@@ -9,18 +9,18 @@ It also has a collection of information & software.
 
 Before you try to install it, please read the [FAQ](/hacks/faq.md)
 
-After that, continue to the 
+After that, continue to the
 [Installation](/hacks/install_cfw.md)
 
 ## Information about the Dafang:
 
-[Teardown](/informations/teardown.md)
+[Teardown](/information/teardown.md)
 
-[Hardware](/informations/hardware.md)
+[Hardware](/information/hardware.md)
 
-[Portscan of the Original Firmware](/informations/portscan.md)
+[Portscan of the Original Firmware](/information/portscan.md)
 
-[Bootlog of the Original Firmware](/informations/bootlog.md)
+[Bootlog of the Original Firmware](/information/bootlog.md)
 
 ## Hacks for the Development:
 [Installation of Serial Headers](/hacks/serial.md)

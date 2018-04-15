@@ -112,7 +112,7 @@ if [ -n "$F_action" ]; then
     echo "{
   \"code\": 123,
   \"status\": \"info\",
-  \"description\": \"System informations\",
+  \"description\": \"System information\",
   \"system\": {
     \"hostname\": \"$(cat $CONFIGPATH/hostname.conf)\",
     \"kernel\": \"$($BINPATH/busybox uname -r)\",
