@@ -25,10 +25,11 @@ Most other sensors & actors are easily integrated via [mqtt discovery](https://w
 To enable mqtt discovery in Home Assistant please add/adjust in your .homeassistant/configuration.yaml:
 ```yaml
 mqtt:
+  broker: localhost
   discovery: true
   discovery_prefix: homeassistant
 ```
-and restart your Home Assistant instance.
+and restart your Home Assistant instance. Apparently this does not work with Home Assistant's internal mqtt broker, so better [run your own](https://www.home-assistant.io/docs/mqtt/broker/#run-your-own).
 
 ### On the Xiaomi Dafang Camera side:
 
