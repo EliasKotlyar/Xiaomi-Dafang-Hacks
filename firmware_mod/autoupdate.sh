@@ -134,16 +134,21 @@ isNeedtobeUpdate()
 # Recursive call (for folder)
 getfiles()
 {
-    for row in $(echo "${1}" | ${JQ} '.[]| select(.type=="file") | .download_url' ); do
-        filetoget=$(echo "${row}" | tr -d '"')
-        echo ${filetoget}
-    done
+    if echo "${1}" | grep -q "API rate limit exceeded"; then
+        logerror "Github limit exceeded, try with an account (-u option)"
+        exit 1
+    else
+        for row in $(echo "${1}" | ${JQ} '.[]| select(.type=="file") | .download_url' ); do
+            filetoget=$(echo "${row}" | tr -d '"')
+            echo ${filetoget}
+        done
 
-    for row in $(echo "${1}" | ${JQ} '.[]| select(.type == "dir") | .path' ); do
-        flder=$(echo "${row}" | tr -d '"')
-        next=$(${CURL} -s https://api.github.com/repos/${REPO}/contents/${flder}?ref=${BRANCH})
-        getfiles "${next}"
-    done
+        for row in $(echo "${1}" | ${JQ} '.[]| select(.type == "dir") | .path' ); do
+            flder=$(echo "${row}" | tr -d '"')
+            next=$(${CURL} -s https://api.github.com/repos/${REPO}/contents/${flder}?ref=${BRANCH})
+            getfiles "${next}"
+        done
+    fi
 }
 
 ##########################################################################
@@ -256,23 +261,27 @@ if [ ${update} = true ]; then
         LOCALFILE="${DESTFOLDER}${i#$REMOVE}"
         # If check only or ask to xfer for all
         if [ ${_CHECK} = 1 ] || [ ${_XFER} = 1 ] ; then
+            # Get the file temporally to calculate SHA
+            ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
+            if [ ! -f ${TMPFILE} ]; then
+                echo "Can not get remote file $i, exit"
+                exit 1
+            fi
+
             # Check the file exists in local
             if [ -f "${LOCALFILE}" ]; then
-
-                # Get the file temporally to calculate SHA
-                ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
                 REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)
                 # Calculate the remote and local SHA
                 LOCALSHA=$(${SHA} ${LOCALFILE} 2>/dev/null | cut -d "=" -f 2)
 
-                #log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
-
+                # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
                 if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
                     echo "${LOCALFILE} is OK"
                 else
                     if [ ${_XFER} = 1 ]; then
                         if [ ${_FORCE} = 1 ]; then
-                            log "forced"
+                            echo "${LOCALFILE} updated"
+                            action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
                             action mv ${TMPFILE} ${LOCALFILE}
                         else
                             echo "${LOCALFILE} need to be updated, overwrite [Y]es or [N]o or [A]ll ?"
@@ -281,6 +290,7 @@ if [ ${update} = true ]; then
                                 echo "${LOCALFILE} not updated"
                                 rm -f ${TMPFILE} 2>/dev/null
                             else
+                                action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
                                 action mv ${TMPFILE} ${LOCALFILE}
                             fi
                             if [ "${rep}" = "all" ]; then
@@ -292,10 +302,10 @@ if [ ${update} = true ]; then
                     fi
                 fi
             else
-                echo "${DESTFOLDER}${i#$REMOVE} is missing"
                 if [ ${_XFER} = 1 ]; then
                     if [ ${_FORCE} = 1 ]; then
-                        log "forced add file"
+                        echo "${LOCALFILE} created"
+                        action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
                         action mv ${TMPFILE} ${LOCALFILE}
                     else
                         echo "${LOCALFILE} doesn't exist, create it [Y]es or [N]o or [A]ll ?"
@@ -303,13 +313,16 @@ if [ ${update} = true ]; then
                         if [ "${rep}" = "no" ]; then
                             echo "${LOCALFILE} not created"
                             rm -f ${TMPFILE} 2>/dev/null
-                        else
+                        else  
+                            action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
                             action mv ${TMPFILE} ${LOCALFILE}
                         fi
                         if [ "${rep}" = "all" ]; then
                             _FORCE=1
                         fi
                     fi
+                else
+                    echo "${LOCALFILE} is missing"
                 fi
             fi
         else
