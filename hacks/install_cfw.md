@@ -15,7 +15,7 @@
 
 ## Installation of the microSD bootloader on Xiaofang
 Use the following binary:
-[CFW-Binary](/hacks/cfw-xiaofang/cfw-1.0.bin)
+[CFW-Binary](/hacks/cfw_xiaofang/cfw-1.0.bin)
 
 ## Installation of the new Firmware
 
