@@ -1,0 +1,45 @@
+#!/bin/sh
+
+status()
+{  run_timelapse=$(cat /run/timelapse.status)
+   if [ "$run_timelapse" == true ]; then
+   echo "started"
+   fi
+}
+
+running()
+{
+  run_timelapse=$(cat /run/timelapse.status)
+  while $run_timelapse; do
+	run_timelapse=$(cat /run/timelapse.status)
+	/system/sdcard/bin/getimage > /system/sdcard/DCIM/`date +%d-%m-%Y_%H.%M.%S`.jpg &
+	# /system/sdcard/bin/getimage > /system/sdcard/DCIM/`date +%d-%m-%Y_%H.%M.%S`.jpg  &>/dev/null ##change me
+	echo "created img " `date +%d-%m-%Y_%H.%M.%S`.jpg
+	sleep 10s
+  done
+}
+
+
+start()
+{
+  LOG=/dev/null
+  echo "Starting timelapse"
+  echo true > /run/timelapse.status
+  running &
+  PID=$!
+  echo $PID
+}
+
+stop()
+{
+  echo false > /run/timelapse.status
+}
+
+if [ $# -eq 0 ]; then
+  start
+else
+  case $1 in start|stop|status)
+    $1
+    ;;
+  esac
+fi

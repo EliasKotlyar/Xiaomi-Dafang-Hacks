@@ -6,6 +6,11 @@ echo "Starting up CFW"
 ## Update hostname:
 hostname -F $CONFIGPATH/hostname.conf
 
+## NTP Server
+ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
+
+#read v4l2config (username, password)
+v4l2config=$(cat $CONFIGPATH/v4l2rtspserver.conf)
 ## Get real Mac address from config file:
 MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 
@@ -47,7 +52,7 @@ insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 
 ## Update time
-/system/sdcard/bin/busybox ntpd -q -n -p time.google.com
+/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv
 
 ## Start FTP & SSH
 /system/sdcard/bin/dropbearmulti dropbear -R
@@ -55,28 +60,24 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 
 ## Start Webserver:
 /system/sdcard/bin/boa -c /system/sdcard/config/
+#/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
 
-## Get OSD-Information
-if [ -f /system/sdcard/config/osd ]; then
-  source /system/sdcard/config/osd 2>/dev/null
+## Configure OSD
+if [ -f /system/sdcard/controlscripts/configureOsd ]; then
+    source /system/sdcard/controlscripts/configureOsd  2>/dev/null
 fi
+
+## Configure Motion
+if [ -f /system/sdcard/controlscripts/configureMotion ]; then
+    source /system/sdcard/controlscripts/configureMotion  2>/dev/null
+fi
+
 
 ## Autostart
 for i in /system/sdcard/config/autostart/*; do
   $i
 done
 
-#Start
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
-if [ -f /system/sdcard/config/osd ]; then
-  source /system/sdcard/config/osd
-  /system/sdcard/bin/setconf -k o -v "${OSD}"
-  /system/sdcard/bin/setconf -k c -v "${COLOR}"
-  /system/sdcard/bin/setconf -k s -v "${SIZE}"
-  /system/sdcard/bin/setconf -k x -v "${POSY}"
-  /system/sdcard/bin/setconf -k w -v "${FIXEDW}"
-  /system/sdcard/bin/setconf -k p -v "${SPACE}"
-fi;
+# Removing rtsp server startup here since it should be started if necessary in config/autostart
 
 echo "Startup finished!"
-

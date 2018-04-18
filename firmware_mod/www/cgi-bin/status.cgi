@@ -35,6 +35,7 @@ cat << EOF
 <button title='Manage scripts' type='button' onClick="window.location.href='scripts.cgi'">Manage scripts</button>
 <button title='Network' type='button' onClick="window.location.href='network.cgi'">Network</button>
 <button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
+<button title='Motion Configuration' type='button' onClick="window.open('/configmotion.html')">ConfigMotion</button>
 <button title='live view' type='button' onClick="window.open('/live.html')">Live view</button>
 <hr/>
 <table class='tbl'>
@@ -45,6 +46,8 @@ cat << EOF
                 $(date)
                 <label style="margin-left: 1em" for="tz">TZ:</label>
                 <input id="tz" name="tz" type="text" size="25" value="$(cat /etc/TZ)" />
+				<label  for="ntp_srv">NTP Server:</label>
+				<input id="ntp_srv" name="ntp_srv" type="text" size="25" value="$(cat /system/sdcard/config/ntp_srv.conf)"/>
                 <label for="hostname">Hostname:</label>
                 <input id="hostname" name="hostname" type="text" size="15" value="$(hostname)" />
                 <input type="submit" value="Set" />
@@ -158,7 +161,21 @@ cat << EOF
         </td>
     </tr>
 
-
+<tr>
+  <th>Resolution</th>
+  <td>
+  <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=setvideosize" method="post">
+   Select video size: <select name="video_size">                                                                                              
+  <option value="-W 640 -H 360" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
+  <option value="-W 1280 -H 720" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
+  <option value="-W 1600 -H 900" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>  
+  <option value="-W 1920 -H 1080" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
+  </select>                                                                                                                                
+  <input type="submit" value="Set" /> 
+  </form>
+  </td>
+</tr>
+	
     <tr>
         <th>Start H264 RTSP</th>
         <td>
@@ -214,7 +231,7 @@ cat << EOF
   </select> OSD text size <select name="size">
   <option value="0" $(if [ "$(grep SIZE /system/sdcard/config/osd | sed s/SIZE=//)" -eq 0 ]; then echo selected; fi)>Small</option>
   <option value="1" $(if [ "$(grep SIZE /system/sdcard/config/osd | sed s/SIZE=//)" -eq 1 ]; then echo selected; fi)>Bigger</option>
-  </select> Y position <input id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd && echo " $POSY ")"/>
+  </select> Y position <input id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd && echo "$POSY")"/>
   Pixels between chars (can be negative)<input id="spacepixels" name="spacepixels" type="number" size="4" value="$(source /system/sdcard/config/osd && echo "$SPACE")"/>
   Fixed width <select name="fixedw">
   <option value="0" $(if [ "$(grep FIXEDW /system/sdcard/config/osd | sed s/FIXEDW=//)" -eq 0 ]; then echo selected; fi)>No</option>
@@ -227,7 +244,22 @@ cat << EOF
         </form>
     </td>
 </tr>
-
+ <tr>
+        <th>Display debug info on OSD</th>
+        <td>
+            <button title='' type='button' onClick="call('/cgi-bin/action.cgi?cmd=onDebug')">On</button>
+            <button title='' type='button' onClick="call('/cgi-bin/action.cgi?cmd=offDebug')">Off</button> 
+        </td>
+    </tr>
+<tr>
+    <th>Timelapse</th>
+    <td>
+        <form style="display: inline;" action="/cgi-bin/action.cgi?cmd=conf_timelapse" method="post">
+        Interval: <input id="tlinterval" name="tlinterval" type="text" size="5" value="$(source /system/sdcard/config/timelapse.conf && echo "$TIMELAPSE_INTERVAL")"/>seconds,
+        Duration: <input id="tlduration" name="tlduration" type="text" size="5" value="$(source /system/sdcard/config/timelapse.conf && echo "$TIMELAPSE_DURATION")"/>minutes (set to 0 for unlimited)
+        <input type="submit" value="Set" />
+    </td>
+</tr>
 <tr>
     <th>Start original Xiaomi Software:</th>
     <td>
