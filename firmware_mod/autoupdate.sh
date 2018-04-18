@@ -237,7 +237,7 @@ if [ $_FORCE = 1 ]; then
 fi
 
 if [ $_PRINTONLY = 1 ]; then
-    log "Print action, do nothing"
+    log "Print actions only, do nothing"
 fi
 
 if [ ${update} = true ]; then
