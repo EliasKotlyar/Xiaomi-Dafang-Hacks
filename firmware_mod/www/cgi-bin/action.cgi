@@ -233,6 +233,11 @@ if [ -n "$F_cmd" ]; then
       /system/sdcard/bin/setconf -k m -v -1
     ;;
 
+    setvideosize)
+      echo "${F_video_size}" > /system/sdcard/config/video_size.conf
+      echo "Video size set to ${F_video_size}"
+    ;;
+
     set_region_of_interest)
         rewrite_config /system/sdcard/config/motion.conf region_of_interest "${F_x0},${F_y0},${F_x1},${F_y1}"
         rewrite_config /system/sdcard/config/motion.conf motion_sensitivity "${F_motion_sensitivity}"
