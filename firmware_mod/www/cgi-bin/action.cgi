@@ -128,7 +128,6 @@ if [ -n "$F_cmd" ]; then
     ;;
     settz)
        ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
-
        #lecture fichier ntp_serv.conf
        conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
 
@@ -136,7 +135,7 @@ if [ -n "$F_cmd" ]; then
         echo "<p>Setting NTP Server to '$ntp_srv'...</p>"
         echo "$ntp_srv" > /system/sdcard/config/ntp_srv.conf
         echo "<p>Syncing time on '$ntp_srv'...</p>"
-        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv 2>&1)" -eq 0 ]; then
+        if /system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv" > /dev/null 2>&1; then
           echo "<p>Success</p>"
         else
           echo "<p>Failed</p>"
@@ -148,7 +147,7 @@ if [ -n "$F_cmd" ]; then
         echo "<p>Setting TZ to '$tz'...</p>"
         echo "$tz" > /etc/TZ
         echo "<p>Syncing time...</p>"
-        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p $$ntp_srv 2>&1)" -eq 0 ]; then
+        if /system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv" > /dev/null 2>&1; then
           echo "<p>Success</p>"
         else echo "<p>Failed</p>"
         fi
@@ -157,7 +156,7 @@ if [ -n "$F_cmd" ]; then
       if [ "$(cat /system/sdcard/config/hostname.conf)" != "$hst" ]; then
         echo "<p>Setting hostname to '$hst'...</p>"
         echo "$hst" > /system/sdcard/config/hostname.conf
-        if [ "$(hostname "$hst")" -eq 0 ]; then
+        if hostname "$hst"; then
           echo "<p>Success</p>"
         else echo "<p>Failed</p>"
         fi
