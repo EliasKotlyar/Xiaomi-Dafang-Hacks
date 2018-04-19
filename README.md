@@ -1,10 +1,12 @@
-## Xiaomi Dafang Hacks
+## Xiaomi Dafang Hacks / Xiaofang with T20 Processor
 
-This repository contains a Custom Firmware for the Xiaomi Dafang Camera.
+This repository contains a Custom Firmware for the Xiaomi Dafang Camera. It also supports the Xiaofang with a T20 Processor. 
+If you have a Xiaofang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
 
 It also has a collection of information & software.
 
 ![Dafang](/dafang.png)
+![Dafang](/xiaofang.png)
 ## How to install the CFW
 
 Before you try to install it, please read the [FAQ](/hacks/faq.md)

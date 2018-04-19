@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-FIRMWARE_ROOT=$(pwd)/../../firmware_original/5.5.1.243/
+FIRMWARE_ROOT=$(pwd)/../../firmware_original/dafang/5.5.1.243/
 TMPDIR=./rootfs
 OUTFILE=./rootfs.bin
 rm -r $TMPDIR $OUTFILE
