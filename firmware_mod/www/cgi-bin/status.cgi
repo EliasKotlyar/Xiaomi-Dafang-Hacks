@@ -31,10 +31,10 @@ cat << EOF
 </div>
 </p>
 <hr/>
-<button title='Reboot the device' type='button' onClick="window.location.href='action.cgi?cmd=reboot'">Reboot</button>
-<button title='Manage scripts' type='button' onClick="window.location.href='scripts.cgi'">Manage scripts</button>
-<button title='Network' type='button' onClick="window.location.href='network.cgi'">Network</button>
-<button title='View /tmp/hacks.log' type='button' onClick="window.location.href='action.cgi?cmd=showlog'">View log</button>
+<button title='Reboot the device' type='button' onClick="window.location.href='cgi-bin/action.cgi?cmd=reboot'">Reboot</button>
+<button title='Manage scripts' type='button' onClick="window.location.href='cgi-bin/scripts.cgi'">Manage scripts</button>
+<button title='Network' type='button' onClick="window.location.href='cgi-bin/network.cgi'">Network</button>
+<button title='View /tmp/hacks.log' type='button' onClick="window.location.href='cgi-bin/action.cgi?cmd=showlog'">View log</button>
 <button title='Motion Configuration' type='button' onClick="window.open('/configmotion.html')">ConfigMotion</button>
 <button title='live view' type='button' onClick="window.open('/live.html')">Live view</button>
 <hr/>

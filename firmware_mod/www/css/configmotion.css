@@ -1,0 +1,45 @@
+
+
+.err {
+	color: red;
+}
+
+hr {
+	height: 1px;
+	border: 0;
+	border-top: 1px solid #aaa;
+}
+
+.tbl {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+.tbl th {
+	text-align: left;
+	vertical-align: top;
+	font-weight: bold;
+	padding: 10px 5px;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	word-break: normal;
+}
+
+.tbl td {
+	padding: 10px 5px;
+	border-style: solid;
+	border-width: 1px;
+	overflow: hidden;
+	word-break: normal;
+}
+
+.img h2 {
+
+	position: absolute;
+	top: 20%;
+	left: 20%;
+	font-size: 28pt;
+	text-align: center;
+	background-color: #B0E0E6
+}

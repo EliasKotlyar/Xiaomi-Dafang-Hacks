@@ -1,16 +1,22 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <script type="text/javascript">
-        function Redirect() {
-            window.location = "/cgi-bin/status.cgi";
-        }
-
-        document.write("You will be redirected to main page in 1 sec.");
-        setTimeout('Redirect()', 1);
-    </script>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Live</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.indigo-pink.min.css">
+	<link rel="stylesheet" href="css/live.css">
 </head>
 <body>
+<script type="text/javascript">
+	function Redirect() {
+		window.location = "../live.html";
+	}
+
+	document.write("You will be redirected to main page in 1 sec.");
+	setTimeout(Redirect(), 1);
+</script>
 </body>
 </html>
-
-
