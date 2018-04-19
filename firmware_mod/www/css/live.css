@@ -1,0 +1,34 @@
+.text-center {
+	text-align: center;
+}
+
+.m-0 {
+	margin: 0 auto;
+}
+
+.img-fluid {
+	max-width: 90%;
+	width: 100%;
+}
+
+.dropdown-btn {
+	padding: 6px 8px 6px 16px;
+	display: block;
+	border: none;
+	background: none;
+	text-align: left;
+	cursor: pointer;
+	outline: none;
+	width: 100%;
+}
+
+.active {
+	/*background-color: RoyalBlue;*/
+	/*color: white;*/
+}
+
+.dropdown-container {
+	display: block;
+	background-color: #2b383e;
+	padding-left: 8px;
+}

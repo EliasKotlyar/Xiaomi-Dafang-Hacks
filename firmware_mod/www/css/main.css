@@ -1,0 +1,18 @@
+body {
+	font-family: "Lato", sans-serif;
+}
+
+.card.mdl-card {
+	width: 100%;
+}
+
+.card > .mdl-card__title {
+}
+
+.card > .mdl-card__menu {
+	color: #fff;
+}
+
+.mdl-layout__drawer-button {
+	color: #757575 !important;
+}
