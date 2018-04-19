@@ -5,19 +5,10 @@ var SWITCHES = [
     "sound_on_startup", "motion_detection"];
 
 var timeoutJobs = {};
-function getLiveImage() {
-    var ts = new Date().getTime();
-    var html = "<a href=\"/cgi-bin/currentpic.cgi?\"" + ts +
-        "\"><img id=\"liveview\" src=\"/cgi-bin/currentpic.cgi?" + ts + "\" " +
-        "onerror=\"this.src='css/unable_load.png'; \"" +
-        "onload=\"scheduleRefreshLiveImage(4000);\"></a>";
-    $('#content').html(html);
-}
 
 function refreshLiveImage() {
     var ts = new Date().getTime();
     $("#liveview").attr("src", "/cgi-bin/currentpic.cgi?" + ts);
-    $("#liveviewlink").attr("href", "/cgi-bin/currentpic.cgi?" + ts);
 }
 function scheduleRefreshLiveImage(interval) {
     if (timeoutJobs['refreshLiveImage'] != undefined) {

@@ -8,7 +8,7 @@ echo ""
 cat << EOF
 <!-- Date -->
 <div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>Date</p></header>
+    <header class='card-header'><p class='card-header-title'>System</p></header>
     <div class='card-content'>
     <form id="tzForm" action="/cgi-bin/action.cgi?cmd=settz" method="post">
 

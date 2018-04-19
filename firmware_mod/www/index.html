@@ -26,6 +26,11 @@
             flex: 1 0 auto;
         }
 
+        /*
+        script_card <= scripts.cgi
+        status_card <= status.cgi
+        */
+
         .script_card,
         .status_card {
             max-width: 100%;
@@ -35,13 +40,12 @@
         @media screen and (min-width: 1024px) {
             .script_card,
             .status_card {
+                /* reduce width for large screens */
                 max-width: 75%
             }
         }
 
-        .script_card div.show_script {
-            margin-top: 0.5em;
-        }
+        /* table.motor_control <= status.cgi */
 
         table.motor_control td {
             width: 120px;
@@ -52,13 +56,69 @@
         }
 
         #liveview {
-            padding: 0.25em;
+            padding: 2px;
             border: dotted 1px #4a4a4a;
-            display: block;
             margin: 0 auto;
+            display: block;
+            max-height: 80vh;
         }
 
-        #motion_picture {
+        #dpad_container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            margin: 1em auto;
+            display: none;
+            z-index: 5;
+            width: 9em;
+        }
+
+        #dpad {
+            position: relative;
+            width: 9em;
+            height: 9em;
+        }
+
+        .dpad_button {
+            width: 3em;
+            height: 3em;
+            position: absolute;
+            display: inline-block;
+            text-align: center;
+        }
+
+        #dpad .up {
+            top: 0;
+            left: 3em;
+        }
+
+        #dpad .right {
+            top: 3em;
+            right: 0;
+        }
+
+        #dpad .left {
+            top: 3em;
+            left: 0;
+        }
+
+        #dpad .down {
+            top: 6em;
+            left: 3em;
+        }
+
+        .dpad_button a {
+            font-size: 2em;
+            color: #ff3860;
+            text-shadow: 2px 2px 4px #000000;
+        }
+
+        .dpad_button a:hover {
+            color: #ffdd57;
+        }
+
+        #content:hover #dpad_container {
             display: block;
         }
 
@@ -91,7 +151,6 @@
                             <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to shutdown?" data-target="/cgi-bin/action.cgi?cmd=shutdown">Shutdown</a>
                         </div>
                     </div>
-                    <a class="navbar-item" href="javascript: getLiveImage();">Live</a>
                 </div>
                 <!-- right menu -->
                 <div class="navbar-end">
@@ -99,22 +158,6 @@
                         <!-- Camera Movement Controls -->
                         <span class="navbar-link">Camera Controls</span>
                         <div class="navbar-dropdown is-boxed is-right">
-                            <!-- left -->
-                            <a class="navbar-item cam_button" href="javascript:void(0)" data-cmd="motor_left">
-                                &#x25C0;
-                            </a>
-                            <!-- right -->
-                            <a class="navbar-item cam_button" href="javascript:void(0)" data-cmd="motor_right">
-                                &#x25B6;
-                            </a>
-                            <!-- up -->
-                            <a class="navbar-item cam_button" href="javascript:void(0)" data-cmd="motor_up">
-                                &#x25B2;
-                            </a>
-                            <!-- down -->
-                            <a class="navbar-item cam_button" href="javascript:void(0)" data-cmd="motor_down">
-                                &#x25BC;
-                            </a>
                             <!-- Led: IR -->
                             <span class="navbar-item">
                                 <input id="ir_led" type="checkbox" name="ir_led" class="switch" data-checked="/cgi-bin/action.cgi?cmd=ir_led_on" data-unchecked="/cgi-bin/action.cgi?cmd=ir_led_off">
@@ -187,9 +230,35 @@
 
     <section id="main" class="section">
         <div id="content" class="container">
-            <a id="liveviewlink" href="/cgi-bin/currentpic.cgi">
-                <img id="liveview" src="/cgi-bin/currentpic.cgi" onerror="this.src='css/unable_load.png';">
-            </a>
+            <img id="liveview" src="/cgi-bin/currentpic.cgi" onerror="this.src='css/unable_load.png';">
+            <div id="dpad_container">
+                <div id="dpad">
+                    <div class="dpad_button up">
+                        <!-- up -->
+                        <a class="cam_button" href="javascript:void(0)" data-cmd="motor_up">
+                            &#x25B2;
+                        </a>
+                    </div>
+                    <div class="dpad_button down">
+                        <!-- down -->
+                        <a class="cam_button" href="javascript:void(0)" data-cmd="motor_down">
+                            &#x25BC;
+                        </a>
+                    </div>
+                    <div class="dpad_button left">
+                        <!-- left -->
+                        <a class="cam_button" href="javascript:void(0)" data-cmd="motor_left">
+                            &#x25C0;
+                        </a>
+                    </div>
+                    <div class="dpad_button right">
+                        <!-- right -->
+                        <a class="cam_button" href="javascript:void(0)" data-cmd="motor_right">
+                            &#x25B6;
+                        </a>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
