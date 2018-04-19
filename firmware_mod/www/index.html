@@ -63,6 +63,24 @@
             max-height: 80vh;
         }
 
+        #dpad_indicator {
+            position: absolute;
+            top: 3px;
+            left: 0;
+            right: 0;
+            margin: 0 auto;
+            z-index: 4;
+            width: 1.5em;
+            border-radius: 0.25em;
+            background-color: rgba(10, 10, 10, 0.4);
+            text-align: center;
+            font-weight: bold;
+            color: #fff;
+            cursor: pointer;
+            font-size: 0.8em;
+            color: #ffdd57;
+        }
+
         #dpad_container {
             position: absolute;
             top: 0;
@@ -120,6 +138,10 @@
 
         #content:hover #dpad_container {
             display: block;
+        }
+
+        #content:hover #dpad_indicator {
+            display: none;
         }
 
     </style>
@@ -258,6 +280,9 @@
                         </a>
                     </div>
                 </div>
+            </div>
+            <div id="dpad_indicator">
+                &hArr;
             </div>
         </div>
     </section>
