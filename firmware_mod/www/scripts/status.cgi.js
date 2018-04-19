@@ -6,7 +6,8 @@ $(document).ready(function () {
         b.prop('disabled', !b.prop('disabled'));
         var formData = {
             'tz': $('input[name=tz]').val(),
-            'hostname': $('input[name=hostname]').val()
+            'hostname': $('input[name=hostname]').val(),
+            'ntp_srv': $('input[name=ntp_srv]').val()
         };
         $.ajax({
             type: 'POST',
