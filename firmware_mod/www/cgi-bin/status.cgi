@@ -104,13 +104,13 @@ cat << EOF
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             Use average measurement on switching. Number of measurements: <form style="display: inline;" action="/cgi-bin/action.cgi?cmd=setldravg" method="post">
                 <select name="avg">
-    <option value="1" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 1 ]; then echo selected; fi)>1</option>
-    <option value="2" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 2 ]; then echo selected; fi)>2</option>
-    <option value="3" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 3 ]; then echo selected; fi)>3</option>
-    <option value="4" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 4 ]; then echo selected; fi)>4</option>
-    <option value="5" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 5 ]; then echo selected; fi)>5</option>
-    <option value="10" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 10 ]; then echo selected; fi)>10</option>
-    <option value="15" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 15 ]; then echo selected; fi)>15</option>
+    <option value="1" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 1 ]; then echo selected; fi)>1</option>
+    <option value="2" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 2 ]; then echo selected; fi)>2</option>
+    <option value="3" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 3 ]; then echo selected; fi)>3</option>
+    <option value="4" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 4 ]; then echo selected; fi)>4</option>
+    <option value="5" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 5 ]; then echo selected; fi)>5</option>
+    <option value="10" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 10 ]; then echo selected; fi)>10</option>
+    <option value="15" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 15 ]; then echo selected; fi)>15</option>
   </select>
                 <input type="submit" value="Set" /> </form>
         </td>
@@ -165,17 +165,17 @@ cat << EOF
   <th>Resolution</th>
   <td>
   <form style="margin: 0px" action="/cgi-bin/action.cgi?cmd=setvideosize" method="post">
-   Select video size: <select name="video_size">                                                                                              
+   Select video size: <select name="video_size">
   <option value="-W 640 -H 360" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
   <option value="-W 1280 -H 720" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
-  <option value="-W 1600 -H 900" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>  
+  <option value="-W 1600 -H 900" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>
   <option value="-W 1920 -H 1080" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
-  </select>                                                                                                                                
-  <input type="submit" value="Set" /> 
+  </select>
+  <input type="submit" value="Set" />
   </form>
   </td>
 </tr>
-	
+
     <tr>
         <th>Start H264 RTSP</th>
         <td>
@@ -248,7 +248,7 @@ cat << EOF
         <th>Display debug info on OSD</th>
         <td>
             <button title='' type='button' onClick="call('/cgi-bin/action.cgi?cmd=onDebug')">On</button>
-            <button title='' type='button' onClick="call('/cgi-bin/action.cgi?cmd=offDebug')">Off</button> 
+            <button title='' type='button' onClick="call('/cgi-bin/action.cgi?cmd=offDebug')">Off</button>
         </td>
     </tr>
 <tr>
