@@ -1,6 +1,8 @@
 #!/bin/sh
 source func.cgi
 
+echo "Pragma: no-cache"
+echo "Cache-Control: max-age=0, no-store, no-cache"
 
 SCRIPT_HOME="/system/sdcard/controlscripts/"
 if [ -n "$F_script" ]; then
