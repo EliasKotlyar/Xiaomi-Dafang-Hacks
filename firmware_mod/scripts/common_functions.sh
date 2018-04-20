@@ -139,9 +139,9 @@ rtsp_server(){
     /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
   status)
-    status=$(pidof v4l2rtspserver-master)
+    status="$(pidof v4l2rtspserver-master)"
     case $status in
-      0)
+      "")
         echo "OFF"
         ;;
       *)
