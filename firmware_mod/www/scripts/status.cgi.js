@@ -30,8 +30,13 @@ $(document).ready(function () {
         var b = $('#osdSubmit');
         b.toggleClass('is-loading');
         b.prop('disabled', !b.prop('disabled'));
+        if ($('input[name=OSDenable]').prop('checked')) {
+            osdenable = 'enabled';
+        } else {
+            osdenable = '';
+        }
         var formData = {
-            'OSDenable': $('input[name=OSDenable]').val(),
+            'OSDenable': osdenable,
             'osdtext': $('input[name=osdtext]').val(),
             'color': $('select[name=color]').val(),
             'size': $('select[name=size]').val(),
