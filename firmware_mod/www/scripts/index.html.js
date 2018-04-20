@@ -22,8 +22,8 @@ function syncSwitch(sw) {
         $.get("/cgi-bin/state.cgi", {
             cmd: sw
         }).done(function (status) {
-            // console.log(sw + " status " + status);
-            e.prop('checked', (status.trim() == "on"));
+            // console.log(sw + " status " + status + " / current " + e.prop('checked'));
+            e.prop('checked', (status.trim().toLowerCase() == "on"));
         });
     }
 }
