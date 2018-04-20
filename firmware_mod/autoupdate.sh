@@ -13,7 +13,8 @@ BRANCH="master"
 REMOTEFOLDER="firmware_mod"
 # Default destination foler
 DESTFOLDER="./"
-
+# The list of exclude, can have multple filter with "*.conf|*.sh"
+EXCLUDEFILTER="*.conf|*.user|run.sh"
 # Somme URL
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
@@ -22,19 +23,20 @@ COMMITIDFILE=.commit
 CURL="/system/sdcard/bin/curl -k"
 JQ="/system/sdcard/bin/jq"
 SHA="/system/sdcard/bin/openssl dgst -sha256"
+BASENAME="/system/sdcard/bin/busybox basename"
 #CURL="curl -k "
 #JQ="jq"
 #SHA="openssl dgst -sha256"
 
 TMPFILE=/tmp/udpate.tmp
-
+BACKUPEXT=.backup
 LASTGLOBALCOMMIT=""
 _PRINTONLY=0
 _V=0
 _FORCE=0
 _CHECK=0
 _XFER=0
-
+_BACKUP=0
 ##########################################################################
 
 usage()
@@ -47,6 +49,7 @@ usage()
     echo "-s (--status) say if need to update or not based on global commit ID"
     echo "-x (--xfer) update file by file, prompted for each file unless use of --force"
 
+    echo "-b (--backup) backup erased file (add extension ${BACKUPEXT} to the local file before ovewrite it) "
     echo "-f (--force) force update"
     echo "-d (--dest) set the destination folder (default is ${DESTFOLDER})"
     echo "-p (--print) print action only, do nothing"
@@ -54,7 +57,8 @@ usage()
     echo "-v (--verbose) for verbose"
     echo "-u (--user) githup login/password (not mandatory, but sometime anonymous account get banned)"
     echo "-h (--help) for this help"
-    echo
+    echo 
+    echo "Note that ${EXCLUDEFILTER} will be excluded"
     echo "Example:"
     echo "Check that local folder is up to date (file by file): >$1 -c -d /system/sdcard"
     echo "Check that local folder is up to date (based on last update and commit ID): >$1 -s"
@@ -101,6 +105,21 @@ action()
         eval "$@"
     fi
     return $?
+}
+##########################################################################
+# Check if $1 macth with the excluded filter
+ismatch()
+{
+    in=$(${BASENAME} ${1})
+    for filter in $(echo ${EXCLUDEFILTER} | sed "s/|/ /g")
+    do
+        if [ "${in#$filter}" == "" ]; then
+            echo match
+            return 0
+        fi
+    done
+
+    echo notmatch
 }
 
 ##########################################################################
@@ -180,6 +199,10 @@ do
             shift
             shift
             ;;
+        -b | --backup)
+            _BACKUP=1;
+            shift
+            ;;
         -p | --print)
             _PRINTONLY=1
             shift
@@ -236,12 +259,16 @@ if [ ${_XFER} = 1 ]; then
     update=true
 fi
 
-if [ $_FORCE = 1 ]; then
+if [ ${_FORCE} = 1 ]; then
     log "forced option"
 fi
 
-if [ $_PRINTONLY = 1 ]; then
+if [ ${_PRINTONLY} = 1 ]; then
     log "Print actions only, do nothing"
+fi
+
+if [ ${_BACKUP} = 1 ]; then
+  log "will backup files"
 fi
 
 if [ ${update} = true ]; then
@@ -258,6 +285,12 @@ if [ ${update} = true ]; then
         # String to remove to get the local path
         REMOVE="${GITHUBURLRAW}/${REPO}/${BRANCH}/${REMOTEFOLDER}/"
         LOCALFILE="${DESTFOLDER}${i#$REMOVE}"
+        # Remove files that match the filter
+        res=$(ismatch ${LOCALFILE})
+        if [ ${res} == "match" ]; then
+            echo "${LOCALFILE} is excluded due to filter"
+            continue
+        fi
         # If check only or ask to xfer for all
         if [ ${_CHECK} = 1 ] || [ ${_XFER} = 1 ] ; then
             # Get the file temporally to calculate SHA
@@ -281,6 +314,9 @@ if [ ${update} = true ]; then
                         if [ ${_FORCE} = 1 ]; then
                             echo "${LOCALFILE} updated"
                             action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
+                            if [ ${_BACKUP} = 1 ]; then
+                                action mv ${LOCALFILE} ${LOCALFILE}${BACKUPEXT}
+                            fi
                             action mv ${TMPFILE} ${LOCALFILE}
                         else
                             echo "${LOCALFILE} need to be updated, overwrite [Y]es or [N]o or [A]ll ?"
@@ -290,7 +326,11 @@ if [ ${update} = true ]; then
                                 rm -f ${TMPFILE} 2>/dev/null
                             else
                                 action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
+                                if [ ${_BACKUP} = 1 ]; then
+                                    action mv ${LOCALFILE} ${LOCALFILE}${BACKUPEXT}
+                                fi
                                 action mv ${TMPFILE} ${LOCALFILE}
+
                             fi
                             if [ "${rep}" = "all" ]; then
                                 _FORCE=1
