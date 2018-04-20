@@ -7,6 +7,8 @@ source /system/sdcard/scripts/common_functions.sh
 
 
 echo "Content-type: text"
+echo "Pragma: no-cache"
+echo "Cache-Control: max-age=0, no-store, no-cache"
 echo ""
 
 if [ -n "$F_cmd" ]; then
