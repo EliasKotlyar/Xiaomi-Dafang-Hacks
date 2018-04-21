@@ -16,9 +16,25 @@ if [ -n "$F_cmd" ]; then
   fi
   case "$F_cmd" in
     showlog)
-      echo "Contents of all log files:<br/>"
       echo "<pre>"
-      tail /var/log/*
+      case "${F_logname}" in
+        "" | 1)
+            echo "Summary of all log files:<br/>"
+            tail /var/log/*
+            ;;
+        2)
+            echo "Contents of dmesg<br/>"
+            /bin/dmesg
+            ;;
+        3)
+            echo "Contents of logcat<br/>"
+            /system/bin/logcat -d
+            ;;
+        4)
+          echo "Contents of v4l2rtspserver-master-h264.log<br/>"
+          cat /tmp/v4l2rtspserver-master-h264.log
+          ;;
+      esac
       echo "</pre>"
       return
     ;;
