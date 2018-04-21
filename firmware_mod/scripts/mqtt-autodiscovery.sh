@@ -34,3 +34,7 @@
 
 # RTSP Server
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/rtsp_server/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "{\"name\": \"$DEVICE_NAME rtsp server\", \"icon\": \"mdi:cctv\", \"state_topic\": \"$TOPIC/rtsp_server\", \"command_topic\": \"$TOPIC/rtsp_server/set\"}"
+
+# Motor up/down/left/right
+/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/cover/$DEVICE_NAME/motor_up_down/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "{\"name\": \"$DEVICE_NAME move up/down\", \"state_topic\": \"$TOPIC/motors/vertical\", \"command_topic\": \"$TOPIC/motors/vertical/set\", \"payload_close\": \"down\", \"payload_open\": \"up\", \"state_open\": \"up_endstop\", \"state_close\": \"down_endstop\", \"optimistic\": \"false\"}"
+/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/cover/$DEVICE_NAME/motor_left_right/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "{\"name\": \"$DEVICE_NAME move left/right\", \"state_topic\": \"$TOPIC/motors/horizontal\", \"command_topic\": \"$TOPIC/motors/horizontal/set\", \"payload_close\": \"right\", \"payload_open\": \"left\", \"state_open\": \"left_endstop\", \"state_close\": \"right_endstop\", \"optimistic\": \"false\"}"
