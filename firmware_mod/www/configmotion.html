@@ -74,65 +74,54 @@
 
     }
 
-    $(function () {
-        // Attach css to head <link rel="stylesheet" type="text/css" href="css/imgareaselect-animated.css" />
-        var imgareaselectCss = $("<link>", {
-            "rel": "stylesheet",
-            "type": "text/css",
-            "href": "css/imgareaselect-animated.css"
-        });
-        $('head').append(imgareaselectCss);
+    $(document).ready(function () {
 
-        $.getScript('scripts/jquery.imgareaselect.pack.js', function () {
-            // imgareaselect script loaded
+        // get motion config info
+        $.ajax({
+            'url': 'cgi-bin/getMotionInfo.cgi',
+            'dataType': 'json'
+        }).done(function (motionInfo) {
 
-            // get motion config info
-            $.ajax({
-                'url': 'cgi-bin/getMotionInfo.cgi',
-                'dataType': 'json'
-            }).done(function (motionInfo) {
+            originalMotionInfo = motionInfo;
 
-                originalMotionInfo = motionInfo;
-
-                var picture = $('#motion_picture');
-                picture.imgAreaSelect({
-                    handles: true,
-                    fadeSpeed: 200,
-                    onSelectChange: preview,
-                    movable: true,
-                    persistent: true,
-                    parent: '#motion_img_container'
-                });
-                var ias = picture.imgAreaSelect({
-                    instance: true
-                });
-
-
-                if (motionInfo.region_of_interest[0] + motionInfo.region_of_interest[1] +
-                    motionInfo.region_of_interest[2] + motionInfo.region_of_interest[3] == 0 ||
-                    (motionInfo.region_of_interest[0] > motionInfo.width ||
-                        motionInfo.region_of_interest[1] > motionInfo.height ||
-                        motionInfo.region_of_interest[2] > motionInfo.width ||
-                        motionInfo.region_of_interest[3] > motionInfo.height)
-                ) {
-                    ias.setSelection(0, 0, motionInfo.width, motionInfo.height, true);
-                } else {
-                    ias.setSelection(
-                        motionInfo.region_of_interest[0], motionInfo.region_of_interest[1],
-                        motionInfo.region_of_interest[2], motionInfo.region_of_interest[3], false);
-                }
-
-                $('#x0').val(motionInfo.region_of_interest[0]);
-                $('#y0').val(motionInfo.region_of_interest[1]);
-                $('#x1').val(motionInfo.region_of_interest[2]);
-                $('#y1').val(motionInfo.region_of_interest[3]);
-                $('#restart_server').val(0);
-                $('#motion_indicator_color').val(motionInfo.motion_indicator_color).change();
-                $('#motion_sensitivity').val(motionInfo.motion_sensitivity).change();
-                $('#motion_tracking').prop('checked', motionInfo.motion_tracking);
-                $('#motion_timeout').val(motionInfo.motion_timeout).change();
-                setTracking($('#motion_tracking')[0], true);
+            var picture = $('#motion_picture');
+            picture.imgAreaSelect({
+                handles: true,
+                fadeSpeed: 200,
+                onSelectChange: preview,
+                movable: true,
+                persistent: true,
+                parent: '#motion_img_container'
             });
+            var ias = picture.imgAreaSelect({
+                instance: true
+            });
+
+
+            if (motionInfo.region_of_interest[0] + motionInfo.region_of_interest[1] +
+                motionInfo.region_of_interest[2] + motionInfo.region_of_interest[3] == 0 ||
+                (motionInfo.region_of_interest[0] > motionInfo.width ||
+                    motionInfo.region_of_interest[1] > motionInfo.height ||
+                    motionInfo.region_of_interest[2] > motionInfo.width ||
+                    motionInfo.region_of_interest[3] > motionInfo.height)
+            ) {
+                ias.setSelection(0, 0, motionInfo.width, motionInfo.height, true);
+            } else {
+                ias.setSelection(
+                    motionInfo.region_of_interest[0], motionInfo.region_of_interest[1],
+                    motionInfo.region_of_interest[2], motionInfo.region_of_interest[3], false);
+            }
+
+            $('#x0').val(motionInfo.region_of_interest[0]);
+            $('#y0').val(motionInfo.region_of_interest[1]);
+            $('#x1').val(motionInfo.region_of_interest[2]);
+            $('#y1').val(motionInfo.region_of_interest[3]);
+            $('#restart_server').val(0);
+            $('#motion_indicator_color').val(motionInfo.motion_indicator_color).change();
+            $('#motion_sensitivity').val(motionInfo.motion_sensitivity).change();
+            $('#motion_tracking').prop('checked', motionInfo.motion_tracking);
+            $('#motion_timeout').val(motionInfo.motion_timeout).change();
+            setTracking($('#motion_tracking')[0], true);
         });
 
         $('#confMotionForm').submit(function (event) {
@@ -151,7 +140,7 @@
                 'restart_server': $('input[name=restart_server]').val(),
                 'motion_sensitivity': $('select[name=motion_sensitivity]').val(),
                 'motion_indicator_color': $('select[name=motion_indicator_color]').val(),
-                'motion_tracking': $('input[name=motion_tracking]').val(),
+                'motion_tracking': motion_tracking,
                 'motion_timeout': $('input[name=motion_timeout]').val()
             };
             $.ajax({
