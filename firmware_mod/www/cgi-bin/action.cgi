@@ -1,12 +1,13 @@
 #!/bin/sh
 
 echo "Content-type: text/html"
+echo "Pragma: no-cache"
+echo "Cache-Control: max-age=0, no-store, no-cache"
 echo ""
 
 source func.cgi
 source /system/sdcard/scripts/common_functions.sh
 
-echo "<br/>"
 export LD_LIBRARY_PATH=/system/lib
 export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
 if [ -n "$F_cmd" ]; then
@@ -19,11 +20,18 @@ if [ -n "$F_cmd" ]; then
       echo "<pre>"
       tail /var/log/*
       echo "</pre>"
+      return
     ;;
 
     reboot)
-      echo "Rebooting device...<br/>"
+      echo "Rebooting device..."
       /sbin/reboot
+      return
+    ;;
+    shutdown)
+      echo "Shutting down device.."
+      /sbin/halt
+      return
     ;;
 
     blue_led_on)
@@ -121,45 +129,41 @@ if [ -n "$F_cmd" ]; then
        /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
     settz)
+       ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
+       #lecture fichier ntp_serv.conf
+       conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
 
-	ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
+      if [ $conf_ntp_srv != "$ntp_srv" ]; then
+        echo "<p>Setting NTP Server to '$ntp_srv'...</p>"
+        echo "$ntp_srv" > /system/sdcard/config/ntp_srv.conf
+        echo "<p>Syncing time on '$ntp_srv'...</p>"
+        if /system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv" > /dev/null 2>&1; then
+          echo "<p>Success</p>"
+        else
+          echo "<p>Failed</p>"
+        fi
+      fi
 
-	#lecture fichier ntp_serv.conf
-	conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
-
-    if [ $conf_ntp_srv != "$ntp_srv" ]; then
-    echo "Setting NTP Server to '$ntp_srv'...<br/>"
-    echo "$ntp_srv" > /system/sdcard/config/ntp_srv.conf
-    echo "Syncing time on '$ntp_srv'...<br/>"
-        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv 2>&1)" -eq 0 ]; then
-          echo "<br/>Success<br/>"
-        else echo "<br/>Failed<br/>"
-		fi
-    fi
-
-	#lecture fichier ntp_serv.conf
-	conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
-
-	tz=$(printf '%b' "${F_tz//%/\\x}")
+      tz=$(printf '%b' "${F_tz//%/\\x}")
       if [ "$(cat /etc/TZ)" != "$tz" ]; then
-        echo "Setting TZ to '$tz'...<br/>"
+        echo "<p>Setting TZ to '$tz'...</p>"
         echo "$tz" > /etc/TZ
-        echo "Syncing time...<br/>"
-        if [ "$(/system/sdcard/bin/busybox ntpd -q -n -p $conf_ntp_srv 2>&1)" -eq 0 ]; then
-          echo "<br/>Success<br/>"
-        else echo "<br/>Failed<br/>"
+        echo "<p>Syncing time...</p>"
+        if /system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv" > /dev/null 2>&1; then
+          echo "<p>Success</p>"
+        else echo "<p>Failed</p>"
         fi
       fi
       hst=$(printf '%b' "${F_hostname//%/\\x}")
       if [ "$(cat /system/sdcard/config/hostname.conf)" != "$hst" ]; then
-        echo "Setting hostname to '$hst'...<br/>"
+        echo "<p>Setting hostname to '$hst'...</p>"
         echo "$hst" > /system/sdcard/config/hostname.conf
-        if [ "$(hostname "$hst")" -eq 0 ]; then
-          echo "<br/>Success<br/>"
-        else echo "<br/>Failed<br/>"
+        if hostname "$hst"; then
+          echo "<p>Success</p>"
+        else echo "<p>Failed</p>"
         fi
       fi
-
+      return
     ;;
 
     osd)
@@ -192,6 +196,7 @@ if [ -n "$F_cmd" ]; then
 
       echo "SPACE=${F_spacepixels}" >> /system/sdcard/config/osd
       /system/sdcard/bin/setconf -k p -v "${F_spacepixels}"
+      return
     ;;
 
     setldravg)
@@ -199,6 +204,7 @@ if [ -n "$F_cmd" ]; then
       ldravg=$(echo "$ldravg" | sed "s/[^0-9]//g")
       echo AVG="$ldravg" > /system/sdcard/config/ldr-average.conf
       echo "Average set to $ldravg iterations."
+      return
     ;;
 
     auto_night_mode_start)
@@ -231,6 +237,11 @@ if [ -n "$F_cmd" ]; then
 
     motion_detection_off)
       /system/sdcard/bin/setconf -k m -v -1
+    ;;
+
+    setvideosize)
+      echo "${F_video_size}" > /system/sdcard/config/video_size.conf
+      echo "Video size set to ${F_video_size}"
     ;;
 
     set_region_of_interest)
@@ -278,14 +289,12 @@ if [ -n "$F_cmd" ]; then
                     ${cmdLine}  2>/dev/null >/dev/null &
 
             else
-                    echo "process v4l2rtspserver-master was not found"
-                    echo "<BR>"
+                    echo "<p>process v4l2rtspserver-master was not found</p>"
             fi
         fi
 
         echo "Motion Configuration done"
-        echo "<BR>"
-        echo "<button title='Return to motion configuration page' onClick=\"window.location.href='/configmotion.html'\">Back to motion configuration</button>"
+        return
     ;;
     offDebug)
         /system/sdcard/controlscripts/debug-on-osd stop
@@ -297,6 +306,7 @@ if [ -n "$F_cmd" ]; then
     onDebug)
         /system/sdcard/controlscripts/debug-on-osd start
     ;;
+   
     conf_timelapse)
       tlinterval=$(printf '%b' "${F_tlinterval/%/\\x}")
       tlinterval=$(echo "$tlinterval" | sed "s/[^0-9\.]//g")
@@ -314,6 +324,7 @@ if [ -n "$F_cmd" ]; then
       else
         echo "Invalid timelapse duration"
       fi
+      return
     ;;
 
    *)

@@ -3,7 +3,6 @@
 This repository contains a Custom Firmware for the Xiaomi Dafang Camera. It also supports the Xiaofang with a T20 Processor. 
 If you have a Xiaofang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
 
- 
 It also has a collection of information & software.
 
 ![Dafang](/dafang.png)
@@ -12,18 +11,18 @@ It also has a collection of information & software.
 
 Before you try to install it, please read the [FAQ](/hacks/faq.md)
 
-After that, continue to the 
+After that, continue to the
 [Installation](/hacks/install_cfw.md)
 
 ## Information about the Dafang:
 
-[Teardown](/informations/teardown.md)
+[Teardown](/information/teardown.md)
 
-[Hardware](/informations/hardware.md)
+[Hardware](/information/hardware.md)
 
-[Portscan of the Original Firmware](/informations/portscan.md)
+[Portscan of the Original Firmware](/information/portscan.md)
 
-[Bootlog of the Original Firmware](/informations/bootlog.md)
+[Bootlog of the Original Firmware](/information/bootlog.md)
 
 ## Hacks for the Development:
 [Installation of Serial Headers](/hacks/serial.md)
@@ -53,6 +52,9 @@ After that, continue to the
 ## Viewer and control solution:
 
 After install, you can use this [android application](https://play.google.com/apps/testing/io.ext.medinvention.dafangcam) developed by [@medinvention](https://github.com/mmohamed) and available at [GitLab](https://gitlab.com/mmohamed/DafangCam)
+
+## Integration in Home Automation Systems:
+[Home Assistant](/integration/homeassistant/homeassistant.md)
 
 ## Contributions:
 Any contribution to the development is highly welcome. The best possibility is to open a pull request on GitHub.
