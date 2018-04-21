@@ -166,7 +166,7 @@ motor (){
         elif echo "$status" | grep -q "y_max: 1" ; then
           echo "down_endstop"
         else
-          echo "$status" | cut -f8- -d ' '
+          echo "$status" |grep "y_steps" | cut -f2- -d ' '
         fi
     fi
     ;;
