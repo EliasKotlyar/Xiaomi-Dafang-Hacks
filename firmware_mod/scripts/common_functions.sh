@@ -120,6 +120,59 @@ ir_cut(){
   esac
 }
 
+# Calibrate and control the motor
+# use like: motor up 100
+motor (){
+  if [ -z "$2" ]
+  then
+    steps=100
+  else
+    steps=$2
+  fi
+  case "$1" in
+  up)
+    /system/sdcard/bin/motor -d u -s "$steps"
+    ;;
+  down)
+    /system/sdcard/bin/motor -d d -s "$steps"
+    ;;
+  left)
+    /system/sdcard/bin/motor -d l -s "$steps"
+    ;;
+  right)
+    /system/sdcard/bin/motor -d r -s "$steps"
+    ;;
+  vcalibrate)
+    /system/sdcard/bin/motor -d v -s "$steps"
+    ;;
+  hcalibrate)
+    /system/sdcard/bin/motor -d h -s "$steps"
+    ;;
+  status)
+    if [ "$2" = "horizontal" ]
+      then
+        status=$(/system/sdcard/bin/motor -d u -s 0 | grep "x_")
+        if echo "$status" | grep -q "x_min: 1" ; then
+          echo "right_endstop"
+        elif echo "$status" | grep -q "x_max: 1" ; then
+          echo "left_endstop"
+        else
+          echo "$status" |grep "x_steps" | cut -f2- -d ' '
+        fi
+    else
+        status=$(/system/sdcard/bin/motor -d u -s 0 | grep "y_")
+        if echo "$status" | grep -q "y_min: 1" ; then
+          echo "up_endstop"
+        elif echo "$status" | grep -q "y_max: 1" ; then
+          echo "down_endstop"
+        else
+          echo "$status" |grep "y_steps" | cut -f2- -d ' '
+        fi
+    fi
+    ;;
+  esac
+}
+
 # Read the light sensor
 ldr(){
   case "$1" in
