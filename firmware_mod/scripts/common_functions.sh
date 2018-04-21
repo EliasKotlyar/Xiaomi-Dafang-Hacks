@@ -182,8 +182,8 @@ ldr(){
   esac
 }
 
-# Control the RTSP server
-rtsp_server(){
+# Control the RTSP h264 server
+rtsp_h264_server(){
   case "$1" in
   on)
     /system/sdcard/controlscripts/rtsp-h264 start
@@ -192,15 +192,33 @@ rtsp_server(){
     /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
   status)
-    status="$(pidof v4l2rtspserver-master)"
-    case $status in
-      "")
-        echo "OFF"
-        ;;
-      *)
+    if /system/sdcard/controlscripts/rtsp-h264 status | grep -q "PID"
+      then
         echo "ON"
-        ;;
-    esac
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+# Control the RTSP mjpeg server
+rtsp_mjpeg_server(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/rtsp-mjpeg start
+    ;;
+  off)
+    /system/sdcard/controlscripts/rtsp-mjpeg stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/rtsp-mjpeg status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
   esac
 }
 

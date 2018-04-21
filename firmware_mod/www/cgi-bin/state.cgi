@@ -30,16 +30,11 @@ if [ -n "$F_cmd" ]; then
     ;;
 
   rtsp_h264)
-    echo $(rtsp_server status)
+    echo $(rtsp_h264_server status)
     ;;
 
   rtsp_mjpeg)
-    if [ -f /run/v4l2rtspserver-master-mjpeg.pid ];
-      then rtsp_mjpeg="ON";
-    else
-      rtsp_mjpeg="OFF";
-    fi
-    echo $rtsp_mjpeg
+    echo $(rtsp_mjpeg_server status)
     ;;
 
   auto_night_detection)
