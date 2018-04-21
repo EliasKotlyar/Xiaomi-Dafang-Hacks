@@ -30,7 +30,12 @@ if [ -n "$F_cmd" ]; then
     ;;
 
   rtsp_h264)
-    echo $(rtsp_server status)
+    if [ -f /run/v4l2rtspserver-master-h264.pid ];
+      then rtsp_h264="ON";
+    else
+      rtsp_h264="OFF";
+    fi
+    echo $rtsp_h264
     ;;
 
   rtsp_mjpeg)
