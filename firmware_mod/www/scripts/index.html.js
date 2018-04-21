@@ -93,7 +93,7 @@ $(document).ready(function () {
         $.get("/cgi-bin/state.cgi", {
             cmd: e.attr('id')
         }).done(function (status) {
-            if (status.trim() == "on") {
+            if (status.trim().toLowerCase() == "on") {
                 $.get(e.data('unchecked')).done(function (data) {
                     e.prop('checked', false);
                 });
