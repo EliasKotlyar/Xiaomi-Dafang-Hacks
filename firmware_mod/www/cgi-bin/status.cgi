@@ -225,8 +225,8 @@ cat << EOF
             </tr>
         </table>
         <div class="buttons">
-        <button class="button is-warning" onclick="call('/cgi-bin/action.cgi?cmd=motor_vcalibrate'">Calibrate Vertical</button>
-        <button class="button is-warning" onclick="call('/cgi-bin/action.cgi?cmd=motor_hcalibrate">Calibrate Horizontal</button>
+        <button class="button is-warning" onclick="call('/cgi-bin/action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
+        <button class="button is-warning" onclick="call('/cgi-bin/action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
         </div>
     </div>
 </div>
