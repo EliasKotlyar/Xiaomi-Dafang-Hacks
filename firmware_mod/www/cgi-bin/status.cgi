@@ -147,13 +147,13 @@ cat << EOF
                 <div class="control">
                     <div class="select">
                         <select class="select" name="avg">
-                            <option value="1" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 1 ]; then echo selected; fi)>1</option>
-                            <option value="2" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 2 ]; then echo selected; fi)>2</option>
-                            <option value="3" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 3 ]; then echo selected; fi)>3</option>
-                            <option value="4" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 4 ]; then echo selected; fi)>4</option>
-                            <option value="5" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 5 ]; then echo selected; fi)>5</option>
-                            <option value="10" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 10 ]; then echo selected; fi)>10</option>
-                            <option value="15" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average)" -eq 15 ]; then echo selected; fi)>15</option>
+                            <option value="1" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 1 ]; then echo selected; fi)>1</option>
+                            <option value="2" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 2 ]; then echo selected; fi)>2</option>
+                            <option value="3" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 3 ]; then echo selected; fi)>3</option>
+                            <option value="4" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 4 ]; then echo selected; fi)>4</option>
+                            <option value="5" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 5 ]; then echo selected; fi)>5</option>
+                            <option value="10" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 10 ]; then echo selected; fi)>10</option>
+                            <option value="15" $(if [ "$(sed s/AVG=// /system/sdcard/config/ldr-average.conf)" -eq 15 ]; then echo selected; fi)>15</option>
                         </select>
                     </div>
                 </div>
