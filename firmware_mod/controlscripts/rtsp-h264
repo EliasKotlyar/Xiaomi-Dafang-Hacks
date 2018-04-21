@@ -1,6 +1,14 @@
 #!/bin/sh
 PIDFILE="/run/v4l2rtspserver-master-h264.pid"
 CONFIGPATH="/system/sdcard/config"
+
+# When this file is present request to stop "monitoring" the process
+STOPFILE="/tmp/v4l2rtspserver-master-h264.stop"
+# The log file of the server
+LOGFILE="/tmp/v4l2rtspserver-master-h264.log"
+# Max size of the logs in KB
+MAXLOGSIZE=3000
+
 export LD_LIBRARY_PATH='/thirdlib:/system/lib'
 
 #read v4l2config (username, password)
@@ -41,13 +49,47 @@ start()
     if [ -f /system/sdcard/controlscripts/configureMotion ]; then
       source /system/sdcard/controlscripts/configureMotion  2>/dev/null
     fi
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS &>/dev/null &
-    echo "$!" > "$PIDFILE"
+
+    ####################################################
+    # Monitor the process and restart if needed
+    (
+        echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle
+	    rm ${STOPFILE} 2>/dev/null
+	    # Stop the monitoring when STOPFILE is present
+	    while [ ! -f ${STOPFILE} ] ; do
+	        /system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS >> "$LOGFILE" 2>&1 &
+            SRVPID="$!"
+	        echo "$SRVPID" > "$PIDFILE"
+
+            while true; do
+                # Check the process is still running
+                PID=$(/system/sdcard/bin/busybox ps -o pid 2>/dev/null | grep $SRVPID 2>/dev/null)
+                # Not running wait before restart, and exit the loop
+                if [ "$PID" = "" ]; then
+                    sleep 2
+	                break
+	            else
+	                # Process still running, Check size of the log
+	                logsize=$(du "$LOGFILE"  | tr -s '\t' ' ' | cut -d' ' -f1)
+    		        if [ $logsize -gt $MAXLOGSIZE ];then
+    		            # The file is too big, erase its content (do not rm it !)
+		                echo -n "Log deleted on " > "$LOGFILE"
+		                date >> "$LOGFILE"
+                    fi
+	                sleep 5
+	            fi
+	        done
+	   echo -n "Process crashed or killed on" >> "$LOGFILE"
+       date >> "$LOGFILE"
+	done
+	# All this in background
+    )&
   fi
 }
 
 stop()
 {
+  echo "1" > ${STOPFILE}
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
     kill "$pid" & rm "$PIDFILE" 1> /dev/null 2>&1
