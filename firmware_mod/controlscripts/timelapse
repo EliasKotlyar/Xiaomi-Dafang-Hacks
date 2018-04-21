@@ -1,38 +1,28 @@
 #!/bin/sh
+PIDFILE='/run/timelapse.pid'
 
 status()
-{  run_timelapse=$(cat /run/timelapse.status)
-   if [ "$run_timelapse" == true ]; then
-   echo "started"
+{  PID=$(cat $PIDFILE)
+   if [ "$PID" != "" ]; then
+   cat $PIDFILE
    fi
 }
-
-running()
-{
-  run_timelapse=$(cat /run/timelapse.status)
-  while $run_timelapse; do
-	run_timelapse=$(cat /run/timelapse.status)
-	/system/sdcard/bin/getimage > /system/sdcard/DCIM/`date +%d-%m-%Y_%H.%M.%S`.jpg &
-	# /system/sdcard/bin/getimage > /system/sdcard/DCIM/`date +%d-%m-%Y_%H.%M.%S`.jpg  &>/dev/null ##change me
-	echo "created img " `date +%d-%m-%Y_%H.%M.%S`.jpg
-	sleep 10s
-  done
-}
-
 
 start()
 {
   LOG=/dev/null
   echo "Starting timelapse"
-  echo true > /run/timelapse.status
-  running &
+  /system/sdcard/bin/busybox nohup /system/sdcard/scripts/timelapse.sh &> /dev/null &
   PID=$!
+  echo $PID > $PIDFILE
   echo $PID
 }
 
 stop()
-{
-  echo false > /run/timelapse.status
+{ 
+  PID=$(cat $PIDFILE)
+  kill -9 $PID
+  rm $PIDFILE
 }
 
 if [ $# -eq 0 ]; then
