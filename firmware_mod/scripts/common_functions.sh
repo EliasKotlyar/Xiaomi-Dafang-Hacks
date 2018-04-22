@@ -3,6 +3,14 @@
 # This file is supposed to bundle some frequently used functions
 # so they can be easily improved in one place and be reused all over the place
 
+# Initialize  gpio pin
+init_gpio(){
+  GPIOPIN=$1
+  echo "$GPIOPIN" > /sys/class/gpio/export
+  echo out > "/sys/class/gpio/gpio$GPIOPIN/direction"
+  echo 0 > "/sys/class/gpio/gpio$GPIOPIN/active_low"
+}
+
 # Read a value from a gpio pin
 getgpio(){
   GPIOPIN=$1
@@ -10,7 +18,7 @@ getgpio(){
 }
 
 # Write a value to gpio pin
-setgpio(){
+setgpio () {
   GPIOPIN=$1
   echo "$2" > "/sys/class/gpio/gpio$GPIOPIN/value"
 }
