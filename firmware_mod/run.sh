@@ -3,14 +3,16 @@
 CONFIGPATH=/system/sdcard/config
 echo "Starting up CFW"
 
-## Update hostname:
+## Load some common functions
+. /system/sdcard/scripts/common_functions.sh
+
+## Update the hostname:
 hostname -F $CONFIGPATH/hostname.conf
 
-## NTP Server
+## Update the time
 ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
+/system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv"
 
-#read v4l2config (username, password)
-v4l2config=$(cat $CONFIGPATH/v4l2rtspserver.conf)
 ## Get real Mac address from config file:
 MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 
@@ -19,40 +21,30 @@ insmod /driver/8189es.ko rtw_initmac="$MAC"
 wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
 udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)"
 
-## Start Audio:
+## Load audio driver module:
 insmod /system/sdcard/driver/audio.ko
 
-## Start GPIO:
-setgpio () {
-  GPIOPIN=$1
-  echo "$GPIOPIN" > /sys/class/gpio/export
-  echo out > "/sys/class/gpio/gpio$GPIOPIN/direction"
-  echo 0 > "/sys/class/gpio/gpio$GPIOPIN/active_low"
-  echo 1 > "/sys/class/gpio/gpio$GPIOPIN/value"
-}
-
-# IR-LED
-setgpio 49
+## Initialize the GPIOS
+for pin in 25 26 38 39 49; do
+  init_gpio $pin
+done
+# the ir_led pin is a special animal and needs active low
 echo 1 > /sys/class/gpio/gpio49/active_low
-echo 1 > /sys/class/gpio/gpio49/value
-# Yellow-LED
-setgpio 38
-echo 0 > /sys/class/gpio/gpio38/value
-# Blue-LED
-setgpio 39
-# IR-Cut:
-setgpio 25
-setgpio 26
 
-# Startup Motor:
+## Set leds to default startup states
+ir_led off
+ir_cut on
+yellow_led off
+blue_led on
+
+# Load motor driver module & calibrate motors:
 insmod /system/sdcard/driver/sample_motor.ko
+motor hcalibrate
+motor vcalibrate
 
 ## Start Sensor:
 insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
-
-## Update time
-/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv
 
 ## Start FTP & SSH
 /system/sdcard/bin/dropbearmulti dropbear -R
@@ -64,12 +56,12 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 
 ## Configure OSD
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
-    source /system/sdcard/controlscripts/configureOsd  2>/dev/null
+    . /system/sdcard/controlscripts/configureOsd  2>/dev/null
 fi
 
 ## Configure Motion
 if [ -f /system/sdcard/controlscripts/configureMotion ]; then
-    source /system/sdcard/controlscripts/configureMotion  2>/dev/null
+    . /system/sdcard/controlscripts/configureMotion  2>/dev/null
 fi
 
 
@@ -77,7 +69,5 @@ fi
 for i in /system/sdcard/config/autostart/*; do
   $i
 done
-
-# Removing rtsp server startup here since it should be started if necessary in config/autostart
 
 echo "Startup finished!"
