@@ -14,7 +14,7 @@ REMOTEFOLDER="firmware_mod"
 # Default destination foler
 DESTFOLDER="./"
 # The list of exclude, can have multple filter with "*.conf|*.sh"
-EXCLUDEFILTER="*.conf|*.user|run.sh"
+EXCLUDEFILTER="*.conf|*.user|run.sh|osd|autoupdate.sh|libcrypto.so.42|curl|curl.bin|libssl.so.44|libz.so.1"
 # Somme URL
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
