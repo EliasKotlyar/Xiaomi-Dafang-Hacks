@@ -18,7 +18,7 @@ getgpio(){
 }
 
 # Write a value to gpio pin
-setgpio () {
+setgpio() {
   GPIOPIN=$1
   echo "$2" > "/sys/class/gpio/gpio$GPIOPIN/value"
 }
