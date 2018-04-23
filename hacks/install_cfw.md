@@ -59,5 +59,20 @@ If you already have a current custom firmware with custom bootloader installed, 
 
 Remove the "run.sh" file from microSD.
 
+## Community Tips
 
+1. Use microSD cards smaller than 1GB such as 512MB and overwrite the same cards to minimize variations.
+2. If the bootloader step is not working, double check the microSD card again for files or folders created by the stock firmware (sometimes if your timing is off with the Setup press the camera will create a time stamp related folder that needs to be deleted before trying again).
+3. Make a note of the MAC for the camera and if possible set up DHCP to assign a specific IP address that can be monitored visually in DHCP logs.
+4. Start with fewer entries in your wpa_supplicant.conf to isolate WiFi issues.
+```
+ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface_group=0
+ap_scan=1
 
+network={
+	ssid="enteryourssidherebutrememebertokeepthequotes"
+	psk="enteryourpasswordherebutremembertokeepthequotes"
+  key_mgmt=WPA-PSK
+}
+```
