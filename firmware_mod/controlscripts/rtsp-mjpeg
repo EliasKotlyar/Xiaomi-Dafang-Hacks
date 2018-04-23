@@ -6,9 +6,6 @@ if [ -f /system/sdcard/config/rtspserver.conf ]; then
   source /system/sdcard/config/rtspserver.conf
 fi
 
-#read v4l2config (username, password)
-v4l2config=$(cat /system/sdcard/config/v4l2rtspserver.conf)
-
 if [ -f /system/sdcard/config/osd ]; then
   source /system/sdcard/config/osd 2>/dev/null
 fi
@@ -29,8 +26,7 @@ start()
   else
     echo "Starting v4l2rtspserver-master with parameter -fMJPG"
     /system/sdcard/controlscripts/rtsp-h264 stop
-    # We no longer start v4l2rtspserver-master in run.sh
-    #killall v4l2rtspserver-master # As the run.sh starts a v4l2rtspserver as well
+
     ## Configure OSD
     if [ -f /system/sdcard/controlscripts/configureOsd ]; then
       source /system/sdcard/controlscripts/configureOsd  2>/dev/null

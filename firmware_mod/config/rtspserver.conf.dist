@@ -9,9 +9,13 @@
 # H264 RTSP server options
 # Examples:
 # RTSPH264OPTS="-S -W960 -H540"
+# To enable authentication:
+# RTSPH264OPTS="-U user:password"
 RTSPH264OPTS=""
 
 # MJPEG RTSP server options
 # Examples:
 # RTSPMJPEGOPTS="-W960 -H540"
+# To enable authentication:
+# RTSPMJPEGOPTS="-U user:password"
 RTSPMJPEGOPTS=""

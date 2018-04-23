@@ -3,9 +3,6 @@ PIDFILE="/run/v4l2rtspserver-master-h264.pid"
 CONFIGPATH="/system/sdcard/config"
 export LD_LIBRARY_PATH='/thirdlib:/system/lib'
 
-#read v4l2config (username, password)
-v4l2config=$(cat /system/sdcard/config/v4l2rtspserver.conf)
-
 if [ -f /system/sdcard/config/rtspserver.conf ]; then
   source /system/sdcard/config/rtspserver.conf
 fi
@@ -30,8 +27,7 @@ start()
   else
     echo "Starting v4l2rtspserver-master"
     /system/sdcard/controlscripts/rtsp-mjpeg stop
-    # We no longer start v4l2rtspserver-master in run.sh
-    #killall v4l2rtspserver-master # As the run.sh starts a v4l2rtspserver as well
+
     ## Configure OSD
     if [ -f /system/sdcard/controlscripts/configureOsd ]; then
       source /system/sdcard/controlscripts/configureOsd  2>/dev/null
