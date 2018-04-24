@@ -1,14 +1,13 @@
 #!/bin/sh
 PIDFILE="/run/v4l2rtspserver-master-h264.pid"
-CONFIGPATH="/system/sdcard/config"
 export LD_LIBRARY_PATH='/thirdlib:/system/lib'
 
 if [ -f /system/sdcard/config/rtspserver.conf ]; then
-  source /system/sdcard/config/rtspserver.conf
+  . /system/sdcard/config/rtspserver.conf
 fi
 
 if [ -f /system/sdcard/config/osd ]; then
-  source /system/sdcard/config/osd 2>/dev/null
+  . /system/sdcard/config/osd 2>/dev/null
 fi
 
 status()
@@ -30,12 +29,12 @@ start()
 
     ## Configure OSD
     if [ -f /system/sdcard/controlscripts/configureOsd ]; then
-      source /system/sdcard/controlscripts/configureOsd  2>/dev/null
+      . /system/sdcard/controlscripts/configureOsd  2>/dev/null
     fi
 
     ## Configure Motion
     if [ -f /system/sdcard/controlscripts/configureMotion ]; then
-      source /system/sdcard/controlscripts/configureMotion  2>/dev/null
+      . /system/sdcard/controlscripts/configureMotion  2>/dev/null
     fi
     /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS &>/dev/null &
     echo "$!" > "$PIDFILE"
@@ -53,9 +52,8 @@ stop()
 if [ $# -eq 0 ]; then
   start
 else
-  case $1 in start|startnight|stop|status)
+  case $1 in start|stop|status)
     $1
     ;;
   esac
 fi
-

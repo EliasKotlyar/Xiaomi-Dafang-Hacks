@@ -1,6 +1,10 @@
 #!/bin/sh
 PIDFILE="/run/mqtt-status.pid"
 
+if [ ! -f /system/sdcard/config/mqtt.conf ]; then
+  echo "You have to configure mqtt first. Please see /system/sdcard/config/mqtt.conf.dist for further instructions"
+fi
+
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
@@ -36,4 +40,3 @@ else
     ;;
   esac
 fi
-
