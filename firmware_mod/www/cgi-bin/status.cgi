@@ -257,21 +257,11 @@ cat << EOF
 </div>
 
 <!-- Resolution -->
-<!-- 
-
-This section was introduced in:
-https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/commit/eabe4cb9beb9243edba708967ab1de65d4861834
-https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/commit/34837e0383051b6251e9ecc891c9f87e0804a8c2
-
-but there is no setvideosize in action.cgi and video_size.conf is not used anywhere else
-
--->
-<!--
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Resolution</p></header>
     <div class='card-content'>
 
-        <form id="formResolution" action="/cgi-bin/action.cgi?cmd=setvideosize" method="post">
+        <form id="formResolution" action="/cgi-bin/action.cgi?cmd=set_video_size" method="post">
         <div class="field is-horizontal">
             <div class="field-label is-normal">
                 <label class="label">Video Size</label>
@@ -281,12 +271,13 @@ but there is no setvideosize in action.cgi and video_size.conf is not used anywh
                     <div class="control">
                         <div class="select">
                             <select name="video_size">
-                            <option value="-W 640 -H 360" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
-                            <option value="-W 1280 -H 720" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
-                            <option value="-W 1600 -H 900" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>  
-                            <option value="-W 1920 -H 1080" $(if [ "$(cat /system/sdcard/config/video_size.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
+                            <option value="-W640 -H360" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
+                            <option value="-W960 -H540" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 960)" != "" ]; then echo selected; fi)>960x540</option>
+                            <option value="-W1280 -H720" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
+                            <option value="-W1600 -H900" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>
+                            <option value="-W1920 -H1080" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
                             </select>
-                        </div> 
+                        </div>
                     </div>
                 </div>
             </div>
@@ -301,11 +292,10 @@ but there is no setvideosize in action.cgi and video_size.conf is not used anywh
                 </div>
                 </div>
             </div>
-        </div> 
+        </div>
         </form>
     </div>
 </div>
--->
 
 <!-- H264 RTSP -->
 <div class='card status_card'>
@@ -515,7 +505,7 @@ cat << EOF
                 </div>
                 </div>
             </div>
-        </div> 
+        </div>
         </form>
     </div>
 </div>

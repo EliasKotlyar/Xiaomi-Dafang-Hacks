@@ -146,7 +146,7 @@ if [ -n "$F_cmd" ]; then
     ;;
     settz)
        ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
-       #lecture fichier ntp_serv.conf
+       #read ntp_serv.conf
        conf_ntp_srv=$(cat /system/sdcard/config/ntp_srv.conf)
 
       if [ $conf_ntp_srv != "$ntp_srv" ]; then
@@ -255,9 +255,21 @@ if [ -n "$F_cmd" ]; then
       /system/sdcard/bin/setconf -k m -v -1
     ;;
 
-    setvideosize)
-      echo "${F_video_size}" > /system/sdcard/config/video_size.conf
-      echo "Video size set to ${F_video_size}"
+    set_video_size)
+      video_size=$(echo "${F_video_size}"| sed -e 's/+/ /g')
+      rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"-S $video_size\""
+      rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"-S $video_size\""
+      echo "Video resolution set to $video_size<br/>"
+      if [ "$(rtsp_h264_server status)" = "ON" ]; then
+        echo "Restarting H264 RSTP server<br/>"
+        rtsp_h264_server off
+        rtsp_h264_server on
+      fi
+      if [ "$(rtsp_mjpeg_server status)" = "ON" ]; then
+        echo "Restarting MJPEG RSTP server<br/>"
+        rtsp_mjpeg_server off
+        rtsp_mjpeg_server on
+      fi
     ;;
 
     set_region_of_interest)
@@ -322,7 +334,7 @@ if [ -n "$F_cmd" ]; then
     onDebug)
         /system/sdcard/controlscripts/debug-on-osd start
     ;;
-   
+
     conf_timelapse)
       tlinterval=$(printf '%b' "${F_tlinterval/%/\\x}")
       tlinterval=$(echo "$tlinterval" | sed "s/[^0-9\.]//g")

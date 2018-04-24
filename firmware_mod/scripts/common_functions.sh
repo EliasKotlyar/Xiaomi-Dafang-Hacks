@@ -24,11 +24,12 @@ setgpio() {
 }
 
 # Replace the old value of a config_key at the cfg_path with new_value
+# Don't rewrite commented lines
 rewrite_config(){
   cfg_path=$1
   cfg_key=$2
   new_value=$3
-  sed -i -e "/$cfg_key=/ s/=.*/=$new_value/" "$cfg_path"
+  sed -i -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}" "$cfg_path"
 }
 
 # Reboot the camera
