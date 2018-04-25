@@ -252,11 +252,11 @@ if [ -n "$F_cmd" ]; then
         if [ -f /system/sdcard/config/motion.conf ]; then
             source /system/sdcard/config/motion.conf
         fi
-        if [ ${motion_sensitivity} = -1 ]; then
+        if [ ${motion_sensitivity} -eq -1 ]; then
              motion_sensitivity=4
         fi
         /system/sdcard/bin/setconf -k m -v ${motion_sensitivity}
-        rewrite_config /system/sdcard/config/motion.conf motion_sensitivity 4
+        rewrite_config /system/sdcard/config/motion.conf motion_sensitivity "${motion_sensitivity}"
     ;;
 
     motion_detection_off)
