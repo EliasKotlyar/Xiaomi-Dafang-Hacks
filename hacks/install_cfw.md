@@ -8,7 +8,7 @@
 3. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
 3. Hold the setup button on the Dafang camera
 4. Plug in the USB power cable
-5. Wait until the firmware has finished flashing (like 5 minutes). Disconnect the power as soon as the base starts moving.
+5. Wait until the firmware has finished flashing (like 2 minutes). Disconnect the power as soon as the base starts moving.
 6. Remove the microSD and try to start the Dafang camera
 7. You should see the blue led shining up for 5 seconds (not blinking) **before** the base starts moving. If not, something went wrong. You should try another microSD. Start over from step 1.
 
