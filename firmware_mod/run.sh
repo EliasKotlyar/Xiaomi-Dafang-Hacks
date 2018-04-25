@@ -37,10 +37,11 @@ ir_cut on
 yellow_led off
 blue_led on
 
-# Load motor driver module & calibrate motors:
+# Load motor driver module 
 insmod /system/sdcard/driver/sample_motor.ko
-motor hcalibrate
-motor vcalibrate
+# Don't calibrate the motors for now as for newer models the endstops don't work:
+#motor hcalibrate
+#motor vcalibrate
 
 ## Start Sensor:
 insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
