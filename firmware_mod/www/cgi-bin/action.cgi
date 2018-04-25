@@ -326,9 +326,6 @@ if [ -n "$F_cmd" ]; then
     ;;
     offDebug)
         /system/sdcard/controlscripts/debug-on-osd stop
-        if [ -f /system/sdcard/controlscripts/configureOsd ]; then
-            source /system/sdcard/controlscripts/configureOsd
-        fi
 
     ;;
     onDebug)
