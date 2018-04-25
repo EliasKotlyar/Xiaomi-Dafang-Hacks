@@ -1,0 +1,39 @@
+############################################################
+# edit this file and move it to /system/sdcard/config/mqtt.conf #
+############################################################
+
+export LD_LIBRARY_PATH='/thirdlib:/system/lib:/system/sdcard/lib'
+
+# Options for mosquitto_sub & mosquitto_pub
+USER=mqtt-user
+PASS=mqtt-password
+HOST=mqtt-host
+PORT=1883
+
+# Define a location
+LOCATION="myhome"
+
+# Define device name
+DEVICE_NAME="dafang"
+
+# Define the base topic used by the camera
+# send a message to myhome/dafang/set with the payload help for help.
+# Results will be placed in myhome/dafang/${command} or topic/dafang/error - so please subscribe topic/dafang/# for testing purposes
+TOPIC="$LOCATION/$DEVICE_NAME"
+
+# Define an autodiscovery prefix, if autodiscovery is desired:
+# AUTODISCOVERY_PREFIX="homeassistant"
+
+# Define additional options for Mosquitto here.
+# For example --cafile /system/sdcard/config/DST_Root_CA_X3.pem --tls-version tlsv1
+# or use a special id to connect to brokers like azure
+MOSQUITTOOPTS=""
+
+# Add options for mosquitto_pub like -r for retaining messages
+MOSQUITTOPUBOPTS=""
+
+# Add options for curl here e.g --user user:password
+CURLOPTS=""
+
+# Send a mqtt statusupdate every n seconds
+STATUSINTERVAL=30

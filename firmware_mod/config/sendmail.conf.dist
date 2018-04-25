@@ -1,0 +1,34 @@
+############################################################
+# edit this file and move it to /system/sdcard/config/sendmail.conf #
+############################################################
+
+# If send an email, here are some parameter to configure
+
+#Email and name of the sender (maybe it doesn't work as mailer override it from authentication info)
+FROM="House.home@gmail.com"
+FROMNAME="`hostname`"
+
+# Login and pasword to access snmtp server
+AUTH="john.doe"
+PASS="JOHNDOEPASSWORD"
+
+# Destination email
+TO="yourmail@gmail.com"
+# SMTP information
+SERVER=smtp.gmail.com
+PORT=587
+
+# Subject of the email
+SUBJECT="Alert !!"
+# Body of the email
+BODY="This is an alert from `hostname`"
+
+# Number of capture to join the email
+NUMBEROFPICTURES=5
+# Time in seconds between captures
+TIMEBETWEENSNAPSHOT=5
+
+# Quality of compression (Valid quality values: 0 - 100, 100% is best)
+# Set to -1 for no compression
+QUALITY=50
+

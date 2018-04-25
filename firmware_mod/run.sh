@@ -3,52 +3,49 @@
 CONFIGPATH=/system/sdcard/config
 echo "Starting up CFW"
 
-## Update hostname:
+## Load some common functions
+. /system/sdcard/scripts/common_functions.sh
+
+## Update the hostname:
 hostname -F $CONFIGPATH/hostname.conf
 
 ## Get real Mac address from config file:
-MAC=`cat /params/config/.product_config | grep MAC | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//'`
+MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 
 ## Start Wifi:
 insmod /driver/8189es.ko rtw_initmac="$MAC"
 wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
-udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:`hostname`
+udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)"
 
-## Start Audio:
+## Sync the via NTP
+ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
+/system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv"
+
+## Load audio driver module:
 insmod /system/sdcard/driver/audio.ko
 
-## Start GPIO:
-setgpio () {
-GPIOPIN=$1
-echo $GPIOPIN > /sys/class/gpio/export
-echo out > /sys/class/gpio/gpio$GPIOPIN/direction
-echo 0 > /sys/class/gpio/gpio$GPIOPIN/active_low
-echo 1 > /sys/class/gpio/gpio$GPIOPIN/value
-}
-# IR-LED
-setgpio 49
+## Initialize the GPIOS
+for pin in 25 26 38 39 49; do
+  init_gpio $pin
+done
+# the ir_led pin is a special animal and needs active low
 echo 1 > /sys/class/gpio/gpio49/active_low
-echo 1 > /sys/class/gpio/gpio49/value
-# Yellow-LED
-setgpio 38
-echo 0 > /sys/class/gpio/gpio38/value
-# Blue-LED
-setgpio 39
-# IR-Cut:
-setgpio 25
-setgpio 26
 
-# Startup Motor:
+## Set leds to default startup states
+ir_led off
+ir_cut on
+yellow_led off
+blue_led on
+
+# Load motor driver module 
 insmod /system/sdcard/driver/sample_motor.ko
-
-
+# Don't calibrate the motors for now as for newer models the endstops don't work:
+#motor hcalibrate
+#motor vcalibrate
 
 ## Start Sensor:
 insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
-
-## Update time
-/system/sdcard/bin/busybox ntpd -q -n -p time.google.com
 
 ## Start FTP & SSH
 /system/sdcard/bin/dropbearmulti dropbear -R
@@ -56,24 +53,22 @@ insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset
 
 ## Start Webserver:
 /system/sdcard/bin/boa -c /system/sdcard/config/
+#/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
 
-## Get OSD-Information
-if [ -f /system/sdcard/config/osd ]; then
-source /system/sdcard/config/osd  2>/dev/null
+## Configure OSD
+if [ -f /system/sdcard/controlscripts/configureOsd ]; then
+    . /system/sdcard/controlscripts/configureOsd  2>/dev/null
 fi
 
+## Configure Motion
+if [ -f /system/sdcard/controlscripts/configureMotion ]; then
+    . /system/sdcard/controlscripts/configureMotion  2>/dev/null
+fi
+
+
 ## Autostart
- for i in `ls /system/sdcard/config/autostart/`; do /system/sdcard/config/autostart/$i; done
-
-#Start
-
-/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master &>/dev/null &
-
-if [ -f /system/sdcard/config/osd ]; then
-	source /system/sdcard/config/osd
-	/system/sdcard/bin/setconf -k o -v "${OSD}"
-fi;
-
+for i in /system/sdcard/config/autostart/*; do
+  $i
+done
 
 echo "Startup finished!"
-

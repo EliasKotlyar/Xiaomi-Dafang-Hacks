@@ -1,0 +1,35 @@
+#!/bin/sh
+PIDFILE='/run/timelapse.pid'
+
+status()
+{  PID=$(cat $PIDFILE)
+   if [ "$PID" != "" ]; then
+   cat $PIDFILE
+   fi
+}
+
+start()
+{
+  LOG=/dev/null
+  echo "Starting timelapse"
+  /system/sdcard/bin/busybox nohup /system/sdcard/scripts/timelapse.sh &> /dev/null &
+  PID=$!
+  echo $PID > $PIDFILE
+  echo $PID
+}
+
+stop()
+{ 
+  PID=$(cat $PIDFILE)
+  kill -9 $PID
+  rm $PIDFILE
+}
+
+if [ $# -eq 0 ]; then
+  start
+else
+  case $1 in start|stop|status)
+    $1
+    ;;
+  esac
+fi

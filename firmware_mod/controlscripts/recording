@@ -1,0 +1,61 @@
+#!/bin/sh
+PIDFILE="/run/recording.pid"
+DCIM_PATH="/system/sdcard/DCIM"
+
+if [ ! -f /system/sdcard/bin/avconv ]; then
+  echo "avconv not found, downloading it";
+  cd /system/sdcard || exit
+  /system/sdcard/bin/curl -k -L https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/files/1654102/avconv.zip -o avconv.zip
+  /system/sdcard/bin/busybox unzip avconv.zip
+  mv avconv /system/sdcard/bin/avconv
+  rm avconv.zip
+fi
+
+if [ ! -d "$DCIM_PATH" ]; then
+  mkdir -p $DCIM_PATH
+fi
+
+status()
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+  fi
+}
+
+start()
+{
+  if [ -f $PIDFILE ]; then
+    echo "Recording already running";
+  else
+    echo "Start recording"
+    SUB_DIR="$(date +%m%dFANG)"
+    if [ ! -d "$DCIM_PATH/$SUB_DIR" ]; then
+      mkdir -p "$DCIM_PATH/$SUB_DIR"
+    fi
+    FILE_NAME="MOV_$(date +%H%M.mov)"
+    RECORDING_PATH="$DCIM_PATH/$SUB_DIR/$FILE_NAME"
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -rtsp_transport tcp -y -i rtsp://0.0.0.0:8554/unicast -vcodec copy -c:a aac -strict experimental "$RECORDING_PATH"  &>/dev/null &
+    echo "$!" > "$PIDFILE"
+  fi
+}
+
+stop()
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+    kill "$pid" &&  rm "$PIDFILE"
+    echo "Stopped recording"
+  else
+    echo "Could not find a running recording to stop."
+  fi
+}
+
+if [ $# -eq 0 ]; then
+  start
+else
+  case $1 in start|stop|status)
+      $1
+      ;;
+  esac
+fi

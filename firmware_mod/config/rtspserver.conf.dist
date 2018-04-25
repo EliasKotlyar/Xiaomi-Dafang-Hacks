@@ -1,0 +1,21 @@
+#######################################################################
+# Edit this file and move it to /system/sdcard/config/rtspserver.conf #
+# if you need to add options, otherwise defaults will be used         #
+#######################################################################
+
+# Configure RTSP Servers
+# Use /system/sdcard/bin/v4l2rtspserver-master -h to see available options
+
+# H264 RTSP server options
+# Examples:
+# RTSPH264OPTS="-S -W960 -H540"
+# To enable authentication:
+# RTSPH264OPTS="-U user:password"
+RTSPH264OPTS=""
+
+# MJPEG RTSP server options
+# Examples:
+# RTSPMJPEGOPTS="-W960 -H540"
+# To enable authentication:
+# RTSPMJPEGOPTS="-U user:password"
+RTSPMJPEGOPTS=""

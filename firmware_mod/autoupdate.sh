@@ -13,8 +13,8 @@ BRANCH="master"
 REMOTEFOLDER="firmware_mod"
 # Default destination foler
 DESTFOLDER="./"
-# The list of exclude, can have multple filter with "*\.conf|*\.sh"
-EXCLUDEFILTER="*\.conf|run\.sh"
+# The list of exclude, can have multple filter with "*.conf|*.sh"
+EXCLUDEFILTER="*.conf|*.user|run.sh|osd|autoupdate.sh|libcrypto.so.42|curl|curl.bin|libssl.so.44|libz.so.1"
 # Somme URL
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
@@ -23,6 +23,7 @@ COMMITIDFILE=.commit
 CURL="/system/sdcard/bin/curl -k"
 JQ="/system/sdcard/bin/jq"
 SHA="/system/sdcard/bin/openssl dgst -sha256"
+BASENAME="/system/sdcard/bin/busybox basename"
 #CURL="curl -k "
 #JQ="jq"
 #SHA="openssl dgst -sha256"
@@ -104,6 +105,21 @@ action()
         eval "$@"
     fi
     return $?
+}
+##########################################################################
+# Check if $1 macth with the excluded filter
+ismatch()
+{
+    in=$(${BASENAME} ${1})
+    for filter in $(echo ${EXCLUDEFILTER} | sed "s/|/ /g")
+    do
+        if [ "${in#$filter}" == "" ]; then
+            echo match
+            return 0
+        fi
+    done
+
+    echo notmatch
 }
 
 ##########################################################################
@@ -243,15 +259,15 @@ if [ ${_XFER} = 1 ]; then
     update=true
 fi
 
-if [ $_FORCE = 1 ]; then
+if [ ${_FORCE} = 1 ]; then
     log "forced option"
 fi
 
-if [ $_PRINTONLY = 1 ]; then
+if [ ${_PRINTONLY} = 1 ]; then
     log "Print actions only, do nothing"
 fi
 
-if [ $_BACKUP = 1 ]; then
+if [ ${_BACKUP} = 1 ]; then
   log "will backup files"
 fi
 
@@ -270,8 +286,8 @@ if [ ${update} = true ]; then
         REMOVE="${GITHUBURLRAW}/${REPO}/${BRANCH}/${REMOTEFOLDER}/"
         LOCALFILE="${DESTFOLDER}${i#$REMOVE}"
         # Remove files that match the filter
-        res=$(echo ${LOCALFILE} | grep -E ${EXCLUDEFILTER})
-        if [ $? = 0 ]; then
+        res=$(ismatch ${LOCALFILE})
+        if [ ${res} == "match" ]; then
             echo "${LOCALFILE} is excluded due to filter"
             continue
         fi

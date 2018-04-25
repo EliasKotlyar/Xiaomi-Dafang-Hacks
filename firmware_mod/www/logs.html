@@ -1,0 +1,87 @@
+<!-- Use http://odyniec.net/projects/imgareaselect/ -->
+<style id="custom_css">
+    #tab-content p {
+  display: none;
+}
+
+#tab-content p.is-active {
+  display: block;
+}
+</style>
+<h1 class="is-size-4">logs</h1>
+<div class="tabs is-toggle is-fullwidth" id="tabs">
+    <ul>
+        <li class="is-active" data-tab="1">
+            <a>
+                <span class="icon is-small"><i class="fa fa-image"></i></span>
+                <span>Summary</span>
+            </a>
+        </li>
+        <li data-tab="2">
+            <a>
+                <span class="icon is-small"><i class="fa fa-music"></i></span>
+                <span>dmesg</span>
+            </a>
+        </li>
+        <li data-tab="3">
+            <a>
+                <span class="icon is-small"><i class="fa fa-film"></i></span>
+                <span>logcat</span>
+            </a>
+        </li>
+        <li data-tab="4">
+            <a>
+                <span class="icon is-small"><i class="fa fa-file-text-o"></i></span>
+                <span>video server</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div id="tab-content">
+    <p class="is-active" data-content="1" id="tab1">
+
+    </p>
+    <p data-content="2" id="tab2">
+
+    </p>
+    <p data-content="3" id="tab3">
+
+    </p>
+    <p data-content="4" id="tab4">
+
+    </p>
+</div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+        // get motion config info
+        $.ajax({
+            'url': '/cgi-bin/action.cgi?cmd=showlog',
+        }).done(function (log) {
+            $('#tab1').html(log);
+
+        $('#tabs li').on('click', function() {
+            var tab = $(this).data('tab');
+            var str="logname=" + tab
+            console.log(str);
+          $.ajax({
+            'url': '/cgi-bin/action.cgi?cmd=showlog',
+            'type' : 'POST',
+            'data' : str
+            //logname=$('#tab-content p').id
+            }).done(function (log) {
+                $('#tab-content p').html(log);
+
+            });
+
+
+            $('#tabs li').removeClass('is-active');
+            $(this).addClass('is-active');
+
+            $('#tab-content p').removeClass('is-active');
+            $('p[data-content="' + tab + '"]').addClass('is-active');
+        });
+    });
+ });
+</script>
