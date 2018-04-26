@@ -11,5 +11,5 @@ if [ -f /system/sdcard/config/osd ]; then
     [ ! -z "${FIXEDW}" ] && /system/sdcard/bin/setconf -k w -v ${FIXEDW} 2>/dev/null
     [ ! -z "${SPACE}" ] && /system/sdcard/bin/setconf -k p -v ${SPACE} 2>/dev/null
 else
-    /system/sdcard/bin/setconf -k p -v ""
+    /system/sdcard/bin/setconf -k o -v ""
 fi
