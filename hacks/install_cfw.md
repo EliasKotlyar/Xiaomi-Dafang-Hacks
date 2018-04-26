@@ -1,8 +1,14 @@
-## Installation of the microSD bootloader on Dafang
+## Installation of the microSD bootloader
 
-1. Download [CFW-Binary](/hacks/cfw/cfw-1.3.bin). Verify the SHA256 and/or SHA3-256 checksums to ensure file integrity.
-  - SHA2-256: `2a23e136906d0ba13d1bb9fe7da52c2eb49c58ccce97be29c91259c2011894ae`
-  - SHA3-256: `d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb`
+1. Download the CFW-Binary for your [CFW-Binary]
+
+    Name | SHA3-256 
+    --- | --- 
+    [Xioami Dafang](/hacks/cfw/dafang/cfw-1.3.bin) | d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb
+    [Xioami Xiaofang T20](/hacks/cfw/xiaofang/cfw-1.0.bin) | 
+    [Xioami Dafang](/hacks/cfw/wyzecam_v2/cfw-1.0.bin) | 
+
+
 2. Format your microSD to FAT. NTFS, EXFAT etc. won't work.
 2. Put it to microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
 3. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang

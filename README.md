@@ -1,6 +1,6 @@
 ## Xiaomi Dafang Hacks / Xiaofang with T20 Processor
 
-This repository contains a Custom Firmware for the Xiaomi Dafang Camera. It also supports the Xiaofang with a T20 Processor. 
+This repository contains a Custom Firmware for the Xiaomi Dafang Camera. It also supports the Xiaofang with a T20 Processor and Wyzecam V2. 
 If you have a Xiaofang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
 
 It also has a collection of information & software.
