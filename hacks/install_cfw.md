@@ -1,6 +1,6 @@
 ## Installation of the microSD bootloader
 
-1. Download the CFW-Binary for your [CFW-Binary]
+1. Download the CFW-Binary for your Camera
 
     Name | SHA3-256 
     --- | --- 
@@ -17,11 +17,6 @@
 5. Wait until the firmware has finished flashing (like 2 minutes). Disconnect the power as soon as the base starts moving.
 6. Remove the microSD and try to start the Dafang camera
 7. You should see the blue led shining up for 5 seconds (not blinking) **before** the base starts moving. If not, something went wrong. You should try another microSD. Start over from step 1.
-
-
-## Installation of the microSD bootloader on Xiaofang
-Use the following binary:
-[CFW-Binary](/hacks/cfw_xiaofang/cfw-1.0.bin)
 
 ## Installation of the new Firmware
 
