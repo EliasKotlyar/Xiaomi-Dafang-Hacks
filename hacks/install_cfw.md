@@ -10,7 +10,7 @@
 
 
 2. Format your microSD to FAT. NTFS, EXFAT etc. won't work.
-2. Put it to microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
+2. Copy the CFW-Binary from step 1 to the formated microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
 3. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
 3. Hold the setup button on the Dafang camera
 4. Plug in the USB power cable
