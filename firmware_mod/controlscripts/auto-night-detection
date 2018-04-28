@@ -1,5 +1,6 @@
 #!/bin/sh
 PIDFILE="/run/auto-night-detection.pid"
+CONF_FILE="/system/sdcard/config/autonight.conf"
 
 status()
 {
@@ -11,11 +12,16 @@ status()
 
 start()
 {
+  AUTONIGHT_OPTS=
+  if [ -f $CONF_FILE ]
+  then
+        AUTONIGHT_OPTS=$(cat $CONF_FILE)
+  fi
   if [ -f /run/auto-night-detection.pid ]; then
     echo "Auto Night Detection already running";
   else
     echo "Starting Auto Night Detection"
-    /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldr.sh &>/dev/null &
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/autonight $AUTONIGHT_OPTS &>/dev/null &
     echo "$!" > "$PIDFILE"
   fi
 }
