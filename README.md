@@ -18,6 +18,11 @@ Before you try to install it, please read the [FAQ](/hacks/faq.md)
 After that, continue to the
 [Installation](/hacks/install_cfw.md)
 
+### Support
+Feel free to open a issue if you encounter any problem. Also join our Gitter-Chat:
+https://gitter.im/Xiaomi-Dafang-Hacks
+
+
 ## Technical Informations about the hack:
 Start [here](/hacks/technical.md)
 
