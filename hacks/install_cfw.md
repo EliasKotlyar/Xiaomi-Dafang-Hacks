@@ -6,7 +6,7 @@
     --- | --- 
     [Xioami Dafang](/hacks/cfw/dafang/cfw-1.3.bin) | d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb
     [Xioami Xiaofang T20](/hacks/cfw/xiaofang/cfw-1.0.bin) | 
-    [Wyzecam V2](/hacks/cfw/wyzecam_v2/cfw-1.0.bin) | 
+    [Wyzecam V2](/hacks/cfw/wyzecam_v2/cfw-1.1.bin) | 
 
 
 2. Format your microSD to FAT. NTFS, EXFAT etc. won't work.
