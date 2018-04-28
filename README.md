@@ -4,9 +4,9 @@ This repository contains a Custom Firmware for the following Devices:
 
 Name | Picture
 --- | --- 
-[Xioami Dafang](/hacks/cfw/dafang/cfw-1.3.bin) | ![Dafang](/dafang.png)
-[Xioami Xiaofang T20](/hacks/cfw/xiaofang/cfw-1.0.bin) | ![Xiaofang](/xiaofang.png)
-[Wyzecam V2](/hacks/cfw/wyzecam_v2/cfw-1.1.bin) | ![Xiaofang](/xiaofang.png)
+Xioami Dafang | ![Dafang](/dafang.png)
+Xioami Xiaofang T20 | ![Xiaofang](/xiaofang.png)
+Wyzecam V2 | ![Xiaofang](/xiaofang.png)
 
 If you have a Xiaofang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
 
