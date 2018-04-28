@@ -1,5 +1,7 @@
 ## Xiaomi Dafang Hacks / Xiaofang with T20 Processor
 
+[![Join the chat at https://gitter.im/Xiaomi-Dafang-Hacks/Lobby](https://badges.gitter.im/Xiaomi-Dafang-Hacks/Lobby.svg)](https://gitter.im/Xiaomi-Dafang-Hacks/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This repository contains a Custom Firmware for the following Devices:
 
 Name | Picture
