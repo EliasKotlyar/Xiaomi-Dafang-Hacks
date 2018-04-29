@@ -2,7 +2,7 @@
 
 [![Join the chat at https://gitter.im/Xiaomi-Dafang-Hacks/Lobby](https://badges.gitter.im/Xiaomi-Dafang-Hacks/Lobby.svg)](https://gitter.im/Xiaomi-Dafang-Hacks/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-This repository contains a Custom Firmware for the following Devices:
+This repository contains custom firmwares for the following devices:
 
 Name | Picture
 --- | --- 
@@ -21,11 +21,14 @@ After that, continue to the
 [Installation](/hacks/install_cfw.md)
 
 ### Support
-Feel free to open a issue if you encounter any problem. Also join our Gitter-Chat:
+If you encounter any problem, please see first if you find similiar open/closed issues.
+If you don't find anything related, feel free to open a new issue.
+Also join our Gitter-Chat:
 https://gitter.im/Xiaomi-Dafang-Hacks
 
+If you/we solve your issue, please condense your gained insights into a pull request for continuous self-improvement.
 
-## Technical Informations about the hack:
+## Technical Information about the hack:
 Start [here](/hacks/technical.md)
 
 ## Viewer and control solution:
