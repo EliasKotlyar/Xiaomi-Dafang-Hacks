@@ -61,7 +61,8 @@ To put all the sensors & actors conveniently into one group you can use the foll
 ```yaml
 Dafang3:
     - camera.dafang3
-    - switch.dafang3_rtsp_server
+    - switch.dafang3_h264_rtsp_server
+    - switch.dafang3_mjpeg_rtsp_server
     - sensor.dafang3
     - device_tracker.dafang3
     - sensor.dafang3_light_sensor
