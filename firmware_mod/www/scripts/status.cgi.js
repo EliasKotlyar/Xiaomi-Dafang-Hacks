@@ -21,7 +21,7 @@ $(document).ready(function () {
 
             showResult(res);
             // reload after 2s
-            setTimeout(function () { $('#content').load('/cgi-bin/status.cgi'); }, 2000);
+            setTimeout(function () { $('#content').load('cgi-bin/status.cgi'); }, 2000);
         });
         event.preventDefault();
     });
