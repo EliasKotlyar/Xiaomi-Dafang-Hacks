@@ -79,11 +79,17 @@ if [ -n "$F_cmd" ]; then
     ir_cut_on)
       setgpio 25 0
       setgpio 26 1
+      sleep 1
+      setgpio 26 0
+      echo "1" > /var/run/ircut
     ;;
 
     ir_cut_off)
-      setgpio 25 1
       setgpio 26 0
+      setgpio 25 1
+      sleep 1
+      setgpio 25 0
+      echo "0" > /var/run/ircut
     ;;
 
     motor_left)
