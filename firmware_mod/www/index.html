@@ -155,7 +155,7 @@
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item" href="/">Dafang Hacks</a>
+                <a class="navbar-item" href=".">Dafang Hacks</a>
                 <a id="navbar_burger" role="button" class="navbar-burger" data-target="nav_menu" aria-label="menu" aria-expanded="false">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -168,13 +168,13 @@
                     <div class="navbar-item has-dropdown is-hoverable">
                         <span class="navbar-link">Manage</span>
                         <div class="navbar-dropdown is-boxed">
-                            <a id="status" class="navbar-item onpage" href="javascript: void(0)" data-target="/cgi-bin/status.cgi">Settings</a>
-                            <a id="scripts" class="navbar-item onpage" href="javascript: void(0)" data-target="/cgi-bin/scripts.cgi">Services</a>
-                            <a id="configmotion" class="navbar-item onpage" href="javascript: void(0)" data-target="/configmotion.html">Motion Detection</a>
-                            <a id="network" class="navbar-item onpage" href="javascript: void(0)" data-target="/cgi-bin/network.cgi">Network Information</a>
-                            <a id="logs" class="navbar-item onpage" href="javascript: void(0)" data-target="/logs.html">Logs</a>
-                            <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to reboot?" data-target="/cgi-bin/action.cgi?cmd=reboot">Reboot</a>
-                            <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to shutdown?" data-target="/cgi-bin/action.cgi?cmd=shutdown">Shutdown</a>
+                            <a id="status" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/status.cgi">Settings</a>
+                            <a id="scripts" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/scripts.cgi">Services</a>
+                            <a id="configmotion" class="navbar-item onpage" href="javascript: void(0)" data-target="configmotion.html">Motion Detection</a>
+                            <a id="network" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/network.cgi">Network Information</a>
+                            <a id="logs" class="navbar-item onpage" href="javascript: void(0)" data-target="logs.html">Logs</a>
+                            <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to reboot?" data-target="cgi-bin/action.cgi?cmd=reboot">Reboot</a>
+                            <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to shutdown?" data-target="cgi-bin/action.cgi?cmd=shutdown">Shutdown</a>
                         </div>
                     </div>
                 </div>
@@ -186,65 +186,65 @@
                         <div class="navbar-dropdown is-boxed is-right">
                             <!-- Led: IR -->
                             <span class="navbar-item">
-                                <input id="ir_led" type="checkbox" name="ir_led" class="switch" data-checked="/cgi-bin/action.cgi?cmd=ir_led_on" data-unchecked="/cgi-bin/action.cgi?cmd=ir_led_off">
+                                <input id="ir_led" type="checkbox" name="ir_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=ir_led_on" data-unchecked="cgi-bin/action.cgi?cmd=ir_led_off">
                                 <label for="ir_led">IR Led</label>
                             </span>
                             <!-- IR Cut -->
                             <span class="navbar-item">
-                                <input id="ir_cut" type="checkbox" name="ir_cut" class="switch" data-checked="/cgi-bin/action.cgi?cmd=ir_cut_on" data-unchecked="/cgi-bin/action.cgi?cmd=ir_cut_off">
+                                <input id="ir_cut" type="checkbox" name="ir_cut" class="switch" data-checked="cgi-bin/action.cgi?cmd=ir_cut_on" data-unchecked="cgi-bin/action.cgi?cmd=ir_cut_off">
                                 <label for="ir_cut">IR-Cut</label>
                             </span>
                             <!-- Auto Night Detect -->
                             <span class="navbar-item">
-                                <input id="auto_night_detection" type="checkbox" name="auto_night_detection" class="switch" data-checked="/cgi-bin/scripts.cgi?cmd=start&script=auto-night-detection"
-                                    data-unchecked="/cgi-bin/scripts.cgi?cmd=stop&script=auto-night-detection">
+                                <input id="auto_night_detection" type="checkbox" name="auto_night_detection" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=auto-night-detection"
+                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=auto-night-detection">
                                 <label for="auto_night_detection">Auto Night Detection</label>
                             </span>
                             <!-- LED: Blue -->
                             <span class="navbar-item">
-                                <input id="blue_led" type="checkbox" name="blue_led" class="switch" data-checked="/cgi-bin/action.cgi?cmd=blue_led_on" data-unchecked="/cgi-bin/action.cgi?cmd=blue_led_off">
+                                <input id="blue_led" type="checkbox" name="blue_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=blue_led_on" data-unchecked="cgi-bin/action.cgi?cmd=blue_led_off">
                                 <label for="blue_led">Blue LED</label>
                             </span>
                             <!-- LED: Yellow -->
                             <span class="navbar-item">
-                                <input id="yellow_led" type="checkbox" name="yellow_led" class="switch" data-checked="/cgi-bin/action.cgi?cmd=yellow_led_on"
-                                    data-unchecked="/cgi-bin/action.cgi?cmd=yellow_led_off">
+                                <input id="yellow_led" type="checkbox" name="yellow_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=yellow_led_on"
+                                    data-unchecked="cgi-bin/action.cgi?cmd=yellow_led_off">
                                 <label for="yellow_led">Yellow LED</label>
                             </span>
                             <!-- Motion Detection -->
                             <span class="navbar-item">
-                                <input id="motion_detection" type="checkbox" name="motion_detection" class="switch" data-checked="/cgi-bin/action.cgi?cmd=motion_detection_on"
-                                    data-unchecked="/cgi-bin/action.cgi?cmd=motion_detection_off">
+                                <input id="motion_detection" type="checkbox" name="motion_detection" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_on"
+                                    data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_off">
                                 <label for="motion_detection">Motion Detection</label>
                             </span>
                             <!-- RTSP H264 -->
                             <span class="navbar-item">
-                                <input id="rtsp_h264" type="checkbox" name="rtsp_h264" class="switch" data-checked="/cgi-bin/scripts.cgi?cmd=start&script=rtsp-h264"
-                                    data-unchecked="/cgi-bin/scripts.cgi?cmd=stop&script=rtsp-h264">
+                                <input id="rtsp_h264" type="checkbox" name="rtsp_h264" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=rtsp-h264"
+                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=rtsp-h264">
                                 <label for="rtsp_h264">RTSP H264 Server</label>
                             </span>
                             <!-- RTSP MJPEG -->
                             <span class="navbar-item">
-                                <input id="rtsp_mjpeg" type="checkbox" name="rtsp_mjpeg" class="switch" data-checked="/cgi-bin/scripts.cgi?cmd=start&script=rtsp-mjpeg"
-                                    data-unchecked="/cgi-bin/scripts.cgi?cmd=stop&script=rtsp-mjpeg">
+                                <input id="rtsp_mjpeg" type="checkbox" name="rtsp_mjpeg" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=rtsp-mjpeg"
+                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=rtsp-mjpeg">
                                 <label for="rtsp_mjpeg">RTSP MJPEG Server</label>
                             </span>
                             <!-- MQTT Status -->
                             <span class="navbar-item">
-                                <input id="mqtt_control" type="checkbox" name="mqtt_control" class="switch" data-checked="/cgi-bin/scripts.cgi?cmd=start&script=mqtt-status"
-                                    data-unchecked="/cgi-bin/scripts.cgi?cmd=stop&script=mqtt-status">
+                                <input id="mqtt_control" type="checkbox" name="mqtt_control" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=mqtt-status"
+                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=mqtt-status">
                                 <label for="mqtt_control">MQTT Status Server</label>
                             </span>
                             <!-- MQTT Control -->
                             <span class="navbar-item">
-                                <input id="mqtt_status" type="checkbox" name="mqtt_status" class="switch" data-checked="/cgi-bin/scripts.cgi?cmd=start&script=mqtt-control"
-                                    data-unchecked="/cgi-bin/scripts.cgi?cmd=stop&script=mqtt-control">
+                                <input id="mqtt_status" type="checkbox" name="mqtt_status" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=mqtt-control"
+                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=mqtt-control">
                                 <label for="mqtt_status">MQTT Control Server</label>
                             </span>
                             <!-- Startup Sound -->
                             <span class="navbar-item">
-                                <input id="sound_on_startup" type="checkbox" name="sound_on_startup" class="switch" data-checked="/cgi-bin/scripts.cgi?cmd=start&script=sound-on-startup"
-                                    data-unchecked="/cgi-bin/scripts.cgi?cmd=stop&script=sound-on-startup">
+                                <input id="sound_on_startup" type="checkbox" name="sound_on_startup" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=sound-on-startup"
+                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=sound-on-startup">
                                 <label for="sound_on_startup">Sound on Startup</label>
                             </span>
                         </div>
@@ -256,7 +256,7 @@
 
     <section id="main" class="section">
         <div id="content" class="container">
-            <img id="liveview" src="/cgi-bin/currentpic.cgi" onerror="this.src='css/unable_load.png';">
+            <img id="liveview" src="cgi-bin/currentpic.cgi" onerror="this.src='css/unable_load.png';">
             <div id="dpad_container">
                 <div id="dpad">
                     <div class="dpad_button up">
