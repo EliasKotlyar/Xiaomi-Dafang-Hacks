@@ -9,14 +9,15 @@
     [Wyzecam V2](/hacks/cfw/wyzecam_v2/cfw-1.1.bin) | 
 
 
-2. Format your microSD to FAT. NTFS, EXFAT etc. won't work.
-2. Copy the CFW-Binary from step 1 to the formated microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
-3. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
-3. Hold the setup button on the Dafang camera
-4. Plug in the USB power cable
-5. Wait until the firmware has finished flashing (like 2 minutes). Disconnect the power as soon as the base starts moving.
-6. Remove the microSD and try to start the Dafang camera
-7. You should see the blue led shining up for 5 seconds (not blinking) **before** the base starts moving. If not, something went wrong. You should try another microSD. Start over from step 1.
+2. Format your microSD to FAT32. NTFS, EXFAT etc. won't work.
+3. Copy the CFW-Binary from step 1 to the formated microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
+4. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
+5. Hold down the setup button on the Dafang camera while
+6. Plugging in the USB power cable
+7. Keep setup button for another 10 seconds
+8. Wait until the firmware has finished flashing (like 3 minutes). Disconnect the power as soon as the base starts moving.
+9. Remove the microSD and try to start the Dafang camera
+10. You should see the blue led shining up for 5 seconds (not blinking) **before** the base starts moving. If not, something went wrong. You should try another microSD. Start over from step 1.
 
 ## Installation of the new Firmware
 
