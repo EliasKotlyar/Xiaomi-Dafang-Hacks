@@ -31,9 +31,10 @@ if [ -n "$F_cmd" ]; then
             /system/bin/logcat -d
             ;;
         4)
-          echo "Contents of v4l2rtspserver-master-h264.log<br/>"
-          cat /tmp/v4l2rtspserver-master-h264.log
+          echo "Contents of v4l2rtspserver-master.log<br/>"
+          cat /system/sdcard/log/v4l2rtspserver-master.log
           ;;
+
       esac
       echo "</pre>"
       return
