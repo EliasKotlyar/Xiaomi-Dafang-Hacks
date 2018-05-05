@@ -12,10 +12,6 @@ if [ -f /system/sdcard/config/osd ]; then
   . /system/sdcard/config/osd 2>/dev/null
 fi
 
-if [ ! -d $LOGDIR ]; then
-  mkdir -p $LOGDIR
-fi
-
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"

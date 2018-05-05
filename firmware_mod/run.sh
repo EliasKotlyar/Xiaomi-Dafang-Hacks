@@ -1,24 +1,35 @@
 #!/bin/sh
 
-CONFIGPATH=/system/sdcard/config
-echo "Starting up CFW"
+CONFIGPATH="/system/sdcard/config"
+LOGDIR="/system/sdcard/log"
+LOGPATH="$LOGDIR/startup.log"
+if [ ! -d $LOGDIR ]; then
+  mkdir -p $LOGDIR
+fi
+echo "==================================================" >> $LOGPATH
+echo "Starting the Dafang Hacks Custom Application Layer" >> $LOGPATH
+echo "==================================================" >> $LOGPATH
 
 ## Stop telnet for security reasons
 killall telnetd
 
 ## Load some common functions
 . /system/sdcard/scripts/common_functions.sh
-
-## Update the hostname:
-hostname -F $CONFIGPATH/hostname.conf
-
-## Get real Mac address from config file:
-MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
+echo "loaded common functions" >> $LOGPATH
 
 ## Start Wifi:
+if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
+  echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
+fi
+MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 insmod /driver/8189es.ko rtw_initmac="$MAC"
-wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
-udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)"
+wpa_supplicant_status="$(wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
+echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
+
+hostname -F $CONFIGPATH/hostname.conf
+udhcpc_status=$(udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
+echo "udhcpc: $udhcpc_status" >> $LOGPATH
+
 
 ## Sync the via NTP
 ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
@@ -33,6 +44,8 @@ for pin in 25 26 38 39 49; do
 done
 # the ir_led pin is a special animal and needs active low
 echo 1 > /sys/class/gpio/gpio49/active_low
+
+echo "initialized gpios" >> $LOGPATH
 
 ## Set leds to default startup states
 ir_led off
@@ -51,12 +64,15 @@ insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 
 ## Start FTP & SSH Server:
-/system/sdcard/bin/dropbearmulti dropbear -R
-/system/sdcard/bin/bftpd -d
+dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
+echo "dropbear: $dropbear_status" >> $LOGPATH
+
+bftpd_status=$(/system/sdcard/bin/bftpd -d)
+echo "bftpd: $bftpd_status" >> $LOGPATH
 
 ## Start Webserver:
-#/system/sdcard/bin/boa -c /system/sdcard/config/
-/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
+lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
+echo "lighttpd: $lighttpd_status" >> $LOGPATH
 
 ## Configure OSD:
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
@@ -74,4 +90,4 @@ for i in /system/sdcard/config/autostart/*; do
   $i
 done
 
-echo "Startup finished!"
+echo "Startup finished!" >> $LOGPATH
