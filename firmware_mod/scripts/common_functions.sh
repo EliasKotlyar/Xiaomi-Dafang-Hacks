@@ -7,7 +7,14 @@
 init_gpio(){
   GPIOPIN=$1
   echo "$GPIOPIN" > /sys/class/gpio/export
-  echo out > "/sys/class/gpio/gpio$GPIOPIN/direction"
+  case $2 in
+    in)
+      echo "in" > "/sys/class/gpio/gpio$GPIOPIN/direction"
+      ;;
+    *)
+      echo "out" > "/sys/class/gpio/gpio$GPIOPIN/direction"
+      ;;
+  esac
   echo 0 > "/sys/class/gpio/gpio$GPIOPIN/active_low"
 }
 
