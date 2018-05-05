@@ -37,7 +37,9 @@ After install, you can use this [android application](https://play.google.com/ap
 
 ## Integration in Home Automation Systems:
 [Domoticz](/integration/domoticz/domoticz.md)
+
 [Home Assistant](/integration/homeassistant/homeassistant.md)
+
 [Zoneminder](/integration/zoneminder/zoneminder.md)
 
 ## Contributions:
