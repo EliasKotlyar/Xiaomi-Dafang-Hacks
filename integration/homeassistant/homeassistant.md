@@ -1,9 +1,5 @@
 ## Xiaomi Dafang Integration in Home Assistant
 
-
-
-
-
 ### On the Home Assistant side
 
 First let's set up your camera stream. Make sure the rtsp-h264 service in the [service control panel](http://dafang/cgi-bin/scripts.cgi) is running and you can connect to [it](rtsp://dafang:8554/unicast) via e.g. vlc player.

@@ -5,7 +5,7 @@
 This repository contains custom firmwares for the following devices:
 
 Name | Picture
---- | --- 
+--- | ---
 Xiaomi Dafang | ![Dafang](/dafang.png)
 Xiaomi Xiaofang T20 | ![Xiaofang](/xiaofang.png)
 Wyzecam V2 | ![Xiaofang](/xiaofang.png)
@@ -36,7 +36,9 @@ Start [here](/hacks/technical.md)
 After install, you can use this [android application](https://play.google.com/apps/testing/io.ext.medinvention.dafangcam) developed by [@medinvention](https://github.com/mmohamed) and available at [GitLab](https://gitlab.com/mmohamed/DafangCam)
 
 ## Integration in Home Automation Systems:
+[Domoticz](/integration/domoticz/domoticz.md)
 [Home Assistant](/integration/homeassistant/homeassistant.md)
+[Zoneminder](/integration/zoneminder/zoneminder.md)
 
 ## Contributions:
 Any contribution to the development is highly welcome. The best possibility is to open a pull request on GitHub.
