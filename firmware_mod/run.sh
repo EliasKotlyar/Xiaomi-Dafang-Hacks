@@ -3,6 +3,9 @@
 CONFIGPATH=/system/sdcard/config
 echo "Starting up CFW"
 
+## Stop telnet for security reasons
+killall telnetd
+
 ## Load some common functions
 . /system/sdcard/scripts/common_functions.sh
 
@@ -37,36 +40,36 @@ ir_cut on
 yellow_led off
 blue_led on
 
-# Load motor driver module 
+## Load motor driver module
 insmod /system/sdcard/driver/sample_motor.ko
 # Don't calibrate the motors for now as for newer models the endstops don't work:
-#motor hcalibrate
-#motor vcalibrate
+# motor hcalibrate
+# motor vcalibrate
 
 ## Start Sensor:
 insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 
-## Start FTP & SSH
+## Start FTP & SSH Server:
 /system/sdcard/bin/dropbearmulti dropbear -R
 /system/sdcard/bin/bftpd -d
 
 ## Start Webserver:
-/system/sdcard/bin/boa -c /system/sdcard/config/
-#/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
+#/system/sdcard/bin/boa -c /system/sdcard/config/
+/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
 
-## Configure OSD
+## Configure OSD:
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
     . /system/sdcard/controlscripts/configureOsd  2>/dev/null
 fi
 
-## Configure Motion
+## Configure Motion:
 if [ -f /system/sdcard/controlscripts/configureMotion ]; then
     . /system/sdcard/controlscripts/configureMotion  2>/dev/null
 fi
 
 
-## Autostart
+## Autostart all enabled services:
 for i in /system/sdcard/config/autostart/*; do
   $i
 done
