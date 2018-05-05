@@ -26,6 +26,30 @@ $(document).ready(function () {
         event.preventDefault();
     });
 
+    $('#passwordForm').submit(function (event) {
+    var b = $('#passwordSubmit');
+    b.toggleClass('is-loading');
+    b.prop('disabled', !b.prop('disabled'));
+    var formData = {
+        'password': $('input[name=password]').val(),
+    };
+    $.ajax({
+        type: 'POST',
+        url: $('#passwordForm').attr('action'),
+        data: formData,
+        dataType: 'html',
+        encode: true
+    }).done(function (res) {
+        b.toggleClass('is-loading');
+        b.prop('disabled', !b.prop('disabled'));
+
+        showResult(res);
+        // reload after 2s
+        setTimeout(function () { $('#content').load('cgi-bin/status.cgi'); }, 2000);
+    });
+    event.preventDefault();
+});
+
     $('#formOSD').submit(function (event) {
         var b = $('#osdSubmit');
         b.toggleClass('is-loading');
@@ -101,4 +125,3 @@ $(document).ready(function () {
         event.preventDefault();
     });
 });
-

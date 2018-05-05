@@ -142,8 +142,8 @@ if [ -n "$F_cmd" ]; then
 
     rtsp_stop)
       /system/sdcard/controlscripts/rtsp-h264-with-segmentation stop
-       /system/sdcard/controlscripts/rtsp-mjpeg stop
-       /system/sdcard/controlscripts/rtsp-h264 stop
+      /system/sdcard/controlscripts/rtsp-mjpeg stop
+      /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
     settz)
        ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
@@ -181,6 +181,11 @@ if [ -n "$F_cmd" ]; then
         fi
       fi
       return
+    ;;
+
+    set_http_password)
+      echo "<p>Setting http password to : ${F_password}</p>"
+      http_password "${F_password}"
     ;;
 
     osd)

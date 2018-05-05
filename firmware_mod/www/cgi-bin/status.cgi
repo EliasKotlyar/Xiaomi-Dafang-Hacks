@@ -65,6 +65,39 @@ cat << EOF
     </form>
     </div>
 </div>
+
+<!-- HTTP Password -->
+<div class='card status_card'>
+    <header class='card-header'><p class='card-header-title'>HTTP Password</p></header>
+    <div class='card-content'>
+        <form id="passwordForm" action="cgi-bin/action.cgi?cmd=set_http_password" method="post">
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">New Password</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" id="password" name="password" type="password" size="12" value="*****"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+            </div>
+            <div class="field-body">
+                <div class="field">
+                <div class="control">
+                    <input id="pwSubmit" class="button is-primary" type="submit" value="Set" />
+                </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
 <!-- Version -->
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Version</p></header>

@@ -138,7 +138,7 @@ ir_cut(){
 
 # Calibrate and control the motor
 # use like: motor up 100
-motor (){
+motor(){
   if [ -z "$2" ]
   then
     steps=100
@@ -196,6 +196,39 @@ ldr(){
     brightness=$(dd if=/dev/jz_adc_aux_0 count=20 2> /dev/null |  sed -e 's/[^\.]//g' | wc -m)
     echo "$brightness"
   esac
+}
+
+# Control the http server
+http_server(){
+  case "$1" in
+  on)
+    /system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
+    ;;
+  off)
+    killall lighttpd.bin
+    ;;
+  restart)
+    killall lighttpd.bin
+    /system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
+    ;;
+  status)
+    if pgrep lighttpd.bin &> /dev/null
+      then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+# Set a new http password
+http_password(){
+  user="root" # by default root until we have proper user management
+  realm="all" # realm is defined in the lightppd.conf
+  pass=$1
+  hash=$(echo -n "$user:$realm:$pass" | md5sum | cut -b -32)
+  echo "$user:$realm:$hash" > /system/sdcard/config/lighttpd.user
 }
 
 # Control the RTSP h264 server
