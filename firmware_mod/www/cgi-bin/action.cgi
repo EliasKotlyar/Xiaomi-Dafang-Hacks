@@ -184,8 +184,9 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     set_http_password)
-      echo "<p>Setting http password to : ${F_password}</p>"
-      http_password "${F_password}"
+      password=$(printf '%b' "${F_password//%/\\x}")
+      echo "<p>Setting http password to : $password</p>"
+      http_password "$password"
     ;;
 
     osd)
