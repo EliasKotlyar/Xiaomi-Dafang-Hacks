@@ -118,18 +118,24 @@ ir_cut(){
   on)
     setgpio 25 0
     setgpio 26 1
+    sleep 1
+    setgpio 26 0
+    echo "1" > /var/run/ircut
     ;;
   off)
-    setgpio 25 1
     setgpio 26 0
+    setgpio 25 1
+    sleep 1
+    setgpio 25 0
+    echo "0" > /var/run/ircut
     ;;
   status)
-    status=$(getgpio 25)
+    status=$(cat /var/run/ircut)
     case $status in
-      0)
+      1)
         echo "ON"
         ;;
-      1)
+      0)
         echo "OFF"
       ;;
     esac
