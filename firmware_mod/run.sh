@@ -30,8 +30,10 @@ hostname -F $CONFIGPATH/hostname.conf
 udhcpc_status=$(udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
 echo "udhcpc: $udhcpc_status" >> $LOGPATH
 
-
 ## Sync the via NTP
+if [ ! -f $CONFIGPATH/ntp_srv.conf ]; then
+  cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
+fi
 ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
 /system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv"
 
