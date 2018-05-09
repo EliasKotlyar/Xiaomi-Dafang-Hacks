@@ -17,6 +17,25 @@ killall telnetd
 . /system/sdcard/scripts/common_functions.sh
 echo "loaded common functions" >> $LOGPATH
 
+## Create root user home directory and etc directory on sdcard
+if [ ! -d /system/sdcard/root ]; then
+  mkdir /system/sdcard/root
+  echo 'PATH=/system/sdcard/bin:$PATH' > /system/sdcard/root/.profile
+  echo "Created root user home directory" >> $LOGPATH
+fi
+if [ ! -d /system/sdcard/etc ]; then
+  mkdir /system/sdcard/etc
+  cp -f /etc/TZ /etc/protocols /etc/fstab /etc/inittab /etc/hosts \
+    /etc/passwd /etc/shadow /etc/group /etc/resolv.conf /etc/hostname \
+    /etc/profile /system/sdcard/etc
+  sed -i s#/:#/root:# /system/sdcard/etc/passwd
+  echo "Created etc directory on sdcard" >> $LOGPATH
+fi
+mount -o bind /system/sdcard/root /root
+echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
+mount -o bind /system/sdcard/etc /etc
+echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
+
 ## Start Wifi:
 if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
   echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
