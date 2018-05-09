@@ -4,12 +4,16 @@ LOGDIR="/system/sdcard/log"
 LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
 export LD_LIBRARY_PATH='/thirdlib:/system/lib'
 
+if [ ! -f /system/sdcard/config/rtspserver.conf ]; then
+  cp /system/sdcard/config/rtspserver.conf.dist /system/sdcard/config/rtspserver.conf
+fi
+
 if [ -f /system/sdcard/config/rtspserver.conf ]; then
   . /system/sdcard/config/rtspserver.conf
 fi
 
-if [ -f /system/sdcard/config/osd ]; then
-  . /system/sdcard/config/osd 2>/dev/null
+if [ -f /system/sdcard/config/osd.conf ]; then
+  . /system/sdcard/config/osd.conf 2>/dev/null
 fi
 
 status()

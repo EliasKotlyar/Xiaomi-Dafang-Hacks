@@ -203,27 +203,27 @@ if [ -n "$F_cmd" ]; then
 
       if [ ! -z "$enabled" ]; then
         /system/sdcard/bin/setconf -k o -v "$osdtext"
-        echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd
+        echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd.conf
         echo "OSD set"
       else
         echo "OSD removed"
         /system/sdcard/bin/setconf -k o -v ""
-        echo "OSD=\"\" " > /system/sdcard/config/osd
+        echo "OSD=\"\" " > /system/sdcard/config/osd.conf
       fi
 
-      echo "COLOR=${F_color}" >> /system/sdcard/config/osd
+      echo "COLOR=${F_color}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k c -v "${F_color}"
 
-      echo "SIZE=${F_size}" >> /system/sdcard/config/osd
+      echo "SIZE=${F_size}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k s -v "${F_size}"
 
-      echo "POSY=${F_posy}" >> /system/sdcard/config/osd
+      echo "POSY=${F_posy}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k x -v "${F_posy}"
 
-      echo "FIXEDW=${F_fixedw}" >> /system/sdcard/config/osd
+      echo "FIXEDW=${F_fixedw}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k w -v "${F_fixedw}"
 
-      echo "SPACE=${F_spacepixels}" >> /system/sdcard/config/osd
+      echo "SPACE=${F_spacepixels}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k p -v "${F_spacepixels}"
       return
     ;;
