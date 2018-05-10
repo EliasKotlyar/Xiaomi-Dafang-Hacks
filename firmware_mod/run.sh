@@ -25,7 +25,7 @@ if [ ! -d /system/sdcard/root ]; then
 fi
 if [ ! -d /system/sdcard/etc ]; then
   mkdir /system/sdcard/etc
-  cp -frL /etc/TZ /etc/protocols /etc/fstab /etc/inittab /etc/hosts \
+  cp -fRL /etc/TZ /etc/protocols /etc/fstab /etc/inittab /etc/hosts \
     /etc/passwd /etc/shadow /etc/group /etc/resolv.conf /etc/hostname \
     /etc/profile /etc/sensor /system/sdcard/etc
   sed -i s#/:#/root:# /system/sdcard/etc/passwd
