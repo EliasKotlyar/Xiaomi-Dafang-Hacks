@@ -27,7 +27,7 @@ if [ ! -d /system/sdcard/etc ]; then
   mkdir /system/sdcard/etc
   cp -fRL /etc/TZ /etc/protocols /etc/fstab /etc/inittab /etc/hosts \
     /etc/passwd /etc/shadow /etc/group /etc/resolv.conf /etc/hostname \
-    /etc/profile /etc/sensor /system/sdcard/etc
+    /etc/profile /etc/os-release /etc/sensor /system/sdcard/etc
   sed -i s#/:#/root:# /system/sdcard/etc/passwd
   echo "Created etc directory on sdcard" >> $LOGPATH
 fi
