@@ -45,6 +45,7 @@ if [ -n "$F_cmd" ]; then
       /sbin/reboot
       return
     ;;
+
     shutdown)
       echo "Shutting down device.."
       /sbin/halt
@@ -151,6 +152,7 @@ if [ -n "$F_cmd" ]; then
       /system/sdcard/controlscripts/rtsp-mjpeg stop
       /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
+
     settz)
        ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
        #read ntp_serv.conf
@@ -278,16 +280,14 @@ if [ -n "$F_cmd" ]; then
 
     set_video_size)
       video_size=$(echo "${F_video_size}"| sed -e 's/+/ /g')
-      rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"-S $video_size\""
-      rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"-S $video_size\""
+      rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"$video_size\""
+      rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"$video_size\""
       echo "Video resolution set to $video_size<br/>"
       if [ "$(rtsp_h264_server status)" = "ON" ]; then
-        echo "Restarting H264 RSTP server<br/>"
         rtsp_h264_server off
         rtsp_h264_server on
       fi
       if [ "$(rtsp_mjpeg_server status)" = "ON" ]; then
-        echo "Restarting MJPEG RSTP server<br/>"
         rtsp_mjpeg_server off
         rtsp_mjpeg_server on
       fi
