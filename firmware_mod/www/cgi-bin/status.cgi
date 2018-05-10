@@ -379,10 +379,10 @@ cat << EOF
                 <div class="field-body">
                     <div class="field is-grouped">
                         <p class="control">
-                            <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd ]; then echo checked; fi) />
+                            <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd.conf ]; then echo checked; fi) />
                         </p>
                         <p class="control">
-                            <input class="input" id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd && echo "$OSD")"/>
+                            <input class="input" id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd.conf && echo "$OSD")"/>
                             <span class="help">
                                 Enter time-variables in <a href="http://strftime.org/" target="_blank">strftime</a> format
                             </span>
@@ -399,14 +399,14 @@ cat << EOF
                         <div class="control">
                             <div class="select">
                                 <select name="color">
-                                <option value="0" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 0 ]; then echo selected; fi)>White</option>
-                                <option value="1" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 1 ]; then echo selected; fi)>Black</option>
-                                <option value="2" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 2 ]; then echo selected; fi)>Red</option>
-                                <option value="3" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 3 ]; then echo selected; fi)>Green</option>
-                                <option value="4" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 4 ]; then echo selected; fi)>Blue</option>
-                                <option value="5" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 5 ]; then echo selected; fi)>Cyan</option>
-                                <option value="6" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 6 ]; then echo selected; fi)>Yellow</option>
-                                <option value="7" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 7 ]; then echo selected; fi)>Purple</option>
+                                <option value="0" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 0 ]; then echo selected; fi)>White</option>
+                                <option value="1" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 1 ]; then echo selected; fi)>Black</option>
+                                <option value="2" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 2 ]; then echo selected; fi)>Red</option>
+                                <option value="3" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 3 ]; then echo selected; fi)>Green</option>
+                                <option value="4" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 4 ]; then echo selected; fi)>Blue</option>
+                                <option value="5" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 5 ]; then echo selected; fi)>Cyan</option>
+                                <option value="6" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 6 ]; then echo selected; fi)>Yellow</option>
+                                <option value="7" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 7 ]; then echo selected; fi)>Purple</option>
                                 </select>
                             </div>
                         </div>
@@ -422,8 +422,8 @@ cat << EOF
                         <div class="control">
                             <div class="select">
                                 <select name="size">
-                                <option value="0" $(if [ "$(grep SIZE /system/sdcard/config/osd | sed s/SIZE=//)" -eq 0 ]; then echo selected; fi)>Small</option>
-                                <option value="1" $(if [ "$(grep SIZE /system/sdcard/config/osd | sed s/SIZE=//)" -eq 1 ]; then echo selected; fi)>Bigger</option>
+                                <option value="0" $(if [ "$(grep SIZE /system/sdcard/config/osd.conf | sed s/SIZE=//)" -eq 0 ]; then echo selected; fi)>Small</option>
+                                <option value="1" $(if [ "$(grep SIZE /system/sdcard/config/osd.conf | sed s/SIZE=//)" -eq 1 ]; then echo selected; fi)>Bigger</option>
                                 </select>
                             </div>
                         </div>
@@ -437,7 +437,7 @@ cat << EOF
                 <div class="field-body">
                     <div class="field">
                         <p class="control">
-                            <input class="input" id="spacepixels" name="spacepixels" type="number" size="4" value="$(source /system/sdcard/config/osd && echo "$SPACE")"/>
+                            <input class="input" id="spacepixels" name="spacepixels" type="number" size="4" value="$(source /system/sdcard/config/osd.conf && echo "$SPACE")"/>
                         </p>
                         <p class="help">Can be negative</p>
                     </div>
@@ -450,7 +450,7 @@ cat << EOF
                 <div class="field-body">
                     <div class="field">
                         <p class="control">
-                            <input class="input" id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd && echo "$POSY")"/>
+                            <input class="input" id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd.conf && echo "$POSY")"/>
                         </p>
                     </div>
                 </div>
@@ -465,8 +465,8 @@ cat << EOF
                         <div class="control">
                             <div class="select">
                                 <select name="fixedw">
-                                <option value="0" $(if [ "$(grep FIXEDW /system/sdcard/config/osd | sed s/FIXEDW=//)" -eq 0 ]; then echo selected; fi)>No</option>
-                                <option value="1" $(if [ "$(grep FIXEDW /system/sdcard/config/osd | sed s/FIXEDW=//)" -eq 1 ]; then echo selected; fi)>Yes</option>
+                                <option value="0" $(if [ "$(grep FIXEDW /system/sdcard/config/osd.conf | sed s/FIXEDW=//)" -eq 0 ]; then echo selected; fi)>No</option>
+                                <option value="1" $(if [ "$(grep FIXEDW /system/sdcard/config/osd.conf | sed s/FIXEDW=//)" -eq 1 ]; then echo selected; fi)>Yes</option>
                                 </select>
                             </div>
                         </div>
