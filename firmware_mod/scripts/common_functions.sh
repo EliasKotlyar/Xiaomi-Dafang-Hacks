@@ -39,11 +39,6 @@ rewrite_config(){
   sed -i -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}" "$cfg_path"
 }
 
-# Reboot the camera
-reboot(){
-  /sbin/reboot
-}
-
 # Control the blue led
 blue_led(){
   case "$1" in
