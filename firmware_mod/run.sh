@@ -41,7 +41,11 @@ if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
   echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
 fi
 MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
-insmod /driver/8189es.ko rtw_initmac="$MAC"
+if [ -f /driver/8189es.ko ]; then
+  insmod /driver/8189es.ko rtw_initmac="$MAC"
+else
+  insmod /driver/rtl8189ftv.ko rtw_initmac="$MAC"
+fi
 wpa_supplicant_status="$(wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
 echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
 
