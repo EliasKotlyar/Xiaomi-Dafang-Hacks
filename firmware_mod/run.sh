@@ -102,6 +102,14 @@ echo "dropbear: $dropbear_status" >> $LOGPATH
 bftpd_status=$(/system/sdcard/bin/bftpd -d)
 echo "bftpd: $bftpd_status" >> $LOGPATH
 
+## Create a certificate for the webserver
+if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
+  export OPENSSL_CONF=$CONFIGPATH/openssl.cnf
+  openssl req -new -x509 -keyout $CONFIGPATH/lighttpd.pem -out $CONFIGPATH/lighttpd.pem -days 365 -nodes -subj "/C=DE/ST=Bavaria/L=Munich/O=.../OU=.../CN=.../emailAddress=..."
+  chmod 400 $CONFIGPATH/lighttpd.pem
+  echo "created new certificate for webserver" >> $LOGPATH
+fi
+
 ## Start Webserver:
 lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
 echo "lighttpd: $lighttpd_status" >> $LOGPATH
