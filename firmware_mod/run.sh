@@ -13,11 +13,11 @@ echo "==================================================" >> $LOGPATH
 ## Stop telnet for security reasons
 killall telnetd
 
-## Load some common functions
+## Load some common functions:
 . /system/sdcard/scripts/common_functions.sh
 echo "loaded common functions" >> $LOGPATH
 
-## Create root user home directory and etc directory on sdcard
+## Create root user home directory and etc directory on sdcard:
 if [ ! -d /system/sdcard/root ]; then
   mkdir /system/sdcard/root
   echo 'PATH=/system/sdcard/bin:$PATH' > /system/sdcard/root/.profile
@@ -36,6 +36,13 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
+## Create crontab dir and start crond:
+if [ ! -d /system/sdcard/config/cron ]; then
+  mkdir -p /system/sdcard/config/cron/crontabs
+  echo "Created cron directory" >> $LOGPATH
+fi
+crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
+
 ## Start Wifi:
 if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
   echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
@@ -53,7 +60,7 @@ hostname -F $CONFIGPATH/hostname.conf
 udhcpc_status=$(udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
 echo "udhcpc: $udhcpc_status" >> $LOGPATH
 
-## Sync the via NTP
+## Sync the via NTP:
 if [ ! -f $CONFIGPATH/ntp_srv.conf ]; then
   cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
 fi
@@ -63,7 +70,7 @@ ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
 ## Load audio driver module:
 insmod /system/sdcard/driver/audio.ko
 
-## Initialize the GPIOS
+## Initialize the GPIOS:
 for pin in 25 26 38 39 49; do
   init_gpio $pin
 done
@@ -72,13 +79,13 @@ echo 1 > /sys/class/gpio/gpio49/active_low
 
 echo "initialized gpios" >> $LOGPATH
 
-## Set leds to default startup states
+## Set leds to default startup states:
 ir_led off
 ir_cut on
 yellow_led off
 blue_led on
 
-## Load motor driver module
+## Load motor driver module:
 insmod /system/sdcard/driver/sample_motor.ko
 # Don't calibrate the motors for now as for newer models the endstops don't work:
 # motor hcalibrate
@@ -108,7 +115,6 @@ fi
 if [ -f /system/sdcard/controlscripts/configureMotion ]; then
     . /system/sdcard/controlscripts/configureMotion  2>/dev/null
 fi
-
 
 ## Autostart all enabled services:
 for i in /system/sdcard/config/autostart/*; do
