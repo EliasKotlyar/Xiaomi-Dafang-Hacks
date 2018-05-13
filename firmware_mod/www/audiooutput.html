@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+  <!-- CSS Framework -->
+  <link href="css/bulma.0.6.2.min.css" rel="stylesheet">
+  <link href="css/bulma-switch.1.0.1.min.css" rel="stylesheet">
+  <link href="css/bulma-badge.1.0.1.min.css" rel="stylesheet">
+  <link href="css/bulma-quickview.1.0.1.min.css" rel="stylesheet">
+
+
+  <script src="scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
+
+</head>
+
+<body onload="getAllDevices()">
+
+
+  <img id="mic" src="mic.png"  onmousedown="startorstop()">
+
+
+  <!-- AudioInput -->
+  <div class='card status_card'>
+    <header class='card-header'><p class='card-header-title'>Audio Input Configuration</p></header>
+    <div class='card-content'>
+
+     <form id="formAudioInput" >
+        <div class="field is-horizontal">
+    In Volume: <input type=range id=volume min=0 max=1 value=1 step=0.01>
+    Out Volume:<input type=range id=volumeOut min=0 max=100 value=50 step=1 onchange="ChangeVolume()">
+
+
+
+      <div class="field-label is-normal">
+        <label class="label">Audio Input</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <div class="select">
+              <select name="audiosource" id="audioSource"> </select>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field-label is-normal">
+        <label class="label">Audio Rate</label>
+      </div>
+      <div class="field-body">
+        <div class="field">
+          <div class="control">
+            <div class="select">
+              <select name="audiorate" id="audiorate"> </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Secure Port </label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input" id="SecurePort" name="SecurePort" type="number" size="4" value="7681"/>
+                </p>
+                <p class="help">This is the port if using https</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Unsecure Port </label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <p class="control">
+                  <input class="input" id="UnsecurePort" name="UnsecurePort" type="number" size="4" value="7682"/>
+                </p>
+                <p class="help">This is the port if using http</p>
+              </div>
+            </div>
+          </div>
+
+
+        </div>
+  </form>
+    </div>
+
+
+  <script src="scripts/resampler.js"></script>
+  <script src="scripts/audiooutput.js"></script>
+  <script src="scripts/adapter-latest.js"></script>
+
+</body>
+</html>
