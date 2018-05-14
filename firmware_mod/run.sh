@@ -65,7 +65,7 @@ if [ ! -f $CONFIGPATH/ntp_srv.conf ]; then
   cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
 fi
 ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
-/system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv"
+/system/sdcard/bin/busybox ntpd -p "$ntp_srv"
 
 ## Load audio driver module:
 insmod /system/sdcard/driver/audio.ko
