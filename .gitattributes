@@ -3,6 +3,7 @@
 *.conf text eol=lf
 *.conf.dist text eol=lf
 *.cgi text eol=lf
+lighttpd.user text eol=lf
 firmware_mod/bin/curl text eol=lf
 firmware_mod/bin/mosquitto_pub text eol=lf
 firmware_mod/bin/mosquitto_pub text eol=lf
