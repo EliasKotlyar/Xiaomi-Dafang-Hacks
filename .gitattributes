@@ -1,5 +1,6 @@
 * text=auto
 *.sh text eol=lf
+*.conf text eol=lf
 *.conf.dist text eol=lf
 *.cgi text eol=lf
 firmware_mod/bin/curl text eol=lf
@@ -8,3 +9,5 @@ firmware_mod/bin/mosquitto_pub text eol=lf
 firmware_mod/controlscripts/* text eol=lf
 firmware_mod/scripts/* text eol=lf
 firmware_mod/config/autostart/* text eol=lf
+firmware_mod/root/.profile text eol=lf
+firmware_mod/root/.busybox_aliases text eol=lf
