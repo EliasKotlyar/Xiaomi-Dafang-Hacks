@@ -96,18 +96,43 @@ if [ -n "$F_cmd" ]; then
 
     motor_left)
       /system/sdcard/bin/motor -d l -s $F_val
+
+      # Waiting for the motor to run.
+      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
+      sleep ${SLEEP_NUM//-/}
+      # Display AXIS to OSD
+      source /system/sdcard/config/osd.conf
+      /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
     motor_right)
       /system/sdcard/bin/motor -d r -s $F_val
+      # Waiting for the motor to run.
+      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
+      sleep ${SLEEP_NUM//-/}
+      # Display AXIS to OSD
+      source /system/sdcard/config/osd.conf
+      /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
     motor_up)
       /system/sdcard/bin/motor -d u -s $F_val
+      # Waiting for the motor to run.
+      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
+      sleep ${SLEEP_NUM//-/}
+      # Display AXIS to OSD
+      source /system/sdcard/config/osd.conf
+      /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
     motor_down)
       /system/sdcard/bin/motor -d d -s $F_val
+      # Waiting for the motor to run.
+      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
+      sleep ${SLEEP_NUM//-/}
+      # Display AXIS to OSD
+      source /system/sdcard/config/osd.conf
+      /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
     motor_vcalibrate)
