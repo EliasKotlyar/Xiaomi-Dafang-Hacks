@@ -16,7 +16,7 @@ No. You can still boot the original Software, if you remove the SD-Card.
 No, thats not possible and it's very unlikely that it will change in the future.
 
 ### Can I revert the firmware back to the original one?
-Yes, you can. However there is no need to revert it back. If your SD-Card does not contain the CFW-Files, you will just boot the original software.
+Yes, you can. However there is no need to revert it back. If your SD-Card does not contain the CFW-Files, you will just boot the original software. If you still want to revert back to an original firmware just flash the appropriate one for your camera from the firmware_original folder the same way you flashed the custom firmware.
 
 ### Is it possible to run the CFW without a microsd?
 No that's not possible. It can be done, but there will be a lot of trouble in doing this.
@@ -25,7 +25,7 @@ No that's not possible. It can be done, but there will be a lot of trouble in do
 - Full working RTSP with H264/MJPEG. Based on https://github.com/mpromonet/v4l2rtspserver
 - SSH-Server(dropbear) with username: root password: ismart12
 - FTP-Server(bftpd) with username: root password: ismart12
-- Webserver(boa)
+- Webserver(lighttpd) with username: root password: ismart12
 - Image-Snap(Get Jpeg Image) 
 - Horizontal/vertical motor rotation / move to center
 - Turn on/off blue/yellow/IR LEDs/IR-Cut

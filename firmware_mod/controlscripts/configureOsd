@@ -1,8 +1,8 @@
 #!/bin/sh
 
 ## Get OSD-Information
-if [ -f /system/sdcard/config/osd ]; then
-    source /system/sdcard/config/osd  2>/dev/null
+if [ -f /system/sdcard/config/osd.conf ]; then
+    source /system/sdcard/config/osd.conf  2>/dev/null
     # Call setconf only if we have something to set, to avoid outputing error messages
     [ ! -z "${OSD}" ] && /system/sdcard/bin/setconf -k o -v "${OSD}" 2>/dev/null
     [ ! -z "${COLOR}" ] && /system/sdcard/bin/setconf -k c -v ${COLOR} 2>/dev/null
@@ -10,4 +10,6 @@ if [ -f /system/sdcard/config/osd ]; then
     [ ! -z "${POSY}" ] && /system/sdcard/bin/setconf -k x -v ${POSY} 2>/dev/null
     [ ! -z "${FIXEDW}" ] && /system/sdcard/bin/setconf -k w -v ${FIXEDW} 2>/dev/null
     [ ! -z "${SPACE}" ] && /system/sdcard/bin/setconf -k p -v ${SPACE} 2>/dev/null
+else
+    /system/sdcard/bin/setconf -k o -v ""
 fi

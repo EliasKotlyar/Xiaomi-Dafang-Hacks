@@ -1,3 +1,6 @@
+# For more configuration option please see:
+# https://w1.fi/cgit/hostap/plain/wpa_supplicant/wpa_supplicant.conf
+
 ctrl_interface=/var/run/wpa_supplicant
 ctrl_interface_group=0
 ap_scan=1

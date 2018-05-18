@@ -99,18 +99,18 @@ else
       # Start / Stop / Run buttons
       echo "<div class='buttons'>"
       if grep -q "^start()" "$SCRIPT_HOME/$i"; then
-        echo "<button data-target='/cgi-bin/scripts.cgi?cmd=start&script=$i' class='button is-link script_action_start' data-script='$i' "
+        echo "<button data-target='cgi-bin/scripts.cgi?cmd=start&script=$i' class='button is-link script_action_start' data-script='$i' "
         if [ ! -z "$status" ]; then
           echo "disabled"
         fi
         echo ">Start</button>"
       else
-        echo "<button data-target='/cgi-bin/scripts.cgi?cmd=start&script=$i' class='button is-link script_action_start' data-script='$i' "
+        echo "<button data-target='cgi-bin/scripts.cgi?cmd=start&script=$i' class='button is-link script_action_start' data-script='$i' "
         echo ">Run</button>"
       fi
 
       if grep -q "^stop()" "$SCRIPT_HOME/$i"; then
-        echo "<button data-target='/cgi-bin/scripts.cgi?cmd=stop&script=$i' class='button is-danger script_action_stop' data-script='$i' "
+        echo "<button data-target='cgi-bin/scripts.cgi?cmd=stop&script=$i' class='button is-danger script_action_stop' data-script='$i' "
         if [ ! -n "$status" ]; then
           echo "disabled"
         fi
@@ -122,8 +122,8 @@ else
       # Autostart Switch
       echo "<span class='card-footer-item'>"
       echo "<input type='checkbox' id='autorun_$i' name='autorun_$i' class='switch is-rtl autostart' data-script='$i' "
-        echo " data-unchecked='/cgi-bin/scripts.cgi?cmd=disable&script=$i'"
-        echo " data-checked='/cgi-bin/scripts.cgi?cmd=enable&script=$i'"
+        echo " data-unchecked='cgi-bin/scripts.cgi?cmd=disable&script=$i'"
+        echo " data-checked='cgi-bin/scripts.cgi?cmd=enable&script=$i'"
       if [ -f "/system/sdcard/config/autostart/$i" ]; then
         echo " checked='checked'"
       fi
@@ -132,7 +132,7 @@ else
       echo "</span>"
 
       # View link
-      echo "<a href='/cgi-bin/scripts.cgi?cmd=view&script=$i' class='card-footer-item view_script' data-script="$i">View</a>"
+      echo "<a href='cgi-bin/scripts.cgi?cmd=view&script=$i' class='card-footer-item view_script' data-script="$i">View</a>"
       echo "</footer>"
     fi
     # Card - End

@@ -5,14 +5,14 @@
 </p>
 
 <div id="motion_img_container" style="margin: 1em 0; position:relative;">
-    <img id="motion_picture" src="/cgi-bin/currentpic.cgi" />
+    <img id="motion_picture" src="cgi-bin/currentpic.cgi" />
     <span id="region_disabled" class="has-text-danger is-size-1" style="display: none; position: absolute; top: 10%; left: 30%; padding: 0.25em 0.5em; background-color: rgba(20, 20, 20, 0.5); border-radius: 0.25em;">
         Region disabled
     </span>
 </div>
 
 <div class="column is-two-thirds">
-    <form id="confMotionForm" action="/cgi-bin/action.cgi?cmd=set_region_of_interest" method="post">
+    <form id="confMotionForm" action="cgi-bin/action.cgi?cmd=set_region_of_interest" method="post">
         <input id="x0" name="x0" type="hidden" />
         <input id="y0" name="y0" type="hidden" />
         <input id="x1" name="x1" type="hidden" />

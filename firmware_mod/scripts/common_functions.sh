@@ -7,7 +7,14 @@
 init_gpio(){
   GPIOPIN=$1
   echo "$GPIOPIN" > /sys/class/gpio/export
-  echo out > "/sys/class/gpio/gpio$GPIOPIN/direction"
+  case $2 in
+    in)
+      echo "in" > "/sys/class/gpio/gpio$GPIOPIN/direction"
+      ;;
+    *)
+      echo "out" > "/sys/class/gpio/gpio$GPIOPIN/direction"
+      ;;
+  esac
   echo 0 > "/sys/class/gpio/gpio$GPIOPIN/active_low"
 }
 
@@ -30,11 +37,6 @@ rewrite_config(){
   cfg_key=$2
   new_value=$3
   sed -i -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}" "$cfg_path"
-}
-
-# Reboot the camera
-reboot(){
-  /sbin/reboot
 }
 
 # Control the blue led
@@ -111,18 +113,24 @@ ir_cut(){
   on)
     setgpio 25 0
     setgpio 26 1
+    sleep 1
+    setgpio 26 0
+    echo "1" > /var/run/ircut
     ;;
   off)
-    setgpio 25 1
     setgpio 26 0
+    setgpio 25 1
+    sleep 1
+    setgpio 25 0
+    echo "0" > /var/run/ircut
     ;;
   status)
-    status=$(getgpio 25)
+    status=$(cat /var/run/ircut)
     case $status in
-      0)
+      1)
         echo "ON"
         ;;
-      1)
+      0)
         echo "OFF"
       ;;
     esac
@@ -131,7 +139,7 @@ ir_cut(){
 
 # Calibrate and control the motor
 # use like: motor up 100
-motor (){
+motor(){
   if [ -z "$2" ]
   then
     steps=100
@@ -189,6 +197,39 @@ ldr(){
     brightness=$(dd if=/dev/jz_adc_aux_0 count=20 2> /dev/null |  sed -e 's/[^\.]//g' | wc -m)
     echo "$brightness"
   esac
+}
+
+# Control the http server
+http_server(){
+  case "$1" in
+  on)
+    /system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
+    ;;
+  off)
+    killall lighttpd.bin
+    ;;
+  restart)
+    killall lighttpd.bin
+    /system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
+    ;;
+  status)
+    if pgrep lighttpd.bin &> /dev/null
+      then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+# Set a new http password
+http_password(){
+  user="root" # by default root until we have proper user management
+  realm="all" # realm is defined in the lightppd.conf
+  pass=$1
+  hash=$(echo -n "$user:$realm:$pass" | md5sum | cut -b -32)
+  echo "$user:$realm:$hash" > /system/sdcard/config/lighttpd.user
 }
 
 # Control the RTSP h264 server

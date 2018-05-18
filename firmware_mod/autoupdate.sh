@@ -14,7 +14,7 @@ REMOTEFOLDER="firmware_mod"
 # Default destination foler
 DESTFOLDER="./"
 # The list of exclude, can have multple filter with "*.conf|*.sh"
-EXCLUDEFILTER="*.conf|*.user|run.sh|osd|autoupdate.sh|libcrypto.so.42|curl|curl.bin|libssl.so.44|libz.so.1"
+EXCLUDEFILTER="*.conf|*.user|autoupdate.sh|libcrypto.so.42|curl|curl.bin|libssl.so.44|libz.so.1"
 # Somme URL
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
@@ -57,7 +57,7 @@ usage()
     echo "-v (--verbose) for verbose"
     echo "-u (--user) githup login/password (not mandatory, but sometime anonymous account get banned)"
     echo "-h (--help) for this help"
-    echo 
+    echo
     echo "Note that ${EXCLUDEFILTER} will be excluded"
     echo "Example:"
     echo "Check that local folder is up to date (file by file): >$1 -c -d /system/sdcard"
@@ -352,7 +352,7 @@ if [ ${update} = true ]; then
                         if [ "${rep}" = "no" ]; then
                             echo "${LOCALFILE} not created"
                             rm -f ${TMPFILE} 2>/dev/null
-                        else  
+                        else
                             action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
                             action mv ${TMPFILE} ${LOCALFILE}
                         fi
