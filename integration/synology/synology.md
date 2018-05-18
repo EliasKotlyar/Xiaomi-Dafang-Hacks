@@ -1,4 +1,4 @@
-## Xiaomi Dafang Integration in Synology Surveillance Station
+## Integration in the Synology Surveillance Station
 
 Select "user defined camera" with h264, Port 8554 use /unicast as path and leave user + pass empty in the Surveillance Station settings.
 
