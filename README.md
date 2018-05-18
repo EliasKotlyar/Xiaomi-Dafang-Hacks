@@ -40,7 +40,10 @@ After install, you can use this [android application](https://play.google.com/st
 
 [Home Assistant](/integration/homeassistant/homeassistant.md)
 
+[Synology](/integration/synology/synology.md)
+
 [Zoneminder](/integration/zoneminder/zoneminder.md)
 
+
 ## Contributions:
-Any contribution to the development is highly welcome. The best possibility is to open a pull request on GitHub.
+Any contribution to the development is highly welcome. Simply open a pull request on GitHub.
