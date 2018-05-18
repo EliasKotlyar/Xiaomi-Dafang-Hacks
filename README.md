@@ -40,6 +40,8 @@ After install, you can use this [android application](https://play.google.com/st
 
 [Home Assistant](/integration/homeassistant/homeassistant.md)
 
+[HomeKit](/integration/homekit/homekit.md)
+
 [Synology](/integration/synology/synology.md)
 
 [Zoneminder](/integration/zoneminder/zoneminder.md)
