@@ -41,7 +41,7 @@ if [ ! -d /system/sdcard/config/cron ]; then
   mkdir -p /system/sdcard/config/cron/crontabs
   echo "Created cron directory" >> $LOGPATH
 fi
-crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
+/system/sdcard/bin/busybox crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
 
 ## Start Wifi:
 if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
