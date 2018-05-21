@@ -1,2 +1,2 @@
-# Generate password entry thanks to /system/sdcard/bin/createLighttpdPass.sh [LOGIN] [PASS]
-# uncomment authentification section in /config/lighttpd.conf 
+# by default root:ismart12
+root:all:a6564902a687c445cbd80bab194c42d5

@@ -8,7 +8,7 @@
 
 # H264 RTSP server options
 # Examples:
-# RTSPH264OPTS="-S -W960 -H540"
+# RTSPH264OPTS="-W960 -H540"
 # To enable authentication:
 # RTSPH264OPTS="-U user:password"
 RTSPH264OPTS=""

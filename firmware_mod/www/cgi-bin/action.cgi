@@ -31,9 +31,10 @@ if [ -n "$F_cmd" ]; then
             /system/bin/logcat -d
             ;;
         4)
-          echo "Contents of v4l2rtspserver-master-h264.log<br/>"
-          cat /tmp/v4l2rtspserver-master-h264.log
+          echo "Contents of v4l2rtspserver-master.log<br/>"
+          cat /system/sdcard/log/v4l2rtspserver-master.log
           ;;
+
       esac
       echo "</pre>"
       return
@@ -44,6 +45,7 @@ if [ -n "$F_cmd" ]; then
       /sbin/reboot
       return
     ;;
+
     shutdown)
       echo "Shutting down device.."
       /sbin/halt
@@ -79,11 +81,17 @@ if [ -n "$F_cmd" ]; then
     ir_cut_on)
       setgpio 25 0
       setgpio 26 1
+      sleep 1
+      setgpio 26 0
+      echo "1" > /var/run/ircut
     ;;
 
     ir_cut_off)
-      setgpio 25 1
       setgpio 26 0
+      setgpio 25 1
+      sleep 1
+      setgpio 25 0
+      echo "0" > /var/run/ircut
     ;;
 
     motor_left)
@@ -141,9 +149,10 @@ if [ -n "$F_cmd" ]; then
 
     rtsp_stop)
       /system/sdcard/controlscripts/rtsp-h264-with-segmentation stop
-       /system/sdcard/controlscripts/rtsp-mjpeg stop
-       /system/sdcard/controlscripts/rtsp-h264 stop
+      /system/sdcard/controlscripts/rtsp-mjpeg stop
+      /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
+
     settz)
        ntp_srv=$(printf '%b' "${F_ntp_srv//%/\\x}")
        #read ntp_serv.conf
@@ -182,6 +191,12 @@ if [ -n "$F_cmd" ]; then
       return
     ;;
 
+    set_http_password)
+      password=$(printf '%b' "${F_password//%/\\x}")
+      echo "<p>Setting http password to : $password</p>"
+      http_password "$password"
+    ;;
+
     osd)
       enabled=$(printf '%b' "${F_OSDenable}")
       position=$(printf '%b' "${F_Position}")
@@ -190,27 +205,27 @@ if [ -n "$F_cmd" ]; then
 
       if [ ! -z "$enabled" ]; then
         /system/sdcard/bin/setconf -k o -v "$osdtext"
-        echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd
+        echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd.conf
         echo "OSD set"
       else
         echo "OSD removed"
         /system/sdcard/bin/setconf -k o -v ""
-        echo "OSD=\"\" " > /system/sdcard/config/osd
+        echo "OSD=\"\" " > /system/sdcard/config/osd.conf
       fi
 
-      echo "COLOR=${F_color}" >> /system/sdcard/config/osd
+      echo "COLOR=${F_color}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k c -v "${F_color}"
 
-      echo "SIZE=${F_size}" >> /system/sdcard/config/osd
+      echo "SIZE=${F_size}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k s -v "${F_size}"
 
-      echo "POSY=${F_posy}" >> /system/sdcard/config/osd
+      echo "POSY=${F_posy}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k x -v "${F_posy}"
 
-      echo "FIXEDW=${F_fixedw}" >> /system/sdcard/config/osd
+      echo "FIXEDW=${F_fixedw}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k w -v "${F_fixedw}"
 
-      echo "SPACE=${F_spacepixels}" >> /system/sdcard/config/osd
+      echo "SPACE=${F_spacepixels}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k p -v "${F_spacepixels}"
       return
     ;;
@@ -248,7 +263,15 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     motion_detection_on)
-      /system/sdcard/bin/setconf -k m -v 4
+        motion_sensitivity=4
+        if [ -f /system/sdcard/config/motion.conf ]; then
+            source /system/sdcard/config/motion.conf
+        fi
+        if [ $motion_sensitivity -eq -1 ]; then
+             motion_sensitivity=4
+        fi
+        /system/sdcard/bin/setconf -k m -v $motion_sensitivity
+        rewrite_config /system/sdcard/config/motion.conf motion_sensitivity $motion_sensitivity
     ;;
 
     motion_detection_off)
@@ -257,16 +280,14 @@ if [ -n "$F_cmd" ]; then
 
     set_video_size)
       video_size=$(echo "${F_video_size}"| sed -e 's/+/ /g')
-      rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"-S $video_size\""
-      rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"-S $video_size\""
+      rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"$video_size\""
+      rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"$video_size\""
       echo "Video resolution set to $video_size<br/>"
       if [ "$(rtsp_h264_server status)" = "ON" ]; then
-        echo "Restarting H264 RSTP server<br/>"
         rtsp_h264_server off
         rtsp_h264_server on
       fi
       if [ "$(rtsp_mjpeg_server status)" = "ON" ]; then
-        echo "Restarting MJPEG RSTP server<br/>"
         rtsp_mjpeg_server off
         rtsp_mjpeg_server on
       fi
@@ -326,9 +347,6 @@ if [ -n "$F_cmd" ]; then
     ;;
     offDebug)
         /system/sdcard/controlscripts/debug-on-osd stop
-        if [ -f /system/sdcard/controlscripts/configureOsd ]; then
-            source /system/sdcard/controlscripts/configureOsd
-        fi
 
     ;;
     onDebug)

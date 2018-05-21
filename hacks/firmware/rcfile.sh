@@ -78,6 +78,12 @@ i="0"
 while true
 do
     echo "Trying to mount SDCard..."
+	
+	# Check if we're on a Wyzecam and properly mount SD card if so
+	if [ -f /driver/rtl8189ftv.ko ]; then
+		/system/bin/singleBoadTest
+	fi
+	
     if [ -e /dev/mmcblk0p1 ]; then
 
         mkdir /system/sdcard

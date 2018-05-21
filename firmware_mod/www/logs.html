@@ -57,7 +57,7 @@ $(document).ready(function() {
 
         // get motion config info
         $.ajax({
-            'url': '/cgi-bin/action.cgi?cmd=showlog',
+            'url': 'cgi-bin/action.cgi?cmd=showlog',
         }).done(function (log) {
             $('#tab1').html(log);
 
@@ -66,7 +66,7 @@ $(document).ready(function() {
             var str="logname=" + tab
             console.log(str);
           $.ajax({
-            'url': '/cgi-bin/action.cgi?cmd=showlog',
+            'url': 'cgi-bin/action.cgi?cmd=showlog',
             'type' : 'POST',
             'data' : str
             //logname=$('#tab-content p').id

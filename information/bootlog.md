@@ -1,3 +1,4 @@
+```
 eko@eko-GE62VR-6RF:~$ picocom -b 115200 /dev/ttyUSB0
 picocom v2.2
 
@@ -103,3 +104,4 @@ Hit any key to stop autoboot:  0
 isvp_t20#
 FATAL: term closed
 eko@eko-GE62VR-6RF:~$
+```

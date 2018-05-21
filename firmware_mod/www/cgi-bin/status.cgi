@@ -12,7 +12,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>System</p></header>
     <div class='card-content'>
-    <form id="tzForm" action="/cgi-bin/action.cgi?cmd=settz" method="post">
+    <form id="tzForm" action="cgi-bin/action.cgi?cmd=settz" method="post">
 
         <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -65,6 +65,39 @@ cat << EOF
     </form>
     </div>
 </div>
+
+<!-- HTTP Password -->
+<div class='card status_card'>
+    <header class='card-header'><p class='card-header-title'>HTTP Password</p></header>
+    <div class='card-content'>
+        <form id="passwordForm" action="cgi-bin/action.cgi?cmd=set_http_password" method="post">
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">New Password</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" id="password" name="password" type="password" size="12" value="*****"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+            </div>
+            <div class="field-body">
+                <div class="field">
+                <div class="control">
+                    <input id="pwSubmit" class="button is-primary" type="submit" value="Set" />
+                </div>
+                </div>
+            </div>
+        </div>
+        </form>
+    </div>
+</div>
+
 <!-- Version -->
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Version</p></header>
@@ -89,16 +122,16 @@ cat << EOF
         <div class="column">
             <label>Blue LED</label>
             <div class="buttons">
-                <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=blue_led_on')">On</button>
-                <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=blue_led_off')">Off</button>
+                <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=blue_led_on')">On</button>
+                <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=blue_led_off')">Off</button>
             </div>
         </div>
 
         <div class="column">
             <label>Yellow LED</label>
             <div class="buttons">
-                <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=yellow_led_on')">On</button>
-                <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=yellow_led_off')">Off</button>
+                <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=yellow_led_on')">On</button>
+                <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=yellow_led_off')">Off</button>
             </div>
         </div>
 
@@ -114,16 +147,16 @@ cat << EOF
         <div class="column">
             <label>IR LED</label>
             <div class="buttons">
-            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=ir_led_on')">On</button>
-            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=ir_led_off')">Off</button>
+            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=ir_led_on')">On</button>
+            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=ir_led_off')">Off</button>
             </div>
         </div>
 
         <div class="column">
             <label>IR Cut</label>
             <div class="buttons">
-            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=ir_cut_on')">On</button>
-            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=ir_cut_off')">Off</button>
+            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=ir_cut_on')">On</button>
+            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=ir_cut_off')">Off</button>
             </div>
         </div>
         </div>
@@ -136,11 +169,11 @@ cat << EOF
     <div class='card-content'>
         <div class="columns">
         <div class="column">
-            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=auto_night_mode_start')">On</button>
-            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=auto_night_mode_stop')">Off</button>
+            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_start')">On</button>
+            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_stop')">Off</button>
         </div>
         <div class="column">
-        <form id="formldr" action="/cgi-bin/action.cgi?cmd=setldravg" method="post">
+        <form id="formldr" action="cgi-bin/action.cgi?cmd=setldravg" method="post">
             <p>Use average measurement on switching.</p>
             <label class="label">Number of measurements</label>
             <div class="field is-grouped">
@@ -176,16 +209,16 @@ cat << EOF
         <div class="column">
             <label>Night Vision</label>
             <div class="buttons">
-            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-on')">On</button>
-            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-off')">Off</button>
+            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-on')">On</button>
+            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-off')">Off</button>
             </div>
         </div>
 
         <div class="column">
             <label>Flip</label>
             <div class="buttons">
-            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=flip-on')">On</button>
-            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=flip-off')">Off</button>
+            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=flip-on')">On</button>
+            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=flip-off')">Off</button>
             </div>
         </div>
 
@@ -201,32 +234,32 @@ cat << EOF
             <tr>
                 <td></td>
                 <td>
-                    <button class="button is-link" onclick="call('/cgi-bin/action.cgi?cmd=motor_up&val='+document.getElementById('val').value)">&uarr; Up</button>
+                    <button class="button is-link" onclick="call('cgi-bin/action.cgi?cmd=motor_up&val='+document.getElementById('val').value)">&uarr; Up</button>
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    <button class="button is-link" onclick="call('/cgi-bin/action.cgi?cmd=motor_left&val='+document.getElementById('val').value)">&larr; Left</button>
+                    <button class="button is-link" onclick="call('cgi-bin/action.cgi?cmd=motor_left&val='+document.getElementById('val').value)">&larr; Left</button>
                 </td>
                 <td>
                     <input class="input has-text-centered" type="text" id="val" name="val" value="100">
                 </td>
                 <td>
-                    <button class="button is-link" onclick="call('/cgi-bin/action.cgi?cmd=motor_right&val='+document.getElementById('val').value)">Right &rarr;</button>
+                    <button class="button is-link" onclick="call('cgi-bin/action.cgi?cmd=motor_right&val='+document.getElementById('val').value)">Right &rarr;</button>
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <button class="button is-link" onclick="call('/cgi-bin/action.cgi?cmd=motor_down&val='+document.getElementById('val').value)">&darr; Down</button>
+                    <button class="button is-link" onclick="call('cgi-bin/action.cgi?cmd=motor_down&val='+document.getElementById('val').value)">&darr; Down</button>
                 </td>
                 <td></td>
             </tr>
         </table>
         <div class="buttons">
-        <button class="button is-warning" onclick="call('/cgi-bin/action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
-        <button class="button is-warning" onclick="call('/cgi-bin/action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
+        <button class="button is-warning" onclick="call('cgi-bin/action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
+        <button class="button is-warning" onclick="call('cgi-bin/action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
         </div>
     </div>
 </div>
@@ -241,14 +274,14 @@ cat << EOF
         <div class="column">
         <label>Audio Test</label>
         <div class="buttons">
-        <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=audio_test')">Test</button>
+        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=audio_test')">Test</button>
         </div>
         </div>
 
         <div class="column">
         <label>Image</label>
         <div class="buttons">
-        <a class="button is-link" href='/cgi-bin/currentpic.cgi' target='_blank'>Get</a>
+        <a class="button is-link" href='cgi-bin/currentpic.cgi' target='_blank'>Get</a>
         </div>
         </div>
 
@@ -261,7 +294,7 @@ cat << EOF
     <header class='card-header'><p class='card-header-title'>Resolution</p></header>
     <div class='card-content'>
 
-        <form id="formResolution" action="/cgi-bin/action.cgi?cmd=set_video_size" method="post">
+        <form id="formResolution" action="cgi-bin/action.cgi?cmd=set_video_size" method="post">
         <div class="field is-horizontal">
             <div class="field-label is-normal">
                 <label class="label">Video Size</label>
@@ -301,8 +334,8 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Start H264 RTSP</p></header>
     <div class='card-content'>
-        <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=h264_start')">Start</button>
-        <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
+        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=h264_start')">Start</button>
+        <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
 EOF
 
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
@@ -320,8 +353,8 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Start MJGEP RTSP</p></header>
     <div class='card-content'>
-        <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=mjpeg_start')">Start</button>
-        <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
+        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=mjpeg_start')">Start</button>
+        <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
 EOF
 
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
@@ -337,7 +370,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>OSD Display</p></header>
     <div class='card-content'>
-        <form id="formOSD" action="/cgi-bin/action.cgi?cmd=osd" method="post">
+        <form id="formOSD" action="cgi-bin/action.cgi?cmd=osd" method="post">
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -346,10 +379,10 @@ cat << EOF
                 <div class="field-body">
                     <div class="field is-grouped">
                         <p class="control">
-                            <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd ]; then echo checked; fi) />
+                            <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd.conf ]; then echo checked; fi) />
                         </p>
                         <p class="control">
-                            <input class="input" id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd && echo "$OSD")"/>
+                            <input class="input" id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd.conf && echo "$OSD")"/>
                             <span class="help">
                                 Enter time-variables in <a href="http://strftime.org/" target="_blank">strftime</a> format
                             </span>
@@ -366,14 +399,14 @@ cat << EOF
                         <div class="control">
                             <div class="select">
                                 <select name="color">
-                                <option value="0" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 0 ]; then echo selected; fi)>White</option>
-                                <option value="1" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 1 ]; then echo selected; fi)>Black</option>
-                                <option value="2" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 2 ]; then echo selected; fi)>Red</option>
-                                <option value="3" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 3 ]; then echo selected; fi)>Green</option>
-                                <option value="4" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 4 ]; then echo selected; fi)>Blue</option>
-                                <option value="5" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 5 ]; then echo selected; fi)>Cyan</option>
-                                <option value="6" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 6 ]; then echo selected; fi)>Yellow</option>
-                                <option value="7" $(if [ "$(grep COLOR /system/sdcard/config/osd | sed s/COLOR=//)" -eq 7 ]; then echo selected; fi)>Purple</option>
+                                <option value="0" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 0 ]; then echo selected; fi)>White</option>
+                                <option value="1" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 1 ]; then echo selected; fi)>Black</option>
+                                <option value="2" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 2 ]; then echo selected; fi)>Red</option>
+                                <option value="3" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 3 ]; then echo selected; fi)>Green</option>
+                                <option value="4" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 4 ]; then echo selected; fi)>Blue</option>
+                                <option value="5" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 5 ]; then echo selected; fi)>Cyan</option>
+                                <option value="6" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 6 ]; then echo selected; fi)>Yellow</option>
+                                <option value="7" $(if [ "$(grep COLOR /system/sdcard/config/osd.conf | sed s/COLOR=//)" -eq 7 ]; then echo selected; fi)>Purple</option>
                                 </select>
                             </div>
                         </div>
@@ -389,8 +422,8 @@ cat << EOF
                         <div class="control">
                             <div class="select">
                                 <select name="size">
-                                <option value="0" $(if [ "$(grep SIZE /system/sdcard/config/osd | sed s/SIZE=//)" -eq 0 ]; then echo selected; fi)>Small</option>
-                                <option value="1" $(if [ "$(grep SIZE /system/sdcard/config/osd | sed s/SIZE=//)" -eq 1 ]; then echo selected; fi)>Bigger</option>
+                                <option value="0" $(if [ "$(grep SIZE /system/sdcard/config/osd.conf | sed s/SIZE=//)" -eq 0 ]; then echo selected; fi)>Small</option>
+                                <option value="1" $(if [ "$(grep SIZE /system/sdcard/config/osd.conf | sed s/SIZE=//)" -eq 1 ]; then echo selected; fi)>Bigger</option>
                                 </select>
                             </div>
                         </div>
@@ -404,7 +437,7 @@ cat << EOF
                 <div class="field-body">
                     <div class="field">
                         <p class="control">
-                            <input class="input" id="spacepixels" name="spacepixels" type="number" size="4" value="$(source /system/sdcard/config/osd && echo "$SPACE")"/>
+                            <input class="input" id="spacepixels" name="spacepixels" type="number" size="4" value="$(source /system/sdcard/config/osd.conf && echo "$SPACE")"/>
                         </p>
                         <p class="help">Can be negative</p>
                     </div>
@@ -417,7 +450,7 @@ cat << EOF
                 <div class="field-body">
                     <div class="field">
                         <p class="control">
-                            <input class="input" id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd && echo "$POSY")"/>
+                            <input class="input" id="posy" name="posy" type="number" size="6" value="$(source /system/sdcard/config/osd.conf && echo "$POSY")"/>
                         </p>
                     </div>
                 </div>
@@ -432,8 +465,8 @@ cat << EOF
                         <div class="control">
                             <div class="select">
                                 <select name="fixedw">
-                                <option value="0" $(if [ "$(grep FIXEDW /system/sdcard/config/osd | sed s/FIXEDW=//)" -eq 0 ]; then echo selected; fi)>No</option>
-                                <option value="1" $(if [ "$(grep FIXEDW /system/sdcard/config/osd | sed s/FIXEDW=//)" -eq 1 ]; then echo selected; fi)>Yes</option>
+                                <option value="0" $(if [ "$(grep FIXEDW /system/sdcard/config/osd.conf | sed s/FIXEDW=//)" -eq 0 ]; then echo selected; fi)>No</option>
+                                <option value="1" $(if [ "$(grep FIXEDW /system/sdcard/config/osd.conf | sed s/FIXEDW=//)" -eq 1 ]; then echo selected; fi)>Yes</option>
                                 </select>
                             </div>
                         </div>
@@ -460,8 +493,8 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Display debug info on OSD</p></header>
     <div class='card-content'>
-        <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=onDebug')">On</button>
-        <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=offDebug')">Off</button>
+        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=onDebug')">On</button>
+        <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=offDebug')">Off</button>
     </div>
 </div>
 
@@ -469,7 +502,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Timelapse</p></header>
     <div class='card-content'>
-        <form id="formTimelapse" action="/cgi-bin/action.cgi?cmd=conf_timelapse" method="post">
+        <form id="formTimelapse" action="cgi-bin/action.cgi?cmd=conf_timelapse" method="post">
         <div class="field is-horizontal">
             <div class="field-label is-normal">
                 <label class="label">Interval</label>
@@ -515,7 +548,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Start original Xiaomi Software</p></header>
     <div class='card-content'>
-        <button class="button" onClick="call('/cgi-bin/action.cgi?cmd=xiaomi_start')">Start</button>
+        <button class="button" onClick="call('cgi-bin/action.cgi?cmd=xiaomi_start')">Start</button>
     </div>
 </div>
 
