@@ -15,7 +15,7 @@ killall telnetd
 
 ## Load some common functions:
 . /system/sdcard/scripts/common_functions.sh
-echo "loaded common functions" >> $LOGPATH
+echo "Loaded common functions" >> $LOGPATH
 
 ## Create root user home directory and etc directory on sdcard:
 if [ ! -d /system/sdcard/root ]; then
@@ -77,7 +77,7 @@ done
 # the ir_led pin is a special animal and needs active low
 echo 1 > /sys/class/gpio/gpio49/active_low
 
-echo "initialized gpios" >> $LOGPATH
+echo "Initialized gpios" >> $LOGPATH
 
 ## Set leds to default startup states:
 ir_led off
@@ -105,9 +105,9 @@ echo "bftpd: $bftpd_status" >> $LOGPATH
 ## Create a certificate for the webserver
 if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
   export OPENSSL_CONF=$CONFIGPATH/openssl.cnf
-  openssl req -new -x509 -keyout $CONFIGPATH/lighttpd.pem -out $CONFIGPATH/lighttpd.pem -days 365 -nodes -subj "/C=DE/ST=Bavaria/L=Munich/O=.../OU=.../CN=.../emailAddress=..."
+  /system/sdcard/bin/openssl req -new -x509 -keyout $CONFIGPATH/lighttpd.pem -out $CONFIGPATH/lighttpd.pem -days 365 -nodes -subj "/C=DE/ST=Bavaria/L=Munich/O=.../OU=.../CN=.../emailAddress=..."
   chmod 400 $CONFIGPATH/lighttpd.pem
-  echo "created new certificate for webserver" >> $LOGPATH
+  echo "Created new certificate for webserver" >> $LOGPATH
 fi
 
 ## Start Webserver:
