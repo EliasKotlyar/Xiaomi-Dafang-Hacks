@@ -3,7 +3,7 @@
 # Github autodownload script
 # See usage for help
 # Edit the global variables to change the repo and initial folder
-# Depends on curl, jq (jason paser), openssl (SHA calculation)
+# Depends on curl, jq (jason parser), openssl (SHA calculation)
 
 # owner name and repo name
 REPO="EliasKotlyar/Xiaomi-Dafang-Hacks"
@@ -35,7 +35,7 @@ LASTGLOBALCOMMIT=""
 _PRINTONLY=0
 _V=0
 _FORCE=0
-_XFER=1
+_FORCEREBOOT=0
 _BACKUP=0
 ##########################################################################
 
@@ -104,8 +104,6 @@ action()
 ismatch()
 {
     in=$(${BASENAME} ${1})
-    echo notmatch
-    return 0
     for filter in $(echo ${EXCLUDEFILTER} | sed "s/|/ /g")
     do
         if [ "${in#$filter}" == "" ]; then
@@ -115,15 +113,6 @@ ismatch()
     done
 
     echo notmatch
-}
-
-##########################################################################
-# Return the current (last) commit from the specified repo and branch
-getCurrentCommitFromRemote()
-{
-    CURRENTCOMMIT=$(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} | grep sha | head -1 | cut -d'"' -f 4)
-    #CURRENTCOMMIT=$(curl -s https://github.com/${REPO}/commits/${BRANCH} 2>/dev/null| grep "commit:" | head -1| cut -d ":" -f 4 |sed 's/"//')
-    echo ${CURRENTCOMMIT}
 }
 
 ##########################################################################
@@ -147,7 +136,19 @@ getfiles()
         done
     fi
 }
-
+##########################################################################
+# Let some time before rebooting
+countdownreboot()
+{
+    i=10 
+    while [ $i -gt 0 ]; 
+    do 
+        echo "$i seconds remaining before rebooting (control-c to abort)"; 
+        i=`expr $i - 1`; 
+        sleep 1;  
+    done
+    action reboot
+}
 ##########################################################################
 # Script real start
 
@@ -163,6 +164,7 @@ do
             ;;
         -f | --force)
             _FORCE=1
+            _FORCEREBOOT=1
             shift
             ;;
         -d | --dest)
@@ -193,18 +195,6 @@ done
 log "Start"
 
 if [ ${_FORCE} = 1 ]; then
-    log "Forced update"
-else
-    log "Need to be updated = ${update}"
-fi
-
-if [ ${_XFER} = 1 ]; then
-    log "Transfert and check file by file"
-    # Force update
-    update=true
-fi
-
-if [ ${_FORCE} = 1 ]; then
     log "forced option"
 fi
 
@@ -229,93 +219,75 @@ do
     LOCALFILE="${DESTFOLDER}${i#$REMOVE}"
     # Remove files that match the filter
     res=$(ismatch ${LOCALFILE})
-    #if [ "$res" == "match" ]; then
-    #    echo "${LOCALFILE} is excluded due to filter"
-    #    continue
-    #fi
-    # If ask to xfer for all
-    if [  ${_XFER} = 1 ] ; then
-        # Get the file temporally to calculate SHA
-        ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
-        if [ ! -f ${TMPFILE} ]; then
-            echo "Can not get remote file $i, exit"
-            exit 1
-        fi
+    if [ "$res" == "match" ]; then
+        echo "${LOCALFILE} is excluded due to filter"
+        continue
+    fi
+    # Get the file temporally to calculate SHA
+    ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
+    if [ ! -f ${TMPFILE} ]; then
+        echo "Can not get remote file $i, exit"
+        exit 1
+    fi
 
-        # Check the file exists in local
-        if [ -f "${LOCALFILE}" ]; then
-            REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)
-            # Calculate the remote and local SHA
-            LOCALSHA=$(${SHA} ${LOCALFILE} 2>/dev/null | cut -d "=" -f 2)
+    # Check the file exists in local
+    if [ -f "${LOCALFILE}" ]; then
+        REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)
+        # Calculate the remote and local SHA
+        LOCALSHA=$(${SHA} ${LOCALFILE} 2>/dev/null | cut -d "=" -f 2)
 
-            # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
-            if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
-                echo "${LOCALFILE} is OK"
-            else
-                if [ ${_XFER} = 1 ]; then
-                    if [ ${_FORCE} = 1 ]; then
-                        echo "${LOCALFILE} updated"
-                        action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
-                        if [ ${_BACKUP} = 1 ]; then
-                            action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
-                        fi
-                        action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
-                    else
-                        echo "${LOCALFILE} need to be updated, overwrite [Y]es or [N]o or [A]ll ?"
-                        rep=$(ask_yes_or_no )
-                        if [ "${rep}" = "no" ]; then
-                            echo "${LOCALFILE} not updated"
-                            rm -f ${TMPFILE} 2>/dev/null
-                        else
-                            action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
-                            if [ ${_BACKUP} = 1 ]; then
-                                action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
-                            fi
-                            action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
-
-                        fi
-                        if [ "${rep}" = "all" ]; then
-                            _FORCE=1
-                        fi
-                    fi
-                else
-                    echo "${LOCALFILE} is different from repo"
-                fi
-            fi
+        # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
+        if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
+            echo "${LOCALFILE} is OK"
         else
-            if [ ${_XFER} = 1 ]; then
-                if [ ${_FORCE} = 1 ]; then
-                    echo "${LOCALFILE} created"
-                    action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
-                    action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
-                else
-                    echo "${LOCALFILE} doesn't exist, create it [Y]es or [N]o or [A]ll ?"
-                    rep=$(ask_yes_or_no )
-                    if [ "${rep}" = "no" ]; then
-                        echo "${LOCALFILE} not created"
-                        rm -f ${TMPFILE} 2>/dev/null
-                    else  
-                        action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
-                        action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
-                    fi
-                    if [ "${rep}" = "all" ]; then
-                        _FORCE=1
-                    fi
+            if [ ${_FORCE} = 1 ]; then
+                echo "${LOCALFILE} updated"
+                action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+                if [ ${_BACKUP} = 1 ]; then
+                    action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
                 fi
+                action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
             else
-                echo "${LOCALFILE} is missing"
+                echo "${LOCALFILE} need to be updated, overwrite [Y]es or [N]o or [A]ll ?"
+                rep=$(ask_yes_or_no )
+                if [ "${rep}" = "no" ]; then
+                    echo "${LOCALFILE} not updated"
+                    rm -f ${TMPFILE} 2>/dev/null
+                else
+                    action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+                    if [ ${_BACKUP} = 1 ]; then
+                        action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
+                    fi
+                    action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+
+                fi
+                if [ "${rep}" = "all" ]; then
+                    _FORCE=1
+                fi
             fi
         fi
     else
-        log "Get ${i}"
-        action ${CURL} -s ${i} --create-dirs -o ${LOCALFILE}
-        if [ $? -ne 0 ]; then
-            logerror "Failed to get ${LOCALFILE}"
+        if [ ${_FORCE} = 1 ]; then
+            echo "${LOCALFILE} created"
+            action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+            action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+        else
+            echo "${LOCALFILE} doesn't exist, create it [Y]es or [N]o or [A]ll ?"
+            rep=$(ask_yes_or_no )
+            if [ "${rep}" = "no" ]; then
+                echo "${LOCALFILE} not created"
+                rm -f ${TMPFILE} 2>/dev/null
+            else  
+                action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+                action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+            fi
+            if [ "${rep}" = "all" ]; then
+                _FORCE=1
+            fi
         fi
     fi
-
-
 done
+
 if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
     echo "--------------- Stop services ---------"
 
@@ -324,7 +296,16 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
 
     echo "---------------    Reboot    ----------"
-    action echo reboot
+    if [ ${_FORCEREBOOT} = 1 ]; then
+        countdownreboot
+    else
+        echo "reboot is needed, do you want to do it now ?"
+        rep=$(ask_yes_or_no )
+        if [ "${rep}" = "yes" ]; then
+            countdownreboot
+        fi
+    fi
+
 else
-    echo "No updated files, no actions"
+    echo "No updated files, no action"
 fi
