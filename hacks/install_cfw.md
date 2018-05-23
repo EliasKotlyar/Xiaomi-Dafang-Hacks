@@ -1,21 +1,23 @@
-## Installation of the microSD bootloader on Dafang
+## Installation of the microSD bootloader
 
-1. Download [CFW-Binary](/hacks/cfw/cfw-1.3.bin). Verify the SHA256 and/or SHA3-256 checksums to ensure file integrity.
-  - SHA2-256: `2a23e136906d0ba13d1bb9fe7da52c2eb49c58ccce97be29c91259c2011894ae`
-  - SHA3-256: `d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb`
-2. Format your microSD to FAT. NTFS, EXFAT etc. won't work.
-2. Put it to microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
-3. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
-3. Hold the setup button on the Dafang camera
-4. Plug in the USB power cable
-5. Wait until the firmware has finished flashing (like 2 minutes). Disconnect the power as soon as the base starts moving.
-6. Remove the microSD and try to start the Dafang camera
-7. You should see the blue led shining up for 5 seconds (not blinking) **before** the base starts moving. If not, something went wrong. You should try another microSD. Start over from step 1.
+1. Download the CFW-Binary for your Camera
+
+    Name | SHA3-256 
+    --- | --- 
+    [Xioami Dafang](/hacks/cfw/dafang/cfw-1.3.bin) | d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb
+    [Xioami Xiaofang T20](/hacks/cfw/xiaofang/cfw-1.0.bin) | 
+    [Wyzecam V2](/hacks/cfw/wyzecam_v2/cfw-1.1.bin) | 
 
 
-## Installation of the microSD bootloader on Xiaofang
-Use the following binary:
-[CFW-Binary](/hacks/cfw_xiaofang/cfw-1.0.bin)
+2. Format your microSD to FAT32. NTFS, EXFAT etc. won't work.
+3. Copy the CFW-Binary from step 1 to the formated microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
+4. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
+5. Hold down the setup button on the Dafang camera while
+6. Plugging in the USB power cable
+7. Keep setup button for another 10 seconds
+8. Wait until the firmware has finished flashing (like 3 minutes). Disconnect the power as soon as the base starts moving.
+9. Remove the microSD and try to start the Dafang camera
+10. You should see the blue led shining up for 5 seconds (not blinking) **before** the base starts moving. If not, something went wrong. You should try another microSD. Start over from step 1.
 
 ## Installation of the new Firmware
 

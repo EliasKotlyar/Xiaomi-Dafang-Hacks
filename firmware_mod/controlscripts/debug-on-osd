@@ -27,6 +27,10 @@ stop()
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "${pid}" ]; then
      kill "$pid" && rm "$PIDFILE"
+     if [ -f /system/sdcard/controlscripts/configureOsd ]; then
+        source /system/sdcard/controlscripts/configureOsd
+     fi
+
   fi
 }
 

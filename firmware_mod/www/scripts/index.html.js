@@ -8,7 +8,7 @@ var timeoutJobs = {};
 
 function refreshLiveImage() {
     var ts = new Date().getTime();
-    $("#liveview").attr("src", "/cgi-bin/currentpic.cgi?" + ts);
+    $("#liveview").attr("src", "cgi-bin/currentpic.cgi?" + ts);
 }
 function scheduleRefreshLiveImage(interval) {
     if (timeoutJobs['refreshLiveImage'] != undefined) {
@@ -19,7 +19,7 @@ function scheduleRefreshLiveImage(interval) {
 function syncSwitch(sw) {
     var e = $('#' + sw);
     if (!e.prop('disabled')) {
-        $.get("/cgi-bin/state.cgi", {
+        $.get("cgi-bin/state.cgi", {
             cmd: sw
         }).done(function (status) {
             // console.log(sw + " status " + status + " / current " + e.prop('checked'));
@@ -81,7 +81,7 @@ $(document).ready(function () {
     // Camera controls
     $(".cam_button").click(function () {
         var b = $(this);
-        $.get("/cgi-bin/action.cgi?cmd=" + b.data('cmd')).done(function (data) {
+        $.get("cgi-bin/action.cgi?cmd=" + b.data('cmd')).done(function (data) {
             setTimeout(refreshLiveImage, 500);
         });
     });
@@ -90,7 +90,7 @@ $(document).ready(function () {
     $(".switch").click(function () {
         var e = $(this);
         e.prop('disabled', true);
-        $.get("/cgi-bin/state.cgi", {
+        $.get("cgi-bin/state.cgi", {
             cmd: e.attr('id')
         }).done(function (status) {
             if (status.trim().toLowerCase() == "on") {

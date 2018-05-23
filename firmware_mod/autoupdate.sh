@@ -15,9 +15,7 @@ REMOTEFOLDER="firmware_mod"
 DESTFOLDER="./"
 DESTOVERRIDE="/tmp/Update"
 # The list of exclude, can have multple filter with "*.conf|*.sh"
-#"*.conf|*.user|run.sh|osd|autoupdate.sh|libcrypto.so.42|curl|curl.bin|libssl.so.44|libz.so.1"
 EXCLUDEFILTER="*.conf|*.user"
-# Some URL
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
 CURL="/system/sdcard/bin/curl -k"
@@ -49,7 +47,7 @@ usage()
     echo "-v (--verbose) for verbose"
     echo "-u (--user) githup login/password (not mandatory, but sometime anonymous account get banned)"
     echo "-h (--help) for this help"
-    echo 
+    echo
     echo "Note that ${EXCLUDEFILTER} will be excluded"
     echo "Examples:"
     echo "Update all files if needed >$1 -d /system/sdcard (-f to force update)"
