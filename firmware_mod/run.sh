@@ -15,7 +15,7 @@ killall telnetd
 
 ## Load some common functions:
 . /system/sdcard/scripts/common_functions.sh
-echo "loaded common functions" >> $LOGPATH
+echo "Loaded common functions" >> $LOGPATH
 
 ## Create root user home directory and etc directory on sdcard:
 if [ ! -d /system/sdcard/root ]; then
@@ -41,7 +41,7 @@ if [ ! -d /system/sdcard/config/cron ]; then
   mkdir -p /system/sdcard/config/cron/crontabs
   echo "Created cron directory" >> $LOGPATH
 fi
-crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
+/system/sdcard/bin/busybox crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
 
 ## Start Wifi:
 if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
@@ -77,7 +77,7 @@ done
 # the ir_led pin is a special animal and needs active low
 echo 1 > /sys/class/gpio/gpio49/active_low
 
-echo "initialized gpios" >> $LOGPATH
+echo "Initialized gpios" >> $LOGPATH
 
 ## Set leds to default startup states:
 ir_led off
@@ -94,6 +94,7 @@ insmod /system/sdcard/driver/sample_motor.ko
 ## Start Sensor:
 insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+insmod /system/sdcard/driver/sinfo
 
 ## Start FTP & SSH Server:
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
@@ -101,6 +102,14 @@ echo "dropbear: $dropbear_status" >> $LOGPATH
 
 bftpd_status=$(/system/sdcard/bin/bftpd -d)
 echo "bftpd: $bftpd_status" >> $LOGPATH
+
+## Create a certificate for the webserver
+if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
+  export OPENSSL_CONF=$CONFIGPATH/openssl.cnf
+  /system/sdcard/bin/openssl req -new -x509 -keyout $CONFIGPATH/lighttpd.pem -out $CONFIGPATH/lighttpd.pem -days 365 -nodes -subj "/C=DE/ST=Bavaria/L=Munich/O=.../OU=.../CN=.../emailAddress=..."
+  chmod 400 $CONFIGPATH/lighttpd.pem
+  echo "Created new certificate for webserver" >> $LOGPATH
+fi
 
 ## Start Webserver:
 lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)

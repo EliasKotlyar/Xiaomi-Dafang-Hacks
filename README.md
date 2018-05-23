@@ -33,14 +33,19 @@ Start [here](/hacks/technical.md)
 
 ## Viewer and control solution:
 
-After install, you can use this [android application](https://play.google.com/apps/testing/io.ext.medinvention.dafangcam) developed by [@medinvention](https://github.com/mmohamed) and available at [GitLab](https://gitlab.com/mmohamed/DafangCam)
+After install, you can use this [android application](https://play.google.com/store/apps/details?id=io.ext.medinvention.dafangcam) developed by [@medinvention](https://github.com/mmohamed) and join us on [Gitter](https://gitter.im/Dafang-Hacked-Cam-App)
 
 ## Integration in Home Automation Systems:
 [Domoticz](/integration/domoticz/domoticz.md)
 
 [Home Assistant](/integration/homeassistant/homeassistant.md)
 
+[HomeKit](/integration/homekit/homekit.md)
+
+[Synology](/integration/synology/synology.md)
+
 [Zoneminder](/integration/zoneminder/zoneminder.md)
 
+
 ## Contributions:
-Any contribution to the development is highly welcome. The best possibility is to open a pull request on GitHub.
+Any contribution to the development is highly welcome. Simply open a pull request on GitHub.
