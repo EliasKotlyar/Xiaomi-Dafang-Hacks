@@ -3,7 +3,7 @@
 # Github autodownload script
 # See usage for help
 # Edit the global variables to change the repo and initial folder
-# Depends on curl, jq (jason paser), openssl (SHA calculation)
+# Depends on curl, jq (json parser), openssl (SHA calculation)
 
 # owner name and repo name
 REPO="EliasKotlyar/Xiaomi-Dafang-Hacks"
@@ -13,20 +13,15 @@ BRANCH="master"
 REMOTEFOLDER="firmware_mod"
 # Default destination foler
 DESTFOLDER="./"
+DESTOVERRIDE="/tmp/Update"
 # The list of exclude, can have multple filter with "*.conf|*.sh"
-EXCLUDEFILTER="*.conf|*.user|autoupdate.sh|libcrypto.so.42|curl|curl.bin|libssl.so.44|libz.so.1"
-# Somme URL
+EXCLUDEFILTER="*.conf|*.user"
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
-# Name of the file
-COMMITIDFILE=.commit
 CURL="/system/sdcard/bin/curl -k"
 JQ="/system/sdcard/bin/jq"
 SHA="/system/sdcard/bin/openssl dgst -sha256"
 BASENAME="/system/sdcard/bin/busybox basename"
-#CURL="curl -k "
-#JQ="jq"
-#SHA="openssl dgst -sha256"
 
 TMPFILE=/tmp/udpate.tmp
 BACKUPEXT=.backup
@@ -34,21 +29,16 @@ LASTGLOBALCOMMIT=""
 _PRINTONLY=0
 _V=0
 _FORCE=0
-_CHECK=0
-_XFER=0
+_FORCEREBOOT=0
 _BACKUP=0
 ##########################################################################
 
 usage()
 {
     echo "Usage: $1 [OPTIONS]"
-    echo "$1 will update a local folder with the ${REPO} github repo"
+    echo "$1 will update a local folder with the ${REPO} github repo (first copy all the files in ${DESTOVERRIDE}, stop services and reboot"
     echo "Usage this script to update the ${REPO} github repo from ${BRANCH} branch"
     echo "Options:"
-    echo "-c (--check) to check only difference file by file"
-    echo "-s (--status) say if need to update or not based on global commit ID"
-    echo "-x (--xfer) update file by file, prompted for each file unless use of --force"
-
     echo "-b (--backup) backup erased file (add extension ${BACKUPEXT} to the local file before ovewrite it) "
     echo "-f (--force) force update"
     echo "-d (--dest) set the destination folder (default is ${DESTFOLDER})"
@@ -59,11 +49,8 @@ usage()
     echo "-h (--help) for this help"
     echo
     echo "Note that ${EXCLUDEFILTER} will be excluded"
-    echo "Example:"
-    echo "Check that local folder is up to date (file by file): >$1 -c -d /system/sdcard"
-    echo "Check that local folder is up to date (based on last update and commit ID): >$1 -s"
+    echo "Examples:"
     echo "Update all files if needed >$1 -d /system/sdcard (-f to force update)"
-    echo "Check and update file by file (prompted in no forced)(longer) >$1 -d /system/sdcard -x"
 }
 
 ##########################################################################
@@ -73,8 +60,8 @@ ask_yes_or_no() {
     read R
     case $(echo ${R} | tr '[A-Z]' '[a-z]') in
         y|yes) echo "yes" ;;
-    a|all) echo "all" ;;
-*)     echo "no" ;;
+        a|all) echo "all" ;;
+        *)     echo "no" ;;
   esac
 }
 
@@ -123,31 +110,6 @@ ismatch()
 }
 
 ##########################################################################
-# Return the current (last) commit from the specified repo and branch
-getCurrentCommitFromRemote()
-{
-    CURRENTCOMMIT=$(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} | grep sha | head -1 | cut -d'"' -f 4)
-    #CURRENTCOMMIT=$(curl -s https://github.com/${REPO}/commits/${BRANCH} 2>/dev/null| grep "commit:" | head -1| cut -d ":" -f 4 |sed 's/"//')
-    echo ${CURRENTCOMMIT}
-}
-##########################################################################
-# This function compares the saved commit ID (of the last update) if exists
-# Return variables:
-# update = true|false according if update is needed or not
-# commit = ID the ID of the last commit ID
-isNeedtobeUpdate()
-{
-    LASTCOMMIT=$(cat ${DESTFOLDER}/${COMMITIDFILE} 2>/dev/null)
-    CURRENTCOMMIT=$(getCurrentCommitFromRemote)
-    if [ "${LASTCOMMIT}" = "${CURRENTCOMMIT}" ]; then
-        echo -n "update=false"
-    else
-        echo -n "update=true"
-    fi
-    echo ";commit=${CURRENTCOMMIT}"
-}
-
-##########################################################################
 # Print the files from repo of the folder $1
 # Recursive call (for folder)
 getfiles()
@@ -168,7 +130,19 @@ getfiles()
         done
     fi
 }
-
+##########################################################################
+# Let some time before rebooting
+countdownreboot()
+{
+    i=10 
+    while [ ${i} -gt 0 ]; 
+    do 
+        echo "$i seconds remaining before reboot (Press control-c to abort)"; 
+	    i=$((${i} - 1))
+        sleep 1;  
+    done
+    action reboot
+}
 ##########################################################################
 # Script real start
 
@@ -184,14 +158,7 @@ do
             ;;
         -f | --force)
             _FORCE=1
-            shift
-            ;;
-        -c | --check)
-            _CHECK=1
-            shift
-            ;;
-        -x | --xfer)
-            _XFER=1
+            _FORCEREBOOT=1
             shift
             ;;
         -d | --dest)
@@ -212,15 +179,6 @@ do
             shift
             shift
             ;;
-        -s | --status)
-            eval "$(isNeedtobeUpdate)"
-            if [ ${update} = true ]; then
-                echo "New commit is available, some files may need to be updated"
-            else
-                echo "No new commit is available, up to date"
-            fi
-            exit 1
-            ;;
         *|-h |\? | --help)
             usage $0
             exit 1
@@ -228,155 +186,128 @@ do
     esac
 done
 
-if [ ${_CHECK} = 1 ] && [  ${_XFER} = 1 ]; then
-    logerror "Do not use check and xfer options at the same time"
-    exit 1
-fi
-
-log "Start"
-
-# Get the last commit ID to save it
-eval "$(isNeedtobeUpdate)"
-log commit ID is "${commit}"
-LASTGLOBALCOMMIT="${commit}"
+log "Starting AutoUpdate"
 
 if [ ${_FORCE} = 1 ]; then
-    log "Forced update"
-    update=true
-else
-    log "Need to be updated = ${update}"
-fi
-
-if [ ${_CHECK} = 1 ]; then
-    log "Check only"
-    # Force update
-    update=true
-fi
-
-if [ ${_XFER} = 1 ]; then
-    log "Transfert and check file by file"
-    # Force update
-    update=true
-fi
-
-if [ ${_FORCE} = 1 ]; then
-    log "forced option"
+    log "Forcing update."
 fi
 
 if [ ${_PRINTONLY} = 1 ]; then
-    log "Print actions only, do nothing"
+    log "Print actions only, do nothing."
 fi
 
 if [ ${_BACKUP} = 1 ]; then
-  log "will backup files"
+  log "Backing up files."
 fi
 
-if [ ${update} = true ]; then
+action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
-    if [ ${_CHECK} = 0 ]; then
-        action "mkdir -p ${DESTFOLDER} 2>/dev/null"
+log "Getting list of remote files."
+FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
+FILES=$(getfiles "${FIRST}")
+# For all the repository files
+for i in ${FILES}
+do
+    # String to remove to get the local path
+    REMOVE="${GITHUBURLRAW}/${REPO}/${BRANCH}/${REMOTEFOLDER}/"
+    LOCALFILE="${DESTFOLDER}${i#$REMOVE}"
+    # Remove files that match the filter
+    res=$(ismatch ${LOCALFILE})
+    if [ "$res" == "match" ]; then
+        echo "${LOCALFILE} is excluded due to filter."
+        continue
     fi
-    log "Get list of files"
-    FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
-    FILES=$(getfiles "${FIRST}")
-    # For all the repository files
-    for i in ${FILES}
-    do
-        # String to remove to get the local path
-        REMOVE="${GITHUBURLRAW}/${REPO}/${BRANCH}/${REMOTEFOLDER}/"
-        LOCALFILE="${DESTFOLDER}${i#$REMOVE}"
-        # Remove files that match the filter
-        res=$(ismatch ${LOCALFILE})
-        if [ ${res} == "match" ]; then
-            echo "${LOCALFILE} is excluded due to filter"
-            continue
-        fi
-        # If check only or ask to xfer for all
-        if [ ${_CHECK} = 1 ] || [ ${_XFER} = 1 ] ; then
-            # Get the file temporally to calculate SHA
-            ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
-            if [ ! -f ${TMPFILE} ]; then
-                echo "Can not get remote file $i, exit"
-                exit 1
-            fi
+    # Get the file temporally to calculate SHA
+    ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
+    if [ ! -f ${TMPFILE} ]; then
+        echo "Can not get remote file $i, exiting."
+        exit 1
+    fi
 
-            # Check the file exists in local
-            if [ -f "${LOCALFILE}" ]; then
-                REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)
-                # Calculate the remote and local SHA
-                LOCALSHA=$(${SHA} ${LOCALFILE} 2>/dev/null | cut -d "=" -f 2)
+    # Check the file exists in local
+    if [ -f "${LOCALFILE}" ]; then
+        REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)
+        # Calculate the remote and local SHA
+        LOCALSHA=$(${SHA} ${LOCALFILE} 2>/dev/null | cut -d "=" -f 2)
 
-                # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
-                if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
-                    echo "${LOCALFILE} is OK"
-                else
-                    if [ ${_XFER} = 1 ]; then
-                        if [ ${_FORCE} = 1 ]; then
-                            echo "${LOCALFILE} updated"
-                            action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
-                            if [ ${_BACKUP} = 1 ]; then
-                                action mv ${LOCALFILE} ${LOCALFILE}${BACKUPEXT}
-                            fi
-                            action mv ${TMPFILE} ${LOCALFILE}
-                        else
-                            echo "${LOCALFILE} need to be updated, overwrite [Y]es or [N]o or [A]ll ?"
-                            rep=$(ask_yes_or_no )
-                            if [ "${rep}" = "no" ]; then
-                                echo "${LOCALFILE} not updated"
-                                rm -f ${TMPFILE} 2>/dev/null
-                            else
-                                action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
-                                if [ ${_BACKUP} = 1 ]; then
-                                    action mv ${LOCALFILE} ${LOCALFILE}${BACKUPEXT}
-                                fi
-                                action mv ${TMPFILE} ${LOCALFILE}
-
-                            fi
-                            if [ "${rep}" = "all" ]; then
-                                _FORCE=1
-                            fi
-                        fi
-                    else
-                        echo "${LOCALFILE} is different from repo"
-                    fi
-                fi
-            else
-                if [ ${_XFER} = 1 ]; then
-                    if [ ${_FORCE} = 1 ]; then
-                        echo "${LOCALFILE} created"
-                        action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
-                        action mv ${TMPFILE} ${LOCALFILE}
-                    else
-                        echo "${LOCALFILE} doesn't exist, create it [Y]es or [N]o or [A]ll ?"
-                        rep=$(ask_yes_or_no )
-                        if [ "${rep}" = "no" ]; then
-                            echo "${LOCALFILE} not created"
-                            rm -f ${TMPFILE} 2>/dev/null
-                        else
-                            action "mkdir $(dirname ${LOCALFILE}) 2>/dev/null"
-                            action mv ${TMPFILE} ${LOCALFILE}
-                        fi
-                        if [ "${rep}" = "all" ]; then
-                            _FORCE=1
-                        fi
-                    fi
-                else
-                    echo "${LOCALFILE} is missing"
-                fi
-            fi
+        # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
+        if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
+            echo "${LOCALFILE} is up to date."
         else
-            log "Get ${i}"
-            action ${CURL} -s ${i} --create-dirs -o ${LOCALFILE}
-            if [ $? -ne 0 ]; then
-                logerror "Failed to get ${LOCALFILE}"
+            if [ ${_FORCE} = 1 ]; then
+                echo "${LOCALFILE} updated."
+                action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+                if [ ${_BACKUP} = 1 ]; then
+                    action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
+                fi
+                action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+            else
+                echo "${LOCALFILE} needs to be updated. Overwrite?"
+		echo "[Y]es or [N]o or [A]ll?"
+                rep=$(ask_yes_or_no )
+                if [ "${rep}" = "no" ]; then
+                    echo "${LOCALFILE} not updated"
+                    rm -f ${TMPFILE} 2>/dev/null
+                else
+                    action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+                    if [ ${_BACKUP} = 1 ]; then
+                        action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
+                    fi
+                    action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+
+                fi
+                if [ "${rep}" = "all" ]; then
+                    _FORCE=1
+                fi
             fi
         fi
+    else
+        if [ ${_FORCE} = 1 ]; then
+            echo "${LOCALFILE} created."
+            action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+            action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+        else
+            echo "${LOCALFILE} doesn't exist, create it?"
+	    echo "[Y]es or [N]o or [A]ll ?"
+            rep=$(ask_yes_or_no )
+            if [ "${rep}" = "no" ]; then
+                echo "${LOCALFILE} not created."
+                rm -f ${TMPFILE} 2>/dev/null
+            else  
+                action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+                action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+            fi
+            if [ "${rep}" = "all" ]; then
+                _FORCE=1
+            fi
+        fi
+    fi
+done
 
-
+if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
+    echo "--------------- Stopping services ---------"
+    for i in /system/sdcard/controlscripts/*; do
+	echo stopping $i
+	$i stop &> /dev/null
     done
-    if [ ${_CHECK} = 0 ]; then
-        action "echo ${LASTGLOBALCOMMIT} > ${DESTFOLDER}/${COMMITIDFILE}"
+    pkill lighttpd.bin 2> /dev/null
+    pkill bftpd  2> /dev/null
+
+    echo "--------------- Updating files ----------"
+    action "cp -Rf ${DESTOVERRIDE}/* ${DESTFOLDER} 2>/dev/null"
+    action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
+
+    echo "---------------    Reboot    ------------"
+    if [ ${_FORCEREBOOT} = 1 ]; then
+        countdownreboot
+    else
+        echo "A reboot is needed, do you want to reboot now?"
+	echo "[Y]es or [N]o"
+        rep=$(ask_yes_or_no )
+        if [ "${rep}" = "yes" ]; then
+            countdownreboot
+        fi
     fi
 else
-    echo "Already up to date"
+    echo "No files to update."
 fi

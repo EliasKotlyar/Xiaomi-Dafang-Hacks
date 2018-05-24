@@ -4,6 +4,12 @@ boundary="ZZ_/afg6432dfgkl.94531q"
 FILENAME=$(date "+%Y%m%d%H%M%S-")
 MAILDATE=$(date -R)
 
+if [ ! -f /system/sdcard/config/sendmail.conf ]
+then
+  echo "You must configure /system/sdcard/config/sendmail.conf before using sendPictureMail"
+  exit 1
+fi
+
 . /system/sdcard/config/sendmail.conf
 
 # Build headers of the emails
