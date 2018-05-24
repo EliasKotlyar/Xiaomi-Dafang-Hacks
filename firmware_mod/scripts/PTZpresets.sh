@@ -4,7 +4,6 @@
 # Created by Nero                              #
 # neroxps@gmail.com | 2018-5-15 | v0.0.1 Beta  #
 ################################################
-source /root/.busybox_aliases 
 
 if [[ -z $3 ]]; then
     LOG=false
