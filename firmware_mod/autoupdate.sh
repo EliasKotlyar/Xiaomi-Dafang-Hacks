@@ -137,7 +137,7 @@ countdownreboot()
     i=10 
     while [ ${i} -gt 0 ]; 
     do 
-        echo "$i seconds remaining before rebooting (control-c to abort)"; 
+        echo "$i seconds remaining before reboot (Press control-c to abort)"; 
 	    i=$((${i} - 1))
         sleep 1;  
     done
@@ -186,10 +186,10 @@ do
     esac
 done
 
-log "Start"
+log "Starting AutoUpdate"
 
 if [ ${_FORCE} = 1 ]; then
-    log "forced option."
+    log "Forcing update."
 fi
 
 if [ ${_PRINTONLY} = 1 ]; then
@@ -202,7 +202,7 @@ fi
 
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
-log "Get list of remote files"
+log "Getting list of remote files."
 FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
 FILES=$(getfiles "${FIRST}")
 # For all the repository files
@@ -232,10 +232,10 @@ do
 
         # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
         if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
-            echo "${LOCALFILE} is OK"
+            echo "${LOCALFILE} is up to date."
         else
             if [ ${_FORCE} = 1 ]; then
-                echo "${LOCALFILE} updated"
+                echo "${LOCALFILE} updated."
                 action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
                 if [ ${_BACKUP} = 1 ]; then
                     action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
@@ -263,7 +263,7 @@ do
         fi
     else
         if [ ${_FORCE} = 1 ]; then
-            echo "${LOCALFILE} created"
+            echo "${LOCALFILE} created."
             action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
             action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
         else
@@ -271,7 +271,7 @@ do
 	    echo "[Y]es or [N]o or [A]ll ?"
             rep=$(ask_yes_or_no )
             if [ "${rep}" = "no" ]; then
-                echo "${LOCALFILE} not created"
+                echo "${LOCALFILE} not created."
                 rm -f ${TMPFILE} 2>/dev/null
             else  
                 action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
@@ -285,7 +285,7 @@ do
 done
 
 if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
-    echo "--------------- Stop services ---------"
+    echo "--------------- Stopping services ---------"
     for i in /system/sdcard/controlscripts/*; do
 	echo stopping $i
 	$i stop &> /dev/null
@@ -293,15 +293,15 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     pkill lighttpd.bin 2> /dev/null
     pkill bftpd  2> /dev/null
 
-    echo "--------------- Update files ----------"
+    echo "--------------- Updating files ----------"
     action "cp -Rf ${DESTOVERRIDE}/* ${DESTFOLDER} 2>/dev/null"
     action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
 
-    echo "---------------    Reboot    ----------"
+    echo "---------------    Reboot    ------------"
     if [ ${_FORCEREBOOT} = 1 ]; then
         countdownreboot
     else
-        echo "Reboot is needed, do you want to reboot now?"
+        echo "A reboot is needed, do you want to reboot now?"
 	echo "[Y]es or [N]o"
         rep=$(ask_yes_or_no )
         if [ "${rep}" = "yes" ]; then
@@ -309,5 +309,5 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
         fi
     fi
 else
-    echo "No updated files, no action"
+    echo "No files to update."
 fi
