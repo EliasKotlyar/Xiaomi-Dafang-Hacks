@@ -44,6 +44,8 @@ After install, you can use this [android application](https://play.google.com/st
 
 [Synology](/integration/synology/synology.md)
 
+[tinyCam](/integration/tinycam/tinycam.md)
+
 [Zoneminder](/integration/zoneminder/zoneminder.md)
 
 
