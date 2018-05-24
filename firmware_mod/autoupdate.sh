@@ -3,7 +3,7 @@
 # Github autodownload script
 # See usage for help
 # Edit the global variables to change the repo and initial folder
-# Depends on curl, jq (jason parser), openssl (SHA calculation)
+# Depends on curl, jq (json parser), openssl (SHA calculation)
 
 # owner name and repo name
 REPO="EliasKotlyar/Xiaomi-Dafang-Hacks"
@@ -189,20 +189,20 @@ done
 log "Start"
 
 if [ ${_FORCE} = 1 ]; then
-    log "forced option"
+    log "forced option."
 fi
 
 if [ ${_PRINTONLY} = 1 ]; then
-    log "Print actions only, do nothing"
+    log "Print actions only, do nothing."
 fi
 
 if [ ${_BACKUP} = 1 ]; then
-  log "will backup files"
+  log "Backing up files."
 fi
 
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
-log "Get list of files"
+log "Get list of remote files"
 FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
 FILES=$(getfiles "${FIRST}")
 # For all the repository files
@@ -214,13 +214,13 @@ do
     # Remove files that match the filter
     res=$(ismatch ${LOCALFILE})
     if [ "$res" == "match" ]; then
-        echo "${LOCALFILE} is excluded due to filter"
+        echo "${LOCALFILE} is excluded due to filter."
         continue
     fi
     # Get the file temporally to calculate SHA
     ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
     if [ ! -f ${TMPFILE} ]; then
-        echo "Can not get remote file $i, exit"
+        echo "Can not get remote file $i, exiting."
         exit 1
     fi
 
@@ -242,7 +242,8 @@ do
                 fi
                 action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
             else
-                echo "${LOCALFILE} need to be updated, overwrite [Y]es or [N]o or [A]ll ?"
+                echo "${LOCALFILE} needs to be updated. Overwrite?"
+		echo "[Y]es or [N]o or [A]ll?"
                 rep=$(ask_yes_or_no )
                 if [ "${rep}" = "no" ]; then
                     echo "${LOCALFILE} not updated"
@@ -266,7 +267,8 @@ do
             action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
             action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
         else
-            echo "${LOCALFILE} doesn't exist, create it [Y]es or [N]o or [A]ll ?"
+            echo "${LOCALFILE} doesn't exist, create it?"
+	    echo "[Y]es or [N]o or [A]ll ?"
             rep=$(ask_yes_or_no )
             if [ "${rep}" = "no" ]; then
                 echo "${LOCALFILE} not created"
@@ -299,7 +301,8 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     if [ ${_FORCEREBOOT} = 1 ]; then
         countdownreboot
     else
-        echo "reboot is needed, do you want to do it now ?"
+        echo "Reboot is needed, do you want to reboot now?"
+	echo "[Y]es or [N]o"
         rep=$(ask_yes_or_no )
         if [ "${rep}" = "yes" ]; then
             countdownreboot
