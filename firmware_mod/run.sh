@@ -91,6 +91,9 @@ insmod /system/sdcard/driver/sample_motor.ko
 # motor hcalibrate
 # motor vcalibrate
 
+# calibrate,compatible newer models.
+motor calibrate
+
 ## Start Sensor:
 insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0

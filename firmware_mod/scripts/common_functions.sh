@@ -165,6 +165,9 @@ motor(){
   hcalibrate)
     /system/sdcard/bin/motor -d h -s "$steps"
     ;;
+  calibrate)
+    /system/sdcard/bin/motor -d f -s "$steps"
+    ;;
   status)
     if [ "$2" = "horizontal" ]
       then
