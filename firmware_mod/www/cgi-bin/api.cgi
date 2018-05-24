@@ -224,6 +224,11 @@ if [ -n "$F_action" ]; then
      $BINPATH/motor -d h -s 100 &>/dev/null &
      getReturn 1234 "success" "Motor is calibration on horizontal."
   ;;
+  motor_PTZ)                                                                                                                                                            
+     /system/sdcard/scripts/PTZpresets.sh $F_x_axis $F_y_axis                        
+     AXIS="`/system/sdcard/bin/motor -d u -s 0 | tail +5 | awk '{printf (\"%s \",$0)}' |  awk '{print \"X=\"$2,\"Y=\"$4}'`"                                             
+     getReturn 1234 "success" "PTZ set to $AXIS"                                  
+  ;;
 # Control Audio
   audio_test)
     $BINPATH/ossplay -g 1000 /usr/share/notify/CN/init_ok.wav &
