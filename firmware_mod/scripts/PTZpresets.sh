@@ -2,21 +2,33 @@
 
 ################################################
 # Created by Nero                              #
-# neroxps@gmail.com | 2018-5-15 | v0.0.1 Beta  #
+# neroxps@gmail.com | 2018-5-15 | v0.0.2 Beta  #
 ################################################
 
+MOTOR=/system/sdcard/bin/motor
+
+# If the previous instruction did not complete, wait for it to complete before continuing.
+while [ -f /run/PTZ.pid ] ;do
+    sleep 1
+done
+echo $$ > /run/PTZ.pid
+
+# set log
 if [[ -z $3 ]]; then
     LOG=false
 else
     LOG=ture
 fi
 
-MOTOR=/system/sdcard/bin/motor
-
 loger(){
     if $LOG; then
         echo $1 
     fi
+}
+
+exit_shell(){
+    rm -f /run/PTZ.pid
+    exit $1
 }
 
 
@@ -30,11 +42,12 @@ get_steps(){
 check_value(){
     if [[ $1 -gt 2500 -o $1 -lt 0 ]]; then
       loger "X should be between [0-2500]"
-      exit 1
+      return 1
     elif [[ $2 -gt 800 -o $2 -lt 0 ]]; then
       loger "Y should be between [0-800]"
-      exit 2
+      return 1
     fi
+    return 0
 }
 
 move(){
@@ -72,10 +85,12 @@ move(){
 case "$1" in
   *[!0-9]*|"")
     loger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
-    exit 1
+    exit_shell 1
     ;;  
   [0-9]*)
-    check_value $1 $2
+    if ! check_value $1 $2; then
+        exit_shell 1
+    fi
     move X $1
     ;;
 esac
@@ -83,13 +98,9 @@ esac
 case "$2" in
   *[!0-9]*|"")
     loger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
-    exit 2
+    exit_shell 2
     ;;  
   [0-9]*)
-	if [[ $2 -gt 800 -o $2 -lt 0 ]]; then
-		loger "Y should be between [0-800]"
-		exit 2
-	fi
     move Y $2
     ;; 
 esac
@@ -98,3 +109,4 @@ esac
 source /system/sdcard/config/osd.conf
 AXIS="`/system/sdcard/bin/motor -d u -s 0 | tail +5 | awk '{printf (\"%s \",$0)}' |  awk '{print \"X=\"$2,\"Y=\"$4}'`"
 /system/sdcard/bin/setconf -k o -v "$OSD"
+exit_shell 0
