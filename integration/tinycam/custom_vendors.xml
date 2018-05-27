@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vendors>
-    <vendor name="Xiaomi">
-        <model name="custom Application Layer" defaultPort="80" defaultRtspPort="8554">
+    <vendor name="XiaomiHack">
+        <model name="DaFang EliasKotlyar" defaultPort="80" defaultRtspPort="8554">
             <request name="Snap">/cgi-bin/currentpic.cgi</request>
             <request name="RTSP">/unicast</request>
             <request name="PtzMoveRelLeft">/cgi-bin/action.cgi?cmd=motor_left</request>
@@ -9,7 +9,8 @@
             <request name="PtzMoveRelUp">/cgi-bin/action.cgi?cmd=motor_up</request>
             <request name="PtzMoveRelDown">/cgi-bin/action.cgi?cmd=motor_down</request>
             <request name="PtzMoveHome">/cgi-bin/action.cgi?action=motor_calibrate</request>
-            <request custom="Reboot" confirmation="yes">/cgi-bin/action.cgi?action=reboot</request>
+            <request custom="Reboot" confirmation="yes">/cgi-bin/api.cgi?action=reboot</request>  
+            <request custom="Play Test Sound">/cgi-bin/api.cgi?action=audio_test</request>
         </model>
     </vendor>
 </vendors>
