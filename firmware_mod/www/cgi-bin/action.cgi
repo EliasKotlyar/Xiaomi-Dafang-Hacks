@@ -143,6 +143,11 @@ if [ -n "$F_cmd" ]; then
       /system/sdcard/bin/motor -d h -s 100
     ;;
 
+    motor_calibrate)
+      /system/sdcard/bin/motor -d h -s 100
+      /system/sdcard/bin/motor -d v -s 100
+    ;;
+
     audio_test)
       /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
     ;;
