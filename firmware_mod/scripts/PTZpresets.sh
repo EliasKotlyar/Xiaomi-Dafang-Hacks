@@ -2,16 +2,12 @@
 
 ################################################
 # Created by Nero                              #
-# neroxps@gmail.com | 2018-5-15 | v0.0.2 Beta  #
+# neroxps@gmail.com | 2018-5-15 | v0.0.3 Beta  #
 ################################################
 
 MOTOR=/system/sdcard/bin/motor
-
-# If the previous instruction did not complete, wait for it to complete before continuing.
-while [ -f /run/PTZ.pid ] ;do
-    sleep 1
-done
-echo $$ > /run/PTZ.pid
+pid=$$
+echo $pid > /run/PTZ_$pid.pid
 
 # set log
 if [[ -z $3 ]]; then
@@ -27,7 +23,7 @@ loger(){
 }
 
 exit_shell(){
-    rm -f /run/PTZ.pid
+    rm -f /run/PTZ_$pid.pid
     exit $1
 }
 
@@ -82,6 +78,14 @@ move(){
     sleep ${SLEEP_NUM//-/}
 }
 
+# If the previous instruction did not complete, wait for it to complete before continuing.
+whit_pid=$(cat /run/PTZ* 2>/dev/null | awk -v pid=$pid '$1<pid{print $1}')
+while [[ "$whit_pid" != "" ]] ;do
+	whit_pid=$(cat /run/PTZ* 2>/dev/null | awk -v pid=$pid '$1<pid{print $1}')
+    sleep 1
+done
+
+# Main
 case "$1" in
   *[!0-9]*|"")
     loger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
