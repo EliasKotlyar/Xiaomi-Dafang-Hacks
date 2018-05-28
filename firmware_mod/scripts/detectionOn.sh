@@ -16,6 +16,9 @@ if [ "$save_snapshot" = true ] ; then
 	if [ ! -d "$save_dir" ]; then
 		mkdir -p $save_dir
 	fi
+	if [[ $(ls $save_dir | wc -l) -ge $max_snapshots ]]; then
+		rm -f "$save_dir/$(ls -l | awk 'NR==2{print $9}')"
+	fi
 	/system/sdcard/bin/getimage > $save_dir/$filename &
 fi
 

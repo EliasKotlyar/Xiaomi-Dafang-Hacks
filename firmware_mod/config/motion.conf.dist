@@ -14,5 +14,6 @@ motion_tracking=off
 
 motion_trigger_led=true
 save_snapshot=false
+max_snapshots=20
 publish_mqtt_message=false
 sendemail=false
