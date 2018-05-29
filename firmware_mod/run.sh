@@ -94,7 +94,7 @@ insmod /system/sdcard/driver/sample_motor.ko
 ## Start Sensor:
 insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
 insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
-insmod /system/sdcard/driver/sinfo
+insmod /system/sdcard/driver/sinfo.ko
 
 ## Start FTP & SSH Server:
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
