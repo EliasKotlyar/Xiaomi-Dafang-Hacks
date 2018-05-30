@@ -3,7 +3,7 @@
 # Github autodownload script
 # See usage for help
 # Edit the global variables to change the repo and initial folder
-# Depends on curl, jq (jason parser), openssl (SHA calculation)
+# Depends on curl, jq (json parser), openssl (SHA calculation)
 
 # owner name and repo name
 REPO="EliasKotlyar/Xiaomi-Dafang-Hacks"
@@ -15,23 +15,17 @@ REMOTEFOLDER="firmware_mod"
 DESTFOLDER="./"
 DESTOVERRIDE="/tmp/Update"
 # The list of exclude, can have multple filter with "*.conf|*.sh"
-EXCLUDEFILTER=""
+EXCLUDEFILTER="*.conf|*.user"
 #"*.conf|*.user|run.sh|osd|autoupdate.sh|libcrypto.so.42|curl|curl.bin|libssl.so.44|libz.so.1"
-# Somme URL
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
-CURL="curl -k"
-JQ="jq"
 SHA="openssl dgst -sha256"
 BASENAME="basename"
 #CURL="/system/sdcard/bin/curl -k"
 #JQ="/system/sdcard/bin/jq"
-#SHA="/system/sdcard/bin/openssl dgst -sha256"
-#BASENAME="/system/sdcard/bin/busybox basename"
 
 TMPFILE=/tmp/udpate.tmp
 BACKUPEXT=.backup
-LASTGLOBALCOMMIT=""
 _PRINTONLY=0
 _V=0
 _FORCE=0
@@ -66,8 +60,8 @@ ask_yes_or_no() {
     read R
     case $(echo ${R} | tr '[A-Z]' '[a-z]') in
         y|yes) echo "yes" ;;
-    a|all) echo "all" ;;
-*)     echo "no" ;;
+        a|all) echo "all" ;;
+        *)     echo "no" ;;
   esac
 }
 
@@ -140,12 +134,12 @@ getfiles()
 # Let some time before rebooting
 countdownreboot()
 {
-    i=10 
-    while [ $i -gt 0 ]; 
-    do 
-        echo "$i seconds remaining before rebooting (control-c to abort)"; 
-        i=`expr $i - 1`; 
-        sleep 1;  
+    i=10
+    while [ ${i} -gt 0 ];
+    do
+        echo "$i seconds remaining before reboot (Press control-c to abort)";
+	    i=$((${i} - 1))
+        sleep 1;
     done
     action reboot
 }
@@ -192,23 +186,22 @@ do
     esac
 done
 
-log "Start"
-
+log "Starting AutoUpdate"
 if [ ${_FORCE} = 1 ]; then
-    log "forced option"
+    log "Forcing update."
 fi
 
 if [ ${_PRINTONLY} = 1 ]; then
-    log "Print actions only, do nothing"
+    log "Print actions only, do nothing."
 fi
 
 if [ ${_BACKUP} = 1 ]; then
-  log "will backup files"
+  log "Backing up files."
 fi
 
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
-log "Get list of files"
+log "Getting list of remote files."
 FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
 FILES=$(getfiles "${FIRST}")
 # For all the repository files
@@ -220,13 +213,13 @@ do
     # Remove files that match the filter
     res=$(ismatch ${LOCALFILE})
     if [ "$res" == "match" ]; then
-        echo "${LOCALFILE} is excluded due to filter"
+        echo "${LOCALFILE} is excluded due to filter."
         continue
     fi
     # Get the file temporally to calculate SHA
     ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
     if [ ! -f ${TMPFILE} ]; then
-        echo "Can not get remote file $i, exit"
+        echo "Can not get remote file $i, exiting."
         exit 1
     fi
 
@@ -238,17 +231,18 @@ do
 
         # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
         if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
-            echo "${LOCALFILE} is OK"
+            echo "${LOCALFILE} is up to date."
         else
             if [ ${_FORCE} = 1 ]; then
-                echo "${LOCALFILE} updated"
+                echo "${LOCALFILE} updated."
                 action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
                 if [ ${_BACKUP} = 1 ]; then
                     action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
                 fi
                 action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
             else
-                echo "${LOCALFILE} need to be updated, overwrite [Y]es or [N]o or [A]ll ?"
+                echo "${LOCALFILE} needs to be updated. Overwrite?"
+		echo "[Y]es or [N]o or [A]ll?"
                 rep=$(ask_yes_or_no )
                 if [ "${rep}" = "no" ]; then
                     echo "${LOCALFILE} not updated"
@@ -268,16 +262,17 @@ do
         fi
     else
         if [ ${_FORCE} = 1 ]; then
-            echo "${LOCALFILE} created"
+            echo "${LOCALFILE} created."
             action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
             action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
         else
-            echo "${LOCALFILE} doesn't exist, create it [Y]es or [N]o or [A]ll ?"
+            echo "${LOCALFILE} doesn't exist, create it?"
+	    echo "[Y]es or [N]o or [A]ll ?"
             rep=$(ask_yes_or_no )
             if [ "${rep}" = "no" ]; then
-                echo "${LOCALFILE} not created"
+                echo "${LOCALFILE} not created."
                 rm -f ${TMPFILE} 2>/dev/null
-            else  
+            else
                 action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
                 action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
             fi
@@ -298,14 +293,28 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     echo "---------------    Reboot    ----------"
     if [ ${_FORCEREBOOT} = 1 ]; then
         countdownreboot
+if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
+    echo "--------------- Stopping services ---------"
+    for i in /system/sdcard/controlscripts/*; do
+	echo stopping $i
+	$i stop &> /dev/null
+    pkill lighttpd.bin 2> /dev/null
+    pkill bftpd  2> /dev/null
+
+    echo "--------------- Updating files ----------"
+    action "cp -Rf ${DESTOVERRIDE}/* ${DESTFOLDER} 2>/dev/null"
+    action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
+
+    echo "---------------    Reboot    ------------"
+    if [ ${_FORCEREBOOT} = 1 ]; then
+        countdownreboot
     else
-        echo "reboot is needed, do you want to do it now ?"
+        echo "A reboot is needed, do you want to reboot now?"
+	echo "[Y]es or [N]o"
         rep=$(ask_yes_or_no )
         if [ "${rep}" = "yes" ]; then
             countdownreboot
         fi
-    fi
-
 else
-    echo "No updated files, no action"
+    echo "No files to update."
 fi
