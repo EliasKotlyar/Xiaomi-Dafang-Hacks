@@ -18,7 +18,7 @@ else
     LOG=ture
 fi
 
-loger(){
+logger(){
    if $LOG; then
         echo "$(date '+%Y-%m-%d-%H:%M:%S') $1" >> /system/sdcard/log/ptz.log
    fi
@@ -40,10 +40,10 @@ get_steps(){
 # X should be between [0-2500] and Y should be between [0-800]
 check_value(){
     if [[ $1 -gt 2500 -o $1 -lt 0 ]]; then
-      loger "X should be between [0-2500]"
+      logger "X should be between [0-2500]"
       return 1
     elif [[ $2 -gt 800 -o $2 -lt 0 ]]; then
-      loger "Y should be between [0-800]"
+      logger "Y should be between [0-800]"
       return 1
     fi
     return 0
@@ -71,10 +71,10 @@ move(){
     # "+" Right or Up, "-" Left or Down.
     if [[ $STEPS -gt 0 ]]; then
         $MOTOR -d ${opt%|*} -s "${STEPS//-/}" &>/dev/null
-        loger "$1 axis: DST:$DST_STEPS SRC:$SRC_STEPS ${text%|*} $STEPS"
+        logger "$1 axis: DST:$DST_STEPS SRC:$SRC_STEPS ${text%|*} $STEPS"
     else
         $MOTOR -d ${opt#*|} -s "${STEPS//-/}" &>/dev/null
-        loger "$1 axis DST:$DST_STEPS SRC:$SRC_STEPS ${text#*|} $STEPS"
+        logger "$1 axis DST:$DST_STEPS SRC:$SRC_STEPS ${text#*|} $STEPS"
     fi
 
     # Waiting for the motor to run.
@@ -91,7 +91,7 @@ done
 # Main
 case "$1" in
   *[!0-9]*|"")
-    loger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
+    logger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
     exit_shell 1
     ;;  
   [0-9]*)
@@ -104,7 +104,7 @@ esac
 
 case "$2" in
   *[!0-9]*|"")
-    loger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
+    logger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
     exit_shell 2
     ;;  
   [0-9]*)
@@ -114,6 +114,6 @@ esac
 
 # Update OSD_AXIS
 update_axis
-loger "Move end motor coordinates:$AXIS"
+logger "Move end motor coordinates:$AXIS"
 /system/sdcard/bin/setconf -k o -v "$OSD"
 exit_shell 0
