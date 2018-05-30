@@ -31,7 +31,7 @@ start()
     echo "A v4l2rtspserver is already running, please stop it or reboot"
   else
     echo "Starting v4l2rtspserver-master with parameter -fMJPG"
-    /system/sdcard/controlscripts/rtsp-h264 stop
+    /system/sdcard/controlscripts/rtsp-h264 start
 
     ## Configure OSD
     if [ -f /system/sdcard/controlscripts/configureOsd ]; then
