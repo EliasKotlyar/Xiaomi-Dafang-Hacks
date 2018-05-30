@@ -26,7 +26,9 @@
 ## Software Development:
 [The Ingenic T20 Toolchain](https://github.com/dim08/Ingenic-T10_20)
 
-[How to Build Software for the Ingenic T20 Platform](https://github.com/EliasKotlyar/Xiaomi-Dafang-Software)
+[How to Build Software for the Ingenic T20 Platform](https://github.com/Dafang-Hacks/Main)
+
+[Old Development Repository - deprecated](https://github.com/EliasKotlyar/Xiaomi-Dafang-Software)
 
 ## Original Firmware:
 [5.5.1.177](/firmware_original/demo_5.5.1.177.bin)
