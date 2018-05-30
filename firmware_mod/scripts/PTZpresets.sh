@@ -2,8 +2,10 @@
 
 ################################################
 # Created by Nero                              #
-# neroxps@gmail.com | 2018-5-15 | v0.0.3 Beta  #
+# neroxps@gmail.com | 2018-5-28 | v0.0.5 Beta  #
 ################################################
+
+source /system/sdcard/scripts/common_functions.sh
 
 MOTOR=/system/sdcard/bin/motor
 pid=$$
@@ -17,11 +19,12 @@ else
 fi
 
 loger(){
-    if $LOG; then
-        echo $1 
-    fi
+#    if $LOG; then
+        echo "$(date '+%Y-%m-%d-%H:%M:%S') $1" >> /system/sdcard/log/ptz.log
+#    fi
 }
 
+# exit
 exit_shell(){
     rm -f /run/PTZ_$pid.pid
     exit $1
@@ -110,7 +113,7 @@ case "$2" in
 esac
 
 # Update OSD_AXIS
-source /system/sdcard/config/osd.conf
-AXIS="`/system/sdcard/bin/motor -d u -s 0 | tail +5 | awk '{printf (\"%s \",$0)}' |  awk '{print \"X=\"$2,\"Y=\"$4}'`"
+update_axis
+loger "Move end motor coordinates:$AXIS"
 /system/sdcard/bin/setconf -k o -v "$OSD"
 exit_shell 0

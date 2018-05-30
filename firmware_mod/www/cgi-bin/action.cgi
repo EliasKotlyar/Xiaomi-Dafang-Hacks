@@ -101,7 +101,7 @@ if [ -n "$F_cmd" ]; then
       SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
       sleep ${SLEEP_NUM//-/}
       # Display AXIS to OSD
-      source /system/sdcard/config/osd.conf
+      update_axis
       /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
@@ -111,7 +111,7 @@ if [ -n "$F_cmd" ]; then
       SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
       sleep ${SLEEP_NUM//-/}
       # Display AXIS to OSD
-      source /system/sdcard/config/osd.conf
+      update_axis
       /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
@@ -121,7 +121,7 @@ if [ -n "$F_cmd" ]; then
       SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
       sleep ${SLEEP_NUM//-/}
       # Display AXIS to OSD
-      source /system/sdcard/config/osd.conf
+      update_axis
       /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
@@ -131,7 +131,7 @@ if [ -n "$F_cmd" ]; then
       SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
       sleep ${SLEEP_NUM//-/}
       # Display AXIS to OSD
-      source /system/sdcard/config/osd.conf
+      update_axis
       /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
@@ -229,18 +229,29 @@ if [ -n "$F_cmd" ]; then
 
     osd)
       enabled=$(printf '%b' "${F_OSDenable}")
+      axis_enable=$(printf '%b' "${F_AXISenable}")
       position=$(printf '%b' "${F_Position}")
       osdtext=$(printf '%b' "${F_osdtext//%/\\x}")
       osdtext=$(echo "$osdtext" | sed -e "s/\\+/ /g")
 
+      if [ ! -z "$axis_enable"];then
+        update_axis
+        osdtext="${osdtext} ${AXIS}"
+        echo "DISPLAY_AXIS=true" > /system/sdcard/config/osd.conf
+        echo DISPLAY_AXIS enable
+      else
+        echo "DISPLAY_AXIS=false" > /system/sdcard/config/osd.conf
+        echo DISPLAY_AXIS disable
+      fi
+
       if [ ! -z "$enabled" ]; then
         /system/sdcard/bin/setconf -k o -v "$osdtext"
-        echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd.conf
+        echo "OSD=\"${osdtext}\"" >> /system/sdcard/config/osd.conf
         echo "OSD set"
       else
         echo "OSD removed"
         /system/sdcard/bin/setconf -k o -v ""
-        echo "OSD=\"\" " > /system/sdcard/config/osd.conf
+        echo "OSD=\"\" " >> /system/sdcard/config/osd.conf
       fi
 
       echo "COLOR=${F_color}" >> /system/sdcard/config/osd.conf

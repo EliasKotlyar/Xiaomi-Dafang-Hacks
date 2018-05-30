@@ -4,6 +4,7 @@
 if [ -f /system/sdcard/config/osd.conf ]; then
     source /system/sdcard/config/osd.conf  2>/dev/null
     # Call setconf only if we have something to set, to avoid outputing error messages
+    [ ${DISPLAY_AXIS} ] && AXIS=`/system/sdcard/bin/motor -d u -s 0 | tail +5 | awk '{printf ("%s ",$0)}' |  awk '{print "X="$2,"Y="$4}'` && OSD=$(echo ${OSD} | sed -r "s/X=.*$/${AXIS}/")
     [ ! -z "${OSD}" ] && /system/sdcard/bin/setconf -k o -v "${OSD}" 2>/dev/null
     [ ! -z "${COLOR}" ] && /system/sdcard/bin/setconf -k c -v ${COLOR} 2>/dev/null
     [ ! -z "${SIZE}" ] && /system/sdcard/bin/setconf -k s -v ${SIZE} 2>/dev/null

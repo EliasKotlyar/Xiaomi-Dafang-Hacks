@@ -226,8 +226,8 @@ if [ -n "$F_action" ]; then
   ;;
   motor_PTZ)                                                                                                                                                            
      /system/sdcard/scripts/PTZpresets.sh $F_x_axis $F_y_axis                        
-     AXIS="`/system/sdcard/bin/motor -d u -s 0 | tail +5 | awk '{printf (\"%s \",$0)}' |  awk '{print \"X=\"$2,\"Y=\"$4}'`"                                             
-     getReturn 1234 "success" "PTZ set to $AXIS"                                  
+     AXIS=`/system/sdcard/bin/motor -d u -s 0 | tail +5 | awk '{printf ("%s ",$0)}' |  awk '{print "X="$2,"Y="$4}'`
+     getReturn 1234 "success" "PTZ set to $AXIS"
   ;;
 # Control Audio
   audio_test)
