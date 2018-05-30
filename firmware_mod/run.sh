@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export LD_LIBRARY_PATH='/system/sdcard/lib/:/thirdlib:/system/lib'
+
 CONFIGPATH="/system/sdcard/config"
 LOGDIR="/system/sdcard/log"
 LOGPATH="$LOGDIR/startup.log"

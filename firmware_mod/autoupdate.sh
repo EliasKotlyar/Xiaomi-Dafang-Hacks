@@ -16,13 +16,12 @@ DESTFOLDER="./"
 DESTOVERRIDE="/tmp/Update"
 # The list of exclude, can have multple filter with "*.conf|*.sh"
 EXCLUDEFILTER="*.conf|*.user"
-#"*.conf|*.user|run.sh|osd|autoupdate.sh|libcrypto.so.42|curl|curl.bin|libssl.so.44|libz.so.1"
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
-SHA="openssl dgst -sha256"
-BASENAME="basename"
-#CURL="/system/sdcard/bin/curl -k"
-#JQ="/system/sdcard/bin/jq"
+CURL="/system/sdcard/bin/curl -k"
+JQ="/system/sdcard/bin/jq"
+SHA="/system/sdcard/bin/openssl dgst -sha256"
+BASENAME="/system/sdcard/bin/busybox basename"
 
 TMPFILE=/tmp/udpate.tmp
 BACKUPEXT=.backup
@@ -47,7 +46,7 @@ usage()
     echo "-v (--verbose) for verbose"
     echo "-u (--user) githup login/password (not mandatory, but sometime anonymous account get banned)"
     echo "-h (--help) for this help"
-    echo 
+    echo
     echo "Note that ${EXCLUDEFILTER} will be excluded"
     echo "Examples:"
     echo "Update all files if needed >$1 -d /system/sdcard (-f to force update)"
@@ -187,6 +186,7 @@ do
 done
 
 log "Starting AutoUpdate"
+
 if [ ${_FORCE} = 1 ]; then
     log "Forcing update."
 fi
@@ -284,20 +284,11 @@ do
 done
 
 if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
-    echo "--------------- Stop services ---------"
-
-    echo "--------------- Update files ----------"
-    action "cp -Rf ${DESTOVERRIDE}/* ${DESTFOLDER} 2>/dev/null"
-    action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
-
-    echo "---------------    Reboot    ----------"
-    if [ ${_FORCEREBOOT} = 1 ]; then
-        countdownreboot
-if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
     echo "--------------- Stopping services ---------"
     for i in /system/sdcard/controlscripts/*; do
 	echo stopping $i
 	$i stop &> /dev/null
+    done
     pkill lighttpd.bin 2> /dev/null
     pkill bftpd  2> /dev/null
 
@@ -315,6 +306,7 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
         if [ "${rep}" = "yes" ]; then
             countdownreboot
         fi
+    fi
 else
     echo "No files to update."
 fi
