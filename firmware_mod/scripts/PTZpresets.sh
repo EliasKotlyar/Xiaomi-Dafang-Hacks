@@ -19,9 +19,9 @@ else
 fi
 
 loger(){
-#    if $LOG; then
+   if $LOG; then
         echo "$(date '+%Y-%m-%d-%H:%M:%S') $1" >> /system/sdcard/log/ptz.log
-#    fi
+   fi
 }
 
 # exit
