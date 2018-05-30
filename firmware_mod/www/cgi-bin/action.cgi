@@ -147,6 +147,10 @@ if [ -n "$F_cmd" ]; then
       /system/sdcard/bin/motor -d h -s 100
       /system/sdcard/bin/motor -d v -s 100
     ;;
+    
+    motor_PTZ)
+       /system/sdcard/scripts/PTZpresets.sh $F_x_axis $F_y_axis                        
+    ;;
 
     audio_test)
       /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
