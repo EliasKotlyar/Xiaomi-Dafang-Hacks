@@ -51,8 +51,13 @@ if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
 fi
 MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
 if [ -f /driver/8189es.ko ]; then
+  # Its a DaFang
   insmod /driver/8189es.ko rtw_initmac="$MAC"
+elif [ -f /driver/8189fs.ko ]; then
+  # Its a XiaoFang T20
+  insmod /driver/8189fs.ko rtw_initmac="$MAC"
 else
+  # Its a Wyzecam V2
   insmod /driver/rtl8189ftv.ko rtw_initmac="$MAC"
 fi
 wpa_supplicant_status="$(wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
