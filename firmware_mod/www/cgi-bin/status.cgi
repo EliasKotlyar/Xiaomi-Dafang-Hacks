@@ -289,41 +289,76 @@ cat << EOF
     </div>
 </div>
 
-<!-- Resolution -->
+<!-- Video settings -->
 <div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>Resolution</p></header>
+    <header class='card-header'><p class='card-header-title'>Video Settings</p></header>
     <div class='card-content'>
-
         <form id="formResolution" action="cgi-bin/action.cgi?cmd=set_video_size" method="post">
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
-                <label class="label">Video Size</label>
+        <div class="columns">
+        <div class="column">
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Video Size</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select name="video_size">
+                                <option value="-W640 -H360" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
+                                <option value="-W960 -H540" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 960)" != "" ]; then echo selected; fi)>960x540</option>
+                                <option value="-W1280 -H720" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
+                                <option value="-W1600 -H900" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>
+                                <option value="-W1920 -H1080" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <div class="select">
-                            <select name="video_size">
-                            <option value="-W640 -H360" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
-                            <option value="-W960 -H540" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 960)" != "" ]; then echo selected; fi)>960x540</option>
-                            <option value="-W1280 -H720" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
-                            <option value="-W1600 -H900" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>
-                            <option value="-W1920 -H1080" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
-                            </select>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Video format</label>
+                 </div>
+                 <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select name="video_format">
+                                0 = FixedQp, 1 = CBR, 2 = VBR, 3 = SMART
+                                <option value="0" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 0)" != "" ]; then echo selected; fi)>FixedQp</option>
+                                <option value="1" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 1)" != "" ]; then echo selected; fi)>CBR</option>
+                                <option value="2" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 2)" != "" ]; then echo selected; fi)>VBR</option>
+                                <option value="3" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 3)" != "" ]; then echo selected; fi)>SMART</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
+        <div class="column">
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">bitrate</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" id="brbitrate" name="brbitrate" type="text" size="5" value="$(/system/sdcard/bin/setconf -g b)"/> kbps
+                        </div>
+                    </div>
+                </div>
             </div>
+        </div>
+        </div>
+        <div class="field is-horizontal">
             <div class="field-body">
-                <div class="field">
-                <div class="control">
-                    <input id="resSubmit" class="button is-primary" type="submit" value="Set" />
-                </div>
-                </div>
+                    <div class="field">
+                    <div class="control">
+                        <input id="resSubmit" class="button is-primary" type="submit" value="Set" />
+                    </div>
+                    </div>
             </div>
         </div>
         </form>
@@ -538,38 +573,6 @@ cat << EOF
                 </div>
                 </div>
             </div>
-        </div>
-        </form>
-    </div>
-</div>
-
-<!-- Bitrate -->
-<div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>Video quality</p></header>
-    <div class='card-content'>
-        <form id="formBitrate" action="cgi-bin/action.cgi?cmd=conf_bitrate" method="post">
-        <div class="field is-horizontal">
-            <div class="field-label is-normal">
-                <label class="label">Bitrate</label>
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <input class="input" id="brbitrate" name="brbitrate" type="text" size="5" value="$(/system/sdcard/bin/setconf -g b)"/> kbps
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="field is-horizontal">
-             <div class="field-label is-normal"></div>
-                 <div class="field-body">
-                     <div class="field">
-                        <div class="control">
-                            <input id="brSubmit" class="button is-primary" type="submit" value="Set" />
-                        </div>
-                     </div>
-                 </div>
-             </div>
         </div>
         </form>
     </div>

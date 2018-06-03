@@ -311,9 +311,17 @@ if [ -n "$F_cmd" ]; then
 
     set_video_size)
       video_size=$(echo "${F_video_size}"| sed -e 's/+/ /g')
+      video_format=$(printf '%b' "${F_video_format/%/\\x}")
+      brbitrate=$(printf '%b' "${F_brbitrate/%/\\x}")
+
       rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"$video_size\""
       rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"$video_size\""
+      rewrite_config /system/sdcard/config/rtspserver.conf BITRATE "$brbitrate"
+      rewrite_config /system/sdcard/config/rtspserver.conf VIDEOFORMAT "$video_format"
+
       echo "Video resolution set to $video_size<br/>"
+      echo "Bitrate set to $brbitrate<br/>"
+      echo "Video format set to $video_format<br/>"
       if [ "$(rtsp_h264_server status)" = "ON" ]; then
         rtsp_h264_server off
         rtsp_h264_server on
@@ -403,18 +411,6 @@ if [ -n "$F_cmd" ]; then
       fi
       return
     ;;
-   conf_bitrate)
-    brbitrate=$(printf '%b' "${F_brbitrate/%/\\x}")
-    if [ "$brbitrate" ]; then
-        rewrite_config /system/sdcard/config/rtspserver.conf BITRATE "$brbitrate"
-        echo "Bitrate set to $brbitrate kbps."
-        /system/sdcard/bin/setconf -k b -v "$brbitrate" 2>/dev/null
-    else
-        echo "Invalid bitrate"
-    fi
-    return
-    ;;
-
     conf_audioin)
 
        audioinFormat=$(echo $F_audioinFormat | awk -F"-" '{print $1}')
