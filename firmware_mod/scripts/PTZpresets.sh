@@ -2,7 +2,7 @@
 
 ################################################
 # Created by Nero                              #
-# neroxps@gmail.com | 2018-5-28 | v0.0.5 Beta  #
+# neroxps@gmail.com | 2018-5-28 | v0.0.6 Beta  #
 ################################################
 
 source /system/sdcard/scripts/common_functions.sh
@@ -33,20 +33,8 @@ exit_shell(){
 
 # Get axis status
 get_steps(){
-    val="$($MOTOR -d u -s 0 | grep $1 | awk '{print $2}')"
+    val="$($MOTOR -d s | grep $1 | awk '{print $2}')"
     echo $val
-}
-
-# X should be between [0-2500] and Y should be between [0-800]
-check_value(){
-    if [[ $1 -gt 2500 -o $1 -lt 0 ]]; then
-      logger "X should be between [0-2500]"
-      return 1
-    elif [[ $2 -gt 800 -o $2 -lt 0 ]]; then
-      logger "Y should be between [0-800]"
-      return 1
-    fi
-    return 0
 }
 
 move(){
@@ -66,7 +54,7 @@ move(){
     STEPS=$(awk -v a="$DST_STEPS" -v b="$SRC_STEPS" 'BEGIN{printf ("%d",a-b)}')
 
     # Motor runs 1.3 time as long as the number of steps.
-    SLEEP_NUM=$(awk -v a="$STEPS" 'BEGIN{printf ("%f",a*1.3/1000)}')
+    SLEEP_NUM=$(awk -v a="${STEPS//-/}" 'BEGIN{printf ("%f",a*1.3/1000)}')
 
     # "+" Right or Up, "-" Left or Down.
     if [[ $STEPS -gt 0 ]]; then
@@ -78,7 +66,7 @@ move(){
     fi
 
     # Waiting for the motor to run.
-    sleep ${SLEEP_NUM//-/}
+    sleep ${SLEEP_NUM}
 }
 
 # If the previous instruction did not complete, wait for it to complete before continuing.
@@ -95,9 +83,6 @@ case "$1" in
     exit_shell 1
     ;;  
   [0-9]*)
-    if ! check_value $1 $2; then
-        exit_shell 1
-    fi
     move X $1
     ;;
 esac
