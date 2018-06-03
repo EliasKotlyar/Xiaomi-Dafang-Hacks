@@ -36,7 +36,15 @@ rewrite_config(){
   cfg_path=$1
   cfg_key=$2
   new_value=$3
-  sed -i -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}" "$cfg_path"
+
+  # Check if the value exists (without comment), if not add it to the file
+  $(grep -v '^[[:space:]]*#' $1  | grep -q $2)
+  ret="$?"
+  if [ "$ret" == "1" ] ; then                             
+      echo "$2=$3" >> $1     
+  else                  
+        sed -i -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}" "$cfg_path"
+  fi          
 }
 
 # Control the blue led
