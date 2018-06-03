@@ -14,7 +14,7 @@ fi
 
 if [ -f /system/sdcard/config/osd.conf ]; then
   . /system/sdcard/config/osd.conf 2>/dev/null
-fi
+fis
 
 status()
 {
