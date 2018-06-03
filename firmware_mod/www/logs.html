@@ -52,36 +52,73 @@
     </p>
 </div>
 <script type="text/javascript">
+    $(document).ready(function() {
 
-$(document).ready(function() {
+                jQuery.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {
+                    return this.each(function() {
+                        var clicks = 0,
+                            self = this;
+                        jQuery(this).click(function(event) {
+                            clicks++;
+                            if (clicks == 1) {
+                                setTimeout(function() {
+                                    if (clicks == 1) {
+                                        single_click_callback.call(self, event);
+                                    } else {
+                                        double_click_callback.call(self, event);
+                                    }
+                                    clicks = 0;
+                                }, timeout || 300);
+                            }
+                        });
+                    });
+                }
+                $.ajax({
+                    'url': 'cgi-bin/action.cgi?cmd=showlog',
+                }).done(function(log) {
+                    $('#tab1').html(log);
 
-        // get motion config info
-        $.ajax({
-            'url': 'cgi-bin/action.cgi?cmd=showlog',
-        }).done(function (log) {
-            $('#tab1').html(log);
+                    $('#tabs li').single_double_click(function() {
+                        var tab = $(this).data('tab');
+                        var str = "logname=" + tab
+                        console.log("Print:"+str);
+                        $.ajax({
+                            'url': 'cgi-bin/action.cgi?cmd=showlog',
+                            'type': 'POST',
+                            'data': str
+                            //logname=$('#tab-content p').id
+                        }).done(function(log) {
+                            $('#tab-content p').html(log);
 
-        $('#tabs li').on('click', function() {
-            var tab = $(this).data('tab');
-            var str="logname=" + tab
-            console.log(str);
-          $.ajax({
-            'url': 'cgi-bin/action.cgi?cmd=showlog',
-            'type' : 'POST',
-            'data' : str
-            //logname=$('#tab-content p').id
-            }).done(function (log) {
-                $('#tab-content p').html(log);
-
-            });
+                        });
 
 
-            $('#tabs li').removeClass('is-active');
-            $(this).addClass('is-active');
+                        $('#tabs li').removeClass('is-active');
+                        $(this).addClass('is-active');
 
-            $('#tab-content p').removeClass('is-active');
-            $('p[data-content="' + tab + '"]').addClass('is-active');
-        });
+                        $('#tab-content p').removeClass('is-active');
+                        $('p[data-content="' + tab + '"]').addClass('is-active');
+                    }, function() {
+                        var tab = $(this).data('tab');
+                        var str = "logname=" + tab
+                        console.log("Clear:"+str);
+                        $.ajax({
+                            'url': 'cgi-bin/action.cgi?cmd=clearlog',
+                            'type': 'POST',
+                            'data': str
+                            //logname=$('#tab-content p').id
+                        }).done(function(log) {
+                            $('#tab-content p').html(log);
+                        });
+
+
+                        $('#tabs li').removeClass('is-active');
+                        $(this).addClass('is-active');
+
+                        $('#tab-content p').removeClass('is-active');
+                        $('p[data-content="' + tab + '"]').addClass('is-active');
+
+                    });
+                });
     });
- });
 </script>

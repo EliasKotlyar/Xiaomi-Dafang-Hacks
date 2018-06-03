@@ -543,6 +543,113 @@ cat << EOF
     </div>
 </div>
 
+<!-- Bitrate -->
+<div class='card status_card'>
+    <header class='card-header'><p class='card-header-title'>Video quality</p></header>
+    <div class='card-content'>
+        <form id="formBitrate" action="cgi-bin/action.cgi?cmd=conf_bitrate" method="post">
+        <div class="field is-horizontal">
+            <div class="field-label is-normal">
+                <label class="label">Bitrate</label>
+            </div>
+            <div class="field-body">
+                <div class="field">
+                    <div class="control">
+                        <input class="input" id="brbitrate" name="brbitrate" type="text" size="5" value="$(/system/sdcard/bin/setconf -g b)"/> kbps
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="field is-horizontal">
+             <div class="field-label is-normal"></div>
+                 <div class="field-body">
+                     <div class="field">
+                        <div class="control">
+                            <input id="brSubmit" class="button is-primary" type="submit" value="Set" />
+                        </div>
+                     </div>
+                 </div>
+             </div>
+        </div>
+        </form>
+    </div>
+</div>
+
+<!-- Audio In (Mic) -->
+<div class='card status_card'>
+    <header class='card-header'>
+        <p class='card-header-title'>Audio In (Mic)</p>
+    </header>
+    <div class='card-content'>
+        <form id="formaudioin" action="cgi-bin/action.cgi?cmd=conf_audioin" method="post">
+            <div class="columns">
+                <div class="column">
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Select audio format</label>
+                        </div>
+
+                        <div class="field-body">
+                            <div class="select">
+                                <select name="audioinFormat">
+                                       <option value="OFF" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT | grep OFF)" != "" ]; then echo selected; fi)>OFF</option>
+                                       <option value="OPUS" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT | grep OPUS)" != "" ]; then echo selected; fi)>OPUS</option>
+                                       <option value="PCM"  $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT | grep -w PCM)" != "" ]; then echo selected; fi)>PCM</option>
+                                       <option value="PCMU" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT | grep -w PCMU)" != "" ]; then echo selected; fi)>PCMU</option>
+                                       <option value="MP3-8000" $(source /system/sdcard/config/rtspserver.conf;if [ "$(echo $AUDIOFORMAT$AUDIOOUTB | grep -w MP38000)" != "" ]; then echo selected; fi)>MP3-8000</option>
+                                       <option value="MP3-44100" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT$AUDIOOUTBR | grep -w MP344100)" != "" ]; then echo selected; fi)>MP3-44100</option>
+                                </select>
+                            </div>
+                            <span class="help">
+                                Need to restart the camera to be taken into account
+                            </span>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Filter (low filter)</label>
+                        </div>
+                        <div class="field-body">
+                            <div class="select">
+                                <select name="audioinFilter">
+                                       <option value="0" $(if [ "$(/system/sdcard/bin/setconf -g q)" == "0" ]; then echo selected; fi)>No filter</option>
+                                       <option value="1" $(if [ "$(/system/sdcard/bin/setconf -g q)" == "1" ]; then echo selected; fi)>Filter 1</option>
+                                       <option value="2" $(if [ "$(/system/sdcard/bin/setconf -g q)" == "2" ]; then echo selected; fi)>Filter 2</option>
+                                       <option value="3" $(if [ "$(/system/sdcard/bin/setconf -g q)" == "3" ]; then echo selected; fi)>NS Filter LOW</option>
+                                       <option value="4" $(if [ "$(/system/sdcard/bin/setconf -g q)" == "4" ]; then echo selected; fi)>NS Filter MODERATE</option>
+                                       <option value="5" $(if [ "$(/system/sdcard/bin/setconf -g q)" == "5" ]; then echo selected; fi)>NS Filter HIGH</option>
+                                       <option value="6" $(if [ "$(/system/sdcard/bin/setconf -g q)" == "6" ]; then echo selected; fi)>NS Filter VERY HIGH</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">High pass filter</label>
+                        </div>
+                        <div class="field-body">
+                            <p class="control">
+                                <input type="checkbox" name="HFEnabled" value="enabled" $(if [ "$(/system/sdcard/bin/setconf -g l)" == "true" ]; then echo checked; fi)/>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Volume</label>
+                        </div>
+                        <input class="slider is-fullwidth" name="audioinVol" step="1" min="-1" max="120" value="$(/system/sdcard/bin/setconf -g h)" type="range">
+                    </div>
+                </div>
+            </div>
+            <p class="control">
+                <input id="audioinSubmit" class="button is-primary" type="submit" value="Set" />
+            </p>
+        </form>
+    </div>
+</div>
+
 
 <!-- Original Xiaomi Software -->
 <div class='card status_card'>

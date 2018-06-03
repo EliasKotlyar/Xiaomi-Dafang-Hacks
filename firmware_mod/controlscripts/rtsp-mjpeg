@@ -42,7 +42,22 @@ start()
     if [ -f /system/sdcard/controlscripts/configureMotion ]; then
       . /system/sdcard/controlscripts/configureMotion  2>/dev/null
     fi
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  >> "$LOGPATH" &
+    ## Bitrate
+    /system/sdcard/bin/setconf -k b -v ${BITRATE} 2>/dev/null
+
+    ## Audio
+    if [ "$AUDIOFORMAT" != "OFF" ] ; then
+        AUDIOPARAM="-E $AUDIOFORMAT:$AUDIOOUTBR"
+        /system/sdcard/bin/setconf -k h -v "$HWVOLUME" 2>/dev/null
+        /system/sdcard/bin/setconf -k i -v "$SWVOLUME" 2>/dev/null
+        /system/sdcard/bin/setconf -k q -v "$FILTER" 2>/dev/null
+        /system/sdcard/bin/setconf -k l -v "$HIGHPASSFILTER" 2>/dev/null
+    else
+        AUDIOPARAM="-A"
+    fi
+    echo "================== START ===============" >> "$LOGPATH"
+    echo "/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM" >> "$LOGPATH"
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM >> "$LOGPATH" &
     echo "$!" > "$PIDFILE"
   fi
 }

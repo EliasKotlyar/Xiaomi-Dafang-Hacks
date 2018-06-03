@@ -10,6 +10,7 @@ source /system/sdcard/scripts/common_functions.sh
 
 export LD_LIBRARY_PATH=/system/lib
 export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
+
 if [ -n "$F_cmd" ]; then
   if [ -z "$F_val" ]; then
     F_val=100
@@ -39,7 +40,32 @@ if [ -n "$F_cmd" ]; then
       echo "</pre>"
       return
     ;;
-
+    clearlog)
+      echo "<pre>"
+      case "${F_logname}" in
+        "" | 1)
+            echo "Summary of all log files cleared<br/>"
+            for i in /var/log/*
+            do
+                echo -n "" > $i
+            done
+            ;;
+        2)
+            echo "Contents of dmesg cleared<br/>"
+            /bin/dmesg -c > /dev/null
+            ;;
+        3)
+            echo "Contents of logcat cleared<br/>"
+            /system/bin/logcat -c
+            ;;
+        4)
+          echo "Contents of v4l2rtspserver-master.log cleared<br/>"
+          echo -n "" > /system/sdcard/log/v4l2rtspserver-master.log
+          ;;
+      esac
+      echo "</pre>"
+      return
+    ;;
     reboot)
       echo "Rebooting device..."
       /sbin/reboot
@@ -376,6 +402,48 @@ if [ -n "$F_cmd" ]; then
         echo "Invalid timelapse duration"
       fi
       return
+    ;;
+   conf_bitrate)
+    brbitrate=$(printf '%b' "${F_brbitrate/%/\\x}")
+    if [ "$brbitrate" ]; then
+        rewrite_config /system/sdcard/config/rtspserver.conf BITRATE "$brbitrate"
+        echo "Bitrate set to $brbitrate kbps."
+        /system/sdcard/bin/setconf -k b -v "$brbitrate" 2>/dev/null
+    else
+        echo "Invalid bitrate"
+    fi
+    return
+    ;;
+
+    conf_audioin)
+
+       audioinFormat=$(echo $F_audioinFormat | awk -F"-" '{print $1}')
+       audioinBR=$(echo $F_audioinFormat | awk -F"-" '{print $2}')
+       if [ "$audioinBR" == "" ]; then
+            audioinBR="8000"
+       fi
+       if [ "$audioinFormat" == "OPUS" ]; then
+            audioinBR="48000"
+       fi
+
+       rewrite_config /system/sdcard/config/rtspserver.conf AUDIOFORMAT "$audioinFormat"
+       rewrite_config /system/sdcard/config/rtspserver.conf AUDIOOUTBR "$audioinBR"
+       rewrite_config /system/sdcard/config/rtspserver.conf FILTER "$F_audioinFilter"
+       rewrite_config /system/sdcard/config/rtspserver.conf HIGHPASSFILTER "$F_HFEnabled"
+       rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
+       rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "-1"
+
+
+       echo "Audio format $audioinFormat <BR>"
+       echo "Audio bitrate $audioinBR <BR>"
+       echo "Filter $F_audioinFilter <BR>"
+       echo "High Pass Filter $F_HFEnabled <BR>"
+       echo  "Volume $F_audioinVol <BR>"
+       /system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
+       /system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
+       /system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
+
+       return
     ;;
 
    *)
