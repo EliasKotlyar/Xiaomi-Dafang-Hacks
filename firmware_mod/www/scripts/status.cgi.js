@@ -4,7 +4,9 @@ $(document).ready(function() {
     b.toggleClass('is-loading');
     b.prop('disabled', !b.prop('disabled'));
     var formData = {
-      'video_size': $('select[name=video_size]').val()
+      'video_size': $('select[name=video_size]').val(),
+      'video_format': $('select[name=video_format]').val(),
+      'brbitrate' : $('input[name=brbitrate]').val(),
     };
     $.ajax({
       type: 'POST',
@@ -153,27 +155,6 @@ $(document).ready(function() {
     });
     event.preventDefault();
   });
-  $('#formBitrate').submit(function(event) {
-      var b = $('#brSubmit');
-      b.toggleClass('is-loading');
-      b.prop('disabled', !b.prop('disabled'));
-      var formData = {
-        'brbitrate': $('input[name=brbitrate]').val(),
-      };
-      $.ajax({
-        type: 'POST',
-        url: $('#formBitrate').attr('action'),
-        data: formData,
-        dataType: 'html',
-        encode: true
-      }).done(function(res) {
-        b.toggleClass('is-loading');
-        b.prop('disabled', !b.prop('disabled'));
-        showResult(res);
-      });
-      event.preventDefault();
-    });
-
   $('#formaudioin').submit(function(event) {
       var b = $('#audioinSubmit');
 
@@ -185,6 +166,27 @@ $(document).ready(function() {
           HFEnabled = 'false';
       }
 
+      var formData = {
+        'audioinFormat': $('select[name=audioinFormat]').val(),
+        'audioinFilter': $('select[name=audioinFilter]').val(),
+        'HFEnabled': HFEnabled,
+        'audioinVol': $('input[name=audioinVol]').val()
+
+      };
+      $.ajax({
+        type: 'POST',
+        url: $('#formaudioin').attr('action'),
+        data: formData,
+        dataType: 'html',
+        encode: true
+      }).done(function(res) {
+
+        b.toggleClass('is-loading');
+        b.prop('disabled', !b.prop('disabled'));
+        showResult(res);
+      });
+      event.preventDefault();
+    });
       var formData = {
         'audioinFormat': $('select[name=audioinFormat]').val(),
         'audioinFilter': $('select[name=audioinFilter]').val(),

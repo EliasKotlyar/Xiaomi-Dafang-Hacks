@@ -55,9 +55,16 @@ start()
     else
         AUDIOPARAM="-A"
     fi
+
+    ## Video format
+    if [ "$VIDEOFORMAT" != "" ]; then
+	    VIDEOFORMAT="-r $VIDEOFORMAT"
+    fi
+
+
     echo "================== START ===============" >> "$LOGPATH"
-    echo "/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM" >> "$LOGPATH"
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM >> "$LOGPATH" &
+    echo "/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT" >> "$LOGPATH"
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT >> "$LOGPATH" &
     echo "$!" > "$PIDFILE"
   fi
 }
