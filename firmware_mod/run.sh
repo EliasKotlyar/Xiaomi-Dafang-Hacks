@@ -88,7 +88,7 @@ yellow_led off
 blue_led on
 
 ## Load motor driver module:
-insmod /system/sdcard/driver/sample_motor.ko
+insmod /driver/sample_motor.ko
 # Don't calibrate the motors for now as for newer models the endstops don't work:
 # motor hcalibrate
 # motor vcalibrate
