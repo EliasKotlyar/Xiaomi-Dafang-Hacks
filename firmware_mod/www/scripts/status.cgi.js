@@ -187,4 +187,25 @@ $(document).ready(function() {
       });
       event.preventDefault();
     });
+      var formData = {
+        'audioinFormat': $('select[name=audioinFormat]').val(),
+        'audioinFilter': $('select[name=audioinFilter]').val(),
+        'HFEnabled': HFEnabled,
+        'audioinVol': $('input[name=audioinVol]').val()
+
+      };
+      $.ajax({
+        type: 'POST',
+        url: $('#formaudioin').attr('action'),
+        data: formData,
+        dataType: 'html',
+        encode: true
+      }).done(function(res) {
+
+        b.toggleClass('is-loading');
+        b.prop('disabled', !b.prop('disabled'));
+        showResult(res);
+      });
+      event.preventDefault();
+    });
 });

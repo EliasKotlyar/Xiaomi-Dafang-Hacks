@@ -440,6 +440,18 @@ if [ -n "$F_cmd" ]; then
        /system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
 
        return
+
+
+       echo "Audio format $audioinFormat <BR>"
+       echo "Audio bitrate $audioinBR <BR>"
+       echo "Filter $F_audioinFilter <BR>"
+       echo "High Pass Filter $F_HFEnabled <BR>"
+       echo  "Volume $F_audioinVol <BR>"
+       /system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
+       /system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
+       /system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
+
+       return
     ;;
 
    *)
