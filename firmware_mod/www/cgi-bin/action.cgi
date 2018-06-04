@@ -440,7 +440,6 @@ if [ -n "$F_cmd" ]; then
        /system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
        /system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
        return
-     ;;
    *)
     echo "Unsupported command '$F_cmd'"
     ;;
