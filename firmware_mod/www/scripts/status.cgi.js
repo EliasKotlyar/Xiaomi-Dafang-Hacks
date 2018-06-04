@@ -187,6 +187,17 @@ $(document).ready(function() {
       });
       event.preventDefault();
     });
+    $('#formaudioin').submit(function(event) {
+      var b = $('#audioinSubmit');
+
+      b.toggleClass('is-loading');
+      b.prop('disabled', !b.prop('disabled'));
+      if ($('input[name=HFEnabled]').prop('checked')) {
+          HFEnabled = 'true';
+      } else {
+          HFEnabled = 'false';
+      }
+
       var formData = {
         'audioinFormat': $('select[name=audioinFormat]').val(),
         'audioinFilter': $('select[name=audioinFilter]').val(),
