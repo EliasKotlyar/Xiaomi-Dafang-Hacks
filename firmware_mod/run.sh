@@ -99,9 +99,16 @@ insmod /driver/sample_motor.ko
 # motor vcalibrate
 
 ## Start Sensor:
-insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
-insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+insmod /driver/tx-isp.ko isp_clk=100000000
+if [ -f /driver/sensor_jxf23.ko ]; then
+  # Its a Xioafang 1S
+  insmod /driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+else
+  # Its a Dafang Classic/Wyzecam V2
+  insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+fi
 insmod /system/sdcard/driver/sinfo.ko
+
 
 ## Start FTP & SSH Server:
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
