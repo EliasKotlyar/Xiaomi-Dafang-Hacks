@@ -15,7 +15,7 @@ echo $pid > /run/PTZ_$pid.pid
 if [[ -z $3 ]]; then
     LOG=false
 else
-    LOG=ture
+    LOG=true
 fi
 
 logger(){
