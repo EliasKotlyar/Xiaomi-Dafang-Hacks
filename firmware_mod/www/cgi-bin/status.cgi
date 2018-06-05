@@ -12,7 +12,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>System</p></header>
     <div class='card-content'>
-    <form id="tzForm" action="cgi-bin/action.cgi?cmd=settz" method="post">
+    <form id="tzForm" action="/cgi-bin/action.cgi?cmd=settz" method="post">
 
         <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -70,7 +70,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>HTTP Password</p></header>
     <div class='card-content'>
-        <form id="passwordForm" action="cgi-bin/action.cgi?cmd=set_http_password" method="post">
+        <form id="passwordForm" action="/cgi-bin/action.cgi?cmd=set_http_password" method="post">
         <div class="field is-horizontal">
             <div class="field-label is-normal">
                 <label class="label">New Password</label>
@@ -122,16 +122,16 @@ cat << EOF
         <div class="column">
             <label>Blue LED</label>
             <div class="buttons">
-                <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=blue_led_on')">On</button>
-                <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=blue_led_off')">Off</button>
+                <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=blue_led_on')">On</button>
+                <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=blue_led_off')">Off</button>
             </div>
         </div>
 
         <div class="column">
             <label>Yellow LED</label>
             <div class="buttons">
-                <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=yellow_led_on')">On</button>
-                <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=yellow_led_off')">Off</button>
+                <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=yellow_led_on')">On</button>
+                <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=yellow_led_off')">Off</button>
             </div>
         </div>
 
@@ -147,16 +147,16 @@ cat << EOF
         <div class="column">
             <label>IR LED</label>
             <div class="buttons">
-            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=ir_led_on')">On</button>
-            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=ir_led_off')">Off</button>
+            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=ir_led_on')">On</button>
+            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=ir_led_off')">Off</button>
             </div>
         </div>
 
         <div class="column">
             <label>IR Cut</label>
             <div class="buttons">
-            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=ir_cut_on')">On</button>
-            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=ir_cut_off')">Off</button>
+            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=ir_cut_on')">On</button>
+            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=ir_cut_off')">Off</button>
             </div>
         </div>
         </div>
@@ -169,11 +169,11 @@ cat << EOF
     <div class='card-content'>
         <div class="columns">
         <div class="column">
-            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_start')">On</button>
-            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_stop')">Off</button>
+            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=auto_night_mode_start')">On</button>
+            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=auto_night_mode_stop')">Off</button>
         </div>
         <div class="column">
-        <form id="formldr" action="cgi-bin/action.cgi?cmd=setldravg" method="post">
+        <form id="formldr" action="/cgi-bin/action.cgi?cmd=setldravg" method="post">
             <p>Use average measurement on switching.</p>
             <label class="label">Number of measurements</label>
             <div class="field is-grouped">
@@ -209,16 +209,16 @@ cat << EOF
         <div class="column">
             <label>Night Vision</label>
             <div class="buttons">
-            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-on')">On</button>
-            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-off')">Off</button>
+            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-on')">On</button>
+            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-off')">Off</button>
             </div>
         </div>
 
         <div class="column">
             <label>Flip</label>
             <div class="buttons">
-            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=flip-on')">On</button>
-            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=flip-off')">Off</button>
+            <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=flip-on')">On</button>
+            <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=flip-off')">Off</button>
             </div>
         </div>
 
@@ -234,32 +234,32 @@ cat << EOF
             <tr>
                 <td></td>
                 <td>
-                    <button class="button is-link" onclick="call('cgi-bin/action.cgi?cmd=motor_up&val='+document.getElementById('val').value)">&uarr; Up</button>
+                    <button class="button is-link" onclick="call('/cgi-bin/action.cgi?cmd=motor_up&val='+document.getElementById('val').value)">&uarr; Up</button>
                 </td>
                 <td></td>
             </tr>
             <tr>
                 <td>
-                    <button class="button is-link" onclick="call('cgi-bin/action.cgi?cmd=motor_left&val='+document.getElementById('val').value)">&larr; Left</button>
+                    <button class="button is-link" onclick="call('/cgi-bin/action.cgi?cmd=motor_left&val='+document.getElementById('val').value)">&larr; Left</button>
                 </td>
                 <td>
                     <input class="input has-text-centered" type="text" id="val" name="val" value="100">
                 </td>
                 <td>
-                    <button class="button is-link" onclick="call('cgi-bin/action.cgi?cmd=motor_right&val='+document.getElementById('val').value)">Right &rarr;</button>
+                    <button class="button is-link" onclick="call('/cgi-bin/action.cgi?cmd=motor_right&val='+document.getElementById('val').value)">Right &rarr;</button>
                 </td>
             </tr>
             <tr>
                 <td></td>
                 <td>
-                    <button class="button is-link" onclick="call('cgi-bin/action.cgi?cmd=motor_down&val='+document.getElementById('val').value)">&darr; Down</button>
+                    <button class="button is-link" onclick="call('/cgi-bin/action.cgi?cmd=motor_down&val='+document.getElementById('val').value)">&darr; Down</button>
                 </td>
                 <td></td>
             </tr>
         </table>
         <div class="buttons">
-        <button class="button is-warning" onclick="call('cgi-bin/action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
-        <button class="button is-warning" onclick="call('cgi-bin/action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
+        <button class="button is-warning" onclick="call('/cgi-bin/action.cgi?cmd=motor_vcalibrate')">Calibrate Vertical</button>
+        <button class="button is-warning" onclick="call('/cgi-bin/action.cgi?cmd=motor_hcalibrate')">Calibrate Horizontal</button>
         </div>
     </div>
 </div>
@@ -274,14 +274,14 @@ cat << EOF
         <div class="column">
         <label>Audio Output Test</label>
         <div class="buttons">
-        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=audio_test')">Test</button>
+        <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=audio_test')">Test</button>
         </div>
         </div>
 
         <div class="column">
         <label>Image</label>
         <div class="buttons">
-        <a class="button is-link" href='cgi-bin/currentpic.cgi' target='_blank'>Get</a>
+        <a class="button is-link" href='/cgi-bin/currentpic.cgi' target='_blank'>Get</a>
         </div>
         </div>
 
@@ -293,7 +293,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Video Settings</p></header>
     <div class='card-content'>
-        <form id="formResolution" action="cgi-bin/action.cgi?cmd=set_video_size" method="post">
+        <form id="formResolution" action="/cgi-bin/action.cgi?cmd=set_video_size" method="post">
         <div class="columns">
         <div class="column">
             <div class="field is-horizontal">
@@ -369,8 +369,8 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Start H264 RTSP</p></header>
     <div class='card-content'>
-        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=h264_start')">Start</button>
-        <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
+        <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=h264_start')">Start</button>
+        <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
 EOF
 
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
@@ -388,8 +388,8 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Start MJPEG RTSP</p></header>
     <div class='card-content'>
-        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=mjpeg_start')">Start</button>
-        <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
+        <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=mjpeg_start')">Start</button>
+        <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
 EOF
 
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
@@ -407,7 +407,7 @@ cat << EOF
         <p class='card-header-title'>Audio Settings</p>
     </header>
     <div class='card-content'>
-        <form id="formaudioin" action="cgi-bin/action.cgi?cmd=conf_audioin" method="post">
+        <form id="formaudioin" action="/cgi-bin/action.cgi?cmd=conf_audioin" method="post">
             <div class="columns">
                 <div class="column">
                     <div class="field is-horizontal">
@@ -480,7 +480,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>OSD Display</p></header>
     <div class='card-content'>
-        <form id="formOSD" action="cgi-bin/action.cgi?cmd=osd" method="post">
+        <form id="formOSD" action="/cgi-bin/action.cgi?cmd=osd" method="post">
 
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -603,8 +603,8 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Display debug info on OSD</p></header>
     <div class='card-content'>
-        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=onDebug')">On</button>
-        <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=offDebug')">Off</button>
+        <button class="button is-link" onClick="call('/cgi-bin/action.cgi?cmd=onDebug')">On</button>
+        <button class="button is-warning" onClick="call('/cgi-bin/action.cgi?cmd=offDebug')">Off</button>
     </div>
 </div>
 
@@ -612,7 +612,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Timelapse</p></header>
     <div class='card-content'>
-        <form id="formTimelapse" action="cgi-bin/action.cgi?cmd=conf_timelapse" method="post">
+        <form id="formTimelapse" action="/cgi-bin/action.cgi?cmd=conf_timelapse" method="post">
         <div class="field is-horizontal">
             <div class="field-label is-normal">
                 <label class="label">Interval</label>
@@ -657,7 +657,7 @@ cat << EOF
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Start original Xiaomi Software</p></header>
     <div class='card-content'>
-        <button class="button" onClick="call('cgi-bin/action.cgi?cmd=xiaomi_start')">Start</button>
+        <button class="button" onClick="call('/cgi-bin/action.cgi?cmd=xiaomi_start')">Start</button>
     </div>
 </div>
 
