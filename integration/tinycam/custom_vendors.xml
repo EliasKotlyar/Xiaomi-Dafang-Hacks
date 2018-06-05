@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vendors>
     <vendor name="Xiaomi">
-        <model name="custom Application Layer" defaultPort="80" defaultRtspPort="8554">
+        <model name="Custom Firmware" defaultPort="443" defaultRtspPort="8554">
             <request name="Snap">/cgi-bin/currentpic.cgi</request>
             <request name="RTSP">/unicast</request>
             <request name="PtzMoveRelLeft">/cgi-bin/action.cgi?cmd=motor_left</request>
             <request name="PtzMoveRelRight">/cgi-bin/action.cgi?cmd=motor_right</request>
             <request name="PtzMoveRelUp">/cgi-bin/action.cgi?cmd=motor_up</request>
             <request name="PtzMoveRelDown">/cgi-bin/action.cgi?cmd=motor_down</request>
-            <request name="PtzMoveHome">/cgi-bin/action.cgi?action=motor_calibrate</request>
-            <request custom="Reboot" confirmation="yes">/cgi-bin/action.cgi?action=reboot</request>
+            <request name="PtzMoveHome">/cgi-bin/action.cgi?cmd=motor_calibrate</request>
+            <request custom="Reboot" confirmation="yes">/cgi-bin/action.cgi?cmd=reboot</request>
         </model>
     </vendor>
 </vendors>
