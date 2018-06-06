@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <vendors>
-    <vendor name="Xiaomi">
-        <model name="Custom Firmware" defaultPort="443" defaultRtspPort="8554">
+    <vendor name="XiaomiHacks">
+        <model name="DaFang" defaultPort="443" defaultRtspPort="8554">
             <request name="Snap">/cgi-bin/currentpic.cgi</request>
             <request name="RTSP">/unicast</request>
             <request name="PtzMoveRelLeft">/cgi-bin/action.cgi?cmd=motor_left</request>
