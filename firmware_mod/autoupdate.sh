@@ -12,7 +12,7 @@ BRANCH="master"
 # Initial remote folder
 REMOTEFOLDER="firmware_mod"
 # Default destination foler
-DESTFOLDER="./"
+DESTFOLDER="/system/sdcard/"
 DESTOVERRIDE="/tmp/Update"
 # The list of exclude, can have multple filter with "*.conf|*.sh"
 EXCLUDEFILTER="*.conf|*.user"
@@ -22,6 +22,7 @@ CURL="/system/sdcard/bin/curl -k"
 JQ="/system/sdcard/bin/jq"
 SHA="/system/sdcard/bin/openssl dgst -sha256"
 BASENAME="/system/sdcard/bin/busybox basename"
+FIND="/system/sdcard/bin/busybox find"
 
 TMPFILE=/tmp/udpate.tmp
 BACKUPEXT=.backup
@@ -30,6 +31,10 @@ _V=0
 _FORCE=0
 _FORCEREBOOT=0
 _BACKUP=0
+
+_PROGRESS=0
+_NBFILES=0
+_NBTOTALFILES=0
 ##########################################################################
 
 usage()
@@ -42,6 +47,7 @@ usage()
     echo "-f (--force) force update"
     echo "-d (--dest) set the destination folder (default is ${DESTFOLDER})"
     echo "-p (--print) print action only, do nothing"
+    echo "-s (--steps) add progress in file /tmp/progress"
 
     echo "-v (--verbose) for verbose"
     echo "-u (--user) githup login/password (not mandatory, but sometime anonymous account get banned)"
@@ -81,6 +87,17 @@ logerror ()
 }
 
 ##########################################################################
+# Log string on std error
+progress()
+{
+	if [ ${_PROGRESS} -eq 1 ]; then
+	   _NBFILES=$((${_NBFILES} + 1))
+	   echo -n $((${_NBFILES} *100 / ${_NBTOTALFILES} )) > /tmp/progress
+#      echo "file = ${_NBFILES}, total=${_NBTOTALFILES} = $((${_NBFILES} *100 / ${_NBTOTALFILES} ))"
+	fi
+}
+
+##########################################################################
 # If "printonly" action is selected print the action to do (but don't do it
 # If not execute it
 action()
@@ -106,6 +123,13 @@ ismatch()
     done
 
     echo notmatch
+}
+##########################################################################
+# Return the current (last) commit from the specified repo and branch
+getCurrentCommitDateFromRemote()
+{
+    LASTCOMMITDATE=$(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} | grep date | head -1 | cut -d'"' -f 4)
+    echo ${LASTCOMMITDATE}
 }
 
 ##########################################################################
@@ -140,6 +164,8 @@ countdownreboot()
 	    i=$((${i} - 1))
         sleep 1;
     done
+    action sync
+    action sync
     action reboot
 }
 ##########################################################################
@@ -178,6 +204,10 @@ do
             shift
             shift
             ;;
+        -s | --steps)
+            _PROGRESS=1;
+           shift
+           ;;
         *|-h |\? | --help)
             usage $0
             exit 1
@@ -201,12 +231,22 @@ fi
 
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
+
+
 log "Getting list of remote files."
 FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
 FILES=$(getfiles "${FIRST}")
+
+if [ $_PROGRESS = 1 ]; then
+   _NBTOTALFILES=$(echo $FILES | wc -w)
+   log Number of file to update $_NBTOTALFILES
+   echo -n 0 > /tmp/progress
+fi
+
 # For all the repository files
 for i in ${FILES}
 do
+    progress
     # String to remove to get the local path
     REMOVE="${GITHUBURLRAW}/${REPO}/${BRANCH}/${REMOTEFOLDER}/"
     LOCALFILE="${DESTFOLDER}${i#$REMOVE}"
@@ -242,7 +282,7 @@ do
                 action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
             else
                 echo "${LOCALFILE} needs to be updated. Overwrite?"
-		echo "[Y]es or [N]o or [A]ll?"
+		        echo "[Y]es or [N]o or [A]ll?"
                 rep=$(ask_yes_or_no )
                 if [ "${rep}" = "no" ]; then
                     echo "${LOCALFILE} not updated"
@@ -283,6 +323,11 @@ do
     fi
 done
 
+if [ $_PROGRESS = 1 ]; then
+   echo -n 100 > /tmp/progress
+fi
+
+
 if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
     echo "--------------- Stopping services ---------"
     for i in /system/sdcard/controlscripts/*; do
@@ -296,6 +341,8 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     action "cp -Rf ${DESTOVERRIDE}/* ${DESTFOLDER} 2>/dev/null"
     action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
 
+    # Everythings was OK, save the date
+    echo $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
     echo "---------------    Reboot    ------------"
     if [ ${_FORCEREBOOT} = 1 ]; then
         countdownreboot
@@ -308,5 +355,6 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
         fi
     fi
 else
+    echo $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
     echo "No files to update."
 fi

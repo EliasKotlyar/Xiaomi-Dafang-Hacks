@@ -35,6 +35,10 @@ if [ -n "$F_cmd" ]; then
           echo "Contents of v4l2rtspserver-master.log<br/>"
           cat /system/sdcard/log/v4l2rtspserver-master.log
           ;;
+        5)
+          echo "Contents of update.log <br/>"
+          cat /var/log/update.log
+          ;;
 
       esac
       echo "</pre>"
@@ -62,6 +66,10 @@ if [ -n "$F_cmd" ]; then
           echo "Contents of v4l2rtspserver-master.log cleared<br/>"
           echo -n "" > /system/sdcard/log/v4l2rtspserver-master.log
           ;;
+        5)
+          echo "Contents of update.log cleared <br/>"
+          echo -n "" > /var/log/update.log
+         ;;
       esac
       echo "</pre>"
       return
@@ -387,10 +395,6 @@ if [ -n "$F_cmd" ]; then
             /system/sdcard/bin/setconf -k t -v on
         fi
 
-        # echo "region_of_interest=${F_x0},${F_y0},${F_x1},${F_y1}" >  /system/sdcard/config/motion.conf
-        # echo "motion_sensitivity=${F_motion_sensitivity}" >>  /system/sdcard/config/motion.conf
-        # echo "motion_indicator_color=${F_motion_indicator_color}" >>  /system/sdcard/config/motion.conf
-
         /system/sdcard/bin/setconf -k r -v ${F_x0},${F_y0},${F_x1},${F_y1}
         /system/sdcard/bin/setconf -k m -v ${F_motion_sensitivity}
         /system/sdcard/bin/setconf -k z -v ${F_motion_indicator_color}
@@ -399,26 +403,13 @@ if [ -n "$F_cmd" ]; then
         # Changed the detection region, need to restart the server
         if [ ${F_restart_server} == "1" ]
         then
-
-            processName="v4l2rtspserver-master"
-            #get the process pid
-            processId=`ps | grep ${processName} | grep -v grep | awk '{ printf $1 }'`
-            if [ "${processId}X" != "X" ]
-            then
-                    #found the process, now get the full path and the parameters in order to restart it
-                    executable=`ls -l /proc/${processId}/exe | awk '{print $NF}'`
-                    cmdLine=`tr '\0' ' ' < /proc/${processId}/cmdline | awk '{$1=""}1'`
-                    kill ${processId} 2>/dev/null
-
-                    # Set the socket option in order to restart easily the server (socket in use)
-                    echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle
-
-                    sleep 2
-                    cmdLine="/system/sdcard/bin/busybox nohup "${executable}${cmdLine} 2>/dev/null
-                    ${cmdLine}  2>/dev/null >/dev/null &
-
-            else
-                    echo "<p>process v4l2rtspserver-master was not found</p>"
+            if [ "$(rtsp_h264_server status)" = "ON" ]; then
+                rtsp_h264_server off
+                rtsp_h264_server on
+            fi
+            if [ "$(rtsp_mjpeg_server status)" = "ON" ]; then
+                rtsp_mjpeg_server off
+                rtsp_mjpeg_server on
             fi
         fi
 
@@ -480,7 +471,37 @@ if [ -n "$F_cmd" ]; then
        /system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
        /system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
        return
-       ;;
+     ;;
+     update)
+        processId=$(ps | grep autoupdate.sh | grep -v grep)
+        if [ "$processId" == "" ]
+        then
+            echo "===============" >> /var/log/update.log
+            date >> /var/log/update.log
+            if [ "$F_login" != "" ]; then
+                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f -u $F_login  >> "/var/log/update.log" &
+            else
+                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f >> "/var/log/update.log" &
+            fi
+            processId=$(ps | grep autoupdate.sh | grep -v grep)
+        fi
+        echo $processId
+        return
+      ;;
+     show_updateProgress)
+        processId=$(ps | grep autoupdate.sh | grep -v grep)
+        if [ "$processId" == "" ]
+        then
+            echo -n -1
+        else
+            if [ -f /tmp/progress ] ; then
+                cat /tmp/progress
+            else
+                echo -n 0
+            fi
+        fi
+        return
+        ;;
    *)
     echo "Unsupported command '$F_cmd'"
     ;;
