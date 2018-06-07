@@ -90,8 +90,14 @@ $(document).ready(function() {
     } else {
       osdenable = '';
     }
+    if ($('input[name=AXISenable]').prop('checked')) {
+      axisenable = 'enabled';
+    } else {
+      axisenable = '';
+    }
     var formData = {
       'OSDenable': osdenable,
+      'AXISenable': axisenable,
       'osdtext': $('input[name=osdtext]').val(),
       'color': $('select[name=color]').val(),
       'size': $('select[name=size]').val(),

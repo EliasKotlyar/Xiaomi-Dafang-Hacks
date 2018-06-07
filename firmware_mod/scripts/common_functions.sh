@@ -173,6 +173,9 @@ motor(){
   hcalibrate)
     /system/sdcard/bin/motor -d h -s "$steps"
     ;;
+  calibrate)
+    /system/sdcard/bin/motor -d f -s "$steps"
+    ;;
   status)
     if [ "$2" = "horizontal" ]
       then
@@ -366,4 +369,13 @@ auto_night_mode(){
         echo "OFF"
       fi
   esac
+}
+
+# Update axis
+update_axis(){
+  source /system/sdcard/config/osd.conf > /dev/null 2>&1
+  AXIS=`/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print "X="$2,"Y="$4}'`
+  if [ $DISPLAY_AXIS ]; then
+    OSD=$(echo ${OSD} | sed -r "s/X=.*$/${AXIS}/")
+  fi
 }

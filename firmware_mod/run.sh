@@ -98,6 +98,9 @@ insmod /driver/sample_motor.ko
 # motor hcalibrate
 # motor vcalibrate
 
+# calibrate,compatible newer models.(But the old DAFANG does not work.）
+# motor calibrate
+
 ## Start Sensor:
 insmod /driver/tx-isp.ko isp_clk=100000000
 if [ -f /driver/sensor_jxf23.ko ]; then

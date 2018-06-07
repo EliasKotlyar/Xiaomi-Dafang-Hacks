@@ -502,6 +502,18 @@ cat << EOF
             </div>
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
+                    <label class="label">Enable Axis</label>
+                </div>
+                <div class="field-body">
+                    <div class="field is-grouped">
+                        <p class="control">
+                            <input type="checkbox" name="AXISenable" value="enabled" $(if [[ "$(grep DISPLAY_AXIS /system/sdcard/config/osd.conf | sed s/DISPLAY_AXIS=//)" == "true" ]];then echo checked; fi) />
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
                     <label class="label">OSD Color</label>
                 </div>
                 <div class="field-body">

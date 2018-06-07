@@ -122,18 +122,43 @@ if [ -n "$F_cmd" ]; then
 
     motor_left)
       /system/sdcard/bin/motor -d l -s $F_val
+
+      # Waiting for the motor to run.
+      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
+      sleep ${SLEEP_NUM//-/}
+      # Display AXIS to OSD
+      update_axis
+      /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
     motor_right)
       /system/sdcard/bin/motor -d r -s $F_val
+      # Waiting for the motor to run.
+      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
+      sleep ${SLEEP_NUM//-/}
+      # Display AXIS to OSD
+      update_axis
+      /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
     motor_up)
       /system/sdcard/bin/motor -d u -s $F_val
+      # Waiting for the motor to run.
+      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
+      sleep ${SLEEP_NUM//-/}
+      # Display AXIS to OSD
+      update_axis
+      /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
     motor_down)
       /system/sdcard/bin/motor -d d -s $F_val
+      # Waiting for the motor to run.
+      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
+      sleep ${SLEEP_NUM//-/}
+      # Display AXIS to OSD
+      update_axis
+      /system/sdcard/bin/setconf -k o -v "$OSD"
     ;;
 
     motor_vcalibrate)
@@ -147,6 +172,10 @@ if [ -n "$F_cmd" ]; then
     motor_calibrate)
       /system/sdcard/bin/motor -d h -s 100
       /system/sdcard/bin/motor -d v -s 100
+    ;;
+    
+    motor_PTZ)
+       /system/sdcard/scripts/PTZpresets.sh $F_x_axis $F_y_axis                        
     ;;
 
     audio_test)
@@ -230,18 +259,29 @@ if [ -n "$F_cmd" ]; then
 
     osd)
       enabled=$(printf '%b' "${F_OSDenable}")
+      axis_enable=$(printf '%b' "${F_AXISenable}")
       position=$(printf '%b' "${F_Position}")
       osdtext=$(printf '%b' "${F_osdtext//%/\\x}")
       osdtext=$(echo "$osdtext" | sed -e "s/\\+/ /g")
 
+      if [ ! -z "$axis_enable"];then
+        update_axis
+        osdtext="${osdtext} ${AXIS}"
+        echo "DISPLAY_AXIS=true" > /system/sdcard/config/osd.conf
+        echo DISPLAY_AXIS enable
+      else
+        echo "DISPLAY_AXIS=false" > /system/sdcard/config/osd.conf
+        echo DISPLAY_AXIS disable
+      fi
+
       if [ ! -z "$enabled" ]; then
         /system/sdcard/bin/setconf -k o -v "$osdtext"
-        echo "OSD=\"${osdtext}\"" > /system/sdcard/config/osd.conf
+        echo "OSD=\"${osdtext}\"" >> /system/sdcard/config/osd.conf
         echo "OSD set"
       else
         echo "OSD removed"
         /system/sdcard/bin/setconf -k o -v ""
-        echo "OSD=\"\" " > /system/sdcard/config/osd.conf
+        echo "OSD=\"\" " >> /system/sdcard/config/osd.conf
       fi
 
       echo "COLOR=${F_color}" >> /system/sdcard/config/osd.conf
