@@ -231,16 +231,18 @@ fi
 
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
-if [ $_PROGRESS = 1 ]; then
-    # calculate the number of files to be updated based on the local files...
-   _NBTOTALFILES=$($FIND ${DESTFOLDER} -type f | grep -v backup | grep -v DCIM | grep -v .log | grep -v .conf | grep -v .user | wc -l)
-   echo Number of file to update $_NBTOTALFILES
-   echo -n 0 > /tmp/progress
-fi
+
 
 log "Getting list of remote files."
 FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
 FILES=$(getfiles "${FIRST}")
+
+if [ $_PROGRESS = 1 ]; then
+   _NBTOTALFILES=$(echo $FILES | wc -w)
+   log Number of file to update $_NBTOTALFILES
+   echo -n 0 > /tmp/progress
+fi
+
 # For all the repository files
 for i in ${FILES}
 do

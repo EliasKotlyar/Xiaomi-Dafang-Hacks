@@ -355,10 +355,6 @@ if [ -n "$F_cmd" ]; then
             /system/sdcard/bin/setconf -k t -v on
         fi
 
-        # echo "region_of_interest=${F_x0},${F_y0},${F_x1},${F_y1}" >  /system/sdcard/config/motion.conf
-        # echo "motion_sensitivity=${F_motion_sensitivity}" >>  /system/sdcard/config/motion.conf
-        # echo "motion_indicator_color=${F_motion_indicator_color}" >>  /system/sdcard/config/motion.conf
-
         /system/sdcard/bin/setconf -k r -v ${F_x0},${F_y0},${F_x1},${F_y1}
         /system/sdcard/bin/setconf -k m -v ${F_motion_sensitivity}
         /system/sdcard/bin/setconf -k z -v ${F_motion_indicator_color}
@@ -367,26 +363,13 @@ if [ -n "$F_cmd" ]; then
         # Changed the detection region, need to restart the server
         if [ ${F_restart_server} == "1" ]
         then
-
-            processName="v4l2rtspserver-master"
-            #get the process pid
-            processId=`ps | grep ${processName} | grep -v grep | awk '{ printf $1 }'`
-            if [ "${processId}X" != "X" ]
-            then
-                    #found the process, now get the full path and the parameters in order to restart it
-                    executable=`ls -l /proc/${processId}/exe | awk '{print $NF}'`
-                    cmdLine=`tr '\0' ' ' < /proc/${processId}/cmdline | awk '{$1=""}1'`
-                    kill ${processId} 2>/dev/null
-
-                    # Set the socket option in order to restart easily the server (socket in use)
-                    echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle
-
-                    sleep 2
-                    cmdLine="/system/sdcard/bin/busybox nohup "${executable}${cmdLine} 2>/dev/null
-                    ${cmdLine}  2>/dev/null >/dev/null &
-
-            else
-                    echo "<p>process v4l2rtspserver-master was not found</p>"
+            if [ "$(rtsp_h264_server status)" = "ON" ]; then
+                rtsp_h264_server off
+                rtsp_h264_server on
+            fi
+            if [ "$(rtsp_mjpeg_server status)" = "ON" ]; then
+                rtsp_mjpeg_server off
+                rtsp_mjpeg_server on
             fi
         fi
 
