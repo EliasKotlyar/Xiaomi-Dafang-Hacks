@@ -35,6 +35,10 @@ if [ -n "$F_cmd" ]; then
           echo "Contents of v4l2rtspserver-master.log<br/>"
           cat /system/sdcard/log/v4l2rtspserver-master.log
           ;;
+        5)
+          echo "Contents of update.log <br/>"
+          cat /var/log/update.log
+          ;;
 
       esac
       echo "</pre>"
@@ -62,6 +66,10 @@ if [ -n "$F_cmd" ]; then
           echo "Contents of v4l2rtspserver-master.log cleared<br/>"
           echo -n "" > /system/sdcard/log/v4l2rtspserver-master.log
           ;;
+        5)
+          echo "Contents of update.log cleared <br/>"
+          echo -n "" > /var/log/update.log
+         ;;
       esac
       echo "</pre>"
       return
@@ -480,7 +488,37 @@ if [ -n "$F_cmd" ]; then
        /system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
        /system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
        return
-       ;;
+     ;;
+     update)
+        processId=$(ps | grep autoupdate.sh | grep -v grep)
+        if [ "$processId" == "" ]
+        then
+            echo "===============" >> /var/log/update.log
+            date >> /var/log/update.log
+            if [ "$F_login" != "" ]; then
+                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f -u $F_login  >> "/var/log/update.log" &
+            else
+                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f >> "/var/log/update.log" &
+            fi
+            processId=$(ps | grep autoupdate.sh | grep -v grep)
+        fi
+        echo $processId
+        return
+      ;;
+     show_updateProgress)
+        processId=$(ps | grep autoupdate.sh | grep -v grep)
+        if [ "$processId" == "" ]
+        then
+            echo -n -1
+        else
+            if [ -f /tmp/progress ] ; then
+                cat /tmp/progress
+            else
+                echo -n 0
+            fi
+        fi
+        return
+        ;;
    *)
     echo "Unsupported command '$F_cmd'"
     ;;

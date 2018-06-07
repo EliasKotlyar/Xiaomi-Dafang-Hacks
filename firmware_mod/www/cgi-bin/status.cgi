@@ -100,9 +100,9 @@ cat << EOF
 
 <!-- Version -->
 <div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>Version</p></header>
+    <header class='card-header'><p class='card-header-title'>Version (last commit date from GitHub/autoupdate script)</p></header>
     <div class='card-content'>
-    <p>$(cut -d'=' -f2 /etc/os-release)</p>
+    <p>$(cat /system/sdcard/.lastCommitDate)</p>
     </div>
 </div>
 
