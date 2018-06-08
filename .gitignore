@@ -56,4 +56,5 @@ firmware_mod/config/rtspserver.conf
 firmware_mod/config/ntp_srv.conf
 firmware_mod/config/lighttpd.user
 firmware_mod/config/lighttpd.pem
+firmware_mod/config/userscripts/*/*
 firmware_mod/root/.ssh/*

@@ -14,3 +14,11 @@ if [ "$publish_mqtt_message" = true ] ; then
 	. /system/sdcard/config/mqtt.conf
 	/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -m "OFF"
 fi
+
+# Run any user scripts.
+if [ -f /system/sdcard/config/userscripts/motiondetection/* ]; then
+    for i in /system/sdcard/config/userscripts/motiondetection/*; do
+        echo "Running: $i off"
+        $i off
+    done
+fi
