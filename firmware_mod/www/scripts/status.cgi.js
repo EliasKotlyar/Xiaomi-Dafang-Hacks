@@ -161,6 +161,7 @@ $(document).ready(function() {
     });
     event.preventDefault();
   });
+
   $('#formaudioin').submit(function(event) {
       var b = $('#audioinSubmit');
 
@@ -193,4 +194,31 @@ $(document).ready(function() {
       });
       event.preventDefault();
     });
+
+  $('#formAudio').submit(function(event) {
+      var b = $('#AudioTestSubmit');
+
+      b.toggleClass('is-loading');
+      b.prop('disabled', !b.prop('disabled'));
+
+      var formData = {
+        'audioSource': $('select[name=audioSource]').val(),
+        'audiotestVol': $('input[name=audiotestVol]').val(),
+
+      };
+      $.ajax({
+        type: 'POST',
+        url: $('#formAudio').attr('action'),
+        data: formData,
+        dataType: 'html',
+        encode: true
+      }).done(function(res) {
+
+        b.toggleClass('is-loading');
+        b.prop('disabled', !b.prop('disabled'));
+        showResult(res);
+      });
+      event.preventDefault();
+    });
+
 });

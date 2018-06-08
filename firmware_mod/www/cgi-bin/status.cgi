@@ -112,6 +112,7 @@ cat << EOF
             xhr.open('GET', url, true);
             xhr.send();
     }
+
 </script>
 
 <!-- Blue / Yellow LED -->
@@ -270,19 +271,36 @@ cat << EOF
     <div class='card-content'>
 
         <div class="columns">
+        <div class="column">
+            <form id="formAudio" action="cgi-bin/action.cgi?cmd=audio_test" method="post">
+                <label>Audio Output Test</label>
+                <div class="select">
+                    <select name="audioSource">
+                        $(
+                           for i in `/system/sdcard/bin/busybox find /usr/share/notify/ /system/sdcard/Media -name *.wav`
+                           do
+                                echo  "<option value=$i> `/system/sdcard/bin/busybox basename $i` </option>"
+                           done
+                        )
+                    </select>
+                </div>
+                <input class="slider is-fullwidth" name="audiotestVol" step="1" min="0" max="120" value="50" type="range">
+
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <input id="AudioTestSubmit" class="button is-primary" type="submit" value="Test" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
 
         <div class="column">
-        <label>Audio Output Test</label>
-        <div class="buttons">
-        <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=audio_test')">Test</button>
-        </div>
-        </div>
-
-        <div class="column">
-        <label>Image</label>
-        <div class="buttons">
-        <a class="button is-link" href='cgi-bin/currentpic.cgi' target='_blank'>Get</a>
-        </div>
+            <label>Image</label>
+            <div class="buttons">
+                <a class="button is-link" href='cgi-bin/currentpic.cgi' target='_blank'>Get</a>
+            </div>
         </div>
 
         </div>
