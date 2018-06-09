@@ -187,7 +187,13 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     audio_test)
-      /system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
+          F_audioSource=$(printf '%b' "${F_audioSource//%/\\x}")
+          if [ "$F_audioSource" == "" ]; then
+              F_audioSource="/usr/share/notify/CN/init_ok.wav"
+          fi
+          /system/sdcard/bin/busybox nohup /system/sdcard/bin/audioplay $F_audioSource $F_audiotestVol >> "/var/log/update.log" &
+          echo  "Play $F_audioSource at volume $F_audiotestVol"
+          return
     ;;
 
     h264_start)

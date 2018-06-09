@@ -19,7 +19,7 @@ start()
 
   # Don't play sound on activation
   if [ "${UPTIME}" -lt 60 ]; then
-    /system/sdcard/bin/ossplay /usr/share/notify/CN/speaker.wav &
+    /system/sdcard/bin/audioplay /usr/share/notify/CN/speaker.wav &
     echo "Please configure this option at least 1 minute after system startup"
   fi
 }

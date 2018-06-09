@@ -36,7 +36,7 @@ No that's not possible. It can be done, but there will be a lot of trouble in do
 - Audio recording/playing possible:
 ```
 Playing Audio:
-/system/sdcard/bin/ossplay /usr/share/notify/CN/init_ok.wav
+/system/sdcard/bin/audioplay /usr/share/notify/CN/init_ok.wav volume
 
 Recording Audio:
 /system/sdcard/bin/ossrecord /system/sdcard/test.wav 

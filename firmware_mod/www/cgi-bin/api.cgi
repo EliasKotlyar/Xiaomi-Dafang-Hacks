@@ -226,7 +226,7 @@ if [ -n "$F_action" ]; then
   ;;
 # Control Audio
   audio_test)
-    $BINPATH/ossplay -g 1000 /usr/share/notify/CN/init_ok.wav &
+    $BINPATH/audioplay /usr/share/notify/CN/init_ok.wav &
     getReturn 1234 "info" "Play test audio."
     ;;
   audio_record_start)
