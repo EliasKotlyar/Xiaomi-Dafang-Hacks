@@ -249,7 +249,7 @@ do
     progress
     # String to remove to get the local path
     REMOVE="${GITHUBURLRAW}/${REPO}/${BRANCH}/${REMOTEFOLDER}/"
-    LOCALFILE="${DESTFOLDER}${i#$REMOVE}"
+    LOCALFILE="${i#$REMOVE}"
     # Remove files that match the filter
     res=$(ismatch ${LOCALFILE})
     if [ "$res" == "match" ]; then
