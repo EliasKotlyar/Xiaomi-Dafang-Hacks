@@ -189,10 +189,10 @@ if [ -n "$F_cmd" ]; then
     audio_test)
           F_audioSource=$(printf '%b' "${F_audioSource//%/\\x}")
           if [ "$F_audioSource" == "" ]; then
-              F_audioSource="/usr/share/notify/CN/init_ok.waw"
+              F_audioSource="/usr/share/notify/CN/init_ok.wav"
           fi
           /system/sdcard/bin/busybox nohup /system/sdcard/bin/audioplay $F_audioSource $F_audiotestVol >> "/var/log/update.log" &
-          echo  Play $F_audioSource at volume $F_audiotestVol
+          echo  "Play $F_audioSource at volume $F_audiotestVol"
           return
     ;;
 
