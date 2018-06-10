@@ -8,6 +8,7 @@ Name | Picture
 --- | ---
 Xiaomi Dafang | ![Dafang](/dafang.png)
 Xiaomi Xiaofang 1S | ![XiaoFang](/xiaofang.png)
+Wyzecam Pan | ![Dafang](/dafang.png)
 Wyzecam V2 | ![XiaoFang](/xiaofang.png)
 
 If you have a classic XiaoFang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
