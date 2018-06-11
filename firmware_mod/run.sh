@@ -129,6 +129,9 @@ if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
 fi
 
 ## Start Webserver:
+if [ ! -f /system/sdcard/config/lighttpd.conf ]; then
+  cp /system/sdcard/config/lighttpd.conf.dist /system/sdcard/config/lighttpd.conf
+fi
 lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
 echo "lighttpd: $lighttpd_status" >> $LOGPATH
 
