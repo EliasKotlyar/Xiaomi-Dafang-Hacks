@@ -63,6 +63,9 @@ fi
 wpa_supplicant_status="$(wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
 echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
 
+if [ ! -f $CONFIGPATH/hostname.conf ]; then
+  cp $CONFIGPATH/hostname.conf.dist $CONFIGPATH/hostname.conf
+fi
 hostname -F $CONFIGPATH/hostname.conf
 udhcpc_status=$(udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
 echo "udhcpc: $udhcpc_status" >> $LOGPATH
