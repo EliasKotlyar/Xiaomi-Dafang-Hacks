@@ -312,8 +312,54 @@ cat << EOF
     <header class='card-header'><p class='card-header-title'>Video Settings</p></header>
     <div class='card-content'>
         <form id="formResolution" action="cgi-bin/action.cgi?cmd=set_video_size" method="post">
+
+            <div class="columns">
+                <div class="column">
+                    <div class="field is-horizontal">
+                        <div class="field-body">
+                            <div class="field-label is-normal">
+                                <label class="label">Video username</label>
+                            </div>
+                            <div class="field">
+                                <div class="control">
+                                    <input class="input" id="videouser" name="videouser" type="text" size="12" value=$(source /system/sdcard/config/rtspserver.conf; echo $USERNAME) />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="column">
+                    <div class="field-body">
+                        <div class="field-label is-normal">
+                            <label class="label">Video password</label>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input" id="videopassword" name="videopassword" type="password" size="12" value=$(source /system/sdcard/config/rtspserver.conf; echo $USERPASSWORD) />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  <div class="column">
+                <div class="field-body">
+                    <div class="field-label is-normal">
+                        <label class="label">Video port</label>
+                    </div>
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" id="videoport" name="videoport" type="number" size="12" value=$(source /system/sdcard/config/rtspserver.conf; echo $PORT) />
+                        </div>
+                    </div>
+                    <span class="help">
+                        Default is 8554
+                    </span>
+                </div>
+            </div>
+           </div>
         <div class="columns">
         <div class="column">
+
+
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                     <label class="label">Video Size</label>

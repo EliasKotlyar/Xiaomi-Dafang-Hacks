@@ -61,10 +61,19 @@ start()
 	    VIDEOFORMAT="-r $VIDEOFORMAT"
     fi
 
+    ## UserName and password
+    if [ "$USERNAME" != "" ]; then
+        CREDENTIAL="-U $USERNAME:$USERPASSWORD"
+    fi
+
+    ## Port
+    if [ "$PORT" != "" ]; then
+        PORT="-P $PORT"
+    fi
 
     echo "================== START ===============" >> "$LOGPATH"
-    echo "/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT" >> "$LOGPATH"
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT >> "$LOGPATH" &
+    echo "/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT" >> "$LOGPATH"
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT >> "$LOGPATH" &
     echo "$!" > "$PIDFILE"
   fi
 }

@@ -367,13 +367,21 @@ if [ -n "$F_cmd" ]; then
       video_size=$(echo "${F_video_size}"| sed -e 's/+/ /g')
       video_format=$(printf '%b' "${F_video_format/%/\\x}")
       brbitrate=$(printf '%b' "${F_brbitrate/%/\\x}")
+      videopassword=$(printf '%b' "${F_videopassword//%/\\x}")
+      videouser=$(printf '%b' "${F_videouser//%/\\x}")
+      videoport=$(echo "${F_videoport}"| sed -e 's/+/ /g')
+
 
       rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"$video_size\""
       rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"$video_size\""
       rewrite_config /system/sdcard/config/rtspserver.conf BITRATE "$brbitrate"
       rewrite_config /system/sdcard/config/rtspserver.conf VIDEOFORMAT "$video_format"
+      rewrite_config /system/sdcard/config/rtspserver.conf USERNAME "$videouser"
+      rewrite_config /system/sdcard/config/rtspserver.conf USERPASSWORD "$videopassword"
+      rewrite_config /system/sdcard/config/rtspserver.conf PORT "$videoport"
 
-      echo "Video resolution set to $video_size<br/>"
+
+          echo "Video resolution set to $video_size<br/>"
       echo "Bitrate set to $brbitrate<br/>"
       echo "Video format set to $video_format<br/>"
       if [ "$(rtsp_h264_server status)" = "ON" ]; then

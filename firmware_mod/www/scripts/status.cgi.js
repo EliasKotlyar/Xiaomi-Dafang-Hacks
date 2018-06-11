@@ -4,6 +4,9 @@ $(document).ready(function() {
     b.toggleClass('is-loading');
     b.prop('disabled', !b.prop('disabled'));
     var formData = {
+      'videouser': $('input[name=videouser]').val(),
+      'videopassword': $('input[name=videopassword]').val(),
+      'videoport': $('input[name=videoport]').val(),
       'video_size': $('select[name=video_size]').val(),
       'video_format': $('select[name=video_format]').val(),
       'brbitrate' : $('input[name=brbitrate]').val(),
