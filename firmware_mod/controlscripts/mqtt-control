@@ -1,6 +1,10 @@
 #!/bin/sh
 PIDFILE="/run/mqtt-control.pid"
 
+if [ ! -f /system/sdcard/config/mqtt.conf ]; then
+  echo "You have to configure mqtt first. Please see /system/sdcard/config/mqtt.conf.dist for further instructions"
+fi
+
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
@@ -13,8 +17,6 @@ start()
 {
   if [ -f $PIDFILE ]; then
     echo "MQTT Control already running";
-  elif [ ! -f /system/sdcard/config/mqtt.conf ]; then
-    echo "You have to configure mqtt first. Please see /system/sdcard/config/mqtt.dist for further instructions"
   else
     . /system/sdcard/config/mqtt.conf
     if [ -z ${AUTODISCOVERY_PREFIX+x} ];

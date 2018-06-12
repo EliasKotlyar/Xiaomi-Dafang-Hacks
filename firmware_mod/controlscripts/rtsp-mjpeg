@@ -1,16 +1,19 @@
 #!/bin/sh
 PIDFILE="/run/v4l2rtspserver-master-mjpeg.pid"
-export LD_LIBRARY_PATH='/thirdlib:/system/lib'
+LOGDIR="/system/sdcard/log"
+LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
+export LD_LIBRARY_PATH='/system/sdcard/lib:/thirdlib:/system/lib'
 
-if [ -f /system/sdcard/config/rtspserver.conf ]; then
-  source /system/sdcard/config/rtspserver.conf
+if [ ! -f /system/sdcard/config/rtspserver.conf ]; then
+  cp /system/sdcard/config/rtspserver.conf.dist /system/sdcard/config/rtspserver.conf
 fi
 
-#read v4l2config (username, password)
-v4l2config=$(cat /system/sdcard/config/v4l2rtspserver.conf)
+if [ -f /system/sdcard/config/rtspserver.conf ]; then
+  . /system/sdcard/config/rtspserver.conf
+fi
 
-if [ -f /system/sdcard/config/osd ]; then
-  source /system/sdcard/config/osd 2>/dev/null
+if [ -f /system/sdcard/config/osd.conf ]; then
+  . /system/sdcard/config/osd.conf 2>/dev/null
 fi
 
 status()
@@ -29,18 +32,48 @@ start()
   else
     echo "Starting v4l2rtspserver-master with parameter -fMJPG"
     /system/sdcard/controlscripts/rtsp-h264 stop
-    # We no longer start v4l2rtspserver-master in run.sh
-    #killall v4l2rtspserver-master # As the run.sh starts a v4l2rtspserver as well
+
     ## Configure OSD
     if [ -f /system/sdcard/controlscripts/configureOsd ]; then
-      source /system/sdcard/controlscripts/configureOsd  2>/dev/null
+      . /system/sdcard/controlscripts/configureOsd  2>/dev/null
     fi
 
     ## Configure Motion
     if [ -f /system/sdcard/controlscripts/configureMotion ]; then
-      source /system/sdcard/controlscripts/configureMotion  2>/dev/null
+      . /system/sdcard/controlscripts/configureMotion  2>/dev/null
     fi
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS &>/dev/null &
+    ## Bitrate
+    /system/sdcard/bin/setconf -k b -v ${BITRATE} 2>/dev/null
+
+    ## Audio
+    if [ "$AUDIOFORMAT" != "OFF" ] ; then
+        AUDIOPARAM="-E $AUDIOFORMAT:$AUDIOOUTBR"
+        /system/sdcard/bin/setconf -k h -v "$HWVOLUME" 2>/dev/null
+        /system/sdcard/bin/setconf -k i -v "$SWVOLUME" 2>/dev/null
+        /system/sdcard/bin/setconf -k q -v "$FILTER" 2>/dev/null
+        /system/sdcard/bin/setconf -k l -v "$HIGHPASSFILTER" 2>/dev/null
+    else
+        AUDIOPARAM="-A"
+    fi
+
+    ## Video format
+    if [ "$VIDEOFORMAT" != "" ]; then
+	    VIDEOFORMAT="-r $VIDEOFORMAT"
+    fi
+
+    ## UserName and password
+    if [ "$USERNAME" != "" ]; then
+        CREDENTIAL="-U $USERNAME:$USERPASSWORD"
+    fi
+
+    ## Port
+    if [ "$PORT" != "" ]; then
+        PORT="-P $PORT"
+    fi
+
+    echo "================== START ===============" >> "$LOGPATH"
+    echo "/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT" >> "$LOGPATH"
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT >> "$LOGPATH" &
     echo "$!" > "$PIDFILE"
   fi
 }
@@ -56,9 +89,8 @@ stop()
 if [ $# -eq 0 ]; then
   start
 else
-  case $1 in start|startnight|stop|status)
+  case $1 in start|stop|status)
     $1
     ;;
   esac
 fi
-

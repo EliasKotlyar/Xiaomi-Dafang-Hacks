@@ -226,7 +226,7 @@ if [ -n "$F_action" ]; then
   ;;
 # Control Audio
   audio_test)
-    $BINPATH/ossplay -g 1000 /usr/share/notify/CN/init_ok.wav &
+    $BINPATH/audioplay /usr/share/notify/CN/init_ok.wav &
     getReturn 1234 "info" "Play test audio."
     ;;
   audio_record_start)
@@ -326,6 +326,14 @@ if [ -n "$F_action" ]; then
     busybox insmod /driver/sinfo.ko  2>&1
     busybox rmmod sample_motor  2>&1
     $BINPATH/busybox nohup /system/bin/iCamera &  &>/dev/null &
+  ;;
+  send_picture_mail)
+    $SDPATH/scripts/sendPictureMail.sh
+    if [ $? == 0 ]; then
+      getReturn 1234 "success" "sendPictureMail completed successfully"
+    else
+      getReturn 1234 "error" "sendPictureMail failed"
+    fi
   ;;
   *)
   getReturn 1234 "error" "Unsupported command '$F_action'"

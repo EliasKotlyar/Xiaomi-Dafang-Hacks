@@ -52,3 +52,9 @@ firmware_mod/System Volume Information/WPSettings.dat
 firmware_mod/config/motion.conf
 firmware_mod/config/mqtt.conf
 firmware_mod/config/sendmail.conf
+firmware_mod/config/rtspserver.conf
+firmware_mod/config/ntp_srv.conf
+firmware_mod/config/lighttpd.user
+firmware_mod/config/lighttpd.pem
+firmware_mod/config/userscripts/*/*
+firmware_mod/root/.ssh/*

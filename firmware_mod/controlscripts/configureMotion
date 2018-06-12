@@ -3,6 +3,10 @@
 # Set the socket option in order to restart easily the server (socket in use)
 echo 1 > /proc/sys/net/ipv4/tcp_tw_recycle
 
+if [ ! -f /system/sdcard/config/motion.conf ]; then
+  cp /system/sdcard/config/motion.conf.dist /system/sdcard/config/motion.conf
+fi
+
 if [ -f /system/sdcard/config/motion.conf ] ; then
     source /system/sdcard/config/motion.conf 2>/dev/null
     /system/sdcard/bin/setconf -k r -v ${region_of_interest} 2>/dev/null

@@ -1,9 +1,5 @@
 ## Xiaomi Dafang Integration in Home Assistant
 
-
-
-
-
 ### On the Home Assistant side
 
 First let's set up your camera stream. Make sure the rtsp-h264 service in the [service control panel](http://dafang/cgi-bin/scripts.cgi) is running and you can connect to [it](rtsp://dafang:8554/unicast) via e.g. vlc player.
@@ -38,9 +34,9 @@ Connect to your camera via ssh (or your preferred ftp client):
 ssh root@dafang # default password is ismart12
 ```
 
-copy /system/sdcard/config/mqtt.dist to /system/sdcard/config/mqtt.conf:
+copy /system/sdcard/config/mqtt.conf.dist to /system/sdcard/config/mqtt.conf:
 ```shell
-cp /system/sdcard/config/mqtt.dist /system/sdcard/config/mqtt.conf
+cp /system/sdcard/config/mqtt.conf.dist /system/sdcard/config/mqtt.conf
 ```
 Set up your broker, LOCATION and DEVICE_NAME
 and uncomment AUTODISCOVERY_PREFIX (only then the dafang configurations will be published):
@@ -61,7 +57,8 @@ To put all the sensors & actors conveniently into one group you can use the foll
 ```yaml
 Dafang3:
     - camera.dafang3
-    - switch.dafang3_rtsp_server
+    - switch.dafang3_h264_rtsp_server
+    - switch.dafang3_mjpeg_rtsp_server
     - sensor.dafang3
     - device_tracker.dafang3
     - sensor.dafang3_light_sensor
@@ -79,9 +76,9 @@ Dafang3:
 
 ### To set up mqtt motion detection alerts:
 
-copy /system/sdcard/config/motion.dist to /system/sdcard/config/motion.conf:
+copy /system/sdcard/config/motion.conf.dist to /system/sdcard/config/motion.conf:
 ```shell
-cp /system/sdcard/config/motion.dist /system/sdcard/config/motion.conf
+cp /system/sdcard/config/motion.conf.dist /system/sdcard/config/motion.conf
 ```
 
 Set up the motion detection via its [webinterface](http://dafang/configmotion.html).

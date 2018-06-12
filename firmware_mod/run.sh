@@ -1,83 +1,156 @@
 #!/bin/sh
 
-CONFIGPATH=/system/sdcard/config
-echo "Starting up CFW"
+export LD_LIBRARY_PATH='/system/sdcard/lib/:/thirdlib:/system/lib'
 
-## Update hostname:
-hostname -F $CONFIGPATH/hostname.conf
+CONFIGPATH="/system/sdcard/config"
+LOGDIR="/system/sdcard/log"
+LOGPATH="$LOGDIR/startup.log"
+if [ ! -d $LOGDIR ]; then
+  mkdir -p $LOGDIR
+fi
+echo "==================================================" >> $LOGPATH
+echo "Starting the Dafang Hacks Custom Application Layer" >> $LOGPATH
+echo "==================================================" >> $LOGPATH
 
-## NTP Server
-ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
+## Stop telnet for security reasons
+killall telnetd
 
-#read v4l2config (username, password)
-v4l2config=$(cat $CONFIGPATH/v4l2rtspserver.conf)
-## Get real Mac address from config file:
-MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
+## Load some common functions:
+. /system/sdcard/scripts/common_functions.sh
+echo "Loaded common functions" >> $LOGPATH
+
+## Create root user home directory and etc directory on sdcard:
+if [ ! -d /system/sdcard/root ]; then
+  mkdir /system/sdcard/root
+  echo 'PATH=/system/sdcard/bin:$PATH' > /system/sdcard/root/.profile
+  echo "Created root user home directory" >> $LOGPATH
+fi
+if [ ! -d /system/sdcard/etc ]; then
+  mkdir /system/sdcard/etc
+  cp -fRL /etc/TZ /etc/protocols /etc/fstab /etc/inittab /etc/hosts \
+    /etc/passwd /etc/shadow /etc/group /etc/resolv.conf /etc/hostname \
+    /etc/profile /etc/os-release /etc/sensor /system/sdcard/etc
+  sed -i s#/:#/root:# /system/sdcard/etc/passwd
+  echo "Created etc directory on sdcard" >> $LOGPATH
+fi
+mount -o bind /system/sdcard/root /root
+echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
+mount -o bind /system/sdcard/etc /etc
+echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
+
+## Create crontab dir and start crond:
+if [ ! -d /system/sdcard/config/cron ]; then
+  mkdir -p /system/sdcard/config/cron/crontabs
+  echo "Created cron directory" >> $LOGPATH
+fi
+/system/sdcard/bin/busybox crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
 
 ## Start Wifi:
-insmod /driver/8189es.ko rtw_initmac="$MAC"
-wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
-udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)"
+if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
+  echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
+fi
+MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
+if [ -f /driver/8189es.ko ]; then
+  # Its a DaFang
+  insmod /driver/8189es.ko rtw_initmac="$MAC"
+elif [ -f /driver/8189fs.ko ]; then
+  # Its a XiaoFang T20
+  insmod /driver/8189fs.ko rtw_initmac="$MAC"
+else
+  # Its a Wyzecam V2
+  insmod /driver/rtl8189ftv.ko rtw_initmac="$MAC"
+fi
+wpa_supplicant_status="$(wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
+echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
 
-## Start Audio:
+if [ ! -f $CONFIGPATH/hostname.conf ]; then
+  cp $CONFIGPATH/hostname.conf.dist $CONFIGPATH/hostname.conf
+fi
+hostname -F $CONFIGPATH/hostname.conf
+udhcpc_status=$(udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
+echo "udhcpc: $udhcpc_status" >> $LOGPATH
+
+## Sync the via NTP:
+if [ ! -f $CONFIGPATH/ntp_srv.conf ]; then
+  cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
+fi
+ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
+/system/sdcard/bin/busybox ntpd -p "$ntp_srv"
+
+## Load audio driver module:
 insmod /system/sdcard/driver/audio.ko
 
-## Start GPIO:
-setgpio () {
-  GPIOPIN=$1
-  echo "$GPIOPIN" > /sys/class/gpio/export
-  echo out > "/sys/class/gpio/gpio$GPIOPIN/direction"
-  echo 0 > "/sys/class/gpio/gpio$GPIOPIN/active_low"
-  echo 1 > "/sys/class/gpio/gpio$GPIOPIN/value"
-}
-
-# IR-LED
-setgpio 49
+## Initialize the GPIOS:
+for pin in 25 26 38 39 49; do
+  init_gpio $pin
+done
+# the ir_led pin is a special animal and needs active low
 echo 1 > /sys/class/gpio/gpio49/active_low
-echo 1 > /sys/class/gpio/gpio49/value
-# Yellow-LED
-setgpio 38
-echo 0 > /sys/class/gpio/gpio38/value
-# Blue-LED
-setgpio 39
-# IR-Cut:
-setgpio 25
-setgpio 26
 
-# Startup Motor:
-insmod /system/sdcard/driver/sample_motor.ko
+echo "Initialized gpios" >> $LOGPATH
+
+## Set leds to default startup states:
+ir_led off
+ir_cut on
+yellow_led off
+blue_led on
+
+## Load motor driver module:
+insmod /driver/sample_motor.ko
+# Don't calibrate the motors for now as for newer models the endstops don't work:
+# motor hcalibrate
+# motor vcalibrate
+
+# calibrate,compatible newer models.(But the old DAFANG does not work.）
+# motor calibrate
 
 ## Start Sensor:
-insmod /system/sdcard/driver/tx-isp.ko isp_clk=100000000
-insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+insmod /driver/tx-isp.ko isp_clk=100000000
+if [ -f /driver/sensor_jxf23.ko ]; then
+  # Its a Xioafang 1S
+  insmod /driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+else
+  # Its a Dafang Classic/Wyzecam V2
+  insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+fi
+insmod /system/sdcard/driver/sinfo.ko
 
-## Update time
-/system/sdcard/bin/busybox ntpd -q -n -p $ntp_srv
 
-## Start FTP & SSH
-/system/sdcard/bin/dropbearmulti dropbear -R
-/system/sdcard/bin/bftpd -d
+## Start FTP & SSH Server:
+dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
+echo "dropbear: $dropbear_status" >> $LOGPATH
+
+bftpd_status=$(/system/sdcard/bin/bftpd -d)
+echo "bftpd: $bftpd_status" >> $LOGPATH
+
+## Create a certificate for the webserver
+if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
+  export OPENSSL_CONF=$CONFIGPATH/openssl.cnf
+  /system/sdcard/bin/openssl req -new -x509 -keyout $CONFIGPATH/lighttpd.pem -out $CONFIGPATH/lighttpd.pem -days 365 -nodes -subj "/C=DE/ST=Bavaria/L=Munich/O=.../OU=.../CN=.../emailAddress=..."
+  chmod 400 $CONFIGPATH/lighttpd.pem
+  echo "Created new certificate for webserver" >> $LOGPATH
+fi
 
 ## Start Webserver:
-/system/sdcard/bin/boa -c /system/sdcard/config/
-#/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf
+if [ ! -f $CONFIGPATH/lighttpd.conf ]; then
+  cp $CONFIGPATH/lighttpd.conf.dist $CONFIGPATH/lighttpd.conf
+fi
+lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
+echo "lighttpd: $lighttpd_status" >> $LOGPATH
 
-## Configure OSD
+## Configure OSD:
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
-    source /system/sdcard/controlscripts/configureOsd  2>/dev/null
+    . /system/sdcard/controlscripts/configureOsd  2>/dev/null
 fi
 
-## Configure Motion
+## Configure Motion:
 if [ -f /system/sdcard/controlscripts/configureMotion ]; then
-    source /system/sdcard/controlscripts/configureMotion  2>/dev/null
+    . /system/sdcard/controlscripts/configureMotion  2>/dev/null
 fi
 
-
-## Autostart
+## Autostart all enabled services:
 for i in /system/sdcard/config/autostart/*; do
   $i
 done
 
-# Removing rtsp server startup here since it should be started if necessary in config/autostart
-
-echo "Startup finished!"
+echo "Startup finished!" >> $LOGPATH
