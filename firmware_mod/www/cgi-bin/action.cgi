@@ -290,7 +290,7 @@ if [ -n "$F_cmd" ]; then
 
       if [ ! -z "$enabled" ]; then
         /system/sdcard/bin/setconf -k o -v "$osdtext"
-        echo "OSD=\"${osdtext}\"" >> /system/sdcard/config/osd.conf
+        echo "OSD=\"${osdtext}\"" | sed -r 's/[ ]X=.*"/"/' >> /system/sdcard/config/osd.conf
         echo "OSD set"
       else
         echo "OSD removed"
