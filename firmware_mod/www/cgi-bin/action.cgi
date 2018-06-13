@@ -278,7 +278,7 @@ if [ -n "$F_cmd" ]; then
       osdtext=$(printf '%b' "${F_osdtext//%/\\x}")
       osdtext=$(echo "$osdtext" | sed -e "s/\\+/ /g")
 
-      if [ ! -z "$axis_enable"];then
+      if [ ! -z "$axis_enable" ];then
         update_axis
         osdtext="${osdtext} ${AXIS}"
         echo "DISPLAY_AXIS=true" > /system/sdcard/config/osd.conf
