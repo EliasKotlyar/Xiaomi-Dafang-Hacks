@@ -278,7 +278,7 @@ if [ -n "$F_cmd" ]; then
       osdtext=$(printf '%b' "${F_osdtext//%/\\x}")
       osdtext=$(echo "$osdtext" | sed -e "s/\\+/ /g")
 
-      if [ ! -z "$axis_enable"];then
+      if [ ! -z "$axis_enable" ];then
         update_axis
         osdtext="${osdtext} ${AXIS}"
         echo "DISPLAY_AXIS=true" > /system/sdcard/config/osd.conf
@@ -290,7 +290,7 @@ if [ -n "$F_cmd" ]; then
 
       if [ ! -z "$enabled" ]; then
         /system/sdcard/bin/setconf -k o -v "$osdtext"
-        echo "OSD=\"${osdtext}\"" >> /system/sdcard/config/osd.conf
+        echo "OSD=\"${osdtext}\"" | sed -r 's/[ ]X=.*"/"/' >> /system/sdcard/config/osd.conf
         echo "OSD set"
       else
         echo "OSD removed"
@@ -381,7 +381,7 @@ if [ -n "$F_cmd" ]; then
       rewrite_config /system/sdcard/config/rtspserver.conf PORT "$videoport"
 
 
-      echo "Video resolution set to $video_size<br/>"
+          echo "Video resolution set to $video_size<br/>"
       echo "Bitrate set to $brbitrate<br/>"
       echo "Video format set to $video_format<br/>"
       if [ "$(rtsp_h264_server status)" = "ON" ]; then
