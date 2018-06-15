@@ -27,7 +27,7 @@ status()
 
 start()
 {
-  if  ls /var/run/v4l2rtspserver* 1> /dev/null 2>&1; then
+  if [ "$(status)" != "" ]; then
     echo "A v4l2rtspserver is already running, please stop it or reboot"
   else
     echo "Starting v4l2rtspserver-master with parameter -fMJPG"
@@ -72,8 +72,8 @@ start()
     fi
 
     echo "================== START ===============" >> "$LOGPATH"
-    echo "/system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT" >> "$LOGPATH"
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT >> "$LOGPATH" &
+    echo "/system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT" >> "$LOGPATH"
+    /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT  2>> "$LOGPATH" >> "$LOGPATH" &
     echo "$!" > "$PIDFILE"
   fi
 }
@@ -82,7 +82,8 @@ stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
-    kill "$pid" & rm "$PIDFILE" 1> /dev/null 2>&1
+    kill "$pid"
+    rm "$PIDFILE" 1> /dev/null 2>&1
   fi
 }
 

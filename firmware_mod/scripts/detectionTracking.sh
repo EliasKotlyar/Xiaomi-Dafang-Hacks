@@ -36,16 +36,16 @@ backtoOrigin() {
 
     # Get values in saved config file
     if [ -f ${FILECAMERAPOS} ]; then
-	    origin_x_axis=`grep "x_steps:" ${FILECAMERAPOS} | sed "s/x_steps: //"`
-	    origin_y_axis=`grep "y_steps:" ${FILECAMERAPOS} | sed "s/y_steps: //"`
+	    origin_x_axis=`grep "x:" ${FILECAMERAPOS} | sed "s/x: //"`
+	    origin_y_axis=`grep "y:" ${FILECAMERAPOS} | sed "s/y: //"`
     else
 	    origin_x_axis=0
         origin_y_axis=0
     fi
 
     # Get the current position
-    x_axis=`/system/sdcard/bin/motor -d s | grep "x_steps:" | sed "s/x_steps: //"`
-    y_axis=`/system/sdcard/bin/motor -d s | grep "y_steps:" | sed "s/y_steps: //"`
+    x_axis=`/system/sdcard/bin/motor -d s | grep "x:" | sed "s/x: //"`
+    y_axis=`/system/sdcard/bin/motor -d s | grep "y:" | sed "s/y: //"`
 
 	#--------------------------- X Position -------------------------------------------
     #Calculate the difference between the origin and the position now
