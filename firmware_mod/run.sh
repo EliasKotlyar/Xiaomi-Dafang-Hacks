@@ -25,14 +25,29 @@ if [ ! -d /system/sdcard/root ]; then
   echo 'PATH=/system/sdcard/bin:$PATH' > /system/sdcard/root/.profile
   echo "Created root user home directory" >> $LOGPATH
 fi
-if [ ! -d /system/sdcard/etc ]; then
-  mkdir /system/sdcard/etc
-  cp -fRL /etc/TZ /etc/protocols /etc/fstab /etc/inittab /etc/hosts \
-    /etc/passwd /etc/shadow /etc/group /etc/resolv.conf /etc/hostname \
-    /etc/profile /etc/os-release /etc/sensor /system/sdcard/etc
-  sed -i s#/:#/root:# /system/sdcard/etc/passwd
-  echo "Created etc directory on sdcard" >> $LOGPATH
-fi
+mkdir -p /system/sdcard/etc
+while IFS= read -r etc_element
+do
+  if [ ! -f "/system/sdcard/etc/$etc_element" ] && [ ! -d "/system/sdcard/etc/$etc_element" ]; then
+    cp -fRL "/etc/$etc_element" /system/sdcard/etc
+  fi
+done <<- END
+	TZ
+	protocols
+	fstab
+	inittab
+	init.d
+	hosts
+	group
+	resolv.conf
+	hostname
+	profile
+	os-release
+	sensor
+	webrtc_profile.ini
+END
+echo "Created etc directory on sdcard" >> $LOGPATH
+
 mount -o bind /system/sdcard/bin/busybox /bin/busybox
 echo "Bind mounted /system/sdcard/bin/busybox to /bin/busybox" >> $LOGPATH
 mount -o bind /system/sdcard/root /root
