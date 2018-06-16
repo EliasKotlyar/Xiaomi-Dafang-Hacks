@@ -24,20 +24,20 @@ if [ -n "$F_cmd" ]; then
             tail /var/log/*
             ;;
         2)
-            echo "Contents of dmesg<br/>"
+            echo "Content of dmesg<br/>"
             /bin/dmesg
             ;;
         3)
-            echo "Contents of logcat<br/>"
+            echo "Content of logcat<br/>"
             /system/bin/logcat -d
             ;;
         4)
-          echo "Contents of v4l2rtspserver-master.log<br/>"
+          echo "Content of v4l2rtspserver-master.log<br/>"
           cat /system/sdcard/log/v4l2rtspserver-master.log
           ;;
         5)
-          echo "Contents of update.log <br/>"
-          cat /var/log/update.log
+          echo "Content of update.log <br/>"
+          cat /system/sdcard/log/update.log
           ;;
 
       esac
@@ -55,20 +55,20 @@ if [ -n "$F_cmd" ]; then
             done
             ;;
         2)
-            echo "Contents of dmesg cleared<br/>"
+            echo "Content of dmesg cleared<br/>"
             /bin/dmesg -c > /dev/null
             ;;
         3)
-            echo "Contents of logcat cleared<br/>"
+            echo "Content of logcat cleared<br/>"
             /system/bin/logcat -c
             ;;
         4)
-          echo "Contents of v4l2rtspserver-master.log cleared<br/>"
+          echo "Content of v4l2rtspserver-master.log cleared<br/>"
           echo -n "" > /system/sdcard/log/v4l2rtspserver-master.log
           ;;
         5)
-          echo "Contents of update.log cleared <br/>"
-          echo -n "" > /var/log/update.log
+          echo "Content of update.log cleared <br/>"
+          echo -n "" > /system/sdcard/log/update.log
          ;;
       esac
       echo "</pre>"
@@ -278,7 +278,7 @@ if [ -n "$F_cmd" ]; then
       osdtext=$(printf '%b' "${F_osdtext//%/\\x}")
       osdtext=$(echo "$osdtext" | sed -e "s/\\+/ /g")
 
-      if [ ! -z "$axis_enable"];then
+      if [ ! -z "$axis_enable" ];then
         update_axis
         osdtext="${osdtext} ${AXIS}"
         echo "DISPLAY_AXIS=true" > /system/sdcard/config/osd.conf
@@ -290,7 +290,7 @@ if [ -n "$F_cmd" ]; then
 
       if [ ! -z "$enabled" ]; then
         /system/sdcard/bin/setconf -k o -v "$osdtext"
-        echo "OSD=\"${osdtext}\"" >> /system/sdcard/config/osd.conf
+        echo "OSD=\"${osdtext}\"" | sed -r 's/[ ]X=.*"/"/' >> /system/sdcard/config/osd.conf
         echo "OSD set"
       else
         echo "OSD removed"
@@ -417,11 +417,11 @@ if [ -n "$F_cmd" ]; then
         # Changed the detection region, need to restart the server
         if [ ${F_restart_server} == "1" ]
         then
-            if [ "$(rtsp_h264_server status)" = "ON" ]; then
+            if [ "$(rtsp_h264_server status)" == "ON" ]; then
                 rtsp_h264_server off
                 rtsp_h264_server on
             fi
-            if [ "$(rtsp_mjpeg_server status)" = "ON" ]; then
+            if [ "$(rtsp_mjpeg_server status)" == "ON" ]; then
                 rtsp_mjpeg_server off
                 rtsp_mjpeg_server on
             fi
@@ -490,12 +490,12 @@ if [ -n "$F_cmd" ]; then
         processId=$(ps | grep autoupdate.sh | grep -v grep)
         if [ "$processId" == "" ]
         then
-            echo "===============" >> /var/log/update.log
+            echo "===============" >> /system/sdcard/log/update.log
             date >> /var/log/update.log
             if [ "$F_login" != "" ]; then
-                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f -u $F_login  >> "/var/log/update.log" &
+                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f -u $F_login  >> "/system/sdcard/log/update.log" &
             else
-                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f >> "/var/log/update.log" &
+                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f >> "/system/sdcard/log/update.log" &
             fi
             processId=$(ps | grep autoupdate.sh | grep -v grep)
         fi
