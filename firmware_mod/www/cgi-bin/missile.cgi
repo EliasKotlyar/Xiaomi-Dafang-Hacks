@@ -23,7 +23,7 @@ cat << EOF
 <body>
 EOF
 
-source header.cgi
+source ./header.cgi
 
 cat << EOF
 <br/>
