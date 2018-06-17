@@ -50,6 +50,9 @@ $HTTP["scheme"] == "http" {
 ## where to send error-messages to
 server.errorlog             = "/tmp/lighttpd-error.log"
 
+## CGI (etc) stderr log
+server.breakagelog = "/tmp/lighttpd-cgi-stderr.log"
+
 ## accesslog module
 accesslog.filename          = "/tmp/lighttpd-access.log"
 
