@@ -33,6 +33,8 @@ if [ ! -d /system/sdcard/etc ]; then
   sed -i s#/:#/root:# /system/sdcard/etc/passwd
   echo "Created etc directory on sdcard" >> $LOGPATH
 fi
+mount -o bind /system/sdcard/bin/busybox /bin/busybox
+echo "Bind mounted /system/sdcard/bin/busybox to /bin/busybox" >> $LOGPATH
 mount -o bind /system/sdcard/root /root
 echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
