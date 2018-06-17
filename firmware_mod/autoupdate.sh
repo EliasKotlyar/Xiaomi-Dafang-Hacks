@@ -90,11 +90,11 @@ logerror ()
 # Log string on std error
 progress()
 {
-	if [ ${_PROGRESS} -eq 1 ]; then
-	   _NBFILES=$((${_NBFILES} + 1))
-	   echo -n $((${_NBFILES} *100 / ${_NBTOTALFILES} )) > /tmp/progress
+        if [ ${_PROGRESS} -eq 1 ]; then
+           _NBFILES=$((${_NBFILES} + 1))
+           echo -n $((${_NBFILES} *100 / ${_NBTOTALFILES} )) > /tmp/progress
 #      echo "file = ${_NBFILES}, total=${_NBTOTALFILES} = $((${_NBFILES} *100 / ${_NBTOTALFILES} ))"
-	fi
+        fi
 }
 
 ##########################################################################
@@ -161,11 +161,9 @@ countdownreboot()
     while [ ${i} -gt 0 ];
     do
         echo "$i seconds remaining before reboot (Press control-c to abort)";
-	    i=$((${i} - 1))
+            i=$((${i} - 1))
         sleep 1;
     done
-    action sync
-    action sync
     action reboot
 }
 ##########################################################################
@@ -262,12 +260,11 @@ do
         echo "Can not get remote file $i, exiting."
         exit 1
     fi
-
     # Check the file exists in local
-    if [ -f "${LOCALFILE}" ]; then
+    if [ -f "${DESTFOLDER}/${LOCALFILE}" ]; then
         REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)
         # Calculate the remote and local SHA
-        LOCALSHA=$(${SHA} ${LOCALFILE} 2>/dev/null | cut -d "=" -f 2)
+        LOCALSHA=$(${SHA} ${DESTFOLDER}${LOCALFILE} 2>/dev/null | cut -d "=" -f 2)
 
         # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
         if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
@@ -277,12 +274,12 @@ do
                 echo "${LOCALFILE} updated."
                 action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
                 if [ ${_BACKUP} = 1 ]; then
-                    action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
+                    action cp ${DESTFOLDER}${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
                 fi
                 action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
             else
                 echo "${LOCALFILE} needs to be updated. Overwrite?"
-		        echo "[Y]es or [N]o or [A]ll?"
+                        echo "[Y]es or [N]o or [A]ll?"
                 rep=$(ask_yes_or_no )
                 if [ "${rep}" = "no" ]; then
                     echo "${LOCALFILE} not updated"
@@ -290,7 +287,7 @@ do
                 else
                     action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
                     if [ ${_BACKUP} = 1 ]; then
-                        action cp ${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
+                        action cp ${DESTFOLDER}${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
                     fi
                     action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
 
@@ -307,7 +304,7 @@ do
             action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
         else
             echo "${LOCALFILE} doesn't exist, create it?"
-	    echo "[Y]es or [N]o or [A]ll ?"
+            echo "[Y]es or [N]o or [A]ll ?"
             rep=$(ask_yes_or_no )
             if [ "${rep}" = "no" ]; then
                 echo "${LOCALFILE} not created."
@@ -331,8 +328,8 @@ fi
 if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
     echo "--------------- Stopping services ---------"
     for i in /system/sdcard/controlscripts/*; do
-	echo stopping $i
-	$i stop &> /dev/null
+        echo stopping $i
+        $i stop &> /dev/null
     done
     pkill lighttpd.bin 2> /dev/null
     pkill bftpd  2> /dev/null
@@ -348,7 +345,7 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
         countdownreboot
     else
         echo "A reboot is needed, do you want to reboot now?"
-	echo "[Y]es or [N]o"
+        echo "[Y]es or [N]o"
         rep=$(ask_yes_or_no )
         if [ "${rep}" = "yes" ]; then
             countdownreboot
