@@ -5,7 +5,7 @@
 # kszere@gmail.com | 2018-01-31 |  v0.0.5 Beta #
 ################################################
 
-source func.cgi
+source ./func.cgi
 
 # START VARIABLES
 PATH="/system/bin:/bin:/usr/bin:/sbin:/usr/sbin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"

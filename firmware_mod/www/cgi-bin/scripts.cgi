@@ -1,5 +1,5 @@
 #!/bin/sh
-source func.cgi
+source ./func.cgi
 
 echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
