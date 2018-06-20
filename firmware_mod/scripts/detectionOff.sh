@@ -16,9 +16,9 @@ if [ "$publish_mqtt_message" = true ] ; then
 fi
 
 # Run any user scripts.
-if [ -f /system/sdcard/config/userscripts/motiondetection/* ]; then
-    for i in /system/sdcard/config/userscripts/motiondetection/*; do
+for i in /system/sdcard/config/userscripts/motiondetection/*; do
+    if [ -x $i ]; then
         echo "Running: $i off"
         $i off
-    done
-fi
+    fi
+done
