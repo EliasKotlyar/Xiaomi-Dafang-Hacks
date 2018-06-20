@@ -1,5 +1,5 @@
 #!/bin/sh
-source func.cgi
+source ./func.cgi
 export LD_LIBRARY_PATH=/system/sdcard/lib
 CMD=$F_cmd
 

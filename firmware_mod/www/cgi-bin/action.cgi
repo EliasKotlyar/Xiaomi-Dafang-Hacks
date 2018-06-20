@@ -5,7 +5,7 @@ echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
 echo ""
 
-source func.cgi
+source ./func.cgi
 source /system/sdcard/scripts/common_functions.sh
 
 export LD_LIBRARY_PATH=/system/lib

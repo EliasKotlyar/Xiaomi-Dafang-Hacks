@@ -1,16 +1,17 @@
 {
-  "platform": "Camera-ffmpeg",
-  "cameras": [
-    {
-      "name": "Camera Name",
-      "videoConfig": {
-      	"source": "-rtsp_transport tcp -re -i rtsp://dafang.local:8554/unicast",
-      	"stillImageSource": "-i http://dafang.local/cgi-bin/currentpic.cgi",
-      	"maxStreams": 5,
-      	"maxWidth": 1280,
-      	"maxHeight": 720,
-      	"maxFPS": 25
+   "platform":"Camera-ffmpeg",
+   "cameras":[
+      {
+         "name":"Camera Name",
+         "videoConfig":{
+            "source":"-rtsp_transport tcp -i rtsp://dafang.local/unicast",
+            "stillImageSource":"-rtsp_transport tcp -i rtsp://dafang.local/unicast -vframes 1 -r 1",
+            "maxStreams":5,
+            "maxWidth":1280,
+            "maxHeight":720,
+            "maxFPS":25,
+            "vcodec":"h264_omx"
+         }
       }
-    }
-  ]
+   ]
 }
