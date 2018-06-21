@@ -55,6 +55,11 @@ After install, you can use this [android application](https://play.google.com/st
 
 [Zoneminder](/integration/zoneminder/zoneminder.md)
 
+## Other features
+
+### Motion detection
+
+It is possible to run your own scripts on motion detection. See [here](/integration/custom/motiondetection.md)
 
 ## Contributions:
 

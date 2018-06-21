@@ -38,9 +38,9 @@ if [ "$sendemail" = true ] ; then
 fi
 
 # Run any user scripts.
-if [ -f /system/sdcard/config/userscripts/motiondetection/* ]; then
-    for i in /system/sdcard/config/userscripts/motiondetection/*; do
+for i in /system/sdcard/config/userscripts/motiondetection/*; do
+    if [ -x $i ]; then
         echo "Running: $i on"
         $i on
-    done
-fi
+    fi
+done
