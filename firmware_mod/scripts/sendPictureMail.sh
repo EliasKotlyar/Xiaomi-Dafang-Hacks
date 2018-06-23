@@ -12,6 +12,13 @@ fi
 
 . /system/sdcard/config/sendmail.conf
 
+if [ -f /tmp/sendPictureMail.lock ]; then
+  echo "sendPictureEmail already running, /tmp/sendPictureMail.lock is present"
+  exit 1
+fi
+
+touch /tmp/sendPictureMail.lock
+
 # Build headers of the emails
 {
 
@@ -63,3 +70,4 @@ printf '%s\n' "-- End --"
 -H"exec /system/sdcard/bin/openssl s_client -quiet -connect $SERVER:$PORT -tls1 -starttls smtp" \
 -f"$FROM" -au"$AUTH" -ap"$PASS" $TO 2>/dev/null
 
+rm /tmp/sendPictureMail.lock
