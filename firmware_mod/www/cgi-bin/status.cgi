@@ -546,7 +546,7 @@ cat << EOF
                     <div class="column">
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
-                            <label class="label">Select in audio bitrate</label>
+                            <label class="label">Select in sample rate</label>
                         </div>
                         <div class="field-body">
                                 <div class="select">
@@ -598,7 +598,7 @@ cat << EOF
                 <div class="column">
                      <div class="field is-horizontal">
                             <div class="field-label is-normal">
-                                <label class="label">Select out audio bitrate</label>
+                                <label class="label">Select out sample rate</label>
                             </div>
                             <div class="field-body">
                                 <div class="select">
