@@ -45,13 +45,19 @@ start()
     ## Bitrate
     /system/sdcard/bin/setconf -k b -v ${BITRATE} 2>/dev/null
 
+    ## Framerate
+    if [ "$FRAMERATE_DEN" != "" ] && [ "$FRAMERATE_NUM" != "" ]; then
+        /system/sdcard/bin/setconf -k d -v "$FRAMERATE_NUM,$FRAMERATE_DEN" 2>/dev/null
+    fi
+
     ## Audio
     if [ "$AUDIOFORMAT" != "OFF" ] ; then
-        AUDIOPARAM="-E $AUDIOFORMAT:$AUDIOOUTBR"
+        AUDIOPARAM="-E $AUDIOFORMAT:$AUDIOINBR:$AUDIOOUTBR"
         /system/sdcard/bin/setconf -k h -v "$HWVOLUME" 2>/dev/null
         /system/sdcard/bin/setconf -k i -v "$SWVOLUME" 2>/dev/null
         /system/sdcard/bin/setconf -k q -v "$FILTER" 2>/dev/null
         /system/sdcard/bin/setconf -k l -v "$HIGHPASSFILTER" 2>/dev/null
+        /system/sdcard/bin/setconf -k a -v "$AECFILTER" 2>/dev/null
     else
         AUDIOPARAM="-A"
     fi
