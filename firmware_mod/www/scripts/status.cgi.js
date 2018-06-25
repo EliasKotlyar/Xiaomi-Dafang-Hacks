@@ -10,6 +10,8 @@ $(document).ready(function() {
       'video_size': $('select[name=video_size]').val(),
       'video_format': $('select[name=video_format]').val(),
       'brbitrate' : $('input[name=brbitrate]').val(),
+      'frmRateDen': $('input[name=frmRateDen]').val(),
+      'frmRateNum': $('input[name=frmRateNum]').val(),
     };
     $.ajax({
       type: 'POST',
@@ -175,11 +177,19 @@ $(document).ready(function() {
       } else {
           HFEnabled = 'false';
       }
+      if ($('input[name=AECEnabled]').prop('checked')) {
+        AECEnabled = 'true';
+      } else {
+        AECEnabled = 'false';
+      }
 
       var formData = {
         'audioinFormat': $('select[name=audioinFormat]').val(),
+        'audioinBR': $('select[name=audioinBR]').val(),
+        'audiooutBR': $('select[name=audiooutBR]').val(),
         'audioinFilter': $('select[name=audioinFilter]').val(),
         'HFEnabled': HFEnabled,
+        'AECEnabled': AECEnabled,
         'audioinVol': $('input[name=audioinVol]').val()
 
       };

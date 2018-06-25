@@ -370,7 +370,8 @@ if [ -n "$F_cmd" ]; then
       videopassword=$(printf '%b' "${F_videopassword//%/\\x}")
       videouser=$(printf '%b' "${F_videouser//%/\\x}")
       videoport=$(echo "${F_videoport}"| sed -e 's/+/ /g')
-
+      frmRateDen=$(printf '%b' "${F_frmRateDen/%/\\x}")
+      frmRateNum=$(printf '%b' "${F_frmRateNum/%/\\x}")
 
       rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"$video_size\""
       rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"$video_size\""
@@ -379,11 +380,19 @@ if [ -n "$F_cmd" ]; then
       rewrite_config /system/sdcard/config/rtspserver.conf USERNAME "$videouser"
       rewrite_config /system/sdcard/config/rtspserver.conf USERPASSWORD "$videopassword"
       rewrite_config /system/sdcard/config/rtspserver.conf PORT "$videoport"
+      if [ "$frmRateDen" != "" ]; then
+        rewrite_config /system/sdcard/config/rtspserver.conf FRAMERATE_DEN "$frmRateDen"
+      fi
+      if [ "$frmRateNum" != "" ]; then
+          rewrite_config /system/sdcard/config/rtspserver.conf FRAMERATE_NUM "$frmRateNum"
+      fi
 
-
-          echo "Video resolution set to $video_size<br/>"
+      echo "Video resolution set to $video_size<br/>"
       echo "Bitrate set to $brbitrate<br/>"
+      echo "FrameRate set to $frmRateDen/$frmRateNum <br/>"
+      /system/sdcard/bin/setconf -k d -v "$frmRateNum,$frmRateDen" 2>/dev/null
       echo "Video format set to $video_format<br/>"
+
       if [ "$(rtsp_h264_server status)" = "ON" ]; then
         rtsp_h264_server off
         rtsp_h264_server on
@@ -459,30 +468,47 @@ if [ -n "$F_cmd" ]; then
     ;;
     conf_audioin)
 
-       audioinFormat=$(echo $F_audioinFormat | awk -F"-" '{print $1}')
-       audioinBR=$(echo $F_audioinFormat | awk -F"-" '{print $2}')
+       audioinFormat=$(printf '%b' "${F_audioinFormat/%/\\x}")
+       audioinBR=$(printf '%b' "${F_audioinBR/%/\\x}")
+       audiooutBR=$(printf '%b' "${F_audiooutBR/%/\\x}")
+
        if [ "$audioinBR" == "" ]; then
             audioinBR="8000"
        fi
+       if [ "$audiooutBR" == "" ]; then
+           audioOutBR = audioinBR
+       fi
        if [ "$audioinFormat" == "OPUS" ]; then
             audioinBR="48000"
+            audioOutBR="48000"
+       fi
+       if [ "$audioinFormat" == "PCM" ]; then
+            audioOutBR = audioinBR
+       fi
+       if [ "$audioinFormat" == "PCMU" ]; then
+           audioOutBR = audioinBR
        fi
 
        rewrite_config /system/sdcard/config/rtspserver.conf AUDIOFORMAT "$audioinFormat"
-       rewrite_config /system/sdcard/config/rtspserver.conf AUDIOOUTBR "$audioinBR"
+       rewrite_config /system/sdcard/config/rtspserver.conf AUDIOINBR "$audioinBR"
+       rewrite_config /system/sdcard/config/rtspserver.conf AUDIOOUTBR "$audiooutBR"
        rewrite_config /system/sdcard/config/rtspserver.conf FILTER "$F_audioinFilter"
        rewrite_config /system/sdcard/config/rtspserver.conf HIGHPASSFILTER "$F_HFEnabled"
-       rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
+       rewrite_config /system/sdcard/config/rtspserver.conf AECFILTER "$F_AECEnabled"
+        rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
        rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "-1"
 
 
        echo "Audio format $audioinFormat <BR>"
-       echo "Audio bitrate $audioinBR <BR>"
+       echo "In audio bitrate $audioinBR <BR>"
+       echo "Out audio bitrate $audiooutBR <BR>"
        echo "Filter $F_audioinFilter <BR>"
        echo "High Pass Filter $F_HFEnabled <BR>"
+       echo "AEC Filter $F_AECEnabled <BR>"
        echo  "Volume $F_audioinVol <BR>"
        /system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
        /system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
+       /system/sdcard/bin/setconf -k a -v "$F_AECEnabled" 2>/dev/null
        /system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
        return
      ;;

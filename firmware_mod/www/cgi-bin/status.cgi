@@ -423,6 +423,32 @@ cat << EOF
                     </div>
                 </div>
             </div>
+            <div class="field is-horizontal">
+
+                <div class="field-body">
+                    <div class="field-label is-horizontal">
+                        <label class="label">FrameRate: number of image(s) </label>
+                    </div>
+
+                    <div class="field">
+                        <div class="control">
+                            <input class="input" id="frmRateNum" name="frmRateNum" type="text" size="5" value="$(source /system/sdcard/config/rtspserver.conf; echo $FRAMERATE_NUM)" placeholder="25"/>
+                        </div>
+                    </div>
+                    <div class="field-label is-horizontal">
+                        <label class="label">per </label>
+                    </div>
+                      <div class="field">
+                        <div class="control">
+                            <input class="input" id="frmRateDen" name="frmRateDen" type="text" size=5 value="$(source /system/sdcard/config/rtspserver.conf; echo $FRAMERATE_DEN)"  placeholder="1" />
+                        </div>
+                    </div>
+
+                    <div class="field-label is-horizontal">
+                      <label class="label"> second(s) </label>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="column">
             <div class="field is-horizontal">
@@ -463,9 +489,9 @@ EOF
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
 
 IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
-echo "<p>Path to feed : <a href='rtsp://$IP:8554/unicast'>rtsp://$IP:8554/unicast</a></p>"
-echo "<p>HLS : <a href='http://$IP:8554/unicast.m3u8'>http://$IP:8554/unicast.m3u8</a></p>"
-echo "<p>MPEG-DASH : <a href='http://$IP:8554/unicast.mpd'>http://$IP:8554/unicast.mpd</a></p>"
+echo "<p>Path to feed : <a href='rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast'>rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast</a></p>"
+echo "<p>HLS : <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.m3u8'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.m3u8</a></p>"
+echo "<p>MPEG-DASH : <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.mpd'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.mpd</a></p>"
 
 cat << EOF
     </div>
@@ -482,7 +508,7 @@ EOF
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
 
 IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
-echo "<p>Path to feed : <a href='rtsp://$IP:8554/unicast'>rtsp://$IP:8554/unicast</a></p>"
+echo "<p>Path to feed : <a href='rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast'>rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast</a></p>"
 
 cat << EOF
     </div>
@@ -495,8 +521,7 @@ cat << EOF
     </header>
     <div class='card-content'>
         <form id="formaudioin" action="cgi-bin/action.cgi?cmd=conf_audioin" method="post">
-            <div class="columns">
-                <div class="column">
+
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
                             <label class="label">Select audio format</label>
@@ -509,8 +534,7 @@ cat << EOF
                                        <option value="OPUS" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT | grep OPUS)" != "" ]; then echo selected; fi)>OPUS</option>
                                        <option value="PCM"  $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT | grep -w PCM)" != "" ]; then echo selected; fi)>PCM</option>
                                        <option value="PCMU" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT | grep -w PCMU)" != "" ]; then echo selected; fi)>PCMU</option>
-                                       <option value="MP3-8000" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT$AUDIOOUTB | grep -w MP38000)" != "" ]; then echo selected; fi)>MP3-8000</option>
-                                       <option value="MP3-44100" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT$AUDIOOUTBR | grep -w MP344100)" != "" ]; then echo selected; fi)>MP3-44100</option>
+                                       <option value="MP3" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOFORMAT | grep -w MP3)" != "" ]; then echo selected; fi)>MP3</option>
                                 </select>
                             </div>
                             <span class="help">
@@ -518,6 +542,28 @@ cat << EOF
                             </span>
                         </div>
                     </div>
+                    <div class="columns">
+                    <div class="column">
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">Select in sample rate</label>
+                        </div>
+                        <div class="field-body">
+                                <div class="select">
+                                    <select name="audioinBR">
+                                           <option value="8000"  $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOINBR | grep 8000)" != "" ]; then echo selected; fi)>8000</option>
+                                           <option value="16000" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOINBR | grep 16000)" != "" ]; then echo selected; fi)>16000</option>
+                                           <option value="24000" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOINBR | grep -w 24000)" != "" ]; then echo selected; fi)>24000</option>
+                                           <option value="44100" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOINBR | grep -w 44100)" != "" ]; then echo selected; fi)>44100</option>
+                                           <option value="48000" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOINBR | grep -w 48000)" != "" ]; then echo selected; fi)>48000</option>
+                                    </select>
+                                </div>
+                                <span class="help">
+                                   Above 16000 some filters become inactive
+                                </span>
+                        </div>
+                    </div>
+
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
                             <label class="label">Filter (low filter)</label>
@@ -542,18 +588,52 @@ cat << EOF
                         </div>
                         <div class="field-body">
                             <p class="control">
-                                <input type="checkbox" name="HFEnabled" value="enabled" $(if [ "$(/system/sdcard/bin/setconf -g l)" == "true" ]; then echo checked; fi)/>
+                                <div class="double">
+                                    <input type="checkbox" name="HFEnabled" value="enabled" $(if [ "$(/system/sdcard/bin/setconf -g l)" == "true" ]; then echo checked; fi)/>
+                                </div>
                             </p>
                         </div>
                     </div>
                 </div>
                 <div class="column">
+                     <div class="field is-horizontal">
+                            <div class="field-label is-normal">
+                                <label class="label">Select out sample rate</label>
+                            </div>
+                            <div class="field-body">
+                                <div class="select">
+                                    <select name="audiooutBR">
+                                           <option value="8000"  $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOOUTBR | grep 8000)" != "" ]; then echo selected; fi)>8000</option>
+                                           <option value="16000" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOOUTBR | grep 16000)" != "" ]; then echo selected; fi)>16000</option>
+                                           <option value="24000" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOOUTBR | grep -w 24000)" != "" ]; then echo selected; fi)>24000</option>
+                                           <option value="44100" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOOUTBR | grep -w 44100)" != "" ]; then echo selected; fi)>44100</option>
+                                           <option value="48000" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $AUDIOOUTBR | grep -w 48000)" != "" ]; then echo selected; fi)>48000</option>
+                                    </select>
+                                </div>
+
+                            </div>
+                        </div>
+
                     <div class="field is-horizontal">
                         <div class="field-label is-normal">
                             <label class="label">Volume</label>
                         </div>
                         <input class="slider is-fullwidth" name="audioinVol" step="1" min="-1" max="120" value="$(/system/sdcard/bin/setconf -g h)" type="range">
                     </div>
+                    <br><br>
+                    <div class="field is-horizontal">
+                        <div class="field-label is-normal">
+                            <label class="label">AEC filter</label>
+                        </div>
+                        <div class="field-body">
+                            <p class="control">
+                                <div class="double">
+                                    <input type="checkbox" name="AECEnabled" value="enabled" $(if [ "$(/system/sdcard/bin/setconf -g a)" == "true" ]; then echo checked; fi)/>
+                                </div>
+                            </p>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <p class="control">
