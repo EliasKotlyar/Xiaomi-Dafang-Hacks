@@ -7,7 +7,34 @@
 #tab-content p.is-active {
   display: block;
 }
+#back-to-top {
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 9999;
+    width: 32px;
+    height: 32px;
+    text-align: center;
+    line-height: 30px;
+    background: #f5f5f5;
+    color: #444;
+    cursor: pointer;
+    border: 0;
+    border-radius: 2px;
+    text-decoration: none;
+    transition: opacity 0.2s ease-out;
+    opacity: 0;
+}
+#back-to-top:hover {
+    background: #e9ebec;
+}
+#back-to-top.show {
+    opacity: 1;
+}
+
 </style>
+
+
 <h1 class="is-size-4">logs</h1>
 <div class="tabs is-toggle is-fullwidth" id="tabs">
     <ul>
@@ -43,6 +70,7 @@
         </li>
     </ul>
 </div>
+
 <div id="tab-content">
     <p class="is-active" data-content="1" id="tab1">
 
@@ -58,7 +86,29 @@
     <p data-content="5" id="tab5">
     </p>
 </div>
+<a href="#" id="back-to-top" title="Back to top">&uarr;</a>
 <script type="text/javascript">
+    if ($('#back-to-top').length) {
+        var scrollTrigger = 100, // px
+            backToTop = function () {
+                var scrollTop = $(window).scrollTop();
+                if (scrollTop > scrollTrigger) {
+                    $('#back-to-top').addClass('show');
+                } else {
+                    $('#back-to-top').removeClass('show');
+                }
+            };
+        backToTop();
+        $(window).on('scroll', function () {
+            backToTop();
+        });
+        $('#back-to-top').on('click', function (e) {
+            e.preventDefault();
+            $('html,body').animate({
+                scrollTop: 0
+            }, 700);
+        });
+    }
     $(document).ready(function() {
 
                 jQuery.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {

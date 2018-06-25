@@ -261,6 +261,30 @@
                                     data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=sound-on-startup">
                                 <label for="sound_on_startup">Sound on Startup</label>
                             </span>
+                            <!-- Motion: mail -->
+                            <span class="navbar-item">
+                                <input id="motion_mail" type="checkbox" name="motion_mail" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_mail_on"
+                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mail_off">
+                                <label for="motion_mail">Motion - Send emails</label>
+                            </span>
+                            <!-- Motion: LED -->
+                            <span class="navbar-item">
+                                <input id="motion_led" type="checkbox" name="motion_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_led_on"
+                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_led_off">
+                                <label for="motion_led">Motion - LED</label>
+                            </span>
+                            <!-- Motion: SNAPSHOT -->
+                            <span class="navbar-item">
+                                <input id="motion_snapshot" type="checkbox" name="motion_snapshot" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_snapshot_on"
+                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_snapshot_off">
+                                <label for="motion_snapshot">Motion - Snapshots</label>
+                            </span>
+                            <!-- Motion: MQTT Message -->
+                            <span class="navbar-item">
+                                <input id="motion_mqtt" type="checkbox" name="motion_mqtt" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_on"
+                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_off">
+                                <label for="motion_mqtt">Motion - MQTT Message</label>
+                            </span>
                         </div>
                     </div>
                 </div>
