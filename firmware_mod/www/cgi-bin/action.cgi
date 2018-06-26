@@ -542,9 +542,42 @@ if [ -n "$F_cmd" ]; then
         fi
         return
         ;;
-   *)
-    echo "Unsupported command '$F_cmd'"
-    ;;
+     motion_detection_mail_on)
+         rewrite_config /system/sdcard/config/motion.conf sendemail "true"
+         return
+         ;;
+     motion_detection_mail_off)
+          rewrite_config /system/sdcard/config/motion.conf sendemail "false"
+          return
+          ;;
+     motion_detection_led_on)
+          rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "true"
+          return
+          ;;
+     motion_detection_led_off)
+          rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "false"
+          return
+          ;;
+     motion_detection_snapshot_on)
+          rewrite_config /system/sdcard/config/motion.conf save_snapshot "true"
+          return
+          ;;
+     motion_detection_snapshot_off)
+          rewrite_config /system/sdcard/config/motion.conf save_snapshot "false"
+          return
+          ;;
+     motion_detection_mqtt_on)
+          rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "true"
+          return
+          ;;
+     motion_detection_mqtt_off)
+          rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "false"
+          return
+          ;;
+
+     *)
+        echo "Unsupported command '$F_cmd'"
+        ;;
 
   esac
 fi
