@@ -479,7 +479,6 @@ if [ -n "$F_cmd" ]; then
            audioOutBR = audioinBR
        fi
        if [ "$audioinFormat" == "OPUS" ]; then
-            audioinBR="48000"
             audioOutBR="48000"
        fi
        if [ "$audioinFormat" == "PCM" ]; then
