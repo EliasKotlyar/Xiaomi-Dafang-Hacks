@@ -78,29 +78,40 @@ EOF
 fi
 /system/sdcard/bin/busybox crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
 
-## Start Wifi:
-if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
-  echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
-fi
-MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
-if [ -f /driver/8189es.ko ]; then
-  # Its a DaFang
-  insmod /driver/8189es.ko rtw_initmac="$MAC"
-elif [ -f /driver/8189fs.ko ]; then
-  # Its a XiaoFang T20
-  insmod /driver/8189fs.ko rtw_initmac="$MAC"
-else
-  # Its a Wyzecam V2
-  insmod /driver/rtl8189ftv.ko rtw_initmac="$MAC"
-fi
-wpa_supplicant_status="$(wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
-echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
-
+## Set Hostname
 if [ ! -f $CONFIGPATH/hostname.conf ]; then
   cp $CONFIGPATH/hostname.conf.dist $CONFIGPATH/hostname.conf
 fi
 hostname -F $CONFIGPATH/hostname.conf
-udhcpc_status=$(udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
+
+if [ -f $CONFIGPATH/usb_eth_driver.conf ]; then
+  ## Start USB Ethernet:
+  echo "USB_ETHERNET: Detected USB config. Loading USB Ethernet driver" >> $LOGPATH
+  insmod /system/sdcard/driver/usbnet.ko
+  insmod /system/sdcard/driver/asix.ko
+  ifconfig eth0 up
+  udhcpc_status=$(udhcpc -i eth0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
+else
+  ## Start Wifi:
+  if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
+  echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
+  fi
+  MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
+  if [ -f /driver/8189es.ko ]; then
+    # Its a DaFang
+    insmod /driver/8189es.ko rtw_initmac="$MAC"
+  elif [ -f /driver/8189fs.ko ]; then
+    # Its a XiaoFang T20
+    insmod /driver/8189fs.ko rtw_initmac="$MAC"
+  else
+    # Its a Wyzecam V2
+    insmod /driver/rtl8189ftv.ko rtw_initmac="$MAC"
+  fi
+  wpa_supplicant_status="$(wpa_supplicant -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
+  echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
+  udhcpc_status=$(udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
+fi
+
 echo "udhcpc: $udhcpc_status" >> $LOGPATH
 
 ## Sync the via NTP:
