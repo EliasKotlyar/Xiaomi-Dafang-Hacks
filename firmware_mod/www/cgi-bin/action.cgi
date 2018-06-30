@@ -222,7 +222,6 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     rtsp_stop)
-      /system/sdcard/controlscripts/rtsp-h264-with-segmentation stop
       /system/sdcard/controlscripts/rtsp-mjpeg stop
       /system/sdcard/controlscripts/rtsp-h264 stop
     ;;
