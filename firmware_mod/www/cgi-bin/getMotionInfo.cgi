@@ -34,7 +34,7 @@ then
     motion_timeout=60
 fi
 
-process=`ps -wl| grep v4l2rtspserver-master | grep -v grep`
+process=`ps -l| grep v4l2rtspserver-master | grep -v grep`
 w=`echo ${process}| awk -F '-W' '{print $2}' | awk '{print $1}'`
 if [ "${w}X" == "X" ]
 then
