@@ -178,8 +178,9 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     motor_calibrate)
+      # Current motor driver does not differentiate between horizontal and vertical calibration
       /system/sdcard/bin/motor -d h -s 100
-      /system/sdcard/bin/motor -d v -s 100
+      # /system/sdcard/bin/motor -d v -s 100
     ;;
     
     motor_PTZ)
