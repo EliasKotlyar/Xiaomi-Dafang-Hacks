@@ -12,3 +12,4 @@ firmware_mod/scripts/* text eol=lf
 firmware_mod/config/autostart/* text eol=lf
 firmware_mod/root/.profile text eol=lf
 firmware_mod/root/.busybox_aliases text eol=lf
+firmware_mod/etc/* text eol=lf
