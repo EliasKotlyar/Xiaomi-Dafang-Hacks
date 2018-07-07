@@ -3,7 +3,7 @@
 *.conf text eol=lf
 *.conf.dist text eol=lf
 *.cgi text eol=lf
-lighttpd.user text eol=lf
+firmware_mod/config/lighttpd.user text eol=lf
 firmware_mod/bin/curl text eol=lf
 firmware_mod/bin/mosquitto_pub text eol=lf
 firmware_mod/bin/mosquitto_pub text eol=lf
@@ -12,3 +12,4 @@ firmware_mod/scripts/* text eol=lf
 firmware_mod/config/autostart/* text eol=lf
 firmware_mod/root/.profile text eol=lf
 firmware_mod/root/.busybox_aliases text eol=lf
+firmware_mod/etc/* text eol=lf
