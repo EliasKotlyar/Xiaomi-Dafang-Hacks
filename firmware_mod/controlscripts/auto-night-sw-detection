@@ -1,0 +1,45 @@
+#!/bin/sh
+PIDFILE="/run/auto-night-sw-detection.pid"
+CONF_FILE="/system/sdcard/config/autonight.conf"
+
+status()
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+  fi
+}
+
+start()
+{
+  AUTONIGHT_OPTS=
+  if [ -f $CONF_FILE ]
+  then
+        AUTONIGHT_OPTS=$(cat $CONF_FILE)
+  fi
+  if [ -f /run/auto-night-detection.pid ]; then
+    echo "Auto Night Detection S/W already running";
+  else
+    echo "Starting Auto Night Detection S/W"
+    /system/sdcard/bin/busybox nohup /system/sdcard/scripts/ldrSW.sh $AUTONIGHT_OPTS &>/dev/null &
+    echo "$!" > "$PIDFILE"
+  fi
+}
+
+stop()
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+     kill "$pid" && rm "$PIDFILE"
+  fi
+}
+
+if [ $# -eq 0 ]; then
+  start
+else
+  case $1 in start|stop|status)
+    $1
+    ;;
+  esac
+fi
+

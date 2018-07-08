@@ -193,12 +193,20 @@ cat << EOF
     <div class='card-content'>
         <div class="columns">
         <div class="column">
+            <label>H/W switch</label>
             <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_start')">On</button>
             <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_stop')">Off</button>
         </div>
         <div class="column">
+            <label>S/W switch</label>
+            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=auto_night_sw__mode_start')">On</button>
+            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=auto_night_sw_mode_stop')">Off</button>
+        </div>
+        </div>
+        <div class="columns">
+        <div class="column">
         <form id="formldr" action="cgi-bin/action.cgi?cmd=setldravg" method="post">
-            <p>Use average measurement on switching.</p>
+            <p>Use average measurement on switching. (S/W method only) </p>
             <label class="label">Number of measurements</label>
             <div class="field is-grouped">
                 <div class="control">
@@ -214,10 +222,26 @@ cat << EOF
                         </select>
                     </div>
                 </div>
+
+
+                <label class="label">Threshold for night switch</label>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" id="nightswitch" name="nightswitch" type="text" size="5" value=$(source /system/sdcard/config/ldr-average.conf; echo $NIGHTHIGH) />
+                    </div>
+                </div>
+
+                <label class="label">Threshold for day switch</label>
+                <div class="field">
+                    <div class="control">
+                        <input class="input" id="dayswitch" name="dayswitch" type="text" size="5" value=$(source /system/sdcard/config/ldr-average.conf; echo $DAYLOW) />
+                    </div>
+                </div>
+            </div>
                 <p class="control">
                     <input id="ldrSubmit" class="button is-primary" type="submit" value="Set" />
                 </p>
-            </div>
+
         </form>
         </div>
         </div>

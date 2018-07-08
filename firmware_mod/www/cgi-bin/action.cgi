@@ -318,7 +318,17 @@ if [ -n "$F_cmd" ]; then
     setldravg)
       ldravg=$(printf '%b' "${F_avg/%/\\x}")
       ldravg=$(echo "$ldravg" | sed "s/[^0-9]//g")
+
+      nightswitch=$(printf '%b' "${F_nightswitch/%/\\x}")
+      nightswitch=$(echo "$nightswitch" | sed "s/[^0-9]//g")
+
+      dayswitch=$(printf '%b' "${F_dayswitch/%/\\x}")
+      dayswitch=$(echo "$dayswitch" | sed "s/[^0-9]//g")
+
       echo AVG="$ldravg" > /system/sdcard/config/ldr-average.conf
+      echo DAYLOW="$dayswitch" >> /system/sdcard/config/ldr-average.conf
+      echo NIGHTHIGH="$nightswitch" >> /system/sdcard/config/ldr-average.conf
+      echo TIME=5 >> /system/sdcard/config/ldr-average.conf
       echo "Average set to $ldravg iterations."
       return
     ;;
