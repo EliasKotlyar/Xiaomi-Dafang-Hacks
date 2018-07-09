@@ -129,7 +129,9 @@ $(document).ready(function() {
     b.toggleClass('is-loading');
     b.prop('disabled', !b.prop('disabled'));
     var formData = {
-      'avg': $('select[name=avg]').val()
+      'avg': $('select[name=avg]').val(),
+      'nightswitch': $('input[name=nightswitch]').val(),
+      'dayswitch': $('input[name=dayswitch]').val(),
     };
     $.ajax({
       type: 'POST',
