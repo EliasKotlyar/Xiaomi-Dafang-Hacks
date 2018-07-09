@@ -13,6 +13,7 @@ If you get the command prompt you can continue and try to re-flash the camera.
 - Execute the following commands:
 ```
 fatload mmc 0:1 0x80600000 demo.bin 0xa8ffc0 0x40
+sf probe
 sf update 0x80600000 0x40000 0xa90000
 reset
 ```
