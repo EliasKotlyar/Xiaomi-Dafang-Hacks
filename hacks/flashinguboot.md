@@ -1,6 +1,6 @@
 # Flashing an Open-Source U-Boot
 
-##Everything that you are doing is at your own risk. Please do not try to use this, unless you can accept a hardbrick! Its highly recommended to avoid this on new hardware.
+## Everything that you are doing is at your own risk. Please do not try to use this, unless you can accept a hardbrick! Its highly recommended to avoid this on new hardware.
 
 
 ## What benefits does this mod have?
