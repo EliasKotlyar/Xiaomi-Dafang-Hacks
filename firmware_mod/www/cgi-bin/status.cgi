@@ -391,11 +391,11 @@ cat << EOF
                         <div class="control">
                             <div class="select">
                                 <select name="video_size">
-                                <option value="-W640 -H360" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 640)" != "" ]; then echo selected; fi)>640x360</option>
-                                <option value="-W960 -H540" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 960)" != "" ]; then echo selected; fi)>960x540</option>
-                                <option value="-W1280 -H720" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1280)" != "" ]; then echo selected; fi)>1280x720</option>
-                                <option value="-W1600 -H900" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1600)" != "" ]; then echo selected; fi)>1600x900</option>
-                                <option value="-W1920 -H1080" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep 1920)" != "" ]; then echo selected; fi)>1920x1080</option>
+                                <option value="-W640 -H360" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W640')" != "" ]; then echo selected; fi)>640x360</option>
+                                <option value="-W960 -H540" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W960')" != "" ]; then echo selected; fi)>960x540</option>
+                                <option value="-W1280 -H720" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W1280')" != "" ]; then echo selected; fi)>1280x720</option>
+                                <option value="-W1600 -H900" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W1600')" != "" ]; then echo selected; fi)>1600x900</option>
+                                <option value="-W1920 -H1080" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W1920')" != "" ]; then echo selected; fi)>1920x1080</option>
                                 </select>
                             </div>
                         </div>
