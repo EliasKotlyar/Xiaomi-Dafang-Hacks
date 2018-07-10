@@ -8,7 +8,7 @@
 1. You can use H264 FullHD Streaming(1920x1080)
 2. You can boot your own kernel/rootfs/whatever from MicroSD
 3. You can change your kernel boot-parameters(uEnv.txt)
-4. You can flash your nand using this kernel
+4. You can flash your nand using this bootloader
 5. It should work on nearly all T20 based Devices.
 6. The parameters could be changed trough fw_printenv
 1. Completely Open-Source - Check the source here: https://github.com/Dafang-Hacks/uboot
