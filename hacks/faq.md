@@ -21,6 +21,12 @@ Yes, you can. However there is no need to revert it back. If your SD-Card does n
 ### Is it possible to run the CFW without a microsd?
 No that's not possible. It can be done, but there will be a lot of trouble in doing this.
 
+## Can i have FULLHD?
+
+Yes, you can flash a custom bootloader to achieve this. 
+
+[Custom Bootloader Installation](/hacks/flashinguboot.md)
+
 ## Which Features does the CFW contain?
 - Full working RTSP with H264/MJPEG. Based on https://github.com/mpromonet/v4l2rtspserver
 - SSH-Server(dropbear) with username: root password: ismart12

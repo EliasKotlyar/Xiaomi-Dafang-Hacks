@@ -58,6 +58,7 @@ If you already have a current custom firmware with custom bootloader installed, 
 3. Put everything from "firmware_mod" folder into the **root** of the microSD
 4. Copy the backed up wpa_supplicant.conf from step 1 back into the config folder
 
+
 ## Uninstallation
 
 Remove the "run.sh" file from microSD.
