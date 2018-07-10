@@ -344,7 +344,7 @@ cat << EOF
                             </div>
                             <div class="field">
                                 <div class="control">
-                                    <input class="input" id="videouser" name="videouser" type="text" size="12" value=$(source /system/sdcard/config/rtspserver.conf; echo $USERNAME) />
+                                    <input class="input" id="videouser" name="videouser" type="text" size="12" value="$(source /system/sdcard/config/rtspserver.conf; echo $USERNAME)" />
                                 </div>
                             </div>
                         </div>
@@ -357,7 +357,7 @@ cat << EOF
                         </div>
                         <div class="field">
                             <div class="control">
-                                <input class="input" id="videopassword" name="videopassword" type="password" size="12" value=$(source /system/sdcard/config/rtspserver.conf; echo $USERPASSWORD) />
+                                <input class="input" id="videopassword" name="videopassword" type="password" size="12" value="$(source /system/sdcard/config/rtspserver.conf; echo $USERPASSWORD)" />
                             </div>
                         </div>
                     </div>
