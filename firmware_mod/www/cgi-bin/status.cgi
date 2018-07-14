@@ -239,16 +239,22 @@ cat << EOF
         </div>
 
         <div class="column">
-            <label>Flip</label>
-            <div class="buttons">
-            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=flip-on')">On</button>
-            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=flip-off')">Off</button>
-            </div>
+        <br>
+        <div class="field is-horizontal">
+          <div class="field">
+            <input class="switch" name="flip" id="flip" type="checkbox" $(if [ "$(/system/sdcard/bin/setconf -g f)" == 1 ]; then echo "checked";  fi) >
+            <label for="flip">Image flip</label>
+          </div>
+
+         </div>
+
+
         </div>
 
         </div>
     </div>
 </div>
+
 
 <!-- Motor -->
 <div class='card status_card'>
@@ -414,7 +420,7 @@ cat << EOF
                                 0 = FixedQp, 1 = CBR, 2 = VBR, 3 = SMART
                                 <option value="0" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 0)" != "" ]; then echo selected; fi)>FixedQp</option>
                                 <option value="1" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 1)" != "" ]; then echo selected; fi)>CBR</option>
-                                <option value="2" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 2)" != "" ]; then echo selected; fi)>VBR</option>
+                                <option value="2" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 2)" != "" ] || [ -z $VIDEOFORMAT ] ; then echo selected; fi)>VBR</option>
                                 <option value="3" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 3)" != "" ]; then echo selected; fi)>SMART</option>
                                 </select>
                             </div>
