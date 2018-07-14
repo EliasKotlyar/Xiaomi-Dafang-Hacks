@@ -77,6 +77,13 @@ start()
         PORT="-P $PORT"
     fi
 
+    ## FLIP
+    if [ "$FLIP" == "ON" ]; then
+        /system/sdcard/bin/setconf -k f -v 1
+    elif [ "$FLIP" == "OFF" ]; then
+        /system/sdcard/bin/setconf -k f -v 0
+    fi
+
     echo "================== START ===============" >> "$LOGPATH"
     echo "/system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT" >> "$LOGPATH"
     /system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT 2>> "$LOGPATH" >> "$LOGPATH" &
