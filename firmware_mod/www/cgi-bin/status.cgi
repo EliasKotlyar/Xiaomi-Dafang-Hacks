@@ -239,16 +239,22 @@ cat << EOF
         </div>
 
         <div class="column">
-            <label>Flip</label>
-            <div class="buttons">
-            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=flip-on')">On</button>
-            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=flip-off')">Off</button>
-            </div>
+        <br>
+        <div class="field is-horizontal">
+          <div class="field">
+            <input class="switch" name="flip" id="flip" type="checkbox" $(if [ "$(/system/sdcard/bin/setconf -g f)" == 1 ]; then echo "checked";  fi) >
+            <label for="flip">Image flip</label>
+          </div>
+
+         </div>
+
+
         </div>
 
         </div>
     </div>
 </div>
+
 
 <!-- Motor -->
 <div class='card status_card'>
