@@ -27,6 +27,8 @@ BITRATE=5000
 # Framerate
 FRAMERATE_DEN=1
 FRAMERATE_NUM=25
+# Video format: (0 = FixedQp, 1 = CBR, 2 = VBR, 3 = SMART, default = 2)
+VIDEOFORMAT=2
 
 # AudioFormat
 # Can be: OPUS | MP3 | PCM | PCMU
