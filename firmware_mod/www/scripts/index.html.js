@@ -213,6 +213,5 @@ function setTheme(c) {
 }
 
 function getThemeChoice() {
-    var c = getCookie('theme');
-    return c;
+    return getCookie('theme');
 }
