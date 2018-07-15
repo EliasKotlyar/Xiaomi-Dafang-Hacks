@@ -1,7 +1,8 @@
 $(document).ready(function () {
 
     $("button.script_action_stop").click(function () {
-        var e = $(this); console.log(e.prop("disabled"));
+        var e = $(this);
+        console.log(e.prop("disabled"));
         if (!e.prop("disabled")) {
             e.prop("disabled", !e.prop("disabled"));
             e.addClass("is-loading");
@@ -14,7 +15,8 @@ $(document).ready(function () {
     });
 
     $("button.script_action_start").click(function () {
-        var e = $(this); console.log(e.prop("disabled"));
+        var e = $(this);
+        console.log(e.prop("disabled"));
         if (!e.prop("disabled")) {
             e.prop("disabled", !e.prop("disabled"));
             e.addClass("is-loading");
@@ -32,14 +34,14 @@ $(document).ready(function () {
         if (e.prop("checked")) {
             $.get(e.data("checked")).done(function (res) {
                 e.prop("disabled", false);
-                if (res.status == "ok") {
+                if (res.status === "ok") {
                     e.prop("checked", !e.prop("checked"));
                 }
             });
         } else {
             $.get(e.data("unchecked")).done(function (res) {
                 e.prop("disabled", false);
-                if (res.status == "ok") {
+                if (res.status === "ok") {
                     e.prop("checked", !e.prop("checked"));
                 }
             });

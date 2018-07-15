@@ -1,36 +1,39 @@
 <!-- Use http://odyniec.net/projects/imgareaselect/ -->
 <style id="custom_css">
     #tab-content p {
-  display: none;
-}
+        display: none;
+    }
 
-#tab-content p.is-active {
-  display: block;
-}
-#back-to-top {
-    position: fixed;
-    bottom: 40px;
-    right: 40px;
-    z-index: 9999;
-    width: 32px;
-    height: 32px;
-    text-align: center;
-    line-height: 30px;
-    background: #f5f5f5;
-    color: #444;
-    cursor: pointer;
-    border: 0;
-    border-radius: 2px;
-    text-decoration: none;
-    transition: opacity 0.2s ease-out;
-    opacity: 0;
-}
-#back-to-top:hover {
-    background: #e9ebec;
-}
-#back-to-top.show {
-    opacity: 1;
-}
+    #tab-content p.is-active {
+        display: block;
+    }
+
+    #back-to-top {
+        position: fixed;
+        bottom: 40px;
+        right: 40px;
+        z-index: 9999;
+        width: 32px;
+        height: 32px;
+        text-align: center;
+        line-height: 30px;
+        background: #f5f5f5;
+        color: #444;
+        cursor: pointer;
+        border: 0;
+        border-radius: 2px;
+        text-decoration: none;
+        transition: opacity 0.2s ease-out;
+        opacity: 0;
+    }
+
+    #back-to-top:hover {
+        background: #e9ebec;
+    }
+
+    #back-to-top.show {
+        opacity: 1;
+    }
 
 </style>
 
@@ -109,73 +112,73 @@
             }, 700);
         });
     }
-    $(document).ready(function() {
+    $(document).ready(function () {
 
-                jQuery.fn.single_double_click = function(single_click_callback, double_click_callback, timeout) {
-                    return this.each(function() {
-                        var clicks = 0,
-                            self = this;
-                        jQuery(this).click(function(event) {
-                            clicks++;
-                            if (clicks == 1) {
-                                setTimeout(function() {
-                                    if (clicks == 1) {
-                                        single_click_callback.call(self, event);
-                                    } else {
-                                        double_click_callback.call(self, event);
-                                    }
-                                    clicks = 0;
-                                }, timeout || 300);
+        jQuery.fn.single_double_click = function (single_click_callback, double_click_callback, timeout) {
+            return this.each(function () {
+                var clicks = 0,
+                    self = this;
+                jQuery(this).click(function (event) {
+                    clicks++;
+                    if (clicks === 1) {
+                        setTimeout(function () {
+                            if (clicks === 1) {
+                                single_click_callback.call(self, event);
+                            } else {
+                                double_click_callback.call(self, event);
                             }
-                        });
-                    });
-                }
+                            clicks = 0;
+                        }, timeout || 300);
+                    }
+                });
+            });
+        };
+        $.ajax({
+            'url': 'cgi-bin/action.cgi?cmd=showlog',
+        }).done(function (log) {
+            $('#tab1').html(log);
+
+            $('#tabs li').single_double_click(function () {
+                var tab = $(this).data('tab');
+                var str = "logname=" + tab;
+                console.log("Print:" + str);
                 $.ajax({
                     'url': 'cgi-bin/action.cgi?cmd=showlog',
-                }).done(function(log) {
-                    $('#tab1').html(log);
+                    'type': 'POST',
+                    'data': str
+                    //logname=$('#tab-content p').id
+                }).done(function (log) {
+                    $('#tab-content p').html(log);
 
-                    $('#tabs li').single_double_click(function() {
-                        var tab = $(this).data('tab');
-                        var str = "logname=" + tab
-                        console.log("Print:"+str);
-                        $.ajax({
-                            'url': 'cgi-bin/action.cgi?cmd=showlog',
-                            'type': 'POST',
-                            'data': str
-                            //logname=$('#tab-content p').id
-                        }).done(function(log) {
-                            $('#tab-content p').html(log);
-
-                        });
-
-
-                        $('#tabs li').removeClass('is-active');
-                        $(this).addClass('is-active');
-
-                        $('#tab-content p').removeClass('is-active');
-                        $('p[data-content="' + tab + '"]').addClass('is-active');
-                    }, function() {
-                        var tab = $(this).data('tab');
-                        var str = "logname=" + tab
-                        console.log("Clear:"+str);
-                        $.ajax({
-                            'url': 'cgi-bin/action.cgi?cmd=clearlog',
-                            'type': 'POST',
-                            'data': str
-                            //logname=$('#tab-content p').id
-                        }).done(function(log) {
-                            $('#tab-content p').html(log);
-                        });
-
-
-                        $('#tabs li').removeClass('is-active');
-                        $(this).addClass('is-active');
-
-                        $('#tab-content p').removeClass('is-active');
-                        $('p[data-content="' + tab + '"]').addClass('is-active');
-
-                    });
                 });
+
+
+                $('#tabs li').removeClass('is-active');
+                $(this).addClass('is-active');
+
+                $('#tab-content p').removeClass('is-active');
+                $('p[data-content="' + tab + '"]').addClass('is-active');
+            }, function () {
+                var tab = $(this).data('tab');
+                var str = "logname=" + tab;
+                console.log("Clear:" + str);
+                $.ajax({
+                    'url': 'cgi-bin/action.cgi?cmd=clearlog',
+                    'type': 'POST',
+                    'data': str
+                    //logname=$('#tab-content p').id
+                }).done(function (log) {
+                    $('#tab-content p').html(log);
+                });
+
+
+                $('#tabs li').removeClass('is-active');
+                $(this).addClass('is-active');
+
+                $('#tab-content p').removeClass('is-active');
+                $('p[data-content="' + tab + '"]').addClass('is-active');
+
+            });
+        });
     });
 </script>
