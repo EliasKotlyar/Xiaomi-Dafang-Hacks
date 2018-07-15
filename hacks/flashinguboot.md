@@ -61,6 +61,11 @@ to
 
 mem=87M@0x0 ispmem=9M@0x5700000 rmem=32M@0x6000000
  
+ 
+Check if its being applied using the following command:
+
+[root@DafangHacks:~]# cat /proc/cmdline
+
 
 ## My camera dont boot at all
 /I have failed flashing it - what now?
