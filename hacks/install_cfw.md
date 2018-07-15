@@ -23,7 +23,7 @@
 ## Installation of the new Firmware
 
 1. Clone the repository from github. If you are on windows download the repository as zip file.
-2. Copy everything from "firmware_mod" folder into the **root** of the microSD
+2. Copy everything from `firmware_mod/` folder into the **root** of the microSD
 
 It should look like this:
 ```
@@ -36,8 +36,8 @@ E:/
 
 ```
 
-3. Copy config/wpa_supplicant.conf.dist to config/wpa_supplicant.conf
-4. Modify the file config/wpa_supplicant.conf on the microSD to match your wifi-settings
+3. Copy `config/wpa_supplicant.conf.dist` to `config/wpa_supplicant.conf`
+4. Modify the file `config/wpa_supplicant.conf` on the microSD to match your wifi-settings
 5. Insert the microSD and start the camera.
 
 ## Updating the microsd-bootloader
@@ -53,10 +53,10 @@ If you are on original Firmware 5.5.200 and update to 5.5.243, the bootloader wo
 
 If you already have a current custom firmware with custom bootloader installed, you only need to update the content of the microSD
 
-1. Backup your wpa_config/wpa_supplicant.conf
+1. Backup your `config/wpa_supplicant.conf`
 2. Remove all files from the microSD
-3. Put everything from "firmware_mod" folder into the **root** of the microSD
-4. Copy the backed up wpa_supplicant.conf from step 1 back into the config folder
+3. Put everything from `firmware_mod/` folder into the **root** of the microSD
+4. Copy the backed up wpa_supplicant.conf from step 1 back into the `config/` folder
 
 
 ## Uninstallation
