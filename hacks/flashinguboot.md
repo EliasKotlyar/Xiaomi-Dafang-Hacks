@@ -11,7 +11,8 @@
 4. You can flash your nand using this bootloader
 5. It should work on nearly all T20 based Devices.
 6. The parameters could be changed trough fw_printenv
-1. Completely Open-Source - Check the source here: https://github.com/Dafang-Hacks/uboot
+7. Completely Open-Source - Check the source here: https://github.com/Dafang-Hacks/uboot
+8. You can boot a completely open source kernel with it.
 
 ## What are the disadvantages?
 1. Its not stock - maybe some optimisations to specific devices are missing
@@ -36,8 +37,33 @@ flash back your NAND. However, you can still use serial and/or microsd.
 ```
 /system/sdcard/uboot-flash/flash_original_dafang.sh
 ```
+## Verifying the U-Boot-Loader 
+1. Rename the uEnv.bootfromnand.txt to uEnv.txt
+2. Boot your camera
 
-## My camera dont boot/I have failed flashing it - what now?
+The bootloader is configured to enable the blue-led if it takes the configuration from the uEnv.txt as soon as it boots up.
+Take a look at your LED when it first turns on.
+
+If it turns yellow -> The normal configuration is being taken
+
+If it turns blue -> Custom Configuration from uEnv.txt is being taken.
+
+If its not turning blue despite that you have a uEnv.txt on your microsd - try to format it as FAT16 and try again
+
+
+## Turning on FULLHD:
+
+Open up the uEnv.txt file and change the "boot-line" from
+
+mem=104M@0x0 ispmem=8M@0x6800000 rmem=16M@0x7000000
+
+to
+
+mem=87M@0x0 ispmem=9M@0x5700000 rmem=32M@0x6000000
+ 
+
+## My camera dont boot at all
+/I have failed flashing it - what now?
 You will need to solder your chip out, reflash it and solder it back.
 Here are infos about how to do it:
 https://github.com/Dafang-Hacks/spiflasher
