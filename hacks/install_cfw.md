@@ -11,7 +11,7 @@
 
 
 2. Format your microSD to FAT32. NTFS, EXFAT etc. won't work.
-3. Copy the CFW-Binary from step 1 to the formated microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
+3. Copy the CFW-Binary from step 1 to the formatted microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
 4. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
 5. Hold down the setup button on the Dafang camera while
 6. Plugging in the USB power cable
@@ -23,7 +23,7 @@
 ## Installation of the new Firmware
 
 1. Clone the repository from github. If you are on windows download the repository as zip file.
-2. Copy everything from "firmware_mod" folder into the **root** of the microSD
+2. Copy everything from `firmware_mod/` folder into the **root** of the microSD
 
 It should look like this:
 ```
@@ -36,13 +36,13 @@ E:/
 
 ```
 
-3. Copy config/wpa_supplicant.conf.dist to config/wpa_supplicant.conf
-4. Modify the file config/wpa_supplicant.conf on the microSD to match your wifi-settings
+3. Copy `config/wpa_supplicant.conf.dist` to `config/wpa_supplicant.conf`
+4. Modify the file `config/wpa_supplicant.conf` on the microSD to match your wifi-settings
 5. Insert the microSD and start the camera.
 
 ## Updating the microsd-bootloader
 
-Usually, its not required to update the microsd-bootloader. However, if you are using the original Firmware, you may be interessted in the new Version.
+Usually, its not required to update the microsd-bootloader. However, if you are using the original Firmware, you may be interested in the new Version.
 You can just update trough the MI-Home App.
 
 If you are on original Firmware below 5.5.200, you will have to "reflash" the microsd-bootloader afterwards
@@ -53,10 +53,10 @@ If you are on original Firmware 5.5.200 and update to 5.5.243, the bootloader wo
 
 If you already have a current custom firmware with custom bootloader installed, you only need to update the content of the microSD
 
-1. Backup your wpa_config/wpa_supplicant.conf
+1. Backup your `config/wpa_supplicant.conf`
 2. Remove all files from the microSD
-3. Put everything from "firmware_mod" folder into the **root** of the microSD
-4. Copy the backed up wpa_supplicant.conf from step 1 back into the config folder
+3. Put everything from `firmware_mod/` folder into the **root** of the microSD
+4. Copy the backed up wpa_supplicant.conf from step 1 back into the `config/` folder
 
 
 ## Uninstallation
@@ -75,8 +75,8 @@ ctrl_interface_group=0
 ap_scan=1
 
 network={
-	ssid="enteryourssidherebutrememebertokeepthequotes"
-	psk="enteryourpasswordherebutremembertokeepthequotes"
+    ssid="enteryourssidherebutrememebertokeepthequotes"
+    psk="enteryourpasswordherebutremembertokeepthequotes"
   key_mgmt=WPA-PSK
 }
 ```

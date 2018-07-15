@@ -37,7 +37,7 @@ flash back your NAND. However, you can still use serial and/or microsd.
 /system/sdcard/uboot-flash/flash_original_dafang.sh
 ```
 
-## My camera dont boot/I have failed flashing it - what now?
+## My camera don't boot/I have failed flashing it - what now?
 You will need to solder your chip out, reflash it and solder it back.
-Here are infos about how to do it:
+Here is the info about how to do it:
 https://github.com/Dafang-Hacks/spiflasher

@@ -38,9 +38,9 @@ ${BODY}
 "
 for i in $(seq 1 ${NUMBEROFPICTURES})
 do
-	# now loop over
-	# and produce the corresponding part,
-	printf '%s\n' "--${boundary}
+    # now loop over
+    # and produce the corresponding part,
+    printf '%s\n' "--${boundary}
 Content-Type: image/jpeg
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename=\"${FILENAME}${i}.jpg\"
@@ -56,10 +56,10 @@ Content-Disposition: attachment; filename=\"${FILENAME}${i}.jpg\"
 
     echo
 
-	if [ ${i} -lt ${NUMBEROFPICTURES} ]
-	then
-		sleep ${TIMEBETWEENSNAPSHOT}
-	fi
+    if [ ${i} -lt ${NUMBEROFPICTURES} ]
+    then
+        sleep ${TIMEBETWEENSNAPSHOT}
+    fi
 done
 
 # print last boundary with closing --

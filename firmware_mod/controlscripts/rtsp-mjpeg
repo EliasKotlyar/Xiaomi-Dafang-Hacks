@@ -64,7 +64,7 @@ start()
 
     ## Video format
     if [ "$VIDEOFORMAT" != "" ]; then
-	    VIDEOFORMAT="-r $VIDEOFORMAT"
+        VIDEOFORMAT="-r $VIDEOFORMAT"
     fi
 
     ## UserName and password

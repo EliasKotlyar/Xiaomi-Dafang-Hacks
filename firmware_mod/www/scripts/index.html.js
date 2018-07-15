@@ -3,7 +3,7 @@ var SWITCHES = [
     "rtsp_h264", "rtsp_mjpeg", "auto_night_detection",
     "mqtt_status", "mqtt_control",
     "sound_on_startup", "motion_detection", "motion_mail",
-    "motion_led","motion_snapshot","motion_mqtt"];
+    "motion_led", "motion_snapshot", "motion_mqtt"];
 
 var timeoutJobs = {};
 
@@ -11,12 +11,14 @@ function refreshLiveImage() {
     var ts = new Date().getTime();
     $("#liveview").attr("src", "cgi-bin/currentpic.cgi?" + ts);
 }
+
 function scheduleRefreshLiveImage(interval) {
-    if (timeoutJobs['refreshLiveImage'] != undefined) {
-        clearTimeout(timeoutJobs['refreshLiveImage']);
+    if (timeoutJobs.refreshLiveImage !== undefined) {
+        clearTimeout(timeoutJobs.refreshLiveImage);
     }
-    timeoutJobs['refreshLiveImage'] = setTimeout(refreshLiveImage, interval);
+    timeoutJobs.refreshLiveImage = setTimeout(refreshLiveImage, interval);
 }
+
 function syncSwitch(sw) {
     var e = $('#' + sw);
     if (!e.prop('disabled')) {
@@ -24,13 +26,14 @@ function syncSwitch(sw) {
             cmd: sw
         }).done(function (status) {
             // console.log(sw + " status " + status + " / current " + e.prop('checked'));
-            e.prop('checked', (status.trim().toLowerCase() == "on"));
+            e.prop('checked', (status.trim().toLowerCase() === "on"));
         });
     }
 }
+
 function syncSwitches() {
     for (var i in SWITCHES) {
-        if (timeoutJobs[SWITCHES[i]] != undefined) {
+        if (timeoutJobs[SWITCHES[i]] !== undefined) {
             clearTimeout(timeoutJobs[SWITCHES[i]]);
         }
         syncSwitch(SWITCHES[i]);
@@ -47,7 +50,9 @@ function showResult(txt) {
     v.html(txt);
     qv.toggleClass("is-active");
     // auto close after 2.5 seconds
-    setTimeout(function () { $("#quickViewClose").click(); }, 2500);
+    setTimeout(function () {
+        $("#quickViewClose").click();
+    }, 2500);
 }
 
 $(document).ready(function () {
@@ -94,7 +99,7 @@ $(document).ready(function () {
         $.get("cgi-bin/state.cgi", {
             cmd: e.attr('id')
         }).done(function (status) {
-            if (status.trim().toLowerCase() == "on") {
+            if (status.trim().toLowerCase() === "on") {
                 $.get(e.data('unchecked')).done(function (data) {
                     e.prop('checked', false);
                 });
@@ -108,7 +113,7 @@ $(document).ready(function () {
     });
 
     // Initial syncing of switches
-    timeoutJobs['syncSwitches'] = setTimeout(syncSwitches, 10);
+    timeoutJobs.syncSwitches = setTimeout(syncSwitches, 10);
     $('#camcontrol_link').hover(function () {
         // for desktop
         var e = $(this);
@@ -117,11 +122,13 @@ $(document).ready(function () {
             return;
         }
         // refresh switches on hover over Camera Controls menu
-        if (timeoutJobs['syncSwitches'] != undefined) {
-            clearTimeout(timeoutJobs['syncSwitches']);
+        if (timeoutJobs.syncSwitches !== undefined) {
+            clearTimeout(timeoutJobs.syncSwitches);
         }
-        timeoutJobs['syncSwitches'] = setTimeout(syncSwitches, 10);
-    }, function () { $(this).toggleClass('is-active'); });
+        timeoutJobs.syncSwitches = setTimeout(syncSwitches, 10);
+    }, function () {
+        $(this).toggleClass('is-active');
+    });
 
     // Hookup navbar burger for mobile
     $('#navbar_burger').click(function () {
@@ -134,10 +141,10 @@ $(document).ready(function () {
             return;
         }
         // refresh switches on burger is tapped
-        if (timeoutJobs['syncSwitches'] != undefined) {
-            clearTimeout(timeoutJobs['syncSwitches']);
+        if (timeoutJobs.syncSwitches !== undefined) {
+            clearTimeout(timeoutJobs.syncSwitches);
         }
-        timeoutJobs['syncSwitches'] = setTimeout(syncSwitches, 10);
+        timeoutJobs.syncSwitches = setTimeout(syncSwitches, 10);
     });
 
     // Close action for quickview
@@ -146,7 +153,7 @@ $(document).ready(function () {
     });
 
     // Use the hash for direct linking
-    if (document.location.hash != "") {
+    if (document.location.hash !== "") {
         $(document.location.hash).click();
     }
 
@@ -159,19 +166,23 @@ $(document).ready(function () {
 function setCookie(name, value) {
     document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + "; path=/";
 }
+
 // get theme cookie
 function getCookie(name) {
     var nameEQ = encodeURIComponent(name) + "=";
     var ca = document.cookie.split(';');
     for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0) === ' ')
+        while (c.charAt(0) === ' ') {
             c = c.substring(1, c.length);
-        if (c.indexOf(nameEQ) === 0)
-            return decodeURIComponent(c.substring(nameEQ.length, c.length));
+            if (c.indexOf(nameEQ) === 0) {
+                return decodeURIComponent(c.substring(nameEQ.length, c.length));
+            }
+        }
     }
     return null;
 }
+
 function setTheme(c) {
     if (!c) {
         return;
@@ -195,12 +206,12 @@ function setTheme(c) {
 
         // reapply the custom css
         var customCss = $('#custom_css').clone();
-        $('#custom_css').remove()
+        $('#custom_css').remove();
         $('head').append(customCss);
         setCookie('theme', c);
     }
 }
+
 function getThemeChoice() {
-    var c = getCookie('theme');
-    return c;
+    return getCookie('theme');
 }

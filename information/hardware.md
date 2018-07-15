@@ -1,6 +1,6 @@
-## Infos
+## Info
 
-## Hardware infos 
+## Hardware info 
 Main Processor:
 [Ingenic T20](ftp://ftp.ingenic.com/SOC/T20/T20_PB.PDF)
 

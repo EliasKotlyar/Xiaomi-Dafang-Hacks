@@ -38,19 +38,19 @@ get_steps(){
 }
 
 move(){
-	# Differentiate the coordinates and calculate the number
-	# of steps to reach the specified coordinates.
-	if [[ "$1" = "X" ]];then 
-		grep_text="x_steps"
-		opt="r|l"
-		text="Right|Left"
-	else
-		grep_text="y_steps"
-		opt="u|d"
-		text="Up|Down"
-	fi
-	SRC_STEPS=$(get_steps $grep_text)
-	DST_STEPS=$2
+    # Differentiate the coordinates and calculate the number
+    # of steps to reach the specified coordinates.
+    if [[ "$1" = "X" ]];then
+        grep_text="x_steps"
+        opt="r|l"
+        text="Right|Left"
+    else
+        grep_text="y_steps"
+        opt="u|d"
+        text="Up|Down"
+    fi
+    SRC_STEPS=$(get_steps $grep_text)
+    DST_STEPS=$2
     STEPS=$(awk -v a="$DST_STEPS" -v b="$SRC_STEPS" 'BEGIN{printf ("%d",a-b)}')
 
     # Motor runs 1.3 time as long as the number of steps.
@@ -72,7 +72,7 @@ move(){
 # If the previous instruction did not complete, wait for it to complete before continuing.
 whit_pid=$(cat /run/PTZ* 2>/dev/null | awk -v pid=$pid '$1<pid{print $1}')
 while [[ "$whit_pid" != "" ]] ;do
-	whit_pid=$(cat /run/PTZ* 2>/dev/null | awk -v pid=$pid '$1<pid{print $1}')
+    whit_pid=$(cat /run/PTZ* 2>/dev/null | awk -v pid=$pid '$1<pid{print $1}')
     sleep 1
 done
 

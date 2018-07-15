@@ -1,13 +1,13 @@
 #!/bin/sh
 
 if [ -z "$1" ]; then
-	echo usage: $0 jffs2_image directory
-	exit
+    echo usage: $0 jffs2_image directory
+    exit
 fi
 
 if [ -z "$2" ]; then
-	echo usage: $0 jffs2_image directory
-	exit
+    echo usage: $0 jffs2_image directory
+    exit
 fi
 
 modprobe mtdcore

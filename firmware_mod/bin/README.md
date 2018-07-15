@@ -35,7 +35,7 @@ Usage
 1. Download some example file from http://www.live555.com/liveMedia/public/264/
 2. Stream it using cat <file> > ./h264streamer 
 
-Attention: Dont try to combine it the the h264snap - it wont work. I tested it first. 
+Attention: Don't try to combine it the the h264snap - it won't work. I tested it first. 
 
 ## Motor
 

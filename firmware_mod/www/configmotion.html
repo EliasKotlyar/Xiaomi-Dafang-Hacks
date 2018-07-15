@@ -5,7 +5,7 @@
 </p>
 
 <div id="motion_img_container" style="margin: 1em 0; position:relative;">
-    <img id="motion_picture" src="cgi-bin/currentpic.cgi" />
+    <img id="motion_picture" src="cgi-bin/currentpic.cgi"/>
     <span id="region_disabled" class="has-text-danger is-size-1" style="display: none; position: absolute; top: 10%; left: 30%; padding: 0.25em 0.5em; background-color: rgba(20, 20, 20, 0.5); border-radius: 0.25em;">
         Region disabled
     </span>
@@ -13,11 +13,11 @@
 
 <div class="column is-two-thirds">
     <form id="confMotionForm" action="cgi-bin/action.cgi?cmd=set_region_of_interest" method="post">
-        <input id="x0" name="x0" type="hidden" />
-        <input id="y0" name="y0" type="hidden" />
-        <input id="x1" name="x1" type="hidden" />
-        <input id="y1" name="y1" type="hidden" />
-        <input id="restart_server" name="restart_server" type="hidden" />
+        <input id="x0" name="x0" type="hidden"/>
+        <input id="y0" name="y0" type="hidden"/>
+        <input id="x1" name="x1" type="hidden"/>
+        <input id="y1" name="y1" type="hidden"/>
+        <input id="restart_server" name="restart_server" type="hidden"/>
 
         <div class="field">
             <label class="label">Region Boundaries</label>
@@ -78,7 +78,7 @@
         </div>
         <div class="field">
             <div class="control">
-                <input id="configMotionSubmit" class="button is-primary" type="submit" value="Configure motion" />
+                <input id="configMotionSubmit" class="button is-primary" type="submit" value="Configure motion"/>
             </div>
         </div>
     </form>
@@ -112,10 +112,10 @@
         $('#y1').val(y1);
         $('#region_xy').html('[ (' + x0 + ', ' + y0 + '), (' + x1 + ', ' + y1 + ') ]');
 
-        if (originalMotionInfo.region_of_interest[0] != x0 ||
-            originalMotionInfo.region_of_interest[1] != y0 ||
-            originalMotionInfo.region_of_interest[2] != x1 ||
-            originalMotionInfo.region_of_interest[3] != y1) {
+        if (originalMotionInfo.region_of_interest[0] !== x0 ||
+            originalMotionInfo.region_of_interest[1] !== y0 ||
+            originalMotionInfo.region_of_interest[2] !== x1 ||
+            originalMotionInfo.region_of_interest[3] !== y1) {
             // restart only if region has changed
             $('#restart_server').val(1);
         } else {
@@ -154,7 +154,7 @@
         }
         ias.update();
 
-        if (init == false) {
+        if (init === false) {
             $('#restart_server').val(1);
         }
 
@@ -189,7 +189,7 @@
 
             var selection = [0, 0, 0, 0];
             if (motionInfo.region_of_interest[0] + motionInfo.region_of_interest[1] +
-                motionInfo.region_of_interest[2] + motionInfo.region_of_interest[3] == 0 ||
+                motionInfo.region_of_interest[2] + motionInfo.region_of_interest[3] === 0 ||
                 (motionInfo.region_of_interest[0] > naturalWidth ||
                     motionInfo.region_of_interest[1] > naturalHeight ||
                     motionInfo.region_of_interest[2] > naturalWidth ||

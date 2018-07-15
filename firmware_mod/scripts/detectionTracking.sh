@@ -36,10 +36,10 @@ backtoOrigin() {
 
     # Get values in saved config file
     if [ -f ${FILECAMERAPOS} ]; then
-	    origin_x_axis=`grep "x:" ${FILECAMERAPOS} | sed "s/x: //"`
-	    origin_y_axis=`grep "y:" ${FILECAMERAPOS} | sed "s/y: //"`
+        origin_x_axis=`grep "x:" ${FILECAMERAPOS} | sed "s/x: //"`
+        origin_y_axis=`grep "y:" ${FILECAMERAPOS} | sed "s/y: //"`
     else
-	    origin_x_axis=0
+        origin_x_axis=0
         origin_y_axis=0
     fi
 
@@ -47,26 +47,26 @@ backtoOrigin() {
     x_axis=`/system/sdcard/bin/motor -d s | grep "x:" | sed "s/x: //"`
     y_axis=`/system/sdcard/bin/motor -d s | grep "y:" | sed "s/y: //"`
 
-	#--------------------------- X Position -------------------------------------------
+    #--------------------------- X Position -------------------------------------------
     #Calculate the difference between the origin and the position now
     if [ ${origin_x_axis} -lt ${x_axis} ]
     then
-	    diff=$((${origin_x_axis} - ${x_axis}))
+        diff=$((${origin_x_axis} - ${x_axis}))
 
-	    #This is a substitution trick to take the abs number
-	    diff=${diff#-}
-	    motorLeft "${diff}"
+        #This is a substitution trick to take the abs number
+        diff=${diff#-}
+        motorLeft "${diff}"
     else
-	    diff=$((${x_axis} - ${origin_x_axis}))
+        diff=$((${x_axis} - ${origin_x_axis}))
 
-	    #This is a substitution trick to take the abs number
-	    diff=${diff#-}
-	    motorRight "${diff}"
+        #This is a substitution trick to take the abs number
+        diff=${diff#-}
+        motorRight "${diff}"
     fi
     # Let some time for the motor to turn
     sleep 1
 
-	#--------------------------- Y Position -------------------------------------------
+    #--------------------------- Y Position -------------------------------------------
     #Calculate the difference between the origin and the position now
     if [ ${origin_y_axis} -lt ${y_axis} ]
     then
@@ -102,7 +102,7 @@ fi
 # Now save the "origin" values of the camera
 # Save it to tmp as when the camera reboots the camera are set to 0
 if [ -f ${FILECAMERAPOS} ]; then
-	/system/sdcard/bin/motor -d s > ${FILECAMERAPOS}
+    /system/sdcard/bin/motor -d s > ${FILECAMERAPOS}
 fi
 
 
@@ -120,7 +120,7 @@ echo $3 $4
 # Only 2 are supported
 if [ $((${1} + ${2} + ${3} +${4})) -gt 2 ]
 then
-	echo "No move if more than 3 detected regions"
+    echo "No move if more than 3 detected regions"
     return 0
 fi
 
@@ -129,70 +129,70 @@ fi
 
 if  [ "${1}" == "1" ] && [ "${2}" == "1" ]
 then
-	UP=1
+    UP=1
 
 elif [ "${1}" == "1" ] && [ "${3}" == "1" ]
 then
-	LEFT=1
+    LEFT=1
 
 elif [ "${2}" == "1" ] && [ "${4}" == "1" ]
 then
-	RIGHT=1
+    RIGHT=1
 
 elif [ "${3}" == "1" ] && [ "${4}" == "1" ]
 then
-	DOWN=1
+    DOWN=1
 
 elif [ "${1}" == "1" ]
 then
-	UP=1
-	LEFT=1
+    UP=1
+    LEFT=1
 
 elif [ "${2}" == "1" ]
 then
-	UP=1
-	RIGHT=1
+    UP=1
+    RIGHT=1
 
 elif [ "${3}" == "1" ]
 then
-	LEFT=1
-	DOWN=1
+    LEFT=1
+    DOWN=1
 
 elif [ "${4}" == "1" ]
 then
-	RIGHT=1
-	DOWN=1
+    RIGHT=1
+    DOWN=1
 fi
 
 # Some sanity checks
 if [ "${UP}" != 0 ] && [ "${DOWN}" != 0 ]
 then
-	echo "no move: up and down at the same time"
-	return 0
+    echo "no move: up and down at the same time"
+    return 0
 fi
 if [ "${RIGHT}" != 0 ] && [ "${LEFT}" != 0 ]
 then
-	echo "no move: right and left at the same time"
-	return 0
+    echo "no move: right and left at the same time"
+    return 0
 fi
 
 if [ ${RIGHT} != 0 ]
 then
-	echo "Right move"
-	motorRight ${STEPS}
+    echo "Right move"
+    motorRight ${STEPS}
 fi
 if [ ${LEFT} != 0 ]
 then
-	echo "Left move"
-	motorLeft ${STEPS}
+    echo "Left move"
+    motorLeft ${STEPS}
 fi
 if [ ${UP} != 0 ]
 then
-	echo "Up move"
-	motorUp ${STEPS}
+    echo "Up move"
+    motorUp ${STEPS}
 fi
 if [ ${DOWN} != 0 ]
 then
-	echo "Down move"
-	motorDown ${STEPS}
+    echo "Down move"
+    motorDown ${STEPS}
 fi
