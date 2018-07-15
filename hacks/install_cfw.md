@@ -75,8 +75,8 @@ ctrl_interface_group=0
 ap_scan=1
 
 network={
-	ssid="enteryourssidherebutrememebertokeepthequotes"
-	psk="enteryourpasswordherebutremembertokeepthequotes"
+    ssid="enteryourssidherebutrememebertokeepthequotes"
+    psk="enteryourpasswordherebutremembertokeepthequotes"
   key_mgmt=WPA-PSK
 }
 ```

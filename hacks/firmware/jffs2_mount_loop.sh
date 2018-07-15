@@ -29,9 +29,9 @@ fi
 
 if [[ "$3" == "" ]]
 then
-	esize="128"
+    esize="128"
 else
-	esize="$3"
+    esize="$3"
 fi
 
 # cleanup if necessary
