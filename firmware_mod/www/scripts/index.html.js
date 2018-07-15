@@ -13,10 +13,10 @@ function refreshLiveImage() {
 }
 
 function scheduleRefreshLiveImage(interval) {
-    if (timeoutJobs['refreshLiveImage'] !== undefined) {
-        clearTimeout(timeoutJobs['refreshLiveImage']);
+    if (timeoutJobs.refreshLiveImage !== undefined) {
+        clearTimeout(timeoutJobs.refreshLiveImage);
     }
-    timeoutJobs['refreshLiveImage'] = setTimeout(refreshLiveImage, interval);
+    timeoutJobs.refreshLiveImage = setTimeout(refreshLiveImage, interval);
 }
 
 function syncSwitch(sw) {
@@ -113,7 +113,7 @@ $(document).ready(function () {
     });
 
     // Initial syncing of switches
-    timeoutJobs['syncSwitches'] = setTimeout(syncSwitches, 10);
+    timeoutJobs.syncSwitches = setTimeout(syncSwitches, 10);
     $('#camcontrol_link').hover(function () {
         // for desktop
         var e = $(this);
@@ -122,10 +122,10 @@ $(document).ready(function () {
             return;
         }
         // refresh switches on hover over Camera Controls menu
-        if (timeoutJobs['syncSwitches'] !== undefined) {
-            clearTimeout(timeoutJobs['syncSwitches']);
+        if (timeoutJobs.syncSwitches !== undefined) {
+            clearTimeout(timeoutJobs.syncSwitches);
         }
-        timeoutJobs['syncSwitches'] = setTimeout(syncSwitches, 10);
+        timeoutJobs.syncSwitches = setTimeout(syncSwitches, 10);
     }, function () {
         $(this).toggleClass('is-active');
     });
@@ -141,10 +141,10 @@ $(document).ready(function () {
             return;
         }
         // refresh switches on burger is tapped
-        if (timeoutJobs['syncSwitches'] !== undefined) {
-            clearTimeout(timeoutJobs['syncSwitches']);
+        if (timeoutJobs.syncSwitches !== undefined) {
+            clearTimeout(timeoutJobs.syncSwitches);
         }
-        timeoutJobs['syncSwitches'] = setTimeout(syncSwitches, 10);
+        timeoutJobs.syncSwitches = setTimeout(syncSwitches, 10);
     });
 
     // Close action for quickview
