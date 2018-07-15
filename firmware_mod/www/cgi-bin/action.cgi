@@ -340,10 +340,12 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     flip-on)
+      rewrite_config /system/sdcard/config/rtspserver.conf FLIP "ON"
       /system/sdcard/bin/setconf -k f -v 1
     ;;
 
     flip-off)
+      rewrite_config /system/sdcard/config/rtspserver.conf FLIP "OFF"
       /system/sdcard/bin/setconf -k f -v 0
     ;;
 
