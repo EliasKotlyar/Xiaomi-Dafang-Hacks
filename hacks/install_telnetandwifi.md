@@ -1,4 +1,4 @@
-## Installattion of Telnet
+## Installation of Telnet
 
 1. Go to /system/bin/
 2. Copy file "iCamera" to "iCamera.old"

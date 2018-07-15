@@ -1,6 +1,6 @@
 ### How does the CFW work?
 The CFW contains of two parts:
-1. The Custom-Firmware, which alters the original firmware to boot from microsd. It needs to be flashed instead of the orignal firmware. This part does not contain any custom software, its just allows you to boot from microsd. You will have to do this only once. 
+1. The Custom-Firmware, which alters the original firmware to boot from microsd. It needs to be flashed instead of the original firmware. This part does not contain any custom software, its just allows you to boot from microsd. You will have to do this only once. 
 2. The CFW-Files, which contains the custom software. You will have to install them onto your microsd-card after you completed step 1. You can modify this part easily by changing the files on the microsd. 
 
 ### Does the CFW contain a RTSP-Server? 
@@ -13,7 +13,7 @@ No. It does not connect to anything.
 No. You can still boot the original Software, if you remove the SD-Card.
 
 ### Is it possible to run the original Firmware and the CFW at the same time?
-No, thats not possible and it's very unlikely that it will change in the future.
+No, that's not possible and it's very unlikely that it will change in the future.
 
 ### Can I revert the firmware back to the original one?
 Yes, you can. However there is no need to revert it back. If your SD-Card does not contain the CFW-Files, you will just boot the original software. If you still want to revert back to an original firmware just flash the appropriate one for your camera from the firmware_original folder the same way you flashed the custom firmware.
@@ -49,4 +49,4 @@ Recording Audio:
 ```
 - Curl
 - MQTT
-- Anything other that you can compile yourself. There is a toolchain avaible.
+- Anything other that you can compile yourself. There is a toolchain available.

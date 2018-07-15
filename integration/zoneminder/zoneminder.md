@@ -40,7 +40,7 @@ Click "Add New Control" at the bottom of the popup
 
 Name: "Xiaomi Dafang"
 
-Type: "Fffmpeg"
+Type: "Ffmpeg"
 
 Protocol: "Xiaomi" (it has to match the .pm file from above)
 

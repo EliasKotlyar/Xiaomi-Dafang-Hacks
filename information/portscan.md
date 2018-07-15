@@ -1,4 +1,4 @@
-## Software Infos:
+## Software Info:
 
 Opened Ports:
 1. Port 80: Probably "Boa HTTPd 0.94.13" according to Nmap

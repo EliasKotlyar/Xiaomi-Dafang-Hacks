@@ -9,7 +9,7 @@ while true; do
   fi
 
   if [ -z "$AVG" ]; then AVG=1; fi
-  # if no config availabe, use 1 as average
+  # if no config available, use 1 as average
 
   dd if=/dev/jz_adc_aux_0 count=20  |  sed -e 's/[^\.]//g' | wc -m >> /var/run/ldr
   # Add new line to file with measurements

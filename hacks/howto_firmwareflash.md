@@ -1,6 +1,6 @@
 ## Firmware flashing on Dafang
 
-2. Get a firmware binay and rename it to "demo.bin". There should be no more files in the sdcard
+2. Get a firmware binary and rename it to "demo.bin". There should be no more files in the sdcard
 3. Put it into a SD-Card, plug the SDCard into the dafang
 3. Hold the Setup-Button on the Dafang
 4. Plug in the USB-Cable

@@ -11,7 +11,7 @@ REPO="EliasKotlyar/Xiaomi-Dafang-Hacks"
 BRANCH="master"
 # Initial remote folder
 REMOTEFOLDER="firmware_mod"
-# Default destination foler
+# Default destination folder
 DESTFOLDER="/system/sdcard/"
 DESTOVERRIDE="/tmp/Update"
 # The list of exclude, can have multple filter with "*.conf|*.sh"
@@ -43,7 +43,7 @@ usage()
     echo "$1 will update a local folder with the ${REPO} github repo (first copy all the files in ${DESTOVERRIDE}, stop services and reboot"
     echo "Usage this script to update the ${REPO} github repo from ${BRANCH} branch"
     echo "Options:"
-    echo "-b (--backup) backup erased file (add extension ${BACKUPEXT} to the local file before ovewrite it) "
+    echo "-b (--backup) backup erased file (add extension ${BACKUPEXT} to the local file before overwrite it) "
     echo "-f (--force) force update"
     echo "-d (--dest) set the destination folder (default is ${DESTFOLDER})"
     echo "-p (--print) print action only, do nothing"
@@ -110,7 +110,7 @@ action()
     return $?
 }
 ##########################################################################
-# Check if $1 macth with the excluded filter
+# Check if $1 match with the excluded filter
 ismatch()
 {
     in=$(${BASENAME} ${1})
@@ -338,7 +338,7 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     action "cp -Rf ${DESTOVERRIDE}/* ${DESTFOLDER} 2>/dev/null"
     action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
 
-    # Everythings was OK, save the date
+    # Everything was OK, save the date
     echo $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
     echo "---------------    Reboot    ------------"
     if [ ${_FORCEREBOOT} = 1 ]; then

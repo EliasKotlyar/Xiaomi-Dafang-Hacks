@@ -53,7 +53,7 @@ mount -t jffs2 /dev/mtdblock8 /configs
 # Mount params partition
 mount -t jffs2 /dev/mtdblock9 /params
 
-# Format system patition if it is invalid
+# Format system partition if it is invalid
 if [ ! -f /system/.system ]; then
     echo "Format system partition..."
     umount -f /system
@@ -89,7 +89,7 @@ do
         mkdir /system/sdcard
         mount /dev/mmcblk0p1 /system/sdcard
         sleep 1
-        echo "Mount sucessful"
+        echo "Mount successful"
         if [ -f /system/sdcard/run.sh ]; then
             echo 1 > /sys/class/gpio/gpio39/value
             echo 39 > /sys/class/gpio/unexport
@@ -97,11 +97,11 @@ do
             /system/sdcard/run.sh &
             exit 0
         else
-            echo "Couldnt find run.sh, starting normal..."
+            echo "Couldn't find run.sh, starting normal..."
         fi
         break
     elif [ $i -gt 5 ]; then
-        echo "Couldnt mount, starting normal..."
+        echo "Couldn't mount, starting normal..."
         break
     fi
     sleep 1

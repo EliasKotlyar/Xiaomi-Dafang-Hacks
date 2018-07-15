@@ -11,7 +11,7 @@
 
 
 2. Format your microSD to FAT32. NTFS, EXFAT etc. won't work.
-3. Copy the CFW-Binary from step 1 to the formated microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
+3. Copy the CFW-Binary from step 1 to the formatted microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.
 4. Shutdown the Dafang camera, remove the power cable and plug the microSD into the Dafang
 5. Hold down the setup button on the Dafang camera while
 6. Plugging in the USB power cable
@@ -42,7 +42,7 @@ E:/
 
 ## Updating the microsd-bootloader
 
-Usually, its not required to update the microsd-bootloader. However, if you are using the original Firmware, you may be interessted in the new Version.
+Usually, its not required to update the microsd-bootloader. However, if you are using the original Firmware, you may be interested in the new Version.
 You can just update trough the MI-Home App.
 
 If you are on original Firmware below 5.5.200, you will have to "reflash" the microsd-bootloader afterwards
