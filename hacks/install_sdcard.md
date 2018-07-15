@@ -14,6 +14,7 @@ Attention: This step is only working on a Xiaomi Dafang
 
 You can use normal dafanghacks installation and add a new partition on the end of your microsd.
 However note that it needs to be FAT16 or it might not work.
+
 3. Put uEnv.bootfromsdcard.txt from firmware_mod folder to your FAT partition. Rename it to uEnv.txt
 4. Check if your uEnv is being used, by inserting the microsd and checking if the blue-led is on. Your camera wont boot yet
 5. Get a kernel from the following repository:
