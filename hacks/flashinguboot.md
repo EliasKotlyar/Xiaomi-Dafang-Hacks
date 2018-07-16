@@ -22,8 +22,10 @@ flash back your NAND. However, you can still use serial and/or microsd.
 
 1. Login into SSH
 2. Run
-```
-/system/sdcard/uboot-flash/flash_opensource_t20.sh
+
+```bash
+cd /system/sdcard/uboot-flash
+./flash_opensource_t20.sh
 ```
 
 ## HowTo Flash on other Devices:
@@ -33,8 +35,10 @@ flash back your NAND. However, you can still use serial and/or microsd.
 ## Howto return back to stock bootloader(Dafang only):
 1. Login into SSH
 2. Run
-```
-/system/sdcard/uboot-flash/flash_original_dafang.sh
+
+```bash
+cd /system/sdcard/uboot-flash
+./flash_original_dafang.sh
 ```
 
 ## My camera dont boot/I have failed flashing it - what now?
