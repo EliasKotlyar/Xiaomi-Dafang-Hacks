@@ -239,16 +239,22 @@ cat << EOF
         </div>
 
         <div class="column">
-            <label>Flip</label>
-            <div class="buttons">
-            <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=flip-on')">On</button>
-            <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=flip-off')">Off</button>
-            </div>
+        <br>
+        <div class="field is-horizontal">
+          <div class="field">
+            <input class="switch" name="flip" id="flip" type="checkbox" $(if [ "$(/system/sdcard/bin/setconf -g f)" == 1 ]; then echo "checked";  fi) >
+            <label for="flip">Image flip</label>
+          </div>
+
+         </div>
+
+
         </div>
 
         </div>
     </div>
 </div>
+
 
 <!-- Motor -->
 <div class='card status_card'>
@@ -391,11 +397,11 @@ cat << EOF
                         <div class="control">
                             <div class="select">
                                 <select name="video_size">
-                                <option value="-W640 -H360" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W640')" != "" ]; then echo selected; fi)>640x360</option>
-                                <option value="-W960 -H540" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W960')" != "" ]; then echo selected; fi)>960x540</option>
-                                <option value="-W1280 -H720" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W1280')" != "" ]; then echo selected; fi)>1280x720</option>
-                                <option value="-W1600 -H900" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W1600')" != "" ]; then echo selected; fi)>1600x900</option>
-                                <option value="-W1920 -H1080" $(if [ "$(cat /system/sdcard/config/rtspserver.conf | grep '^RTSPH264OPTS="-W1920')" != "" ]; then echo selected; fi)>1920x1080</option>
+                                <option value="-W640 -H360"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W640 -H360" ]; then echo selected; fi) >640x360</option>
+                                <option value="-W960 -H540"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W960 -H540" ]; then echo selected; fi) >960x540</option>
+                                <option value="-W1280 -H720"  $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W1280 -H720" ] || [ -z "$RTSPH264OPTS" ]; then echo selected; fi) >1280x720</option>
+                                <option value="-W1600 -H900"  $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W1600 -H900" ]; then echo selected; fi) >1600x900</option>
+                                <option value="-W1920 -H1080" $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W1920 -H1080" ]; then echo selected; fi) >1920x1080</option>
                                 </select>
                             </div>
                         </div>
@@ -414,7 +420,7 @@ cat << EOF
                                 0 = FixedQp, 1 = CBR, 2 = VBR, 3 = SMART
                                 <option value="0" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 0)" != "" ]; then echo selected; fi)>FixedQp</option>
                                 <option value="1" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 1)" != "" ]; then echo selected; fi)>CBR</option>
-                                <option value="2" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 2)" != "" ]; then echo selected; fi)>VBR</option>
+                                <option value="2" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 2)" != "" ] || [ -z "$VIDEOFORMAT" ] ; then echo selected; fi)>VBR</option>
                                 <option value="3" $(source /system/sdcard/config/rtspserver.conf; if [ "$(echo $VIDEOFORMAT | grep -w 3)" != "" ]; then echo selected; fi)>SMART</option>
                                 </select>
                             </div>
