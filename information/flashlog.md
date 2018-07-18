@@ -1,18 +1,3 @@
-## Firmware flashing on Dafang
-
-2. Get a firmware binay and rename it to "demo.bin". There should be no more files in the sdcard
-3. Put it into a SD-Card, plug the SDCard into the dafang
-3. Hold the Setup-Button on the Dafang
-4. Plug in the USB-Cable
-5. Wait for 5 minutes
-
-
-## Format:
-```
->file demo_5.5.1.194.bin 
-demo_5.5.1.194.bin: u-boot legacy uImage, jz_fw, Linux/MIPS, Firmware Image (Not compressed), 11075584 bytes, Sat Oct 14 03:03:40 2017, Load Address: 0x00000000, Entry Point: 0x00000000, Header CRC: 0xADE7C72E, Data CRC: 0xB57672AD
-```
-
 Log of flashing the demo_5.5.1.194.bin File.
 
 ```
