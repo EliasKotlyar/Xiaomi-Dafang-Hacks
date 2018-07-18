@@ -1,0 +1,2 @@
+# If this file exist as usb_eth_driver.conf the run.sh wont load any WIFI subsystem and instead try to load the usb ethernet subsystem.
+# Currently it only supports the asix.ko driver
