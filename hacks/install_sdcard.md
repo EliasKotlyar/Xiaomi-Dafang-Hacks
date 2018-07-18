@@ -4,6 +4,7 @@
 https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/hacks/flashinguboot.md
 
 2. Partition your Microsd to EXT3
+
 Hint: Use a different MicroSD than your normal Dafang-Hacks one, to debug issues faster.
 
 3. Go into your EXT3 Partition, and clone https://github.com/Dafang-Hacks/rootfs right into it.

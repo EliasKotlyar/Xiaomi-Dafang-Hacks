@@ -62,7 +62,7 @@ dd if=opensource-T20-V1.3-128MB.bin of=/dev/mtd0
 ```
 
 ## Verifying the U-Boot-Loader
-1. Get a uEnv.bootfromnand.txt file from this repository. 
+1. Get a uEnv.bootfromnand.txt file from*__* this repository. 
 1. Rename the uEnv.bootfromnand.txt to uEnv.txt
 2. Boot your camera
 
