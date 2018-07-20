@@ -37,6 +37,13 @@ if [ "$sendemail" = true ] ; then
     /system/sdcard/scripts/sendPictureMail.sh&
 fi
 
+# Send a telegram message
+if [ "$send_telegram" = true ]; then
+	/system/sdcard/bin/getimage > $save_dir/$filename
+	/system/sdcard/bin/telegram p $save_dir/$filename
+	rm $save_dir/$filename
+fi
+
 # Run any user scripts.
 for i in /system/sdcard/config/userscripts/motiondetection/*; do
     if [ -x $i ]; then
