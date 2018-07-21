@@ -8,7 +8,7 @@
     [Xioami Xiaofang T20](/hacks/cfw/xiaofang/cfw-1.0.bin) | 333053c3e98af24e0e90746d95e310a3c65b61f697288f974b702a5bcbba48a9
     [Wyzecam V2](/hacks/cfw/wyzecam_v2/cfw-1.1.bin) | ca8fd695fe1903bd12aca2752c86b62c9694430c9c41b2804b006c22e84f409d
     [Wyzecam Pan](/hacks/cfw/wyzecam_pan/cfw-1.0.bin) | f76990d187e763f160f5ad39331d6a3209d3025fe3719cb43c92dbad92cebba2
-
+    Other Ingenic T10/T20 Device | [Start here](/hacks/newdevices.md)
 
 2. Format your microSD to FAT32. NTFS, EXFAT etc. won't work.
 3. Copy the CFW-Binary from step 1 to the formated microSD and rename it to "demo.bin". There should be no other files on the microSD! This is really important and it won't work if there are any other files on there.

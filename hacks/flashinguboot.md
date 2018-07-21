@@ -2,7 +2,7 @@
 
 ## What benefits does this open source bootloader have?
 
-1. You can use H264 FullHD Streaming (1920x1080)
+1. You can use H264 FullHD Streaming (1920x1080)(128MB devices only)
 2. You can boot your own kernel/rootfs/whatever from MicroSD
 3. You can change your kernel boot-parameters (uEnv.txt)
 4. You can flash your NAND using this bootloader
@@ -69,7 +69,7 @@ If it turns blue -> Custom Configuration from uEnv.txt is being taken.
 If its not turning blue despite that you have a uEnv.txt on your microsd - try to format it as FAT16 and try again
 
 
-## Turning on FULLHD:
+## Turning on FULLHD(128Mb Devices only):
 
 Open up the uEnv.txt file and change the "boot-line" from
 
