@@ -17,4 +17,5 @@ save_snapshot=false
 max_snapshots=20
 publish_mqtt_message=false
 sendemail=false
+send_telegram=false
 save_dir=/system/sdcard/motion/stills

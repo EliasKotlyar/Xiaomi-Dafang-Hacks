@@ -1,0 +1,7 @@
+############################################################
+# edit this file and move it to /system/sdcard/config/telegram.conf #
+############################################################
+
+# Add your Telegram credentials here (these are just examples)
+apiToken="23132160:AAFrSEwzJ-X-64tLnD8JJ$JoAxWIMg$$w"
+userChatId="30985132"

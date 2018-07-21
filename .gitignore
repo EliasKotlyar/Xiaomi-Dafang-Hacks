@@ -51,6 +51,7 @@ firmware_mod/System Volume Information/IndexerVolumeGuid
 firmware_mod/System Volume Information/WPSettings.dat
 firmware_mod/config/motion.conf
 firmware_mod/config/mqtt.conf
+firmware_mod/config/telegram.conf
 firmware_mod/config/sendmail.conf
 firmware_mod/config/rtspserver.conf
 firmware_mod/config/ntp_srv.conf
