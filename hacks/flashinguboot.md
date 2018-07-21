@@ -12,10 +12,7 @@
 
 
 ## What are the disadvantages?
-1. Its not stock - maybe some optimisations to specific devices are missing
-2. There is no ethernet support on the bootloader level. You cannot use TFTP to 
-flash back your NAND(even) However, you can still use a serial interface and/or the microsd slot.
-3. You can brick your device, if you flash the wrong u-boot. I am not taking any responsibility for that!
+You can brick your device, if you flash the wrong u-boot. I am not taking any responsibility for that!
 
 ## Requirements:
 
@@ -44,22 +41,18 @@ ispmem = 8M
 ## Flashing U-Boot:
 
 1. Login via SSH
-2. Get one of the following Files according to your amount of Ram:
-https://github.com/Dafang-Hacks/kernel_release/tree/master/uboot
+2. Get one of the following Files according to your amount of Ram & your device:
+https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader
 
-3. Run 
+3. Put the File to your microsd
+4. **Verify the MD5 Hash of the file!! Do not skip this step, or you may brick your cam!**
+3. Run following command
 
-for 64Mb Devices:
 ```bash
 flash_eraseall /dev/mtd0
-dd if=opensource-T20-V1.3-64MB.bin of=/dev/mtd0
+dd if=<filename.bin> of=/dev/mtd0
 ```
 
-for 128Mb Devices:
-```bash
-flash_eraseall /dev/mtd0
-dd if=opensource-T20-V1.3-128MB.bin of=/dev/mtd0
-```
 
 ## Verifying the U-Boot-Loader
 1. Get a uEnv.bootfromnand.txt file from*__* this repository. 
