@@ -88,3 +88,12 @@ network={
 }
 ```
 5. Inspect you sdcard for logs/startup.log 
+
+
+### Advanced Installation
+
+Attention: For experienced users/developers only:
+[Start here](/hacks/install_sdcard.md)
+
+
+
