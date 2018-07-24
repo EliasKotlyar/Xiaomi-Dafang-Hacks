@@ -1,0 +1,13 @@
+#!/bin/bash
+#
+# The following script acquires an image from the camera into ramfs (/tmp)
+# Then optimizes the output using the jpegoptim command, and writes it to the
+# destination folder, thereby reducing space requirement, and wear on the microsd card
+#
+
+targetdir="$1"
+targetfile="$2"
+
+/system/sdcard/bin/getimage > "/tmp/$targetfile"
+/system/sdcard/bin/jpegoptim --dest="$targetdir" "/tmp/$targetfile"
+rm -f "/tmp/$targetfile"
