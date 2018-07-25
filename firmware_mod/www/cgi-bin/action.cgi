@@ -277,6 +277,9 @@ if [ -n "$F_cmd" ]; then
       position=$(printf '%b' "${F_Position}")
       osdtext=$(printf '%b' "${F_osdtext//%/\\x}")
       osdtext=$(echo "$osdtext" | sed -e "s/\\+/ /g")
+      fontName=$(printf '%b' "${F_fontName//%/\\x}")
+      fontName=$(echo "$fontName" | sed -e "s/\\+/ /g")
+
 
       if [ ! -z "$axis_enable" ];then
         update_axis
@@ -301,8 +304,8 @@ if [ -n "$F_cmd" ]; then
       echo "COLOR=${F_color}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k c -v "${F_color}"
 
-      echo "SIZE=${F_size}" >> /system/sdcard/config/osd.conf
-      /system/sdcard/bin/setconf -k s -v "${F_size}"
+      echo "SIZE=${F_OSDSize}" >> /system/sdcard/config/osd.conf
+      /system/sdcard/bin/setconf -k s -v "${F_OSDSize}"
 
       echo "POSY=${F_posy}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k x -v "${F_posy}"
@@ -312,6 +315,9 @@ if [ -n "$F_cmd" ]; then
 
       echo "SPACE=${F_spacepixels}" >> /system/sdcard/config/osd.conf
       /system/sdcard/bin/setconf -k p -v "${F_spacepixels}"
+
+      echo "FONTNAME=${fontName}" >> /system/sdcard/config/osd.conf
+      /system/sdcard/bin/setconf -k e -v "${fontName}"
       return
     ;;
 

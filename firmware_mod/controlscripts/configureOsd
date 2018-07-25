@@ -11,6 +11,8 @@ if [ -f /system/sdcard/config/osd.conf ]; then
     [ ! -z "${POSY}" ] && /system/sdcard/bin/setconf -k x -v ${POSY} 2>/dev/null
     [ ! -z "${FIXEDW}" ] && /system/sdcard/bin/setconf -k w -v ${FIXEDW} 2>/dev/null
     [ ! -z "${SPACE}" ] && /system/sdcard/bin/setconf -k p -v ${SPACE} 2>/dev/null
+    [ ! -z "${FONTNAME}" ] && /system/sdcard/bin/setconf -k e -v ${FONTNAME} 2>/dev/null
+
 else
     /system/sdcard/bin/setconf -k o -v ""
 fi
