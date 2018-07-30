@@ -897,7 +897,7 @@ cat << EOF
     </div>
 </div>
 
-<!-- Mounts -->
+<!-- Bootloader -->
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>Bootloader Information</p></header>
     <div class='card-content'>
@@ -905,6 +905,8 @@ cat << EOF
         <pre>$(md5sum /dev/mtd0 |cut -f 1 -d " ")</pre>
         Your Bootloader Version is:
         <pre>$(busybox strings /dev/mtd0 | grep "U-Boot 2")</pre>
+        Your CMDline is:
+        <pre>$(cat /proc/cmdline)</pre>
 
 
         <a target="_blank" href="cgi-bin/dumpbootloader.cgi">Download Bootloader</a>
