@@ -861,6 +861,22 @@ cat << EOF
     </div>
 </div>
 
+<!-- Mounts -->
+<div class='card status_card'>
+    <header class='card-header'><p class='card-header-title'>Bootloader Information</p></header>
+    <div class='card-content'>
+        Your Bootloader MD5 is:
+        <pre>$(md5sum /dev/mtd0 |cut -f 1 -d " ")</pre>
+        Your Bootloader Version is:
+        <pre>$(busybox strings /dev/mtd0 | grep "U-Boot 2")</pre>
+
+
+        <a target="_blank" href="cgi-bin/dumpbootloader.cgi">Download Bootloader</a>
+    </div>
+</div>
+
+
+
 EOF
 script=$(cat /system/sdcard/www/scripts/status.cgi.js)
 echo "<script>$script</script>"
