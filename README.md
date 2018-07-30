@@ -36,12 +36,6 @@ If you/we solve your issue, please condense your gained insights into a pull req
 
 Start [here](/hacks/technical.md)
 
-
-## Viewer and control solution:
-
-After install, you can use this [android application](https://play.google.com/store/apps/details?id=io.ext.medinvention.dafangcam) developed by [@medinvention](https://github.com/mmohamed) and join us on [Gitter](https://gitter.im/Dafang-Hacked-Cam-App)
-
-
 ## Integration in Home Automation Systems:
 
 [Domoticz](/integration/domoticz/domoticz.md)
