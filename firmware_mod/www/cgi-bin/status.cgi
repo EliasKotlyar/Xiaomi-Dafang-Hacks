@@ -707,20 +707,54 @@ cat << EOF
                     </div>
                 </div>
             </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Font name</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select name="FontName">
+                                    $(
+                                       fontName="$(/system/sdcard/bin/setconf -g e)"
+                                       echo -n "<option value=\"\""
+                                       if [ -n "${fontName-unset}" ] ; then echo selected; fi
+                                       echo -n ">Default fonts </option>"
+
+                                       for i in `/system/sdcard/bin/busybox find /system/sdcard/fonts -name *.ttf`
+                                       do
+                                            echo -n "<option value=\"$i\" "
+                                            if [ "$fontName" == "$i" ] ; then echo selected; fi
+                                            echo -n ">`/system/sdcard/bin/busybox basename $i` </option>"
+                                       done
+                                    )
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                     <label class="label">OSD Text Size</label>
                 </div>
                 <div class="field-body">
                     <div class="field">
-                        <div class="control">
-                            <div class="select">
-                                <select name="size">
-                                <option value="0" $(if [ "$(grep SIZE /system/sdcard/config/osd.conf | sed s/SIZE=//)" -eq 0 ]; then echo selected; fi)>Small</option>
-                                <option value="1" $(if [ "$(grep SIZE /system/sdcard/config/osd.conf | sed s/SIZE=//)" -eq 1 ]; then echo selected; fi)>Bigger</option>
-                                </select>
-                            </div>
-                        </div>
+                        <p class="control">
+                                 <input class="input" id="OSDSize" name="OSDSize" type="number" size="4"
+                                     value="$(
+                                        fontSize=$(/system/sdcard/bin/setconf -g s)
+                                        if [ "$fontSize" == "0" ]; then echo 18
+                                        elif [ "$fontSize" == "1" ]; then echo 40
+                                        else echo "$fontSize"
+                                        fi
+                                     )"/>
+                        </p>
+                         <p class="help">Too high value won't display anything</p>
                     </div>
                 </div>
             </div>
@@ -763,9 +797,11 @@ cat << EOF
                                 <option value="1" $(if [ "$(grep FIXEDW /system/sdcard/config/osd.conf | sed s/FIXEDW=//)" -eq 1 ]; then echo selected; fi)>Yes</option>
                                 </select>
                             </div>
+                            <p class="help">Fixed width works only for "default" fonts</p>
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
