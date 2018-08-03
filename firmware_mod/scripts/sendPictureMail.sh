@@ -48,10 +48,13 @@ Content-Disposition: attachment; filename=\"${FILENAME}${i}.jpg\"
 
     if [ ${QUALITY} -eq -1 ]
     then
-        /system/sdcard/bin/getimage | /system/sdcard/bin/openssl enc -base64
-    else
-       /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout  | /system/sdcard/bin/openssl enc -base64
-
+       /system/sdcard/bin/getimage | /system/sdcard/bin/openssl enc -base64
+    else if [ ${QUALITY} -eq -2 ]
+        then
+           /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim --stdin --stdout  | /system/sdcard/bin/openssl enc -base64
+        else
+           /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout  | /system/sdcard/bin/openssl enc -base64
+        fi
     fi
 
     echo
