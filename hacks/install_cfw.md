@@ -46,6 +46,9 @@ E:/
 3. Copy config/wpa_supplicant.conf.dist to config/wpa_supplicant.conf
 4. Modify the file config/wpa_supplicant.conf on the microSD card to match your wifi-settings. Make sure wpa_supplicant.conf does not have windows line endings.
 5. Insert the microSD card and power up the camera.
+6. You can now login at https://dafang or your cameras ip adress with the default credentials root/ismart12
+
+Hint: The security warning about the unsafe https certificate can safely be ignored. A self-signed certificate is automatically generated on your camera during the first startup. By its nature your little camera's own certificate authority is not an never will be among the trusted ones delivered with the major browsers. 
 
 ## Updating the microsd-bootloader
 
