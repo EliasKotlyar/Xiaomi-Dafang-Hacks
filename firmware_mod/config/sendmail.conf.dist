@@ -30,5 +30,5 @@ TIMEBETWEENSNAPSHOT=5
 
 # Quality of compression (Valid quality values: 0 - 100, 100% is best)
 # Set to -1 for no compression
+# Set to -2 for default compression (No -m option to jpegoptim,faster,but larger images)
 QUALITY=50
-
