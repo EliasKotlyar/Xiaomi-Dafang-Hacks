@@ -97,16 +97,44 @@ You should now be getting messages on topic `myhome/mycamera/motion` and images 
 To react on a motion event, in your automations.yaml define something like:
 
 ```yaml
-- action:
-  - data:
-      message: detected
-      title: motion
-    service: notify.me
-  alias: motion detector
-  condition: []
-  id: '9522507257594'
+- id: '13370'
+  alias: 'Motion detected'
   trigger:
-  - payload: 'ON'
+    payload: 'ON'
     platform: mqtt
     topic: myhome/mycamera/motion
+  action:
+    service: notify.me
+    data:
+      title: "Motion"
+      message: "detected."
+```
+
+For privacy reasons and to reduce the number of unwanted motion detections in surveillance applications,
+you probably want to turn off motion detection when you or your family is home.
+
+```yaml
+- id: '13372'
+  alias: 'Start motion detection when not at home'
+  trigger:
+      platform: zone
+      event: leave
+      zone: zone.home
+      entity_id: device_tracker.your_device
+  action:
+    service: switch.turn_on
+    data:
+      entity_id: switch.mycamera_motion_detection
+
+- id: '13373'
+  alias: 'Stop motion detection when at home'
+  trigger:
+      platform: zone
+      event: enter
+      zone: zone.home
+      entity_id: device_tracker.your_device
+  action:
+    service: switch.turn_off
+    data:
+      entity_id: switch.mycamera_motion_detection
 ```
