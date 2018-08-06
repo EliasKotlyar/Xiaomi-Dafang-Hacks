@@ -10,7 +10,7 @@ Xiaomi Dafang | ![Dafang](/dafang.png)
 Xiaomi Xiaofang 1S | ![XiaoFang](/xiaofang.png)
 Wyzecam Pan | ![Dafang](/dafang.png)
 Wyzecam V2 | ![XiaoFang](/xiaofang.png)
-Sannce I21AG | ![XiaoFang](/sannce.jpg)
+Sannce I21AG, MixSight HX-I2110T2, WanScam HW0036, Escam G02, Digoo BB-M2 | ![XiaoFang](/sannce.jpg)
 Any other Device with Ingenic T10/T20 Device | ![T20](/t20.png)
 
 If you have a classic XiaoFang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
