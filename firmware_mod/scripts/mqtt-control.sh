@@ -155,7 +155,7 @@ killall mosquitto_sub.bin 2> /dev/null
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/send_mail ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_send_mail status)"      
     ;;                                                                                                                                                                                          
                                                                                                                                                                                                 
-    "${TOPIC}/motion/detection_mail/set OFF")                                                                                                                                                        
+    "${TOPIC}/motion/send_mail/set OFF")                                                                                                                                                        
       motion_send_mail off                                                                                                                                                                      
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/send_mail ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_send_mail status)"      
     ;;           
