@@ -290,6 +290,30 @@ motion_detection(){
   esac
 }
 
+# Control the motion detection mail function                                                                                                                            
+motion_send_mail(){                                                                                                                                                
+  case "$1" in                                                                                                                                                     
+  on)                                                                                                                                                              
+    rewrite_config /system/sdcard/config/motion.conf sendemail "true"
+    ;;                                                                                                                                                             
+  off)                                                                                                                                                             
+    rewrite_config /system/sdcard/config/motion.conf sendemail "false"
+    ;;                                                                                                                                                             
+  status)                                                                                                                                                          
+    status=`awk '/sendemail/' /system/sdcard/config/motion.conf |cut -f2 -d \=`                                                                                                          
+    case $status in                                                                                                                                                
+      false)                                                                                                                                                          
+        echo "OFF"                                                                                                                                                 
+        ;;                                                                                                                                                         
+      true)                                                                                                                                                           
+        echo "ON"                                                                                                                                                  
+        ;;                                                                                                                                                         
+    esac                                                                                                                                                           
+  esac                                                                                                                                                             
+} 
+
+
+
 # Control the motion tracking function
 motion_tracking(){
   case "$1" in
