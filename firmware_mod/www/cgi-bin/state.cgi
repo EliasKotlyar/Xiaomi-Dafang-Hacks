@@ -108,6 +108,12 @@ if [ -n "$F_cmd" ]; then
     fi
     ;;
 
+  hostname)
+    echo $(hostname);
+    ;;
+  version)
+    echo $(cat /system/sdcard/.lastCommitDate);
+    ;;
   *)
     echo "Unsupported command '$F_cmd'"
     ;;

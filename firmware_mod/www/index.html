@@ -3,7 +3,7 @@
 
 <head>
     <meta charset=utf-8 />
-    <title>DafangHacks</title>
+    <title>Dafang Hacks</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSS Framework -->
@@ -168,7 +168,7 @@
     <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
         <div class="container">
             <div class="navbar-brand">
-                <a class="navbar-item" href=".">Dafang Hacks</a>
+                <a class="navbar-item" href="." id="title">Dafang Hacks</a>
                 <a id="navbar_burger" role="button" class="navbar-burger" data-target="nav_menu" aria-label="menu" aria-expanded="false">
                     <span aria-hidden="true"></span>
                     <span aria-hidden="true"></span>
@@ -184,13 +184,24 @@
                             <a id="status" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/status.cgi">Settings</a>
                             <a id="scripts" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/scripts.cgi">Services</a>
                             <a id="configmotion" class="navbar-item onpage" href="javascript: void(0)" data-target="configmotion.html">Motion Detection</a>
-                            <a id="network" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/network.cgi">Network Information</a>
-                            <a id="logs" class="navbar-item onpage" href="javascript: void(0)" data-target="logs.html">Logs</a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <span class="navbar-link">System</span>
+                        <div class="navbar-dropdown is-boxed">
                             <a id="update" class="navbar-item onpage" href="javascript: void(0)" data-target="update.html">Update</a>
                             <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to reboot?" data-target="cgi-bin/action.cgi?cmd=reboot">Reboot</a>
                             <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to shutdown?" data-target="cgi-bin/action.cgi?cmd=shutdown">Shutdown</a>
                         </div>
                     </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <span class="navbar-link">Informations</span>
+                        <div class="navbar-dropdown is-boxed">
+                            <a id="network" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/network.cgi">Network Information</a>
+                            <a id="logs" class="navbar-item onpage" href="javascript: void(0)" data-target="logs.html">Logs</a>
+                        </div>
+                    </div>
+
                 </div>
                 <!-- right menu -->
                 <div class="navbar-end">
@@ -335,7 +346,7 @@
                 <p>
                     <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks" target="_blank">
                         <strong>Dafang Hacks</strong>
-                    </a> v0.0.1.
+                    </a> Version: <em id="version">VERSION</em> 
                     <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Issues?</a>
                 </p>
                 <div class="dropdown is-hoverable">
