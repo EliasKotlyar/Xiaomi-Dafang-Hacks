@@ -53,7 +53,14 @@ function showResult(txt) {
 $(document).ready(function () {
 
     setTheme(getThemeChoice());
-
+    
+    // Set title page and menu with hostname
+    $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(title){document.title = title;document.getElementById("title").innerHTML = title;});
+    
+    
+    // Set git version to bottim page
+    $.get("cgi-bin/state.cgi", {cmd: "version"}, function(version){document.getElementById("version").innerHTML = version;});
+   
     // Load link into #content
     $('.onpage').click(function () {
         var e = $(this);
@@ -151,7 +158,7 @@ $(document).ready(function () {
     }
 
     // Make liveview self refresh
-    $("#liveview").attr("onload", "scheduleRefreshLiveImage(4000);");
+    $("#liveview").attr("onload", "scheduleRefreshLiveImage(1000);");
 
 });
 
