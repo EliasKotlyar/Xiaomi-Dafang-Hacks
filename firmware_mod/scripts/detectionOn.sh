@@ -17,7 +17,7 @@ if [ "$save_snapshot" = true ] ; then
 	fi
 	# Limit the number of snapshots
 	if [ "$(ls "$save_dir" | wc -l)" -ge "$max_snapshots" ]; then
-		rm -f "$save_dir/$(ls -l "$save_dir" | awk 'NR==2{print $9}')"
+		rm -f "$save_dir/$(ls -ltr "$save_dir" | awk 'NR==2{print $9}')"
 	fi
 	/system/sdcard/bin/getimage > "$save_dir/$filename" &
 fi
@@ -52,6 +52,6 @@ fi
 for i in /system/sdcard/config/userscripts/motiondetection/*; do
     if [ -x "$i" ]; then
         echo "Running: $i on"
-        $i on
+        $i on &
     fi
 done
