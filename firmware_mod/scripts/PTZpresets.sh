@@ -41,11 +41,11 @@ move(){
 	# Differentiate the coordinates and calculate the number
 	# of steps to reach the specified coordinates.
 	if [[ "$1" = "X" ]];then 
-		grep_text="x_steps"
+		grep_text="x"
 		opt="r|l"
 		text="Right|Left"
 	else
-		grep_text="y_steps"
+		grep_text="y"
 		opt="u|d"
 		text="Up|Down"
 	fi
