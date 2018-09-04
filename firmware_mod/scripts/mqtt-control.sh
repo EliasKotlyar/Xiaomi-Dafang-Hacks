@@ -6,192 +6,192 @@
 killall mosquitto_sub 2> /dev/null
 killall mosquitto_sub.bin 2> /dev/null
 
-/system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/# ${MOSQUITTOOPTS} | while read -r line ; do
+/system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}/control/#" ${MOSQUITTOOPTS} | while read -r line ; do
   case $line in
-    "${TOPIC}/set help")
+    "${TOPIC}/control/set help")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/help ${MOSQUITTOOPTS} -m "possible commands: configured topic + Yellow_LED/set on/off, configured topic + Blue_LED/set on/off, configured topic + set with the following commands: status, $(grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v '[=*]' | sed -e "s/ //g" | grep -v -E '(osd|setldr|settz|showlog)' | sed -e "s/)//g")"
     ;;
 
-    "${TOPIC}/set status")
+    "${TOPIC}/control/set status")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/ ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(/system/sdcard/scripts/mqtt-status.sh)"
     ;;
 
-    "${TOPIC}/leds/blue")
+    "${TOPIC}/control/leds/blue")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/blue ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(blue_led status)"
     ;;
 
-    "${TOPIC}/leds/blue/set ON")
+    "${TOPIC}/control/leds/blue/set ON")
       blue_led on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/blue ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(blue_led status)"
     ;;
 
-    "${TOPIC}/leds/blue/set OFF")
+    "${TOPIC}/control/leds/blue/set OFF")
       blue_led off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/blue ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS}  -m "$(blue_led status)"
     ;;
 
-    "${TOPIC}/leds/yellow")
+    "${TOPIC}/control/leds/yellow")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/yellow ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(yellow_led status)"
     ;;
 
-    "${TOPIC}/leds/yellow/set ON")
+    "${TOPIC}/control/leds/yellow/set ON")
       yellow_led on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/yellow ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(yellow_led status)"
     ;;
 
-    "${TOPIC}/leds/yellow/set OFF")
+    "${TOPIC}/control/leds/yellow/set OFF")
       yellow_led off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/yellow ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(yellow_led status)"
     ;;
 
-    "${TOPIC}/leds/ir")
+    "${TOPIC}/control/leds/ir")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/ir ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ir_led status)"
     ;;
 
-    "${TOPIC}/leds/ir/set ON")
+    "${TOPIC}/control/leds/ir/set ON")
       ir_led on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/ir ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ir_led status)"
     ;;
 
-    "${TOPIC}/leds/ir/set OFF")
+    "${TOPIC}/control/leds/ir/set OFF")
       ir_led off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/ir ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ir_led status)"
     ;;
 
-    "${TOPIC}/ir_cut")
+    "${TOPIC}/control/ir_cut")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/ir_cut ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ir_cut status)"
     ;;
 
-    "${TOPIC}/ir_cut/set ON")
+    "${TOPIC}/control/ir_cut/set ON")
       ir_cut on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/ir_cut ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ir_cut status)"
     ;;
 
-    "${TOPIC}/ir_cut/set OFF")
+    "${TOPIC}/control/ir_cut/set OFF")
       ir_cut off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/ir_cut ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ir_cut status)"
     ;;
 
-    "${TOPIC}/brightness")
+    "${TOPIC}/control/brightness")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/brightness ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ldr status)"
     ;;
 
-    "${TOPIC}/rtsp_h264_server")
+    "${TOPIC}/control/rtsp_h264_server")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_h264_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_h264_server status)"
     ;;
 
-    "${TOPIC}/rtsp_h264_server/set ON")
+    "${TOPIC}/control/rtsp_h264_server/set ON")
       rtsp_h264_server on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_h264_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_h264_server status)"
     ;;
 
-    "${TOPIC}/rtsp_h264_server/set OFF")
+    "${TOPIC}/control/rtsp_h264_server/set OFF")
       rtsp_h264_server off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_h264_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_h264_server status)"
     ;;
 
-    "${TOPIC}/rtsp_mjpeg_server")
+    "${TOPIC}/control/rtsp_mjpeg_server")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_mjpeg_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_mjpeg_server status)"
     ;;
 
-    "${TOPIC}/rtsp_mjpeg_server/set ON")
+    "${TOPIC}/control/rtsp_mjpeg_server/set ON")
       rtsp_mjpeg_server on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_mjpeg_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_mjpeg_server status)"
     ;;
 
-    "${TOPIC}/rtsp_mjpeg_server/set OFF")
+    "${TOPIC}/control/rtsp_mjpeg_server/set OFF")
       rtsp_mjpeg_server off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_mjpeg_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_mjpeg_server status)"
     ;;
 
-    "${TOPIC}/night_mode")
+    "${TOPIC}/control/night_mode")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(night_mode status)"
     ;;
 
-    "${TOPIC}/night_mode/set ON")
+    "${TOPIC}/control/night_mode/set ON")
       night_mode on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(night_mode status)"
     ;;
 
-    "${TOPIC}/night_mode/set OFF")
+    "${TOPIC}/control/night_mode/set OFF")
       night_mode off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(night_mode status)"
     ;;
 
-    "${TOPIC}/night_mode/auto")
+    "${TOPIC}/control/night_mode/auto")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode/auto ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
     ;;
 
-    "${TOPIC}/night_mode/auto/set ON")
+    "${TOPIC}/control/night_mode/auto/set ON")
       auto_night_mode on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode/auto ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
     ;;
 
-    "${TOPIC}/night_mode/auto/set OFF")
+    "${TOPIC}/control/night_mode/auto/set OFF")
       auto_night_mode off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/night_mode/auto ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(auto_night_mode status)"
     ;;
 
-    "${TOPIC}/motion/detection")
+    "${TOPIC}/control/motion/detection")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/detection ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_detection status)"
     ;;
 
-    "${TOPIC}/motion/detection/set ON")
+    "${TOPIC}/control/motion/detection/set ON")
       motion_detection on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/detection ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_detection status)"
     ;;
 
-    "${TOPIC}/motion/detection/set OFF")
+    "${TOPIC}/control/motion/detection/set OFF")
       motion_detection off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/detection ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_detection status)"
     ;;
 
-   "${TOPIC}/motion/send_mail")                                                                                                                                                                
+   "${TOPIC}/control/motion/send_mail")                                                                                                                                                                
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/send_mail ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_send_mail status)"      
     ;;  
 
-  "${TOPIC}/motion/send_mail/set ON")                                                                                                                                                         
+  "${TOPIC}/control/motion/send_mail/set ON")                                                                                                                                                         
       motion_send_mail on                                                                                                                                                                       
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/send_mail ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_send_mail status)"      
     ;;                                                                                                                                                                                          
                                                                                                                                                                                                 
-    "${TOPIC}/motion/send_mail/set OFF")                                                                                                                                                        
+    "${TOPIC}/control/motion/send_mail/set OFF")                                                                                                                                                        
       motion_send_mail off                                                                                                                                                                      
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/send_mail ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_send_mail status)"      
     ;;           
 
-    "${TOPIC}/motion/tracking")
+    "${TOPIC}/control/motion/tracking")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/tracking ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_tracking status)"
     ;;
 
-    "${TOPIC}/motion/tracking/set ON")
+    "${TOPIC}/control/motion/tracking/set ON")
       motion_tracking on
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/tracking ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_tracking status)"
     ;;
 
-    "${TOPIC}/motion/tracking/set OFF")
+    "${TOPIC}/control/motion/tracking/set OFF")
       motion_tracking off
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/tracking ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_tracking status)"
     ;;
 
-    "${TOPIC}/motors/vertical/set up")
+    "${TOPIC}/control/motors/vertical/set up")
       motor up
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status vertical)"
     ;;
-    "${TOPIC}/motors/vertical/set down")
+    "${TOPIC}/control/motors/vertical/set down")
       motor down
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status vertical)"
     ;;
-    "${TOPIC}/motors/horizontal/set left")
+    "${TOPIC}/control/motors/horizontal/set left")
       motor left
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
     ;;
-    "${TOPIC}/motors/horizontal/set right")
+    "${TOPIC}/control/motors/horizontal/set right")
       motor right
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
     ;;
 
-    "${TOPIC}/set "*)
+    "${TOPIC}/control/set "*)
       COMMAND=$(echo "$line" | awk '{print $2}')
       #echo "$COMMAND"
       /system/sdcard/bin/curl -k -m 2 ${CURLOPTS} -s https://127.0.0.1/cgi-bin/action.cgi\?cmd="${COMMAND}" -o /dev/null 2>/dev/null
