@@ -44,9 +44,9 @@ if [ "$send_telegram" = true ]; then
 	if [ "$save_snapshot" = true ] ; then
 		/system/sdcard/bin/telegram p "$save_dir/$filename"
 	else
-		/system/sdcard/bin/getimage > "telegram_image.jpg"
- +	/system/sdcard/bin/telegram p "telegram_image.jpg"
- +	rm "telegram_image.jpg"
+		/system/sdcard/bin/getimage > "$save_dir/telegram_image.jpg"
+ 	/system/sdcard/bin/telegram p "$save_dir/telegram_image.jpg"
+ 	rm "$save_dir/telegram_image.jpg"
 	fi
 fi
 
