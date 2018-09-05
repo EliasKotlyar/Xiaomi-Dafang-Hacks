@@ -33,7 +33,7 @@ MOSQUITTOOPTS=""
 MOSQUITTOPUBOPTS=""
 
 # Add options for curl here e.g --user user:password
-CURLOPTS=""
+CURLOPTS="--user root:ismart12"
 
 # Send a mqtt statusupdate every n seconds
 STATUSINTERVAL=30
