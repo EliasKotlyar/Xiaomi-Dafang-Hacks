@@ -1,15 +1,15 @@
 #!/bin/sh
 
+. /system/sdcard/www/cgi-bin/func.cgi
+. /system/sdcard/scripts/common_functions.sh
+
+export LD_LIBRARY_PATH=/system/lib
+export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
+
 echo "Content-type: text/html"
 echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
 echo ""
-
-source ./func.cgi
-source /system/sdcard/scripts/common_functions.sh
-
-export LD_LIBRARY_PATH=/system/lib
-export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
 
 if [ -n "$F_cmd" ]; then
   if [ -z "$F_val" ]; then
