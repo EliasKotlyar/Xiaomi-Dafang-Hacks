@@ -45,6 +45,8 @@ Start [here](/hacks/technical.md)
 
 [HomeKit](/integration/homekit/homekit.md)
 
+[OpenHab](https://community.openhab.org/t/how-to-configure-a-hacked-xiaomi-dafang-to-work-with-openhab/51121)
+
 [Synology](/integration/synology/synology.md)
 
 [tinyCam](/integration/tinycam/tinycam.md)
