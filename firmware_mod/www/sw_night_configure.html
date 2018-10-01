@@ -61,7 +61,7 @@
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-      var cur_expusure=-1;
+      var cur_exposure=-1;
       var cur_iridix=-1;
       var cur_wb=-1;
       var cur_day=true;
@@ -99,7 +99,7 @@
                     var val = lines[i].split(":");
                     serieses[k].append(d, val[1]);
                     if(String(keys[k]).search('exposure') >= 0){
-                        cur_expusure = val[1];
+                        cur_exposure = val[1];
                     }else if(String(keys[k]).search('WB Temperature') >= 0){
                         cur_wb = val[1];
                     }else if(String(keys[k]).search('Iridix') >= 0){
@@ -201,6 +201,18 @@
         mode_switch_wait_count = parseInt($("#sec_wait")[0].value);
     }
 
+    function update_commandline()
+    {
+        var cmdline = "-S -j " + $("#jitter_percent")[0].value + " -w " + $("#sec_wait")[0].value;
+        cmdline += " -1 " + $("#eq1_user_exposure")[0].value;
+        cmdline += " -2 ";
+        cmdline += $("#eq2")[0].checked ? ($("#eq2_user_exposure")[0].value + "," + ($("#eq2_1")[0].checked ? $("#eq2_user_iridix")[0].value : "9999") + "," + $("#eq2_count")[0].value) : "0,0,1";
+        cmdline += " -3 ";
+        cmdline += $("#eq3")[0].checked ? ($("#eq3_user_wb")[0].value + "," + ($("#eq3_1")[0].checked ? $("#eq3_user_iridix")[0].value : "0") + "," + $("#eq3_count")[0].value) : "0,0,1";
+
+        $("#command_line")[0].value = cmdline;
+    }
+
     var last_exposure = 0;
     var mode_switch_wait_count=0;
     var sec=0;
@@ -208,8 +220,10 @@
         var eq1_pass=false, eq2_pass=false, eq3_pass=false, eq2_1_pass=false, eq3_1_pass=false;
         var jitter_percent = parseInt($("#jitter_percent")[0].value);
 
-        $('#exposure_eq1')[0].value = cur_expusure;
-        $('#exposure_eq2')[0].value = cur_expusure;
+        update_commandline();
+
+        $('#exposure_eq1')[0].value = cur_exposure;
+        $('#exposure_eq2')[0].value = cur_exposure;
         $('#iridix_eq2')[0].value = cur_iridix;
         $('#iridix_eq3')[0].value = cur_iridix;
         $('#wb_eq3')[0].value = cur_wb;
@@ -217,8 +231,8 @@
         sec = sec % 60;
         $('#sec')[0].innerText = sec;
 
-        if( (Math.abs(cur_expusure - last_exposure)/cur_expusure)*100 >= jitter_percent  ){
-            last_exposure = cur_expusure;
+        if( (Math.abs(cur_exposure - last_exposure)/cur_exposure)*100 >= jitter_percent  ){
+            last_exposure = cur_exposure;
             $(".jitter").css( "font-weigth", "bold" );
             $(".jitter").css( "background-color", "#ff9292" );
             $(".jitter").css( "box-shadow", "8px 6px 13px #f5194b" );
@@ -231,14 +245,14 @@
         $(".jitter").css( "font-weigth", "normal" );
         $(".jitter").css( "background-color", "#89fcfd" );
         $(".jitter").css( "box-shadow", "" );
-        last_exposure = cur_expusure;
-        if(cur_expusure > parseInt($("#eq1_user_exposure")[0].value)){
+        last_exposure = cur_exposure;
+        if(cur_exposure > parseInt($("#eq1_user_exposure")[0].value)){
             $("#exposure_eq1").css('color', "green");
             eq1_pass = true;
         }else{
             $("#exposure_eq1").css('color', "red");
         }
-        if(cur_expusure < parseInt($("#eq2_user_exposure")[0].value)){
+        if(cur_exposure < parseInt($("#eq2_user_exposure")[0].value)){
             $("#exposure_eq2").css('color', "green");
             eq2_pass=true;
         }else{
@@ -307,6 +321,7 @@
 
     }
     function eq_click(name){
+        update_commandline();
         if($("#"+name)[0].checked){
             $("."+name).css( "opacity", "1.0" );
             //$("."+name+"_1").css( "opacity", "1.0" );
@@ -319,6 +334,7 @@
         }
     }
     function eq_1_click(name){
+        update_commandline();
         if($("#"+name+"_1")[0].checked){
             $("."+name+"_1").css( "opacity", "1.0" );
         }else{
@@ -332,19 +348,26 @@
     <button id='play' type="button" onclick="play_pause()" class="block">Pause</button>
 
     <br>
-    <br>
-    <table border="1" class='mode'>
-        <tr><td><label>Current mode</label></td><td><label id='cur_mode'>Day mode</label></td></tr>
-        <tr><td><label>Seconds</label></td><td><label id='sec'>0</label></td></tr>
+    <table>
+      <tr>
+        <td><table border="1" class='mode'>
+            <tr><td><label>Current mode</label></td><td><label id='cur_mode'>Day mode</label></td></tr>
+            <tr><td><label>Seconds</label></td><td><label id='sec'>0</label></td></tr>
+        </table></td>
+        <td><table class='mode'>
+            <td>Commandline to use:</td>
+            <td><input type="text" id="command_line" disabled=true value="-S" size="60" style="text-align:left;"></td>
+        </table></td>
+    </tr>
     </table>
-    <br>
+
+        <br>
 
 
-    <table border="1" id="t_jitter" style="margin: 0px;" class='jitter'>
-            <tr><td class='code_text'>If expousre changes by more than </td>
-                <td class='code_text'><input type="text" id="jitter_percent" value=3  size="3"> %, ignore</td>
-            </tr>
-    </table>
+            <td><table border="1" id="t_jitter" style="margin: 0px;" class='jitter'>
+                <tr><td class='code_text'>If expousre changes by more than </td>
+                <td class='code_text'><input type="text" id="jitter_percent" value=3  size="3"> %, ignore</td></tr>
+            </table></td>
 
     <br>
     <table border="1" id="t_wait" style="margin: 0px;" class='wait'>
@@ -359,7 +382,7 @@
             <tr><td class='code_text'>If  <br></td>
                 <td><table border='0'>
                     <tr><td>  <input type="text" class='code_text' id="exposure_eq1" disabled=true value=90000 size="8">  </td></tr>
-                    <tr><td allign='center' class='code_text'>exporusre &gt; &ThinSpace; </td></tr>
+                    <tr><td allign='center' class='code_text'>exposure &gt; &ThinSpace; </td></tr>
                 </table></td>
                 <td><input type="text" id="eq1_user_exposure" value=1200000  size="8"></td>
                 <td allign='center' class='code_text'>enable night mode </td>
@@ -372,7 +395,7 @@
             <tr><td rowspan='2'><input type="checkbox" checked=true id="eq2" onclick='eq_click("eq2")'></td><td class='code_text'> If  <br></td>
                 <td><table border='0'>
                     <tr><td>  <input type="text" id="exposure_eq2" disabled=true value=90000 size="8">  </td></tr>
-                    <tr><td class='code_text' allign='center'>exporusre &lt;  &ThinSpace; </td></tr>
+                    <tr><td class='code_text' allign='center'>exposure &lt;  &ThinSpace; </td></tr>
                 </table></td>
                 <td><input type="text" id="eq2_user_exposure" value=930000 size="8"></td>
                 <td><table border='0' class='eq2_1'><tr>
