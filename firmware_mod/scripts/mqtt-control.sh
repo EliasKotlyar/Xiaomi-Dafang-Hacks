@@ -190,6 +190,18 @@ killall mosquitto_sub.bin 2> /dev/null
       motor right
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
     ;;
+    "${TOPIC}/debug/remountsdcard/set ON")
+      remountcard
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/debug/remountsdcard ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Remounting SD Card"
+    ;;
+    "${TOPIC}/debug/recalibrate/set ON")
+      recalibrateMotor
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/debug/recalibrate ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Recalibrating Motor"
+    ;;
+    "${TOPIC}/debug/reboot/set ON")
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/debug/reboot ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Rebooting System"
+      rebootSystem
+    ;;
 
     "${TOPIC}/set "*)
       COMMAND=$(echo "$line" | awk '{print $2}')

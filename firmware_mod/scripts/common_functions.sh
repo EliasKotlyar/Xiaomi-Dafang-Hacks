@@ -388,3 +388,18 @@ update_axis(){
     OSD="${OSD} ${AXIS}"
   fi
 }
+
+# Reboot
+rebootSystem() {
+  /sbin/reboot
+}
+
+# Recalibrate
+recalibrateMotor() {
+  /system/sdcard/bin/motor -d h -s 100
+}
+
+# Mount SD Card
+remountcard() {
+  mount -o remount,rw /system/sdcard
+}
