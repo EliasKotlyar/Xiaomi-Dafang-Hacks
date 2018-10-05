@@ -14,8 +14,8 @@ HomeKit integration is possible via the [ Homebridge Dafang Plugin](https://gith
 
 ### Detailed Installation
 
-1. [Installation Guide] (https://github.com/sahilchaddha/homebridge-dafang#readme)
-2. [MQTT & Camera Setup] (https://github.com/sahilchaddha/homebridge-dafang/blob/master/Setup_MQTT.md)
+1. [ Installation Guide ](https://github.com/sahilchaddha/homebridge-dafang#readme)
+2. [ MQTT & Camera Setup ](https://github.com/sahilchaddha/homebridge-dafang/blob/master/Setup_MQTT.md)
 
 ## Using Homebridge-camera-ffmpeg (Only Camera Stream)
 
