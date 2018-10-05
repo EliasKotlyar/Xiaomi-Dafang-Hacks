@@ -3,11 +3,8 @@
         {
             "platform": "Dafang",
             "mqtt": {
-                "hostBroker": true,
                 "port": 1883,
                 "host": "localhost",
-                "debug": true,
-                "mongoUrl": "mongodb://localhost:27017/mqtt"
             },
             "cameras": [{
                 "cameraName": "My Dafang",
