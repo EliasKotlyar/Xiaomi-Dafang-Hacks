@@ -385,6 +385,7 @@ snapshot(){
   if [ "$1" == "on" ]; then
     filename="/tmp/snapshot.jpg"
     /system/sdcard/bin/getimage > "$filename" &
+    sleep 1
   fi
 }
 
