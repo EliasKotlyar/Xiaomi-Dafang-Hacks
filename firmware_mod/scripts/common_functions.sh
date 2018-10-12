@@ -380,13 +380,11 @@ auto_night_mode(){
   esac
 }
 
-# Take/store a snapshot
+# Take a snapshot
 snapshot(){
-  if [ "$1" == "on" ]; then
     filename="/tmp/snapshot.jpg"
     /system/sdcard/bin/getimage > "$filename" &
     sleep 1
-  fi
 }
 
 # Update axis
