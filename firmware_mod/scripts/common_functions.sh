@@ -380,6 +380,13 @@ auto_night_mode(){
   esac
 }
 
+# Take a snapshot
+snapshot(){
+    filename="/tmp/snapshot.jpg"
+    /system/sdcard/bin/getimage > "$filename" &
+    sleep 1
+}
+
 # Update axis
 update_axis(){
   source /system/sdcard/config/osd.conf > /dev/null 2>/dev/null
