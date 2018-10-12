@@ -19,3 +19,4 @@ publish_mqtt_message=false
 sendemail=false
 send_telegram=false
 save_dir=/system/sdcard/motion/stills
+save_file_date_pattern="+%d-%m-%Y_%H.%M.%S"
