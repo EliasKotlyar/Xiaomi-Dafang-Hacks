@@ -174,9 +174,9 @@ echo "Determined image sensor model as $sensor" >> $LOGPATH
 ## Start the image sensor:
 insmod /driver/tx-isp.ko isp_clk=100000000
 if [ $sensor = 'jxf22' ]; then
-  insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+  insmod /system/sdcard/driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 else
-  insmod /driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+  insmod /system/sdcard/driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 fi
 
 ## Start FTP & SSH Server:
