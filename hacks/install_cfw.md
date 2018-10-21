@@ -11,7 +11,7 @@
     Sannce & clones | [Start here](/hacks/install_sannce.md)
     Other Ingenic T10/T20 Device | [Start here](/hacks/newdevices.md)
 
-2. Format your microSD to FAT32. NTFS, EXFAT etc. won't work.
+2. Format your microSD to FAT32. NTFS, EXFAT etc. won't work. Try to use smaller older SD cards like 512 MB or create just a single 512 MB partition on it for maximum success rate.
 3. Copy the CFW-Binary from step 1 to the formatted microSD card and rename it to "demo.bin". There must not be other files on the microSD! This is really important and it won't work if there are any other files on there.
 4. Remove the power cable from the camera and plug the microSD card into the camera
 5. Hold down the setup button on the camera while
