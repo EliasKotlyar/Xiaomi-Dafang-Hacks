@@ -447,6 +447,32 @@ if [ -n "$F_cmd" ]; then
         echo "Motion Configuration done"
         return
     ;;
+    autonight_sw)
+    if [ ! -f /system/sdcard/config/autonight.conf.sw ]; then
+        echo "-S" > /system/sdcard/config/autonight.conf.sw
+    fi
+      cp -f /system/sdcard/config/autonight.conf.sw /system/sdcard/config/autonight.conf
+    ;;
+    autonight_hw)
+      rm -f /system/sdcard/config/autonight.conf.sw /system/sdcard/config/autonight.conf
+    ;;
+    get_sw_night_config)
+      if [ ! -f /system/sdcard/config/autonight.conf.sw ]; then
+        echo "-S" > /system/sdcard/config/autonight.conf.sw
+      fi
+      cat /system/sdcard/config/autonight.conf.sw
+      exit
+    ;;
+    save_sw_night_config)
+      night_mode_conf=$(echo "${F_val}"| sed "s/+/ /g" | sed "s/%2C/,/g")
+      echo $night_mode_conf > /system/sdcard/config/autonight.conf.sw
+      if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" == 0  ]; then
+          cp -f /system/sdcard/config/autonight.conf.sw /system/sdcard/config/autonight.conf
+      fi
+      echo Saved $night_mode_conf
+      echo "<br>"
+      echo Currnet mode: $(if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" == 0 ]; then echo "Software";  else echo "Hardware"; fi)
+    ;;
     offDebug)
         /system/sdcard/controlscripts/debug-on-osd stop
 
