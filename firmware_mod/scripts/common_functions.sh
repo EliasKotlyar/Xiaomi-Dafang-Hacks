@@ -340,9 +340,9 @@ motion_tracking(){
 night_mode(){
   case "$1" in
   on)
+    /system/sdcard/bin/setconf -k n -v 1
     ir_led on
     ir_cut off
-    /system/sdcard/bin/setconf -k n -v 1
     ;;
   off)
     ir_led off
