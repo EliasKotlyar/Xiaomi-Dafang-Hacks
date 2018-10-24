@@ -1,62 +1,4 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <style>
-    .block {
-        display: block;
-        width: 20%;
-        border: 2;
-        padding: 14px 28px;
-        font-size: 16px;
-        cursor: pointer;
-        text-align: center;
-    }
-    input{
-        text-align: center;
-        font-family: monospace;
-        font-size: large;
-    }
-
-    .code_text{
-        font-family: monospace;
-        font-size: large;
-    }
-    .wait{
-        font-family: monospace;
-        font-size: large;
-        background-color: #89fcfd;
-    }
-    .mode{
-        font-family: monospace;
-        font-size: large;
-        background-color:#ffe944;
-        box-shadow: 4px 4px 10px black;
-        text-shadow: 1px 1px 1px black;
-    }
-    input:disabled{
-        font-family: monospace;
-        font-size: large;
-    }
-    .jitter{
-        background-color: #89fcfd;
-    }
-    .eq1{
-        background-color: #89fcfd;
-    }
-    .eq2{
-        background-color: #bad5dc;
-    }
-    .eq2_1{
-        background-color: #98b8cf;
-    }
-    .eq3{
-        background-color: #bad5dc;
-    }
-    .eq3_1{
-        background-color: #98b8cf;
-    }
-
-    </style>
+<h1 class="is-size-4">SW auto night setting</h1>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/smoothie/1.34.0/smoothie.js"></script>
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript">
@@ -147,17 +89,84 @@
         }
       }
 
-      function start(){
-        night_mode(false);
-        getParams();
-        startGraph();
-        readIspInfo();
-        timer = setInterval(readIspInfo, 1000);
-        running = true;
-      }
+      $(document).ready(function () {
+        $.get("/cgi-bin/action.cgi?cmd=get_sw_night_config", function(data, status)
+            {
+                var list = data.split('-');
+                var valid=false;
+                var j = $("#jitter_percent").val();
+                var w = $("#sec_wait").val();
+                var e11 = $("#eq1_user_exposure").val();
+                var e21 = ($("#eq2_1").val() == "on") ? 1 : 0;
+                var e22 = $("#eq2_user_iridix").val();
+                var e23 = $("#eq2_count").val();
+                var e31 = ($("#eq3_1").val() == "on") ? 1 : 0;
+                var e32 = $("#eq3_user_iridix").val();
+                var e33 = $("#eq3_count").val();;
+                
+                for(var i=0; i<list.length; i++){
+                    switch (list[i][0]){
+                        case 'S':
+                            valid = true;
+                            break;
+                        case 'j':
+                            j = parseInt(list[i].substring(1)) || j;
+                            break;
+                        case 'w':
+                            w = parseInt(list[i].substring(1)) || w;
+                            break;
+                        case '1':
+                            e11 = parseInt(list[i].substring(1)) || e11;
+                            break;
+                        case '2':
+                            var p = list[i].split(' ');
+                            var p2 = p[1].split(',');
+                            e21 = parseInt(p2[0]) || e21;
+                            e22 = parseInt(p2[1]) || e22;
+                            e23 = parseInt(p2[2]) || e23;
+                            break;
+                        case '3':
+                            var p = list[i].split(' ');
+                            var p2 = p[1].split(',');
+                            e31 = parseInt(p2[0]) || e31;
+                            e32 = parseInt(p2[1]) || e32;
+                            e33 = parseInt(p2[2]) || e33;
+                            break;
+                    }
+                }
+                $("#jitter_percent").val(j);
+                $("#sec_wait").val(w);
+                $("#eq1_user_exposure").val(e11);
+                if(e21 == 0){
+                    $('#eq2').prop('checked', false);
+                }else{
+                    $("#eq2_1").val(e21);
+                    $("#eq2_user_iridix").val(e22);
+                    $("#eq2_count").val(e23);
+                }
+                if(e31 == 0){
+                    $('#eq3').prop('checked', false);
+                }else{
+                    $("#eq3_1").val(e31);
+                    $("#eq3_user_iridix").val(e32);
+                    $("#eq3_count").val(e33);
+                }
+                night_mode(false);
+                getParams();
+                startGraph();
+                readIspInfo();
+                timer = setInterval(readIspInfo, 1000);
+                running = true;
+            });
+      });
+        function sw_night_config_pageDone()
+        {
+            clearInterval(timer);
+        }
+
     
-    function play_pause(){
-        if(running){
+        $('#play').click(function (event) {
+        /*if(running){
             clearInterval(timer);
             running = false;
             $('#play').html("Play");
@@ -171,8 +180,8 @@
             for(var i=0; i<charts.length; i++){
                 charts[i].start();
             }
-        }
-    }
+        }*/
+    });
     function ir_led(val){
         var cmd = (val) ? "cgi-bin/action.cgi?cmd=ir_led_on" : "cgi-bin/action.cgi?cmd=ir_led_off";
         $.get(cmd, function(data, status){});
@@ -218,7 +227,13 @@
     var sec=0;
     function update_values(){
         var eq1_pass=false, eq2_pass=false, eq3_pass=false, eq2_1_pass=false, eq3_1_pass=false;
-        var jitter_percent = parseInt($("#jitter_percent")[0].value);
+        var jitter_percent;
+
+        try{
+            jitter_percent = parseInt($("#jitter_percent")[0].value);
+        }catch(e){
+            return sw_night_config_pageDone();
+        }
 
         update_commandline();
 
@@ -341,11 +356,34 @@
             $("."+name+"_1").css( "opacity", "0.7" );
         }
     }
+    $('#swNightForm').submit(function (event) {
+        debugger;
+        var b = $('#sw_night_submit');
+            b.toggleClass('is-loading');
+            b.prop('disabled', !b.prop('disabled'));
 
+            var formData = {
+                'val' :  $("#command_line").val()
+            };
+            $.ajax({
+                type: 'POST',
+                url: $('#swNightForm').attr('action'),
+                data: formData,
+                dataType: 'html',
+                encode: true
+            }).done(function (res) {
+                b.toggleClass('is-loading');
+                b.prop('disabled', !b.prop('disabled'));
+                showResult(res);
+            });
+            event.preventDefault();
+    });
     </script>
-  </head>
-  <body onload="start()">
-    <button id='play' type="button" onclick="play_pause()" class="block">Pause</button>
+
+Please stop autonight detection service if its running.
+
+<form id="swNightForm" action="cgi-bin/action.cgi?cmd=save_sw_night_config" method="post">
+<!--button id='play' type="button">Pause</button-->
 
     <br>
     <table>
@@ -355,8 +393,9 @@
             <tr><td><label>Seconds</label></td><td><label id='sec'>0</label></td></tr>
         </table></td>
         <td><table class='mode'>
-            <td>Commandline to use:</td>
-            <td><input type="text" id="command_line" disabled=true value="-S" size="60" style="text-align:left;"></td>
+            <tr><td>Commandline to use:</td>
+            <td><input type="text" id="command_line" disabled=true value="-S" size="60" style="text-align:left;"></td></tr>
+            <tr><td colspan="2"><input style="display: block; text-align: center; margin: auto;" class='button is-primary' id="sw_night_submit" type="submit" value="Save"></button></td></tr>
         </table></td>
     </tr>
     </table>
@@ -442,17 +481,10 @@
             </tr>
         </table>
     <br>
+</form>
 
     <table border="1" width="100%" id="canvas_table" style="margin: 0px;">
         <tr> <td width="10%"><div>ISP exposure log2 id</div></td> <td><canvas id="exp_chart" height="150"></canvas></td> </tr>
         <tr> <td><div>ISP WB Temperature</div></td> <td><canvas id="wb_chart" height="150"></canvas></td> </tr>
-        <tr> <td><div>ISP WB rg</div></td> <td><canvas id="rg_chart" height="150"></canvas></td> </tr>
-        <tr> <td><div>ISP WB bg</div></td> <td><canvas id="bg_chart" height="150"></canvas></td> </tr>
         <tr> <td><div>ISP Iridix strength</div></td> <td><canvas id="iridix_chart" height="150"></canvas></td> </tr>
-        <tr> <td><div>ISP total gain</div></td> <td><canvas id="gain_chart" height="150"></canvas></td> </tr>
     </table>
-
-
-</body>
-</html>
-
