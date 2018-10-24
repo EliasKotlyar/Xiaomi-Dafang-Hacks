@@ -448,30 +448,26 @@ if [ -n "$F_cmd" ]; then
         return
     ;;
     autonight_sw)
-    if [ ! -f /system/sdcard/config/autonight.conf.sw ]; then
-        echo "-S" > /system/sdcard/config/autonight.conf.sw
-    fi
-      cp -f /system/sdcard/config/autonight.conf.sw /system/sdcard/config/autonight.conf
+      if [ ! -f /system/sdcard/config/autonight.conf ]; then
+        echo "-S" > /system/sdcard/config/autonight.conf
+      fi
+      current_setting=$(sed 's/-S *//g' /system/sdcard/config/autonight.conf)
+      echo "-S" $current_setting > /system/sdcard/config/autonight.conf
     ;;
     autonight_hw)
-      rm -f /system/sdcard/config/autonight.conf.sw /system/sdcard/config/autonight.conf
+      if [ -f /system/sdcard/config/autonight.conf ]; then
+        sed -i 's/-S *//g' /system/sdcard/config/autonight.conf
+      fi
     ;;
     get_sw_night_config)
-      if [ ! -f /system/sdcard/config/autonight.conf.sw ]; then
-        echo "-S" > /system/sdcard/config/autonight.conf.sw
-      fi
-      cat /system/sdcard/config/autonight.conf.sw
+      cat /system/sdcard/config/autonight.conf
       exit
     ;;
     save_sw_night_config)
+      #This also enables software mode
       night_mode_conf=$(echo "${F_val}"| sed "s/+/ /g" | sed "s/%2C/,/g")
-      echo $night_mode_conf > /system/sdcard/config/autonight.conf.sw
-      if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" == 0  ]; then
-          cp -f /system/sdcard/config/autonight.conf.sw /system/sdcard/config/autonight.conf
-      fi
+      echo $night_mode_conf > /system/sdcard/config/autonight.conf
       echo Saved $night_mode_conf
-      echo "<br>"
-      echo Currnet mode: $(if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" == 0 ]; then echo "Software";  else echo "Hardware"; fi)
     ;;
     offDebug)
         /system/sdcard/controlscripts/debug-on-osd stop

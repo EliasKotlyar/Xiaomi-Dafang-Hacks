@@ -94,7 +94,15 @@
             {
                 var list = data.split('-');
                 var valid=false;
-                var j,w,e11,e21,e22,e23,e31,e32,e33;
+                var j = $("#jitter_percent").val();
+                var w = $("#sec_wait").val();
+                var e11 = $("#eq1_user_exposure").val();
+                var e21 = ($("#eq2_1").val() == "on") ? 1 : 0;
+                var e22 = $("#eq2_user_iridix").val();
+                var e23 = $("#eq2_count").val();
+                var e31 = ($("#eq3_1").val() == "on") ? 1 : 0;
+                var e32 = $("#eq3_user_iridix").val();
+                var e33 = $("#eq3_count").val();;
                 
                 for(var i=0; i<list.length; i++){
                     switch (list[i][0]){
@@ -102,48 +110,46 @@
                             valid = true;
                             break;
                         case 'j':
-                            j = parseInt(list[i].substring(1)) || $("#jitter_percent").val();
+                            j = parseInt(list[i].substring(1)) || j;
                             break;
                         case 'w':
-                            w = parseInt(list[i].substring(1)) || $("#sec_wait").val();
+                            w = parseInt(list[i].substring(1)) || w;
                             break;
                         case '1':
-                            e11 = parseInt(list[i].substring(1)) || $("#eq1_user_exposure").val();
+                            e11 = parseInt(list[i].substring(1)) || e11;
                             break;
                         case '2':
                             var p = list[i].split(' ');
                             var p2 = p[1].split(',');
-                            e21 = parseInt(p2[0]) || $("#eq2_1").val();
-                            e22 = parseInt(p2[1]) || $("#eq2_user_iridix").val();
-                            e23 = parseInt(p2[2]) || $("#eq2_count").val();
+                            e21 = parseInt(p2[0]) || e21;
+                            e22 = parseInt(p2[1]) || e22;
+                            e23 = parseInt(p2[2]) || e23;
                             break;
                         case '3':
                             var p = list[i].split(' ');
                             var p2 = p[1].split(',');
-                            e31 = parseInt(p2[0]) || $("#eq3_1").val();
-                            e32 = parseInt(p2[1]) || $("#eq3_user_iridix").val();
-                            e33 = parseInt(p2[2]) || $("#eq3_count").val();
+                            e31 = parseInt(p2[0]) || e31;
+                            e32 = parseInt(p2[1]) || e32;
+                            e33 = parseInt(p2[2]) || e33;
                             break;
                     }
                 }
-                if (valid){
-                    $("#jitter_percent").val(j);
-                    $("#sec_wait").val(w);
-                    $("#eq1_user_exposure").val(e11);
-                    if(e21 == 0){
-                        $('#eq2').prop('checked', false);
-                    }else{
-                        $("#eq2_1").val(e21);
-                        $("#eq2_user_iridix").val(e22);
-                        $("#eq2_count").val(e23);
-                    }
-                    if(e31 == 0){
-                        $('#eq3').prop('checked', false);
-                    }else{
-                        $("#eq3_1").val(e31);
-                        $("#eq3_user_iridix").val(e32);
-                        $("#eq3_count").val(e33);
-                    }
+                $("#jitter_percent").val(j);
+                $("#sec_wait").val(w);
+                $("#eq1_user_exposure").val(e11);
+                if(e21 == 0){
+                    $('#eq2').prop('checked', false);
+                }else{
+                    $("#eq2_1").val(e21);
+                    $("#eq2_user_iridix").val(e22);
+                    $("#eq2_count").val(e23);
+                }
+                if(e31 == 0){
+                    $('#eq3').prop('checked', false);
+                }else{
+                    $("#eq3_1").val(e31);
+                    $("#eq3_user_iridix").val(e32);
+                    $("#eq3_count").val(e33);
                 }
                 night_mode(false);
                 getParams();
