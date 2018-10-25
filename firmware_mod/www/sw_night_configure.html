@@ -97,10 +97,10 @@
                 var j = $("#jitter_percent").val();
                 var w = $("#sec_wait").val();
                 var e11 = $("#eq1_user_exposure").val();
-                var e21 = ($("#eq2_1").val() == "on") ? 1 : 0;
+                var e21 = $("#eq2_user_exposure").val();
                 var e22 = $("#eq2_user_iridix").val();
                 var e23 = $("#eq2_count").val();
-                var e31 = ($("#eq3_1").val() == "on") ? 1 : 0;
+                var e31 = $("#eq3_user_wb").val();
                 var e32 = $("#eq3_user_iridix").val();
                 var e33 = $("#eq3_count").val();;
                 
@@ -140,14 +140,14 @@
                 if(e21 == 0){
                     $('#eq2').prop('checked', false);
                 }else{
-                    $("#eq2_1").val(e21);
+                    $("#eq2_user_exposure").val(e21);
                     $("#eq2_user_iridix").val(e22);
                     $("#eq2_count").val(e23);
                 }
                 if(e31 == 0){
                     $('#eq3').prop('checked', false);
                 }else{
-                    $("#eq3_1").val(e31);
+                    $("#eq3_user_wb").val(e31);
                     $("#eq3_user_iridix").val(e32);
                     $("#eq3_count").val(e33);
                 }
