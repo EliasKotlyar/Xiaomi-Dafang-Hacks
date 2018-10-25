@@ -182,6 +182,10 @@ killall mosquitto_sub.bin 2> /dev/null
       motor down
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status vertical)"
     ;;
+    "${TOPIC}/motors/vertical/set calibrate")
+      motor vcalibrate # calibrate with endstops
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status vertical)"
+    ;;
     "${TOPIC}/motors/horizontal/set left")
       motor left
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
@@ -190,17 +194,22 @@ killall mosquitto_sub.bin 2> /dev/null
       motor right
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
     ;;
-    "${TOPIC}/debug/remountsdcard/set ON")
-      remountcard
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/debug/remountsdcard ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Remounting SD Card"
+    "${TOPIC}/motors/horizontal/set calibrate")
+      motor hcalibrate # calibrate with endstops
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
     ;;
-    "${TOPIC}/debug/recalibrate/set ON")
-      recalibrateMotor
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/debug/recalibrate ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Recalibrating Motor"
+    "${TOPIC}/motors/set calibrate")
+      motor calibrate # calibrate without endstops
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
     ;;
-    "${TOPIC}/debug/reboot/set ON")
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/debug/reboot ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Rebooting System"
-      rebootSystem
+    "${TOPIC}/remount_sdcard/set ON")
+      remount_sdcard
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/remount_sdcard ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Remounting the SD Card"
+    ;;
+
+    "${TOPIC}/reboot/set ON")
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/reboot ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Rebooting the System"
+      reboot_system
     ;;    
     "${TOPIC}/snapshot/set ON")
       snapshot
