@@ -396,17 +396,12 @@ update_axis(){
   fi
 }
 
-# Reboot
-rebootSystem() {
+# Reboot the System
+reboot_system() {
   /sbin/reboot
 }
 
-# Recalibrate
-recalibrateMotor() {
-  /system/sdcard/bin/motor -d h -s 100
-}
-
-# Mount SD Card
-remountcard() {
+# Re-Mount the SD Card
+remount_sdcard() {
   mount -o remount,rw /system/sdcard
 }
