@@ -395,3 +395,13 @@ update_axis(){
     OSD="${OSD} ${AXIS}"
   fi
 }
+
+# Reboot the System
+reboot_system() {
+  /sbin/reboot
+}
+
+# Re-Mount the SD Card
+remount_sdcard() {
+  mount -o remount,rw /system/sdcard
+}
