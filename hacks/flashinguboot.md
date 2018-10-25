@@ -28,13 +28,9 @@ console=ttyS1,115200n8 mem=104M@0x0 ispmem=8M@0x6800000 rmem=16M@0x7000000 init=
 
 Sum up the values from each "mem"-section:
 
-mem = 104M
+mem + ispmem +rmem = 104M + 8M +16M = 128M
 
-rmem = 16M
-
-ispmem = 8M
-
--> Together 128M -> You have a device with 128 Mb RAM.
+i.e. you have a device with 128 Mb RAM.
 
 ## Flashing the U-Boot bootloader:
 
@@ -42,13 +38,13 @@ ispmem = 8M
 2. Get the correct [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) for your device and RAM size.
 3. Put the bootloader file on your microsd
 4. **Verify the MD5 hash of the file!! Do not skip this step or you may brick your camera!**
-3. Run following commands
+3. Run the following commands
 
 ```bash
 flash_eraseall /dev/mtd0
 ```
 ```bash
-dd if=<filename.bin> of=/dev/mtd0
+dd if=dafang_128mb_v1.bin of=/dev/mtd0
 ```
 Don't do anything stupid inbetween.
 If you crash your camera, you end up without a working bootloader.
@@ -70,19 +66,23 @@ If the led is not turning blue despite having an uEnv.txt on your microsd - try 
 
 ## Enable FullHD (on 128 Mb devices only):
 
-Open up the uEnv.txt file and change the "boot-line" from
+Open the uEnv.txt file 
+
+```$bash
+vi /system/sdcard/uEnv.txt
+```
+and change the "boot-line" from:
 
 `mem=104M@0x0 ispmem=8M@0x6800000 rmem=16M@0x7000000`
 
-to
+to:
 
 `mem=87M@0x0 ispmem=9M@0x5700000 rmem=32M@0x6000000`
- 
- 
-Check if the bootline has been applied properly using the following command:
+
+Reboot and check if the bootline has been applied properly using the following command:
 
 ```$bash
-[root@DafangHacks:~]# cat /proc/cmdline
+cat /proc/cmdline
 ```
 
 ## My camera doesn't boot/I have failed to flash the bootloader. What can I do now?
