@@ -54,7 +54,7 @@ fi
 # Run any user scripts.
 for i in /system/sdcard/config/userscripts/motiondetection/*; do
     if [ -x "$i" ]; then
-        echo "Running: $i on"
-        $i on &
+        echo "Running: $i on $save_dir/$filename"
+        $i on "$save_dir/$filename" &
     fi
 done
