@@ -195,6 +195,10 @@ cat << EOF
         <div class="column">
             <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_start')">On</button>
             <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_stop')">Off</button>
+            <input class="is-checkradio" id="night_config_hw" type="radio" name="night_config" $(if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" != 0 ]; then echo "checked";  fi) onClick="call('cgi-bin/action.cgi?cmd=autonight_hw')" >
+            <label for="night_config_hw">HW</label>
+            <input class="is-checkradio" id="night_config_sw" type="radio" name="night_config" $(if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" == 0 ]; then echo "checked";  fi)  onClick="call('cgi-bin/action.cgi?cmd=autonight_sw')">
+            <label for="night_config_sw">SW</label>
         </div>
         <div class="column">
         <form id="formldr" action="cgi-bin/action.cgi?cmd=setldravg" method="post">
@@ -707,20 +711,54 @@ cat << EOF
                     </div>
                 </div>
             </div>
+
+            <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                    <label class="label">Font name</label>
+                </div>
+                <div class="field-body">
+                    <div class="field">
+                        <div class="control">
+                            <div class="select">
+                                <select name="FontName">
+                                    $(
+                                       fontName="$(/system/sdcard/bin/setconf -g e)"
+                                       echo -n "<option value=\"\""
+                                       if [ -n "${fontName-unset}" ] ; then echo selected; fi
+                                       echo -n ">Default fonts </option>"
+
+                                       for i in `/system/sdcard/bin/busybox find /system/sdcard/fonts -name *.ttf`
+                                       do
+                                            echo -n "<option value=\"$i\" "
+                                            if [ "$fontName" == "$i" ] ; then echo selected; fi
+                                            echo -n ">`/system/sdcard/bin/busybox basename $i` </option>"
+                                       done
+                                    )
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
                     <label class="label">OSD Text Size</label>
                 </div>
                 <div class="field-body">
                     <div class="field">
-                        <div class="control">
-                            <div class="select">
-                                <select name="size">
-                                <option value="0" $(if [ "$(grep SIZE /system/sdcard/config/osd.conf | sed s/SIZE=//)" -eq 0 ]; then echo selected; fi)>Small</option>
-                                <option value="1" $(if [ "$(grep SIZE /system/sdcard/config/osd.conf | sed s/SIZE=//)" -eq 1 ]; then echo selected; fi)>Bigger</option>
-                                </select>
-                            </div>
-                        </div>
+                        <p class="control">
+                                 <input class="input" id="OSDSize" name="OSDSize" type="number" size="4"
+                                     value="$(
+                                        fontSize=$(/system/sdcard/bin/setconf -g s)
+                                        if [ "$fontSize" == "0" ]; then echo 18
+                                        elif [ "$fontSize" == "1" ]; then echo 40
+                                        else echo "$fontSize"
+                                        fi
+                                     )"/>
+                        </p>
+                         <p class="help">Too high value won't display anything</p>
                     </div>
                 </div>
             </div>
@@ -763,9 +801,11 @@ cat << EOF
                                 <option value="1" $(if [ "$(grep FIXEDW /system/sdcard/config/osd.conf | sed s/FIXEDW=//)" -eq 1 ]; then echo selected; fi)>Yes</option>
                                 </select>
                             </div>
+                            <p class="help">Fixed width works only for "default" fonts</p>
                         </div>
                     </div>
                 </div>
+
             </div>
             <div class="field is-horizontal">
                 <div class="field-label is-normal">
@@ -860,6 +900,24 @@ cat << EOF
         <pre>$(mount)</pre>
     </div>
 </div>
+
+<!-- Bootloader -->
+<div class='card status_card'>
+    <header class='card-header'><p class='card-header-title'>Bootloader Information</p></header>
+    <div class='card-content'>
+        Your Bootloader MD5 is:
+        <pre>$(md5sum /dev/mtd0 |cut -f 1 -d " ")</pre>
+        Your Bootloader Version is:
+        <pre>$(busybox strings /dev/mtd0 | grep "U-Boot 2")</pre>
+        Your CMDline is:
+        <pre>$(cat /proc/cmdline)</pre>
+
+
+        <a target="_blank" href="cgi-bin/dumpbootloader.cgi">Download Bootloader</a>
+    </div>
+</div>
+
+
 
 EOF
 script=$(cat /system/sdcard/www/scripts/status.cgi.js)

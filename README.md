@@ -10,6 +10,7 @@ Xiaomi Dafang | ![Dafang](/dafang.png)
 Xiaomi Xiaofang 1S | ![XiaoFang](/xiaofang.png)
 Wyzecam Pan | ![Dafang](/dafang.png)
 Wyzecam V2 | ![XiaoFang](/xiaofang.png)
+Sannce I21AG, MixSight HX-I2110T2, WanScam HW0036, Escam G02, Digoo BB-M2 | ![XiaoFang](/sannce.jpg)
 Any other Device with Ingenic T10/T20 Device | ![T20](/t20.png)
 
 If you have a classic XiaoFang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
@@ -36,12 +37,6 @@ If you/we solve your issue, please condense your gained insights into a pull req
 
 Start [here](/hacks/technical.md)
 
-
-## Viewer and control solution:
-
-After install, you can use this [android application](https://play.google.com/store/apps/details?id=io.ext.medinvention.dafangcam) developed by [@medinvention](https://github.com/mmohamed) and join us on [Gitter](https://gitter.im/Dafang-Hacked-Cam-App)
-
-
 ## Integration in Home Automation Systems:
 
 [Domoticz](/integration/domoticz/domoticz.md)
@@ -49,6 +44,8 @@ After install, you can use this [android application](https://play.google.com/st
 [Home Assistant](/integration/homeassistant/homeassistant.md)
 
 [HomeKit](/integration/homekit/homekit.md)
+
+[OpenHab](https://community.openhab.org/t/how-to-configure-a-hacked-xiaomi-dafang-to-work-with-openhab/51121)
 
 [Synology](/integration/synology/synology.md)
 

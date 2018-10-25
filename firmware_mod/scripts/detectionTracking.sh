@@ -92,8 +92,7 @@ backtoOrigin() {
 #################### Start ###
 
 # If no argument that's mean the camera need to return to its original position
-# the 5th arguments is '&'
-if [ $# -ne 5 ]
+if [ $# -eq 0 ]
 then
     backtoOrigin
     return 0;
