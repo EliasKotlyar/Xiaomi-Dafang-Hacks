@@ -447,6 +447,28 @@ if [ -n "$F_cmd" ]; then
         echo "Motion Configuration done"
         return
     ;;
+    autonight_sw)
+      if [ ! -f /system/sdcard/config/autonight.conf ]; then
+        echo "-S" > /system/sdcard/config/autonight.conf
+      fi
+      current_setting=$(sed 's/-S *//g' /system/sdcard/config/autonight.conf)
+      echo "-S" $current_setting > /system/sdcard/config/autonight.conf
+    ;;
+    autonight_hw)
+      if [ -f /system/sdcard/config/autonight.conf ]; then
+        sed -i 's/-S *//g' /system/sdcard/config/autonight.conf
+      fi
+    ;;
+    get_sw_night_config)
+      cat /system/sdcard/config/autonight.conf
+      exit
+    ;;
+    save_sw_night_config)
+      #This also enables software mode
+      night_mode_conf=$(echo "${F_val}"| sed "s/+/ /g" | sed "s/%2C/,/g")
+      echo $night_mode_conf > /system/sdcard/config/autonight.conf
+      echo Saved $night_mode_conf
+    ;;
     offDebug)
         /system/sdcard/controlscripts/debug-on-osd stop
 

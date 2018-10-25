@@ -340,9 +340,9 @@ motion_tracking(){
 night_mode(){
   case "$1" in
   on)
+    /system/sdcard/bin/setconf -k n -v 1
     ir_led on
     ir_cut off
-    /system/sdcard/bin/setconf -k n -v 1
     ;;
   off)
     ir_led off
@@ -378,6 +378,13 @@ auto_night_mode(){
         echo "OFF"
       fi
   esac
+}
+
+# Take a snapshot
+snapshot(){
+    filename="/tmp/snapshot.jpg"
+    /system/sdcard/bin/getimage > "$filename" &
+    sleep 1
 }
 
 # Update axis

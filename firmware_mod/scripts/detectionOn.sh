@@ -11,7 +11,8 @@ fi
 
 # Save a snapshot
 if [ "$save_snapshot" = true ] ; then
-	filename=$(date +%d-%m-%Y_%H.%M.%S).jpg
+	pattern="${save_file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
+	filename=$(date $pattern).jpg
 	if [ ! -d "$save_dir" ]; then
 		mkdir -p "$save_dir"
 	fi

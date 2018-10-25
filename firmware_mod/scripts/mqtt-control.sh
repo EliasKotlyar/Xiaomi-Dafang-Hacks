@@ -201,6 +201,10 @@ killall mosquitto_sub.bin 2> /dev/null
     "${TOPIC}/debug/reboot/set ON")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/debug/reboot ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "Rebooting System"
       rebootSystem
+    ;;    
+    "${TOPIC}/snapshot/set ON")
+      snapshot
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/snapshot ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f "$filename"
     ;;
 
     "${TOPIC}/set "*)

@@ -1,0 +1,54 @@
+input{
+    text-align: center;
+    font-family: monospace;
+    font-size: large;
+}
+
+.code_text{
+    font-family: monospace;
+    font-size: large;
+}
+.wait{
+    font-family: monospace;
+    font-size: large;
+    background-color: #89fcfd;
+}
+.mode{
+    font-family: monospace;
+    font-size: large;
+    background-color:#ffe944;
+    box-shadow: 4px 4px 10px black;
+    text-shadow: 1px 1px 1px black;
+}
+
+.save_button{
+    color: white;
+    background-color: red;
+    display: block;
+    border:5
+    font-size: 18px;
+    width:20%;
+    font-weight: bold;
+}
+input:disabled{
+    font-family: monospace;
+    font-size: large;
+}
+.jitter{
+    background-color: #89fcfd;
+}
+.eq1{
+    background-color: #89fcfd;
+}
+.eq2{
+    background-color: #bad5dc;
+}
+.eq2_1{
+    background-color: #98b8cf;
+}
+.eq3{
+    background-color: #bad5dc;
+}
+.eq3_1{
+    background-color: #98b8cf;
+}
