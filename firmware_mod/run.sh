@@ -55,6 +55,22 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
+## Create a swap file on SD if desired
+SWAP=false
+SWAPPATH="/system/sdcard/swapfile"
+SWAPSIZE=256
+if [ "$SWAP" = true ]; then
+  if [ ! -f $SWAPPATH ]; then
+    echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
+    dd if=/dev/zero of=$SWAPPATH bs=1M count=$SWAPSIZE
+    mkswap $SWAPPATH
+    echo "Swap file created in $SWAPPATH" >> $LOGPATH
+  fi
+  echo "Configuring swap file" >> $LOGPATH
+  swapon $SWAPPATH
+  echo "Swap set on file $SWAPPATH" >> $LOGPATH
+fi
+
 ## Create crontab dir and start crond:
 if [ ! -d /system/sdcard/config/cron ]; then
   mkdir -p ${CONFIGPATH}/cron/crontabs
