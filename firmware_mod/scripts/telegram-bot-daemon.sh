@@ -3,6 +3,7 @@
 CURL="/system/sdcard/bin/curl"
 LASTUPDATEFILE="/tmp/last_update_id"
 TELEGRAM="/system/sdcard/bin/telegram"
+JQ="/system/sdcard/bin/jq"
 
 . /system/sdcard/config/telegram.conf
 [ -z $apiToken ] && echo "api token not configured yet" && exit 1
@@ -52,17 +53,17 @@ markAsRead() {
 main() {
   json=$(readNext)
 
-  [ "$(echo "$json" | jq -r '.ok')" != "true" ] && exit 1
+  [ "$(echo "$json" | $JQ -r '.ok')" != "true" ] && return 1
 
-  chatId=$(echo "$json" | jq -r '.result[0].message.chat.id // ""')
-  [ -z "$chatId" ] && exit 0 # no new messages
+  chatId=$(echo "$json" | $JQ -r '.result[0].message.chat.id // ""')
+  [ -z "$chatId" ] && return 0 # no new messages
 
-  cmd=$(echo "$json" | jq -r '.result[0].message.text // ""')
-  updateId=$(echo "$json" | jq -r '.result[0].update_id // ""')
+  cmd=$(echo "$json" | $JQ -r '.result[0].message.text // ""')
+  updateId=$(echo "$json" | $JQ -r '.result[0].update_id // ""')
 
   if [ "$chatId" != "$userChatId" ]; then
-    username=$(echo "$json" | jq -r '.result[0].message.from.username // ""')
-    firstName=$(echo "$json" | jq -r '.result[0].message.from.first_name // ""')
+    username=$(echo "$json" | $JQ -r '.result[0].message.from.username // ""')
+    firstName=$(echo "$json" | $JQ -r '.result[0].message.from.first_name // ""')
     $TELEGRAM m "Received message from not authrized chat: $chatId\nUser: $username($firstName)\nMessage: $cmd"
   else
     respond $cmd
@@ -71,4 +72,7 @@ main() {
   markAsRead $updateId
 }
 
-main
+while true; do
+  main >/dev/null 2>&1
+  [ $? -gt 0 ] && exit 1
+done;

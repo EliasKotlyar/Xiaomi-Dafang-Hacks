@@ -26,8 +26,7 @@ start()
     echo "Bot already running";
   else
     echo "Starting bot"
-    CMD="/system/sdcard/bin/busybox watch -n1 /system/sdcard/bin/telegram-bot"
-    /system/sdcard/bin/busybox nohup $CMD >/dev/null 2>&1 &
+    /system/sdcard/bin/busybox nohup /system/sdcard/scripts/telegram-bot-daemon.sh >/dev/null 2>&1 &
     echo "$!" > "$PIDFILE"
   fi
 }
