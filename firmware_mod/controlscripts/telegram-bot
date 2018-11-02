@@ -4,7 +4,7 @@
 # /mem - show memory information
 # /shot - take a shot
 # /on - motion detect on
-# /off - motion detect -ff
+# /off - motion detect off
 
 PIDFILE="/run/telegram-bot.pid"
 
