@@ -4,7 +4,7 @@
             "platform": "Dafang",
             "mqtt": {
                 "port": 1883,
-                "host": "localhost",
+                "host": "localhost"
             },
             "cameras": [{
                 "cameraName": "My Dafang",
