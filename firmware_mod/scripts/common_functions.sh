@@ -40,11 +40,11 @@ rewrite_config(){
   # Check if the value exists (without comment), if not add it to the file
   $(grep -v '^[[:space:]]*#' $1  | grep -q $2)
   ret="$?"
-  if [ "$ret" == "1" ] ; then                             
-      echo "$2=$3" >> $1     
-  else                  
+  if [ "$ret" == "1" ] ; then
+      echo "$2=$3" >> $1
+  else
         sed -i -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}" "$cfg_path"
-  fi          
+  fi
 }
 
 # Control the blue led
@@ -178,9 +178,9 @@ motor(){
     ;;
   status)
     if [ "$2" = "horizontal" ]; then
-        echo $(/system/sdcard/bin/motor -d u -s 0 | grep "x:" | awk  '{print $2}')
+        /system/sdcard/bin/motor -d u -s 0 | grep "x:" | awk  '{print $2}'
     else
-        echo $(/system/sdcard/bin/motor -d u -s 0 | grep "y:" | awk  '{print $2}')
+        /system/sdcard/bin/motor -d u -s 0 | grep "y:" | awk  '{print $2}'
     fi
     ;;
   esac
@@ -290,27 +290,27 @@ motion_detection(){
   esac
 }
 
-# Control the motion detection mail function                                                                                                                            
-motion_send_mail(){                                                                                                                                                
-  case "$1" in                                                                                                                                                     
-  on)                                                                                                                                                              
+# Control the motion detection mail function
+motion_send_mail(){
+  case "$1" in
+  on)
     rewrite_config /system/sdcard/config/motion.conf sendemail "true"
-    ;;                                                                                                                                                             
-  off)                                                                                                                                                             
+    ;;
+  off)
     rewrite_config /system/sdcard/config/motion.conf sendemail "false"
-    ;;                                                                                                                                                             
-  status)                                                                                                                                                          
-    status=`awk '/sendemail/' /system/sdcard/config/motion.conf |cut -f2 -d \=`                                                                                                          
-    case $status in                                                                                                                                                
-      false)                                                                                                                                                          
-        echo "OFF"                                                                                                                                                 
-        ;;                                                                                                                                                         
-      true)                                                                                                                                                           
-        echo "ON"                                                                                                                                                  
-        ;;                                                                                                                                                         
-    esac                                                                                                                                                           
-  esac                                                                                                                                                             
-} 
+    ;;
+  status)
+    status=`awk '/sendemail/' /system/sdcard/config/motion.conf |cut -f2 -d \=`
+    case $status in
+      false)
+        echo "OFF"
+        ;;
+      true)
+        echo "ON"
+        ;;
+    esac
+  esac
+}
 
 
 
