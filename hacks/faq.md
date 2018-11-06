@@ -21,7 +21,7 @@ Yes, you can. However there is no need to revert it back. If your SD-Card does n
 ### Is it possible to run the CFW without a microsd?
 No that's not possible. It can be done, but there will be a lot of trouble in doing this.
 
-## Can i have FULLHD?
+## Can i have FullHD?
 
 Yes, you can flash a custom bootloader to achieve this. 
 
@@ -49,4 +49,8 @@ Recording Audio:
 ```
 - Curl
 - MQTT
-- Anything other that you can compile yourself. There is a toolchain avaible.
+- Anything other that you can compile yourself. There is a toolchain available.
+
+What if my scripts in config/userscripts/motiondetection are not executed or mqtt/telegram messages/emails are not sent on motion?
+
+Your camera probably runs out of memory when processing the motion event. Try to [enable some swap memory](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/230f4d3cf306d7842287e9e5002d806513c4b2b8/firmware_mod/run.sh#L59).

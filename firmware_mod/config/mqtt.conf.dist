@@ -32,8 +32,5 @@ MOSQUITTOOPTS=""
 # Add options for mosquitto_pub like -r for retaining messages
 MOSQUITTOPUBOPTS=""
 
-# Add options for curl here e.g --user user:password
-CURLOPTS=""
-
 # Send a mqtt statusupdate every n seconds
 STATUSINTERVAL=30

@@ -40,7 +40,14 @@ if [ -n "$F_cmd" ]; then
   auto_night_detection)
     echo $(auto_night_mode status)
     ;;
-
+  auto_night_detection_mode)
+    if [ -f /system/sdcard/config/autonight.conf ];
+      then night_mode=$(cat /system/sdcard/config/autonight.conf);
+    else
+      night_mode="HW";
+    fi
+    echo $night_mode
+    ;;
   mqtt_status)
     if [ -f /run/mqtt-status.pid ];
       then mqtt_status="ON";

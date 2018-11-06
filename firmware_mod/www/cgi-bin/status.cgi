@@ -195,6 +195,10 @@ cat << EOF
         <div class="column">
             <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_start')">On</button>
             <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_stop')">Off</button>
+            <input class="is-checkradio" id="night_config_hw" type="radio" name="night_config" $(if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" != 0 ]; then echo "checked";  fi) onClick="call('cgi-bin/action.cgi?cmd=autonight_hw')" >
+            <label for="night_config_hw">HW</label>
+            <input class="is-checkradio" id="night_config_sw" type="radio" name="night_config" $(if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" == 0 ]; then echo "checked";  fi)  onClick="call('cgi-bin/action.cgi?cmd=autonight_sw')">
+            <label for="night_config_sw">SW</label>
         </div>
         <div class="column">
         <form id="formldr" action="cgi-bin/action.cgi?cmd=setldravg" method="post">

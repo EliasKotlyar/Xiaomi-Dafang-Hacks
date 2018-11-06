@@ -55,6 +55,22 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
+## Create a swap file on SD if desired
+SWAP=false
+SWAPPATH="/system/sdcard/swapfile"
+SWAPSIZE=256
+if [ "$SWAP" = true ]; then
+  if [ ! -f $SWAPPATH ]; then
+    echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
+    dd if=/dev/zero of=$SWAPPATH bs=1M count=$SWAPSIZE
+    mkswap $SWAPPATH
+    echo "Swap file created in $SWAPPATH" >> $LOGPATH
+  fi
+  echo "Configuring swap file" >> $LOGPATH
+  swapon $SWAPPATH
+  echo "Swap set on file $SWAPPATH" >> $LOGPATH
+fi
+
 ## Create crontab dir and start crond:
 if [ ! -d /system/sdcard/config/cron ]; then
   mkdir -p ${CONFIGPATH}/cron/crontabs
@@ -119,6 +135,7 @@ if [ ! -f $CONFIGPATH/ntp_srv.conf ]; then
   cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
 fi
 ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
+timeout -t 30 sh -c "until ping -c1 \"$ntp_srv\" &>/dev/null; do sleep 3; done";
 /system/sdcard/bin/busybox ntpd -p "$ntp_srv"
 
 ## Load audio driver module:
@@ -159,7 +176,7 @@ insmod /driver/tx-isp.ko isp_clk=100000000
 if [ $sensor = 'jxf22' ]; then
   insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 else
-  insmod /driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
+  insmod /system/sdcard/driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 fi
 
 ## Start FTP & SSH Server:

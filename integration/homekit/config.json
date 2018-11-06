@@ -1,17 +1,121 @@
 {
-   "platform":"Camera-ffmpeg",
-   "cameras":[
-      {
-         "name":"Camera Name",
-         "videoConfig":{
-            "source":"-rtsp_transport tcp -i rtsp://dafang.local/unicast",
-            "stillImageSource":"-rtsp_transport tcp -i rtsp://dafang.local/unicast -vframes 1 -r 1",
-            "maxStreams":5,
-            "maxWidth":1280,
-            "maxHeight":720,
-            "maxFPS":25,
-            "vcodec":"h264_omx"
-         }
-      }
-   ]
+    "platforms": [
+        {
+            "platform": "Dafang",
+            "mqtt": {
+                "port": 1883,
+                "host": "localhost"
+            },
+            "cameras": [{
+                "cameraName": "My Dafang",
+                "cameraRTSPStreamUrl": "rtsp://DAFANG_IP:8554/unicast",
+                "mqttTopic": "myhome/dafang/#",
+                "disableStream": false,
+                "folder": "/root/Recordings/",
+                "segmentLength": 60,
+                "maxDirSize": 2048,
+                "checkStorageSizeInterval": 300,
+                "accessories": [
+                                    {
+                                        "name": "Living Room Motion Sensor",
+                                        "type": "motionSensor",
+                                        "threshold": 300000
+                                    },
+                                    {
+                                        "name": "Living Room Auto Motion Tracking Switch",
+                                        "type": "autoMotionTrackingSwitch"
+                                    },
+                                    {
+                                        "name": "Living Room Night Vision Sensor",
+                                        "type": "nightVisionSensor",
+                                        "threshold": 0
+                                    },
+                                    {
+                                        "name": "Living Room Night Vision Switch",
+                                        "type": "nightVisionSwitch"
+                                    },
+                                    {
+                                        "name": "Living Room Auto Night Vision Switch",
+                                        "type": "autoNightVisionSwitch"
+                                    },
+                                    {
+                                        "name": "Horizontal Left",
+                                        "type": "moveCamera",
+                                        "axis": "horizontal",
+                                        "direction": "left"
+                                    },
+                                    {
+                                        "name": "Horizontal Right",
+                                        "type": "moveCamera",
+                                        "axis": "horizontal",
+                                        "direction": "right"
+                                    },
+                                    {
+                                        "name": "Vertical Up",
+                                        "type": "moveCamera",
+                                        "axis": "vertical",
+                                        "direction": "up"
+                                    },
+                                    {
+                                        "name": "Vertical Down",
+                                        "type": "moveCamera",
+                                        "axis": "vertical",
+                                        "direction": "down"
+                                    },
+                                    {
+                                        "name": "Record Video",
+                                        "type": "recordVideo"
+                                    },
+                                    {
+                                        "name": "Record Audio",
+                                        "type": "recordAudio"
+                                    },
+                                    {
+                                        "name": "Capture Image",
+                                        "type": "captureImage"
+                                    },
+                                    {
+                                        "name": "RPi Storage Sensor",
+                                        "type": "storageSensor"
+                                    },
+                                    {
+                                        "name": "Clear Storage Switch",
+                                        "type": "clearStorage"
+                                    },
+                                    {
+                                        "name": "Reset Streaming",
+                                        "type": "resetFFMPEG"
+                                    },
+                                    {
+                                        "name": "Motion Detection Switch",
+                                        "type": "motionDetection"
+                                    },
+                                    {
+                                        "name": "RTSPSwitch",
+                                        "type": "rtspSwitch"
+                                    },
+                                    {
+                                        "name": "MJPEG Switch",
+                                        "type": "mjpegSwitch"
+                                    },
+                                    {
+                                        "name": "Recalibrate Switch",
+                                        "type": "recalibrateSwitch"
+                                    },
+                                    {
+                                        "name": "Restart Switch",
+                                        "type": "restartSwitch"
+                                    },
+                                    {
+                                        "name": "ReMount Switch",
+                                        "type": "remountSwitch"
+                                    },
+                                    {
+                                        "name": "Camera Brightness",
+                                        "type": "brightness"
+                                    }
+                    ]
+            }]
+        }
+    ]
 }

@@ -11,14 +11,17 @@ fi
 
 # Save a snapshot
 if [ "$save_snapshot" = true ] ; then
-	filename=$(date +%d-%m-%Y_%H.%M.%S).jpg
+	pattern="${save_file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
+	filename=$(date $pattern).jpg
 	if [ ! -d "$save_dir" ]; then
 		mkdir -p "$save_dir"
 	fi
-	# Limit the number of snapshots
-	if [ "$(ls "$save_dir" | wc -l)" -ge "$max_snapshots" ]; then
-		rm -f "$save_dir/$(ls -l "$save_dir" | awk 'NR==2{print $9}')"
-	fi
+	{
+		# Limit the number of snapshots
+		if [ "$(ls "$save_dir" | wc -l)" -ge "$max_snapshots" ]; then
+			rm -f "$save_dir/$(ls -ltr "$save_dir" | awk 'NR==2{print $9}')"
+		fi
+	} &
 	/system/sdcard/bin/getimage > "$save_dir/$filename" &
 fi
 
@@ -42,16 +45,16 @@ if [ "$send_telegram" = true ]; then
 	if [ "$save_snapshot" = true ] ; then
 		/system/sdcard/bin/telegram p "$save_dir/$filename"
 	else
-		/system/sdcard/bin/getimage > "telegram_image.jpg"
- +	/system/sdcard/bin/telegram p "telegram_image.jpg"
- +	rm "telegram_image.jpg"
+		/system/sdcard/bin/getimage > "/tmp/telegram_image.jpg"
+ 		/system/sdcard/bin/telegram p "/tmp/telegram_image.jpg"
+ 		rm "/tmp/telegram_image.jpg"
 	fi
 fi
 
 # Run any user scripts.
 for i in /system/sdcard/config/userscripts/motiondetection/*; do
     if [ -x "$i" ]; then
-        echo "Running: $i on"
-        $i on
+        echo "Running: $i on $save_dir/$filename"
+        $i on "$save_dir/$filename" &
     fi
 done
