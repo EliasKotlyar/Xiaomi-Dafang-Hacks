@@ -15,6 +15,10 @@ Any other Device with Ingenic T10/T20 Device | ![T20](/t20.png)
 
 If you have a classic XiaoFang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
 
+### Attentention: Do not install the latest Firmware on your Device. It will disable the support of this hack. 
+
+Further information about this topic can be found here: https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues/669
+
 
 ## How to install the CFW
 
