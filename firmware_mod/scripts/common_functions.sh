@@ -157,24 +157,31 @@ motor(){
   case "$1" in
   up)
     /system/sdcard/bin/motor -d u -s "$steps"
+    update_motor_pos $steps
     ;;
   down)
     /system/sdcard/bin/motor -d d -s "$steps"
+    update_motor_pos $steps
     ;;
   left)
     /system/sdcard/bin/motor -d l -s "$steps"
+    update_motor_pos $steps
     ;;
   right)
     /system/sdcard/bin/motor -d r -s "$steps"
+    update_motor_pos $steps
     ;;
   vcalibrate)
     /system/sdcard/bin/motor -d v -s "$steps"
+    update_motor_pos $steps
     ;;
   hcalibrate)
     /system/sdcard/bin/motor -d h -s "$steps"
+    update_motor_pos $steps
     ;;
   calibrate)
     /system/sdcard/bin/motor -d f -s "$steps"
+    update_motor_pos $steps
     ;;
   status)
     if [ "$2" = "horizontal" ]; then
@@ -184,6 +191,16 @@ motor(){
     fi
     ;;
   esac
+
+}
+
+update_motor_pos(){
+  # Waiting for the motor to run.
+  SLEEP_NUM=$(awk -v a="$1" 'BEGIN{printf ("%f",a*1.3/1000)}')
+  sleep ${SLEEP_NUM//-/}
+  # Display AXIS to OSD
+  update_axis
+  /system/sdcard/bin/setconf -k o -v "$OSD"
 }
 
 # Read the light sensor
