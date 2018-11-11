@@ -129,58 +129,34 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     motor_left)
-      /system/sdcard/bin/motor -d l -s $F_val
-
-      # Waiting for the motor to run.
-      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
-      sleep ${SLEEP_NUM//-/}
-      # Display AXIS to OSD
-      update_axis
-      /system/sdcard/bin/setconf -k o -v "$OSD"
+      motor left $F_val
     ;;
 
     motor_right)
-      /system/sdcard/bin/motor -d r -s $F_val
-      # Waiting for the motor to run.
-      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
-      sleep ${SLEEP_NUM//-/}
-      # Display AXIS to OSD
-      update_axis
-      /system/sdcard/bin/setconf -k o -v "$OSD"
+      motor right $F_val
     ;;
 
     motor_up)
-      /system/sdcard/bin/motor -d u -s $F_val
-      # Waiting for the motor to run.
-      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
-      sleep ${SLEEP_NUM//-/}
-      # Display AXIS to OSD
-      update_axis
-      /system/sdcard/bin/setconf -k o -v "$OSD"
+      motor up $F_val
     ;;
 
     motor_down)
-      /system/sdcard/bin/motor -d d -s $F_val
-      # Waiting for the motor to run.
-      SLEEP_NUM=$(awk -v a="$F_val" 'BEGIN{printf ("%f",a*1.3/1000)}')
-      sleep ${SLEEP_NUM//-/}
-      # Display AXIS to OSD
-      update_axis
-      /system/sdcard/bin/setconf -k o -v "$OSD"
+      motor down $F_val
     ;;
 
     motor_vcalibrate)
-      /system/sdcard/bin/motor -d v -s 100
+      motor vcalibrate $F_val
     ;;
 
     motor_hcalibrate)
-      /system/sdcard/bin/motor -d h -s 100
+      motor hcalibrate $F_val
     ;;
 
     motor_calibrate)
+	  # Doesn't seem to work
+      # motor calibrate $F_val
       # Current motor driver does not differentiate between horizontal and vertical calibration
-      /system/sdcard/bin/motor -d h -s 100
-      # /system/sdcard/bin/motor -d v -s 100
+      motor vcalibrate $F_val
     ;;
     
     motor_PTZ)
