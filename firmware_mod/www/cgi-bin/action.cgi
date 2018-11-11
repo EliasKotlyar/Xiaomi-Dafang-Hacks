@@ -144,23 +144,12 @@ if [ -n "$F_cmd" ]; then
       motor down $F_val
     ;;
 
-    motor_vcalibrate)
-      motor vcalibrate $F_val
-    ;;
-
-    motor_hcalibrate)
-      motor hcalibrate $F_val
-    ;;
-
     motor_calibrate)
-	  # Doesn't seem to work
-      # motor calibrate $F_val
-      # Current motor driver does not differentiate between horizontal and vertical calibration
-      motor vcalibrate $F_val
+      motor reset_pos_count $F_val
     ;;
-    
+
     motor_PTZ)
-       /system/sdcard/scripts/PTZpresets.sh $F_x_axis $F_y_axis                        
+       /system/sdcard/scripts/PTZpresets.sh $F_x_axis $F_y_axis
     ;;
 
     audio_test)

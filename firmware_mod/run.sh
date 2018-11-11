@@ -158,12 +158,6 @@ blue_led on
 
 ## Load motor driver module:
 insmod /driver/sample_motor.ko
-# Don't calibrate the motors for now as for newer models the endstops don't work:
-# motor hcalibrate
-# motor vcalibrate
-
-# calibrate,compatible newer models.(But the old DAFANG does not work.）
-# motor calibrate
 
 ## Determine the image sensor model:
 insmod /system/sdcard/driver/sinfo.ko

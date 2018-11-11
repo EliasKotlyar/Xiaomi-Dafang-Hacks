@@ -171,16 +171,8 @@ motor(){
     /system/sdcard/bin/motor -d r -s "$steps"
     update_motor_pos $steps
     ;;
-  vcalibrate)
+  reset_pos_count)
     /system/sdcard/bin/motor -d v -s "$steps"
-    update_motor_pos $steps
-    ;;
-  hcalibrate)
-    /system/sdcard/bin/motor -d h -s "$steps"
-    update_motor_pos $steps
-    ;;
-  calibrate)
-    /system/sdcard/bin/motor -d f -s "$steps"
     update_motor_pos $steps
     ;;
   status)
