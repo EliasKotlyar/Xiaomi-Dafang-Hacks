@@ -13,9 +13,13 @@ motion_tracking=off
 # Configure how to deal with motion events:
 
 motion_trigger_led=true
-save_snapshot=false
 max_snapshots=20
+# Notify about motion
 publish_mqtt_message=false
+# Send the actual image via mqtt
+publish_mqtt_snapshot=false
+# Save the image locally
+save_snapshot=false
 sendemail=false
 send_telegram=false
 save_dir=/system/sdcard/motion/stills

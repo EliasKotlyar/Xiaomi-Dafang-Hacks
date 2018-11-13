@@ -3,7 +3,7 @@ var SWITCHES = [
     "rtsp_h264", "rtsp_mjpeg", "auto_night_detection",
     "mqtt_status", "mqtt_control",
     "sound_on_startup", "motion_detection", "motion_mail",
-    "motion_led","motion_snapshot","motion_mqtt"];
+    "motion_led","motion_snapshot","motion_mqtt", "motion_mqtt_snapshot"];
 
 var timeoutJobs = {};
 
