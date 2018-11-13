@@ -13,6 +13,17 @@ Then you can integrate the rtsp stream using the camera ffmpeg component by addi
   name: DaFang3
   input: -rtsp_transport tcp -i rtsp://dafang:8554/unicast
 ```
+Alternatively, you can use the camera's CGI endpoint to serve a single picture. This is significantly lighter on the home assistant's CPU.
+```yaml
+  - platform: generic
+    name: DaFang3
+    username: root
+    password: ismart12
+    auhentication: basic
+    still_image_url: https://dafang/cgi-bin/currentpic.cgi
+    verify_ssl: false
+    scan_interval: 5
+```
 
 Most other sensors & actors are easily integrated via [mqtt discovery](https://www.home-assistant.io/docs/mqtt/discovery/). If everything works, integration looks like this (grouped into one group):
 
