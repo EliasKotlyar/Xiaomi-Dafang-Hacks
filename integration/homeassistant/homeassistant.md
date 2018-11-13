@@ -91,7 +91,10 @@ For your camera to send mqtt motion detection messages it should be enabled by s
 ```
 publish_mqtt_message=true
 ```
-
+To publish the image itself, also set
+```
+publish_mqtt_snapshot=true
+```
 You should now be getting messages on topic `myhome/mycamera/motion` and images on `myhome/mycamera/motion/snapshot` while    `myhome/mycamera/motion/detection` is set to ON
 
 To react on a motion event, in your automations.yaml define something like:

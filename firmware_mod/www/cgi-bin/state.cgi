@@ -114,6 +114,15 @@ if [ -n "$F_cmd" ]; then
       echo "OFF"
     fi
     ;;
+  motion_mqtt_snapshot)
+    . /system/sdcard/config/motion.conf 2> /dev/null
+    if [ "$publish_mqtt_snapshot" == "true" ]; then
+      echo "ON"
+    else
+      echo "OFF"
+    fi
+    ;;
+
 
   hostname)
     echo $(hostname);

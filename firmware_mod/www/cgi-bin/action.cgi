@@ -560,12 +560,20 @@ if [ -n "$F_cmd" ]; then
           rewrite_config /system/sdcard/config/motion.conf save_snapshot "false"
           return
           ;;
-     motion_detection_mqtt_on)
+     motion_detection_mqtt_publish_on)
           rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "true"
           return
           ;;
-     motion_detection_mqtt_off)
+     motion_detection_mqtt_publish_off)
           rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "false"
+          return
+          ;;
+     motion_detection_mqtt_snapshot_on)
+          rewrite_config /system/sdcard/config/motion.conf publish_mqtt_snapshot "true"
+          return
+          ;;
+     motion_detection_mqtt_snapshot_off)
+          rewrite_config /system/sdcard/config/motion.conf publish_mqtt_snapshot "false"
           return
           ;;
 
