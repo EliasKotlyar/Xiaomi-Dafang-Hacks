@@ -20,21 +20,25 @@ if [ -n "$F_cmd" ]; then
       echo "<pre>"
       case "${F_logname}" in
         "" | 1)
-            echo "Summary of all log files:<br/>"
-            tail /var/log/*
-            ;;
+          echo "Summary of all log files:<br/>"
+          tail /var/log/*
+          ;;
+
         2)
-            echo "Content of dmesg<br/>"
-            /bin/dmesg
-            ;;
+          echo "Content of dmesg<br/>"
+          /bin/dmesg
+          ;;
+
         3)
-            echo "Content of logcat<br/>"
-            /system/bin/logcat -d
-            ;;
+          echo "Content of logcat<br/>"
+          /system/bin/logcat -d
+          ;;
+
         4)
           echo "Content of v4l2rtspserver-master.log<br/>"
           cat /system/sdcard/log/v4l2rtspserver-master.log
           ;;
+
         5)
           echo "Content of update.log <br/>"
           cat /system/sdcard/log/update.log
@@ -48,20 +52,20 @@ if [ -n "$F_cmd" ]; then
       echo "<pre>"
       case "${F_logname}" in
         "" | 1)
-            echo "Summary of all log files cleared<br/>"
-            for i in /var/log/*
-            do
-                echo -n "" > $i
-            done
-            ;;
+          echo "Summary of all log files cleared<br/>"
+          for i in /var/log/*
+          do
+              echo -n "" > $i
+          done
+          ;;
         2)
-            echo "Content of dmesg cleared<br/>"
-            /bin/dmesg -c > /dev/null
-            ;;
+          echo "Content of dmesg cleared<br/>"
+          /bin/dmesg -c > /dev/null
+          ;;
         3)
-            echo "Content of logcat cleared<br/>"
-            /system/bin/logcat -c
-            ;;
+          echo "Content of logcat cleared<br/>"
+          /system/bin/logcat -c
+          ;;
         4)
           echo "Content of v4l2rtspserver-master.log cleared<br/>"
           echo -n "" > /system/sdcard/log/v4l2rtspserver-master.log
@@ -74,6 +78,7 @@ if [ -n "$F_cmd" ]; then
       echo "</pre>"
       return
     ;;
+
     reboot)
       echo "Rebooting device..."
       /sbin/reboot
@@ -87,45 +92,35 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     blue_led_on)
-      setgpio 38 1
-      setgpio 39 0
+      blue_led on
     ;;
 
     blue_led_off)
-      setgpio 39 1
+      blue_led off
     ;;
 
     yellow_led_on)
-      setgpio 38 0
-      setgpio 39 1
+      yellow_led on
     ;;
 
     yellow_led_off)
-      setgpio 38 1
+      yellow_led off
     ;;
 
     ir_led_on)
-      setgpio 49 0
+      ir_led on
     ;;
 
     ir_led_off)
-      setgpio 49 1
+      ir_led off
     ;;
 
     ir_cut_on)
-      setgpio 25 0
-      setgpio 26 1
-      sleep 1
-      setgpio 26 0
-      echo "1" > /var/run/ircut
+      ir_cut on
     ;;
 
     ir_cut_off)
-      setgpio 26 0
-      setgpio 25 1
-      sleep 1
-      setgpio 25 0
-      echo "0" > /var/run/ircut
+      ir_cut off
     ;;
 
     motor_left)
@@ -149,17 +144,17 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     motor_PTZ)
-       /system/sdcard/scripts/PTZpresets.sh $F_x_axis $F_y_axis
+      /system/sdcard/scripts/PTZpresets.sh $F_x_axis $F_y_axis
     ;;
 
     audio_test)
-          F_audioSource=$(printf '%b' "${F_audioSource//%/\\x}")
-          if [ "$F_audioSource" == "" ]; then
-              F_audioSource="/usr/share/notify/CN/init_ok.wav"
-          fi
-          /system/sdcard/bin/busybox nohup /system/sdcard/bin/audioplay $F_audioSource $F_audiotestVol >> "/var/log/update.log" &
-          echo  "Play $F_audioSource at volume $F_audiotestVol"
-          return
+      F_audioSource=$(printf '%b' "${F_audioSource//%/\\x}")
+      if [ "$F_audioSource" == "" ]; then
+        F_audioSource="/usr/share/notify/CN/init_ok.wav"
+      fi
+      /system/sdcard/bin/busybox nohup /system/sdcard/bin/audioplay $F_audioSource $F_audiotestVol >> "/var/log/update.log" &
+      echo  "Play $F_audioSource at volume $F_audiotestVol"
+      return
     ;;
 
     h264_start)
@@ -176,15 +171,6 @@ if [ -n "$F_cmd" ]; then
 
     h264_nosegmentation_start)
       /system/sdcard/controlscripts/rtsp-h264 start
-    ;;
-
-    xiaomi_start)
-      echo 1 > /sys/class/gpio/gpio39/value
-      echo 39 > /sys/class/gpio/unexport
-      killall v4l2rtspserver-master
-      busybox insmod /driver/sinfo.ko  2>&1
-      busybox rmmod sample_motor  2>&1
-      /system/init/app_init.sh &
     ;;
 
     rtsp_stop)
@@ -244,7 +230,6 @@ if [ -n "$F_cmd" ]; then
       osdtext=$(echo "$osdtext" | sed -e "s/\\+/ /g")
       fontName=$(printf '%b' "${F_fontName//%/\\x}")
       fontName=$(echo "$fontName" | sed -e "s/\\+/ /g")
-
 
       if [ ! -z "$axis_enable" ];then
         update_axis
@@ -357,7 +342,7 @@ if [ -n "$F_cmd" ]; then
         rewrite_config /system/sdcard/config/rtspserver.conf FRAMERATE_DEN "$frmRateDen"
       fi
       if [ "$frmRateNum" != "" ]; then
-          rewrite_config /system/sdcard/config/rtspserver.conf FRAMERATE_NUM "$frmRateNum"
+        rewrite_config /system/sdcard/config/rtspserver.conf FRAMERATE_NUM "$frmRateNum"
       fi
 
       echo "Video resolution set to $video_size<br/>"
@@ -382,13 +367,12 @@ if [ -n "$F_cmd" ]; then
         rewrite_config /system/sdcard/config/motion.conf motion_sensitivity "${F_motion_sensitivity}"
         rewrite_config /system/sdcard/config/motion.conf motion_indicator_color "${F_motion_indicator_color}"
         rewrite_config /system/sdcard/config/motion.conf motion_timeout "${F_motion_timeout}"
-        if [ "${F_motion_tracking}X" == "X" ]
-        then
-            rewrite_config /system/sdcard/config/motion.conf motion_tracking off
-             /system/sdcard/bin/setconf -k t -v off
+        if [ "${F_motion_tracking}X" == "X" ]; then
+          rewrite_config /system/sdcard/config/motion.conf motion_tracking off
+          /system/sdcard/bin/setconf -k t -v off
         else
-            rewrite_config /system/sdcard/config/motion.conf motion_tracking on
-            /system/sdcard/bin/setconf -k t -v on
+          rewrite_config /system/sdcard/config/motion.conf motion_tracking on
+          /system/sdcard/bin/setconf -k t -v on
         fi
 
         /system/sdcard/bin/setconf -k r -v ${F_x0},${F_y0},${F_x1},${F_y1}
@@ -412,6 +396,7 @@ if [ -n "$F_cmd" ]; then
         echo "Motion Configuration done"
         return
     ;;
+
     autonight_sw)
       if [ ! -f /system/sdcard/config/autonight.conf ]; then
         echo "-S" > /system/sdcard/config/autonight.conf
@@ -419,27 +404,31 @@ if [ -n "$F_cmd" ]; then
       current_setting=$(sed 's/-S *//g' /system/sdcard/config/autonight.conf)
       echo "-S" $current_setting > /system/sdcard/config/autonight.conf
     ;;
+
     autonight_hw)
       if [ -f /system/sdcard/config/autonight.conf ]; then
         sed -i 's/-S *//g' /system/sdcard/config/autonight.conf
       fi
     ;;
+
     get_sw_night_config)
       cat /system/sdcard/config/autonight.conf
       exit
     ;;
+
     save_sw_night_config)
       #This also enables software mode
       night_mode_conf=$(echo "${F_val}"| sed "s/+/ /g" | sed "s/%2C/,/g")
       echo $night_mode_conf > /system/sdcard/config/autonight.conf
       echo Saved $night_mode_conf
     ;;
-    offDebug)
-        /system/sdcard/controlscripts/debug-on-osd stop
 
+    offDebug)
+      /system/sdcard/controlscripts/debug-on-osd stop
     ;;
+
     onDebug)
-        /system/sdcard/controlscripts/debug-on-osd start
+      /system/sdcard/controlscripts/debug-on-osd start
     ;;
 
     conf_timelapse)
@@ -461,8 +450,8 @@ if [ -n "$F_cmd" ]; then
       fi
       return
     ;;
-    conf_audioin)
 
+    conf_audioin)
        audioinFormat=$(printf '%b' "${F_audioinFormat/%/\\x}")
        audioinBR=$(printf '%b' "${F_audioinBR/%/\\x}")
        audiooutBR=$(printf '%b' "${F_audiooutBR/%/\\x}")
@@ -489,9 +478,8 @@ if [ -n "$F_cmd" ]; then
        rewrite_config /system/sdcard/config/rtspserver.conf FILTER "$F_audioinFilter"
        rewrite_config /system/sdcard/config/rtspserver.conf HIGHPASSFILTER "$F_HFEnabled"
        rewrite_config /system/sdcard/config/rtspserver.conf AECFILTER "$F_AECEnabled"
-        rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
+       rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
        rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "-1"
-
 
        echo "Audio format $audioinFormat <BR>"
        echo "In audio bitrate $audioinBR <BR>"
@@ -499,13 +487,14 @@ if [ -n "$F_cmd" ]; then
        echo "Filter $F_audioinFilter <BR>"
        echo "High Pass Filter $F_HFEnabled <BR>"
        echo "AEC Filter $F_AECEnabled <BR>"
-       echo  "Volume $F_audioinVol <BR>"
+       echo "Volume $F_audioinVol <BR>"
        /system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
        /system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
        /system/sdcard/bin/setconf -k a -v "$F_AECEnabled" 2>/dev/null
        /system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
        return
      ;;
+
      update)
         processId=$(ps | grep autoupdate.sh | grep -v grep)
         if [ "$processId" == "" ]
@@ -522,6 +511,7 @@ if [ -n "$F_cmd" ]; then
         echo $processId
         return
       ;;
+
      show_updateProgress)
         processId=$(ps | grep autoupdate.sh | grep -v grep)
         if [ "$processId" == "" ]
@@ -536,42 +526,52 @@ if [ -n "$F_cmd" ]; then
         fi
         return
         ;;
+
      motion_detection_mail_on)
          rewrite_config /system/sdcard/config/motion.conf sendemail "true"
          return
          ;;
+
      motion_detection_mail_off)
           rewrite_config /system/sdcard/config/motion.conf sendemail "false"
           return
           ;;
+
      motion_detection_led_on)
           rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "true"
           return
           ;;
+
      motion_detection_led_off)
           rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "false"
           return
           ;;
+
      motion_detection_snapshot_on)
           rewrite_config /system/sdcard/config/motion.conf save_snapshot "true"
           return
           ;;
+
      motion_detection_snapshot_off)
           rewrite_config /system/sdcard/config/motion.conf save_snapshot "false"
           return
           ;;
+
      motion_detection_mqtt_publish_on)
           rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "true"
           return
           ;;
+
      motion_detection_mqtt_publish_off)
           rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "false"
           return
           ;;
+
      motion_detection_mqtt_snapshot_on)
           rewrite_config /system/sdcard/config/motion.conf publish_mqtt_snapshot "true"
           return
           ;;
+
      motion_detection_mqtt_snapshot_off)
           rewrite_config /system/sdcard/config/motion.conf publish_mqtt_snapshot "false"
           return
