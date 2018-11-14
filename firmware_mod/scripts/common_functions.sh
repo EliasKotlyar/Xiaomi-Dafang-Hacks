@@ -51,7 +51,6 @@ rewrite_config(){
 blue_led(){
   case "$1" in
   on)
-    setgpio 38 1
     setgpio 39 0
     ;;
   off)
@@ -75,7 +74,6 @@ yellow_led(){
   case "$1" in
   on)
     setgpio 38 0
-    setgpio 39 1
     ;;
   off)
     setgpio 38 1
@@ -321,8 +319,6 @@ motion_send_mail(){
   esac
 }
 
-
-
 # Control the motion tracking function
 motion_tracking(){
   case "$1" in
@@ -398,8 +394,8 @@ snapshot(){
 
 # Update axis
 update_axis(){
-  source /system/sdcard/config/osd.conf > /dev/null 2>/dev/null
-  AXIS=`/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print "X="$2,"Y="$4}'`
+  . /system/sdcard/config/osd.conf > /dev/null 2>/dev/null
+  AXIS=$(/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print "X="$2,"Y="$4}')
   if [ "$DISPLAY_AXIS" == "true" ]; then
     OSD="${OSD} ${AXIS}"
   fi
