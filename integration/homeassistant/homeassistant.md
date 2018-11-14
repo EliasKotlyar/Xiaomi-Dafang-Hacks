@@ -83,6 +83,8 @@ Dafang3:
     - switch.dafang3_motion_tracking
     - camera.dafang3_motion_snapshot
     - binary_sensor.dafang3_motion_sensor
+    - cover.dafang3_move_leftright
+    - cover.dafang3_move_updown
 ```
 
 ### To set up mqtt motion detection alerts:
