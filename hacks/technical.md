@@ -24,7 +24,7 @@
 [Old Custom Firmware with Telnet](https://www.dropbox.com/s/9t9op698fza1tl2/demo.bin?dl=0)
 
 ## Software Development:
-[The Ingenic T20 Toolchain](https://github.com/dim08/Ingenic-T10_20)
+[The Ingenic T20 Toolchain](https://github.com/Dafang-Hacks/Ingenic-T10_20)
 
 [How to Build Software for the Ingenic T20 Platform](https://github.com/Dafang-Hacks/Main)
 
