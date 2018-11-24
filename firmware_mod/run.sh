@@ -170,6 +170,10 @@ insmod /driver/tx-isp.ko isp_clk=100000000
 if [ $sensor = 'jxf22' ]; then
   insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 else
+  if [ ! -f /etc/sensor/jxf23.bin ]; then
+    cp /etc/sensor/jxf22.bin /etc/sensor/jxf23.bin
+    cp /etc/sensor/jxf22move.txt /etc/sensor/jxf23move.txt
+  fi
   insmod /system/sdcard/driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 fi
 
