@@ -21,7 +21,7 @@ if [ "$1" == "on" ]; then
     source /system/sdcard/scripts/common_functions.sh
 
     # Check external service to see it anyone present.
-    presence=$(curl http://openhab/rest/items/PresenceAtHome/state 2>/dev/null)
+    presence=$(/system/sdcard/bin/curl http://openhab/rest/items/PresenceAtHome/state 2>/dev/null)
 
     if [ "$presence" == "OFF" ] ; then
         # No-one is meant to be here, but motion detected. Send email.
