@@ -13,3 +13,5 @@ http://[ip_of_camera]/cgi-bin/action.cgi?cmd=motor_top
 http://[ip_of_camera]/cgi-bin/action.cgi?cmd=motor_bottom
 
 For more information please see the [original source](https://gadget-freakz.com/2018/03/xiaomi-1080p-xiaofang-camera-review/).
+
+_Note:_ On some versions, top/bottom might be up/down.
