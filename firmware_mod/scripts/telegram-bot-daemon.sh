@@ -53,7 +53,12 @@ markAsRead() {
 main() {
   json=$(readNext)
 
-  [ "$(echo "$json" | $JQ -r '.ok')" != "true" ] && return 1
+  [ -z "$json" ] && return 0
+  if [ "$(echo "$json" | $JQ -r '.ok')" != "true" ]; then
+    echo "$(date '+%F %T') Bot error: $json" >> /tmp/telegram.log
+    [ "$(echo "$json" | $JQ -r '.error_code')" == "401" ] && return 1
+    return 0
+  fi;
 
   chatId=$(echo "$json" | $JQ -r '.result[0].message.chat.id // ""')
   [ -z "$chatId" ] && return 0 # no new messages
@@ -75,4 +80,5 @@ main() {
 while true; do
   main >/dev/null 2>&1
   [ $? -gt 0 ] && exit 1
+  sleep 2
 done;
