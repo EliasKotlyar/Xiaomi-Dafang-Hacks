@@ -309,7 +309,7 @@ cat << EOF
                 <div class="select">
                     <select name="audioSource">
                         $(
-                           for i in `/system/sdcard/bin/busybox find /usr/share/notify/ /system/sdcard/Media -name *.wav`
+                           for i in `/system/sdcard/bin/busybox find /usr/share/notify/ /system/sdcard/media -name *.wav`
                            do
                                 echo  "<option value=$i> `/system/sdcard/bin/busybox basename $i` </option>"
                            done

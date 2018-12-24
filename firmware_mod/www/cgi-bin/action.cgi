@@ -528,12 +528,12 @@ if [ -n "$F_cmd" ]; then
         ;;
 
      motion_detection_mail_on)
-         rewrite_config /system/sdcard/config/motion.conf sendemail "true"
+         rewrite_config /system/sdcard/config/motion.conf send_email "true"
          return
          ;;
 
      motion_detection_mail_off)
-          rewrite_config /system/sdcard/config/motion.conf sendemail "false"
+          rewrite_config /system/sdcard/config/motion.conf send_email "false"
           return
           ;;
 

@@ -31,7 +31,7 @@ if [ "$publish_mqtt_message" = true ] ; then
 	/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -m "ON"
 fi
 
-# The MQTT publish uses a separate image from the "save_snapshot" to keep things simple 
+# The MQTT publish uses a separate image from the "save_snapshot" to keep things simple
 if [ "$publish_mqtt_snapshot" = true ] ; then
 	/system/sdcard/bin/getimage > /tmp/last_image.jpg
 	/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/snapshot ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f /tmp/last_image.jpg
@@ -39,7 +39,7 @@ if [ "$publish_mqtt_snapshot" = true ] ; then
 fi
 
 # Send emails ...
-if [ "$sendemail" = true ] ; then
+if [ "$send_email" = true ] ; then
     /system/sdcard/scripts/sendPictureMail.sh&
 fi
 

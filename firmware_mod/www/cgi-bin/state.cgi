@@ -82,14 +82,16 @@ if [ -n "$F_cmd" ]; then
   motion_tracking)
     echo $(motion_tracking status)
     ;;
+
   motion_mail)
     . /system/sdcard/config/motion.conf 2> /dev/null
-    if [ "$sendemail" == "true" ]; then
+    if [ "$send_email" == "true" ]; then
       echo "ON"
     else
-        echo "OFF"
+      echo "OFF"
     fi
     ;;
+
   motion_led)
     . /system/sdcard/config/motion.conf 2> /dev/null
     if [ "$motion_trigger_led" == "true" ]; then
@@ -98,6 +100,7 @@ if [ -n "$F_cmd" ]; then
       echo "OFF"
     fi
     ;;
+
   motion_snapshot)
     . /system/sdcard/config/motion.conf 2> /dev/null
     if [ "$save_snapshot" == "true" ]; then
@@ -106,6 +109,7 @@ if [ -n "$F_cmd" ]; then
       echo "OFF"
     fi
     ;;
+
   motion_mqtt)
     . /system/sdcard/config/motion.conf 2> /dev/null
     if [ "$publish_mqtt_message" == "true" ]; then
@@ -114,6 +118,7 @@ if [ -n "$F_cmd" ]; then
       echo "OFF"
     fi
     ;;
+
   motion_mqtt_snapshot)
     . /system/sdcard/config/motion.conf 2> /dev/null
     if [ "$publish_mqtt_snapshot" == "true" ]; then
@@ -123,16 +128,18 @@ if [ -n "$F_cmd" ]; then
     fi
     ;;
 
-
   hostname)
     echo $(hostname);
     ;;
+
   version)
     echo $(cat /system/sdcard/.lastCommitDate);
     ;;
+
   *)
     echo "Unsupported command '$F_cmd'"
     ;;
+
   esac
   fi
 

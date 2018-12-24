@@ -301,13 +301,13 @@ motion_detection(){
 motion_send_mail(){
   case "$1" in
   on)
-    rewrite_config /system/sdcard/config/motion.conf sendemail "true"
+    rewrite_config /system/sdcard/config/motion.conf send_email "true"
     ;;
   off)
-    rewrite_config /system/sdcard/config/motion.conf sendemail "false"
+    rewrite_config /system/sdcard/config/motion.conf send_email "false"
     ;;
   status)
-    status=`awk '/sendemail/' /system/sdcard/config/motion.conf |cut -f2 -d \=`
+    status=$(awk '/send_email/' /system/sdcard/config/motion.conf |cut -f2 -d \=)
     case $status in
       false)
         echo "OFF"
