@@ -35,6 +35,7 @@ respond() {
     /shot) sendShot;;
     /on) detectionOn;;
     /off) detectionOff;;
+    /help) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a shot\n# /on - motion detect on\n# /off - motion detect off";;
     *) $TELEGRAM m "I can't respond to '$1' command"
   esac
 }
