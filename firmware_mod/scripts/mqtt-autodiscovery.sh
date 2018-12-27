@@ -18,6 +18,9 @@ VER="Dafang Hacks"
 # Motion send mail alert on/off switch
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_mail/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion send mail\", \"unique_id\": \"$MAC_SIMPLE-motion-send-mail\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:run\", \"state_topic\": \"$TOPIC/motion/send_mail\", \"command_topic\": \"$TOPIC/motion/send_mail/set\"}"
 
+# Motion send telegram alert on/off switch
+/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_mail/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion send telegram\", \"unique_id\": \"$MAC_SIMPLE-motion-send-telegram\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:run\", \"state_topic\": \"$TOPIC/motion/send_telegram\", \"command_topic\": \"$TOPIC/motion/send_telegram/set\"}"
+
 # Motion detection snapshots
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/camera/$DEVICE_NAME/motion_snapshot/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion snapshot\", \"unique_id\": \"$MAC_SIMPLE-motion-snapshot\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"topic\": \"$TOPIC/motion/snapshot\"}"
 
