@@ -29,13 +29,27 @@ detectionOff() {
   motion_detection off && $TELEGRAM m "Motion detection stopped"
 }
 
+textAlerts() {
+  . /system/sdcard/scripts/common_functions.sh
+  rewrite_config /system/sdcard/config/telegram.conf telegram_alert_type "text"
+  $TELEGRAM m "Text alerts on motion detection"
+}
+
+imageAlerts() {
+  . /system/sdcard/scripts/common_functions.sh
+  rewrite_config /system/sdcard/config/telegram.conf telegram_alert_type "image"
+  $TELEGRAM m "Image alerts on motion detection"
+}
+
 respond() {
   case $1 in
     /mem) sendMem;;
     /shot) sendShot;;
     /on) detectionOn;;
     /off) detectionOff;;
-    /help) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a shot\n# /on - motion detect on\n# /off - motion detect off";;
+    /textalerts) textAlerts;;
+    /imagealerts) imageAlerts;;
+    /help) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a shot\n# /on - motion detect on\n# /off - motion detect off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection";;
     *) $TELEGRAM m "I can't respond to '$1' command"
   esac
 }
