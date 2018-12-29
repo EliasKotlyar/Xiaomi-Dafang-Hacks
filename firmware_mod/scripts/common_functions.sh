@@ -3,6 +3,10 @@
 # This file is supposed to bundle some frequently used functions
 # so they can be easily improved in one place and be reused all over the place
 
+include () {
+    [[ -f "$1" ]] && source "$1"
+}
+
 # Initialize  gpio pin
 init_gpio(){
   GPIOPIN=$1
