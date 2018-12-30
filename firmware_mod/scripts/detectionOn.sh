@@ -4,6 +4,8 @@
 . /system/sdcard/config/motion.conf
 . /system/sdcard/scripts/common_functions.sh
 
+include /system/sdcard/config/telegram.conf
+
 # Turn on the amber led
 if [ "$motion_trigger_led" = true ] ; then
 	yellow_led on
@@ -45,12 +47,16 @@ fi
 
 # Send a telegram message
 if [ "$send_telegram" = true ]; then
-	if [ "$save_snapshot" = true ] ; then
-		/system/sdcard/bin/telegram p "$save_dir/$filename"
+	if [ "$telegram_alert_type" = "text" ] ; then
+		/system/sdcard/bin/telegram m "Motion detected"
 	else
-		/system/sdcard/bin/getimage > "/tmp/telegram_image.jpg"
- 		/system/sdcard/bin/telegram p "/tmp/telegram_image.jpg"
- 		rm "/tmp/telegram_image.jpg"
+		if [ "$save_snapshot" = true ] ; then
+			/system/sdcard/bin/telegram p "$save_dir/$filename"
+		else
+			/system/sdcard/bin/getimage > "/tmp/telegram_image.jpg"
+	 		/system/sdcard/bin/telegram p "/tmp/telegram_image.jpg"
+	 		rm "/tmp/telegram_image.jpg"
+		fi
 	fi
 fi
 

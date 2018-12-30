@@ -36,7 +36,7 @@ i.e. you have a device with 128 Mb RAM.
 
 1. Login via SSH
 2. Get the correct [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) for your device and RAM size.
-3. Put the bootloader file on your microsd
+3. Put the bootloader file in the root of your microsd card. It will get mounted to /system/sdcard on your camera.
 4. **Verify the MD5 hash of the file!! Do not skip this step or you may brick your camera!**
 3. Run the following commands
 
@@ -44,15 +44,20 @@ i.e. you have a device with 128 Mb RAM.
 flash_eraseall /dev/mtd0
 ```
 ```bash
-dd if=dafang_128mb_v1.bin of=/dev/mtd0
+dd if=/system/sdcard/NAME_OF_YOUR_BOOTLOADER_FILE.bin of=/dev/mtd0
 ```
+For example, if you're flashing dafang_128mb_v2.bin, your command should look like this:
+
+```bash
+dd if=/system/sdcard/dafang_128mb_v2.bin of=/dev/mtd0
+```
+
 Don't do anything stupid inbetween.
 If you crash your camera, you end up without a working bootloader.
 
 ## Verify that the U-Boot-Loader works correctly
-1. Get an uEnv.bootfromnand.txt file from *__* this repository. 
-2. Rename the uEnv.bootfromnand.txt to uEnv.txt
-3. Reboot your camera
+1. Rename the uEnv.bootfromnand.txt in your minisd card root to uEnv.txt
+2. Reboot your camera
 
 The bootloader is configured to enable the blue led if it has found a valid uEnv.txt during boot up.
 Take a look at your LED when it first turns on.
