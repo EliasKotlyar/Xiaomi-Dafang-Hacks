@@ -331,11 +331,11 @@ motion_send_telegram(){
   status)
     status=$(awk '/send_telegram/' /system/sdcard/config/motion.conf |cut -f2 -d \=)
     case $status in
-      false)
-        echo "OFF"
-        ;;
       true)
         echo "ON"
+        ;;
+      *)
+        echo "OFF"
         ;;
     esac
   esac
