@@ -537,6 +537,16 @@ if [ -n "$F_cmd" ]; then
           return
           ;;
 
+     motion_detection_telegram_on)
+          rewrite_config /system/sdcard/config/motion.conf send_telegram "true"
+          return
+          ;;
+
+     motion_detection_telegram_off)
+          rewrite_config /system/sdcard/config/motion.conf send_telegram "false"
+          return
+          ;;
+
      motion_detection_led_on)
           rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "true"
           return

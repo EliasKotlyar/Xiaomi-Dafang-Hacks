@@ -92,6 +92,15 @@ if [ -n "$F_cmd" ]; then
     fi
     ;;
 
+  motion_telegram)
+    . /system/sdcard/config/motion.conf 2> /dev/null
+    if [ "$send_telegram" == "true" ]; then
+      echo "ON"
+    else
+      echo "OFF"
+    fi
+    ;;
+    
   motion_led)
     . /system/sdcard/config/motion.conf 2> /dev/null
     if [ "$motion_trigger_led" == "true" ]; then

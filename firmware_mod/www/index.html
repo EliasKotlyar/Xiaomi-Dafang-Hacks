@@ -282,6 +282,12 @@
                                        data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mail_off">
                                 <label for="motion_mail">Motion - Send emails</label>
                             </span>
+                            <!-- Motion: Telegram -->
+                            <span class="navbar-item">
+                                <input id="motion_telegram" type="checkbox" name="motion_telegram" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_telegram_on"
+                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_telegram_off">
+                                <label for="motion_telegram">Motion - Send Telegram</label>
+                            </span>
                             <!-- Motion: LED -->
                             <span class="navbar-item">
                                 <input id="motion_led" type="checkbox" name="motion_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_led_on"
@@ -356,7 +362,7 @@
                 <p>
                     <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks" target="_blank">
                         <strong>Dafang Hacks</strong>
-                    </a> Version: <em id="version">VERSION</em> 
+                    </a> Version: <em id="version">VERSION</em>
                     <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Issues?</a>
                 </p>
                 <div class="dropdown is-hoverable">
