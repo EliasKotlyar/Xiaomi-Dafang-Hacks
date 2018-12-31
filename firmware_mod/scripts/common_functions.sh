@@ -6,6 +6,12 @@
 include () {
     [[ -f "$1" ]] && source "$1"
 }
+# Set motor range
+MAX_X=2600
+MAX_Y=700
+MIN_X=0
+MIN_Y=0
+STEP=100
 
 # Initialize  gpio pin
 init_gpio(){
@@ -152,7 +158,7 @@ ir_cut(){
 motor(){
   if [ -z "$2" ]
   then
-    steps=100
+    steps=$STEP
   else
     steps=$2
   fi
