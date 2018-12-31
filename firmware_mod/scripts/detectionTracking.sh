@@ -12,7 +12,9 @@
 #           |                    |                 |
 #           +--------------------------------------+
 
-STEPS=100
+. /system/sdcard/scripts/common_functions.sh
+
+STEPS=$STEP
 FILECAMERAPOS=/tmp/cameraposition
 
 motorLeft(){
@@ -39,51 +41,14 @@ backtoOrigin() {
 	    origin_x_axis=`grep "x:" ${FILECAMERAPOS} | sed "s/x: //"`
 	    origin_y_axis=`grep "y:" ${FILECAMERAPOS} | sed "s/y: //"`
     else
-	    origin_x_axis=0
-        origin_y_axis=0
+	    /system/sdcard/bin/motor -d s > ${FILECAMERAPOS}
     fi
 
     # Get the current position
     x_axis=`/system/sdcard/bin/motor -d s | grep "x:" | sed "s/x: //"`
     y_axis=`/system/sdcard/bin/motor -d s | grep "y:" | sed "s/y: //"`
 
-	#--------------------------- X Position -------------------------------------------
-    #Calculate the difference between the origin and the position now
-    if [ ${origin_x_axis} -lt ${x_axis} ]
-    then
-	    diff=$((${origin_x_axis} - ${x_axis}))
-
-	    #This is a substitution trick to take the abs number
-	    diff=${diff#-}
-	    motorLeft "${diff}"
-    else
-	    diff=$((${x_axis} - ${origin_x_axis}))
-
-	    #This is a substitution trick to take the abs number
-	    diff=${diff#-}
-	    motorRight "${diff}"
-    fi
-    # Let some time for the motor to turn
-    sleep 1
-
-	#--------------------------- Y Position -------------------------------------------
-    #Calculate the difference between the origin and the position now
-    if [ ${origin_y_axis} -lt ${y_axis} ]
-    then
-        diff=$((${origin_y_axis} - ${y_axis}))
-
-        #This is a substitution trick to take the abs number
-        diff=${diff#-}
-
-        motorDown "${diff}"
-    else
-        diff=$((${y_axis} - ${origin_y_axis}))
-
-        #This is a substitution trick to take the abs number
-        diff=${diff#-}
-
-        motorUp "${diff}"
-    fi
+    /system/sdcard/scripts/PTZpresets.sh $origin_x_axis $origin_y_axis
 
     # Let some time for the motor to turn
     sleep 1
@@ -97,13 +62,6 @@ then
     backtoOrigin
     return 0;
 fi
-
-# Now save the "origin" values of the camera
-# Save it to tmp as when the camera reboots the camera are set to 0
-if [ -f ${FILECAMERAPOS} ]; then
-	/system/sdcard/bin/motor -d s > ${FILECAMERAPOS}
-fi
-
 
 UP=0
 DOWN=0
