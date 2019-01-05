@@ -36,7 +36,14 @@ mqtt:
   discovery: true
   discovery_prefix: homeassistant
 ```
-and restart your Home Assistant instance. Apparently this does not work with Home Assistant's internal mqtt broker, so better [run your own](https://www.home-assistant.io/docs/mqtt/broker/#run-your-own).
+and restart your Home Assistant instance. MQTT works best if you [run your own broker](https://www.home-assistant.io/docs/mqtt/broker/#run-your-own). To make the camera work with Home Assistant's builtin mqtt broker set 
+
+```shell
+MOSQUITTOOPTS="-V mqttv311"
+```
+
+in mqtt.conf.
+
 
 ### On the Xiaomi Dafang Camera side:
 
