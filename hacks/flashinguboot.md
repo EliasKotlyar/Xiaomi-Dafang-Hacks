@@ -49,7 +49,7 @@ wget https://github.com/Dafang-Hacks/uboot/raw/master/compiled_bootloader/NAME_O
 md5sum NAME_OF_YOUR_BOOTLOADER_FILE.bin 
 ```
 
-The `md5sum` command will output a string of hex. That should match the hash listed next to the bin file you downloaded for your [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) That is a hash of the file that will  Again, do not proceed unless the MD5 matches the version you downloaded. Now erase and write to flash.  Do not do anything else between these commands as once you erase, your device will be bricked until you write the .bin.  
+The `md5sum` command will output a string of hex. That should match the hash listed next to the bin file you downloaded for your [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) Again, do not proceed unless the MD5 matches the version you downloaded. Now erase and write to flash.  Do not do anything else between these commands as once you erase, your device will be bricked until you write the .bin.  
 
 
 ```bash
