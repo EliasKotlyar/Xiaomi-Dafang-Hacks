@@ -44,10 +44,6 @@ backtoOrigin() {
 	    /system/sdcard/bin/motor -d s > ${FILECAMERAPOS}
     fi
 
-    # Get the current position
-    x_axis=`/system/sdcard/bin/motor -d s | grep "x:" | sed "s/x: //"`
-    y_axis=`/system/sdcard/bin/motor -d s | grep "y:" | sed "s/y: //"`
-
     /system/sdcard/scripts/PTZpresets.sh $origin_x_axis $origin_y_axis
 
     # Let some time for the motor to turn
