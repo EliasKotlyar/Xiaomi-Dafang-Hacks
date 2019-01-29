@@ -15,7 +15,7 @@
 . /system/sdcard/scripts/common_functions.sh
 
 STEPS=$STEP
-FILECAMERAPOS=/tmp/cameraposition
+FILECAMERAPOS=/system/sdcard/config/cameraposition
 
 motorLeft(){
       /system/sdcard/bin/motor -d l -s ${1}
@@ -43,10 +43,6 @@ backtoOrigin() {
     else
 	    /system/sdcard/bin/motor -d s > ${FILECAMERAPOS}
     fi
-
-    # Get the current position
-    x_axis=`/system/sdcard/bin/motor -d s | grep "x:" | sed "s/x: //"`
-    y_axis=`/system/sdcard/bin/motor -d s | grep "y:" | sed "s/y: //"`
 
     /system/sdcard/scripts/PTZpresets.sh $origin_x_axis $origin_y_axis
 
@@ -84,40 +80,23 @@ fi
 # Basic algorithm to calculate the movement
 # Not optimized, if you have ideas to simplify it ...
 
-if  [ "${1}" == "1" ] && [ "${2}" == "1" ]
+if  [ "${1}" == "1" ] || [ "${2}" == "1" ]
 then
 	UP=1
+fi	
 
-elif [ "${1}" == "1" ] && [ "${3}" == "1" ]
+if [ "${1}" == "1" ] || [ "${3}" == "1" ]
 then
 	LEFT=1
+fi
 
-elif [ "${2}" == "1" ] && [ "${4}" == "1" ]
+if [ "${2}" == "1" ] || [ "${4}" == "1" ]
 then
 	RIGHT=1
+fi
 
-elif [ "${3}" == "1" ] && [ "${4}" == "1" ]
+if [ "${3}" == "1" ] || [ "${4}" == "1" ]
 then
-	DOWN=1
-
-elif [ "${1}" == "1" ]
-then
-	UP=1
-	LEFT=1
-
-elif [ "${2}" == "1" ]
-then
-	UP=1
-	RIGHT=1
-
-elif [ "${3}" == "1" ]
-then
-	LEFT=1
-	DOWN=1
-
-elif [ "${4}" == "1" ]
-then
-	RIGHT=1
 	DOWN=1
 fi
 
