@@ -15,7 +15,7 @@
 . /system/sdcard/scripts/common_functions.sh
 
 STEPS=$STEP
-FILECAMERAPOS=/tmp/cameraposition
+FILECAMERAPOS=/system/sdcard/config/cameraposition
 
 motorLeft(){
       /system/sdcard/bin/motor -d l -s ${1}
