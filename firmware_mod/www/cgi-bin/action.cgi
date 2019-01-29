@@ -36,7 +36,7 @@ if [ -n "$F_cmd" ]; then
 
         4)
           echo "Content of v4l2rtspserver-master.log<br/>"
-          cat /system/sdcard/log/v4l2rtspserver-master.log
+          cat /tmp/v4l2rtspserver-master.log
           ;;
 
         5)
@@ -68,7 +68,7 @@ if [ -n "$F_cmd" ]; then
           ;;
         4)
           echo "Content of v4l2rtspserver-master.log cleared<br/>"
-          echo -n "" > /system/sdcard/log/v4l2rtspserver-master.log
+          echo -n "" > /tmp/v4l2rtspserver-master.log
           ;;
         5)
           echo "Content of update.log cleared <br/>"
