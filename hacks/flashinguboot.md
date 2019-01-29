@@ -2,7 +2,7 @@
 
 ## What benefits does this open source bootloader have?
 
-1. You can use H264 FullHD streaming (1920x1080)(on 128MB devices only)
+1. You can use H264 FullHD streaming (1920x1080)(on 128 MB devices only)
 2. You can boot your own kernel/rootfs from MicroSD
 3. You can change your kernel boot-parameters (uEnv.txt)
 4. You can flash your NAND using this bootloader
@@ -15,7 +15,7 @@ If you flash the wrong u-boot, you can brick your device. I am not taking any re
 
 ## Requirements:
 
-1. Determine how much RAM your device has by running following command via SSH:
+1. Determine how much RAM your device has by running the following command via SSH:
 ```$bash
 cat /proc/cmdline 
 ```
@@ -35,17 +35,32 @@ i.e. you have a device with 128 Mb RAM.
 ## Flashing the U-Boot bootloader:
 
 1. Login via SSH
-2. Get the correct [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) for your device and RAM size.
-3. Put the bootloader file in the root of your microsd card. It will get mounted to /system/sdcard on your camera.
+2. Download the correct [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) for your device and RAM size.  NOTE: if you are using wget, you need to use the RAW link to the .bin file so that you don't accidentally download a html file.
+3. Put the bootloader file in the root of your microsd card `/system/sdcard`. 
 4. **Verify the MD5 hash of the file!! Do not skip this step or you may brick your camera!**
-3. Run the following commands
+5. Write the bootloader to flash
+6. Rename the uEnv.bootfromnand.txt in your minisd card root to uEnv.txt
+
+```bash
+cd /system/sdcard/
+
+wget https://github.com/Dafang-Hacks/uboot/raw/master/compiled_bootloader/NAME_OF_YOUR_BOOTLOADER_FILE.bin 
+
+md5sum NAME_OF_YOUR_BOOTLOADER_FILE.bin 
+```
+
+The `md5sum` command will output a string of hex. That should match the hash listed next to the bin file you downloaded for your [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) Again, do not proceed unless the MD5 matches the version you downloaded. Now erase and write the bootloader. Do not do anything else between these commands as once you have erased your bootloader. Your device will be unable to boot until you have written a new bootloader.  
+
 
 ```bash
 flash_eraseall /dev/mtd0
-```
-```bash
+
 dd if=/system/sdcard/NAME_OF_YOUR_BOOTLOADER_FILE.bin of=/dev/mtd0
+
+mv uEnv.bootfromnand.txt uEnv.txt
+
 ```
+
 For example, if you're flashing dafang_128mb_v2.bin, your command should look like this:
 
 ```bash
@@ -56,8 +71,8 @@ Don't do anything stupid inbetween.
 If you crash your camera, you end up without a working bootloader.
 
 ## Verify that the U-Boot-Loader works correctly
-1. Rename the uEnv.bootfromnand.txt in your minisd card root to uEnv.txt
-2. Reboot your camera
+
+Reboot your camera
 
 The bootloader is configured to enable the blue led if it has found a valid uEnv.txt during boot up.
 Take a look at your LED when it first turns on.
