@@ -1,0 +1,20 @@
+## An example resolv.conf to use with static IP configuration
+## This file is only relevant when a static address is configured
+## Otherwise, resolv.conf is managed by DHCP
+## Uncomment lines as needed, everything is optional
+
+## Detailed documentation:
+## https://linux.die.net/man/5/resolv.conf
+
+## List DNS server addresses, primary, secondary, etc
+#nameserver 192.168.1.1
+#nameserver 192.168.1.2
+#nameserver 192.168.1.3
+
+## Domain of this system
+## Determined automatically from fully-qualified hostname when unspecified
+#domain myteam.myorg.mycorp.net
+
+## Search list to resolves unqualified hostnames
+## Defaults to domain when unspecified
+#search myteam.myorg.mycorp.net myorg.mycorp.net mycorp.net
