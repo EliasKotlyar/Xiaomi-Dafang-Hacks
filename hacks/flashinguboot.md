@@ -2,7 +2,7 @@
 
 ## What benefits does this open source bootloader have?
 
-1. You can use H264 FullHD streaming (1920x1080)(on 128MB devices only)
+1. You can use H264 FullHD streaming (1920x1080)(on 128 MB devices only)
 2. You can boot your own kernel/rootfs from MicroSD
 3. You can change your kernel boot-parameters (uEnv.txt)
 4. You can flash your NAND using this bootloader
@@ -15,7 +15,7 @@ If you flash the wrong u-boot, you can brick your device. I am not taking any re
 
 ## Requirements:
 
-1. Determine how much RAM your device has by running following command via SSH:
+1. Determine how much RAM your device has by running the following command via SSH:
 ```$bash
 cat /proc/cmdline 
 ```
@@ -35,7 +35,7 @@ i.e. you have a device with 128 Mb RAM.
 ## Flashing the U-Boot bootloader:
 
 1. Login via SSH
-2. Get the correct [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) for your device and RAM size.  NOTE: if you're going to use wget, you need to use the RAW link to the .bin so that you don't accidentally download html.
+2. Download the correct [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) for your device and RAM size.  NOTE: if you are using wget, you need to use the RAW link to the .bin file so that you don't accidentally download a html file.
 3. Put the bootloader file in the root of your microsd card `/system/sdcard`. 
 4. **Verify the MD5 hash of the file!! Do not skip this step or you may brick your camera!**
 5. Write the bootloader to flash
@@ -49,7 +49,7 @@ wget https://github.com/Dafang-Hacks/uboot/raw/master/compiled_bootloader/NAME_O
 md5sum NAME_OF_YOUR_BOOTLOADER_FILE.bin 
 ```
 
-The `md5sum` command will output a string of hex. That should match the hash listed next to the bin file you downloaded for your [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) Again, do not proceed unless the MD5 matches the version you downloaded. Now erase and write to flash.  Do not do anything else between these commands as once you erase, your device will be bricked until you write the .bin.  
+The `md5sum` command will output a string of hex. That should match the hash listed next to the bin file you downloaded for your [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) Again, do not proceed unless the MD5 matches the version you downloaded. Now erase and write the bootloader. Do not do anything else between these commands as once you have erased your bootloader. Your device will be unable to boot until you have written a new bootloader.  
 
 
 ```bash
