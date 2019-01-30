@@ -36,6 +36,18 @@ Or ask in our [Gitter channel](https://gitter.im/Xiaomi-Dafang-Hacks) for help.
 If you don't find anything related, feel free to open a new issue.
 If you/we solve your issue, please condense your gained insights into a pull request for continuous self-improvement.
 
+### Partner Community:
+
+We are really excited to announce that we have now a open source partner community, which provides a lot of content about the T10/T20/T30 Devices
+
+![Ebaina](/ebaina.png)
+
+Start here for more informations:
+http://bbs.ebaina.com/thread-53811-1-1.html
+
+欢迎来到这个存储库亲爱的朋友们。 从这里开始，获取关于在您的设备上获取此hack的教程：[开始](/hacks/install_cfw.md)
+
+
 
 ## Technical Information about the hack:
 
