@@ -36,17 +36,20 @@ cat << EOF
     <header class='card-header'><p class='card-header-title'>System</p></header>
     <div class='card-content'>
     <form id="tzForm" action="cgi-bin/action.cgi?cmd=settz" method="post">
-
         <div class="field is-horizontal">
             <div class="field-label is-normal">
-                <label class="label" for="tz">TZ</label>
+                <label class="label" for="tz">Time Zone</label>
             </div>
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <input class="input" id="tz" name="tz" type="text" size="25" value="$(cat /etc/TZ)" />
+                        <div class="select">
+                            <select name="timeZone">
+                                $(/system/sdcard/bin/busybox awk -F '\t' -v tzn="$(cat /system/sdcard/config/timezone.conf)" '{print "<option value=\""$1"\""; if ($1==tzn) print "selected"; print ">" $1 "</option>"}' /system/sdcard/www/timezones.tsv)
+                            </select>
+                        </div>
+                        <p class="help">$(date) - $(cat /etc/TZ)</p>
                     </div>
-                    <p>$(date)</p>
                 </div>
             </div>
         </div>
