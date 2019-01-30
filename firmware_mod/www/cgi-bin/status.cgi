@@ -64,7 +64,7 @@ cat << EOF
             </tr>
             <tr>
               <td> Uptime </td>
-              <td> $(uptime | awk -F, '{sub(".*up ",x,$1);print $1,$2}') </td>
+              <td> $(uptime | sed 's/.*up \([^,]*\), .*/\1/') </td>
             </tr>
             <tr>
               <td> Load Average </td>
