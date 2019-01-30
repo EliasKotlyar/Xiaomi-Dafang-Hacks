@@ -2,6 +2,9 @@
 # edit this file and move it to /system/sdcard/config/motion.conf #
 ############################################################
 
+# Enable verbose debug messages to stderr 
+debug_msg_enable=false
+
 # Configure the motion core parameters:
 
 region_of_interest=0,0,1280,720
@@ -20,7 +23,7 @@ publish_mqtt_message=false
 publish_mqtt_snapshot=false
 # Save the image locally
 save_snapshot=false
-sendemail=false
+send_email=false
 send_telegram=false
 save_dir=/system/sdcard/motion/stills
 save_file_date_pattern="+%d-%m-%Y_%H.%M.%S"
