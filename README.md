@@ -45,7 +45,7 @@ We are really excited to announce that we have now a open source partner communi
 Start here for more informations:
 http://bbs.ebaina.com/thread-53811-1-1.html
 
-欢迎来到这个存储库亲爱的朋友们。 从这里开始，获取关于在您的设备上获取此hack的教程：[开始](/hacks/install_cfw.md)
+欢迎来到这个存储库亲爱的朋友们。 从这里开始，获取关于在您的设备上获取此hack的教程：[开始](/hacks/install_cfw_cn.md)
 
 
 
