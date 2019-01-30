@@ -31,7 +31,52 @@ EOF
 fi
 
 cat << EOF
-<!-- Date -->
+<!-- Info -->
+<div class='card status_card'>
+    <header class='card-header'><p class='card-header-title'>Info</p></header>
+    <div class='card-content'>
+    <div class='content'>
+        <table>
+          <tbody>
+            <tr>
+              <td> Hostname </td>
+              <td> $(hostname) </td>
+            </tr>
+            <tr>
+              <td> Model </td>
+              <td> $(/system/sdcard/bin/busybox uname -i) </td>
+            </tr>
+            <tr>
+              <td> Firmware Version</td>
+              <td> $(cat /system/sdcard/.lastCommitDate) </td>
+            </tr>
+            <tr>
+              <td> Kernel Version </td>
+              <td> $(/system/sdcard/bin/busybox uname -v) </td>
+            </tr>
+            <tr>
+              <td> Bootloader Version </td>
+              <td> $(busybox strings /dev/mtd0 | grep "U-Boot 2") </td>
+            <tr>
+            <tr>
+              <td> Local Time </td>
+              <td> $(date) </td>
+            </tr>
+            <tr>
+              <td> Uptime </td>
+              <td> $(uptime | awk -F, '{sub(".*up ",x,$1);print $1,$2}') </td>
+            </tr>
+            <tr>
+              <td> Load Average </td>
+              <td> $(uptime | awk -F': ' '{print $2}') </td>
+            </tr>
+          </tbody>
+        </table>
+    </div>
+    </div>
+</div>
+
+<!-- System -->
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>System</p></header>
     <div class='card-content'>
@@ -89,14 +134,14 @@ cat << EOF
     </div>
 </div>
 
-<!-- HTTP Password -->
+<!-- Passwords -->
 <div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>HTTP Password</p></header>
+    <header class='card-header'><p class='card-header-title'>Passwords</p></header>
     <div class='card-content'>
         <form id="passwordForm" action="cgi-bin/action.cgi?cmd=set_http_password" method="post">
         <div class="field is-horizontal">
             <div class="field-label is-normal">
-                <label class="label">New Password</label>
+                <label class="label">Set HTTP Password</label>
             </div>
             <div class="field-body">
                 <div class="field">
@@ -118,14 +163,6 @@ cat << EOF
             </div>
         </div>
         </form>
-    </div>
-</div>
-
-<!-- Version -->
-<div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>Version (last commit date from GitHub/autoupdate script)</p></header>
-    <div class='card-content'>
-    <p>$(cat /system/sdcard/.lastCommitDate)</p>
     </div>
 </div>
 
@@ -309,7 +346,7 @@ cat << EOF
                 <div class="select">
                     <select name="audioSource">
                         $(
-                           for i in `/system/sdcard/bin/busybox find /usr/share/notify/ /system/sdcard/Media -name *.wav`
+                           for i in `/system/sdcard/bin/busybox find /usr/share/notify/ /system/sdcard/media -name *.wav`
                            do
                                 echo  "<option value=$i> `/system/sdcard/bin/busybox basename $i` </option>"
                            done
@@ -498,10 +535,11 @@ EOF
 PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
 
 IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
-echo "<p>Path to feed : <a href='rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast'>rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast</a></p>"
-echo "<p>HLS : <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.m3u8'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.m3u8</a></p>"
-echo "<p>MPEG-DASH : <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.mpd'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.mpd</a></p>"
-
+echo "<p>Path to feed: <a href='rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast'>rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast</a></p>"
+echo "<p>HLS: <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.m3u8'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.m3u8</a></p>"
+echo "<p>hls.js web player: <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)</a></p>"
+echo "<p>MPEG-DASH: <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.mpd'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.mpd</a></p>"
+echo "HLS & MPEG-DASH require the rtspserver to be started with the -S flag. This may reduce the compatibility with some ip camera viewers such as ipcamviewer etc."
 cat << EOF
     </div>
 </div>

@@ -3,6 +3,16 @@
 # This file is supposed to bundle some frequently used functions
 # so they can be easily improved in one place and be reused all over the place
 
+include () {
+    [[ -f "$1" ]] && source "$1"
+}
+# Set motor range
+MAX_X=2600
+MAX_Y=700
+MIN_X=0
+MIN_Y=0
+STEP=100
+
 # Initialize  gpio pin
 init_gpio(){
   GPIOPIN=$1
@@ -51,7 +61,6 @@ rewrite_config(){
 blue_led(){
   case "$1" in
   on)
-    setgpio 38 1
     setgpio 39 0
     ;;
   off)
@@ -75,7 +84,6 @@ yellow_led(){
   case "$1" in
   on)
     setgpio 38 0
-    setgpio 39 1
     ;;
   off)
     setgpio 38 1
@@ -150,31 +158,30 @@ ir_cut(){
 motor(){
   if [ -z "$2" ]
   then
-    steps=100
+    steps=$STEP
   else
     steps=$2
   fi
   case "$1" in
   up)
     /system/sdcard/bin/motor -d u -s "$steps"
+    update_motor_pos $steps
     ;;
   down)
     /system/sdcard/bin/motor -d d -s "$steps"
+    update_motor_pos $steps
     ;;
   left)
     /system/sdcard/bin/motor -d l -s "$steps"
+    update_motor_pos $steps
     ;;
   right)
     /system/sdcard/bin/motor -d r -s "$steps"
+    update_motor_pos $steps
     ;;
-  vcalibrate)
+  reset_pos_count)
     /system/sdcard/bin/motor -d v -s "$steps"
-    ;;
-  hcalibrate)
-    /system/sdcard/bin/motor -d h -s "$steps"
-    ;;
-  calibrate)
-    /system/sdcard/bin/motor -d f -s "$steps"
+    update_motor_pos $steps
     ;;
   status)
     if [ "$2" = "horizontal" ]; then
@@ -184,6 +191,16 @@ motor(){
     fi
     ;;
   esac
+
+}
+
+update_motor_pos(){
+  # Waiting for the motor to run.
+  SLEEP_NUM=$(awk -v a="$1" 'BEGIN{printf ("%f",a*1.3/1000)}')
+  sleep ${SLEEP_NUM//-/}
+  # Display AXIS to OSD
+  update_axis
+  /system/sdcard/bin/setconf -k o -v "$OSD"
 }
 
 # Read the light sensor
@@ -294,13 +311,13 @@ motion_detection(){
 motion_send_mail(){
   case "$1" in
   on)
-    rewrite_config /system/sdcard/config/motion.conf sendemail "true"
+    rewrite_config /system/sdcard/config/motion.conf send_email "true"
     ;;
   off)
-    rewrite_config /system/sdcard/config/motion.conf sendemail "false"
+    rewrite_config /system/sdcard/config/motion.conf send_email "false"
     ;;
   status)
-    status=`awk '/sendemail/' /system/sdcard/config/motion.conf |cut -f2 -d \=`
+    status=$(awk '/send_email/' /system/sdcard/config/motion.conf |cut -f2 -d \=)
     case $status in
       false)
         echo "OFF"
@@ -312,7 +329,27 @@ motion_send_mail(){
   esac
 }
 
-
+# Control the motion detection Telegram function
+motion_send_telegram(){
+  case "$1" in
+  on)
+    rewrite_config /system/sdcard/config/motion.conf send_telegram "true"
+    ;;
+  off)
+    rewrite_config /system/sdcard/config/motion.conf send_telegram "false"
+    ;;
+  status)
+    status=$(awk '/send_telegram/' /system/sdcard/config/motion.conf |cut -f2 -d \=)
+    case $status in
+      true)
+        echo "ON"
+        ;;
+      *)
+        echo "OFF"
+        ;;
+    esac
+  esac
+}
 
 # Control the motion tracking function
 motion_tracking(){
@@ -389,8 +426,8 @@ snapshot(){
 
 # Update axis
 update_axis(){
-  source /system/sdcard/config/osd.conf > /dev/null 2>/dev/null
-  AXIS=`/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print "X="$2,"Y="$4}'`
+  . /system/sdcard/config/osd.conf > /dev/null 2>/dev/null
+  AXIS=$(/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print "X="$2,"Y="$4}')
   if [ "$DISPLAY_AXIS" == "true" ]; then
     OSD="${OSD} ${AXIS}"
   fi

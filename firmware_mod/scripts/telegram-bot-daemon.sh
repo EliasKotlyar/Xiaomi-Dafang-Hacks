@@ -29,12 +29,27 @@ detectionOff() {
   motion_detection off && $TELEGRAM m "Motion detection stopped"
 }
 
+textAlerts() {
+  . /system/sdcard/scripts/common_functions.sh
+  rewrite_config /system/sdcard/config/telegram.conf telegram_alert_type "text"
+  $TELEGRAM m "Text alerts on motion detection"
+}
+
+imageAlerts() {
+  . /system/sdcard/scripts/common_functions.sh
+  rewrite_config /system/sdcard/config/telegram.conf telegram_alert_type "image"
+  $TELEGRAM m "Image alerts on motion detection"
+}
+
 respond() {
   case $1 in
     /mem) sendMem;;
     /shot) sendShot;;
     /on) detectionOn;;
     /off) detectionOff;;
+    /textalerts) textAlerts;;
+    /imagealerts) imageAlerts;;
+    /help) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a shot\n# /on - motion detect on\n# /off - motion detect off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection";;
     *) $TELEGRAM m "I can't respond to '$1' command"
   esac
 }
@@ -53,7 +68,12 @@ markAsRead() {
 main() {
   json=$(readNext)
 
-  [ "$(echo "$json" | $JQ -r '.ok')" != "true" ] && return 1
+  [ -z "$json" ] && return 0
+  if [ "$(echo "$json" | $JQ -r '.ok')" != "true" ]; then
+    echo "$(date '+%F %T') Bot error: $json" >> /tmp/telegram.log
+    [ "$(echo "$json" | $JQ -r '.error_code')" == "401" ] && return 1
+    return 0
+  fi;
 
   chatId=$(echo "$json" | $JQ -r '.result[0].message.chat.id // ""')
   [ -z "$chatId" ] && return 0 # no new messages
@@ -75,4 +95,5 @@ main() {
 while true; do
   main >/dev/null 2>&1
   [ $? -gt 0 ] && exit 1
+  sleep 2
 done;

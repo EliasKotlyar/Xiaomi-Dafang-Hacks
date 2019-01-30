@@ -260,6 +260,12 @@ do
         echo "Can not get remote file $i, exiting."
         exit 1
     fi
+    # sometimes zero byte files are received, which overwrite the local files, we ignore those files
+    # exception: files that are hidden i.e. start with dot. Ex: files like ".gitkeep"
+    if [[ ! -s ${TMPFILE} ]] && [[ $(basename ${LOCALFILE} | cut -c1-1) != "." ]]; then                
+        echo "Received zero byte file $i, exiting."                                                    
+        exit 1                                                                                         
+    fi         
     # Check the file exists in local
     if [ -f "${DESTFOLDER}/${LOCALFILE}" ]; then
         REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)

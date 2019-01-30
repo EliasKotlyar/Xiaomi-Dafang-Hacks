@@ -4,6 +4,8 @@
 . /system/sdcard/config/motion.conf
 . /system/sdcard/scripts/common_functions.sh
 
+include /system/sdcard/config/telegram.conf
+
 # Turn on the amber led
 if [ "$motion_trigger_led" = true ] ; then
 	yellow_led on
@@ -29,25 +31,32 @@ fi
 if [ "$publish_mqtt_message" = true ] ; then
 	. /system/sdcard/config/mqtt.conf
 	/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -m "ON"
-	if [ "$save_snapshot" = true ] ; then
-		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/snapshot ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f "$save_dir/$filename"
-	fi
+fi
 
+# The MQTT publish uses a separate image from the "save_snapshot" to keep things simple
+if [ "$publish_mqtt_snapshot" = true ] ; then
+	/system/sdcard/bin/getimage > /tmp/last_image.jpg
+	/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/snapshot ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f /tmp/last_image.jpg
+	rm /tmp/last_image.jpg
 fi
 
 # Send emails ...
-if [ "$sendemail" = true ] ; then
+if [ "$send_email" = true ] ; then
     /system/sdcard/scripts/sendPictureMail.sh&
 fi
 
 # Send a telegram message
 if [ "$send_telegram" = true ]; then
-	if [ "$save_snapshot" = true ] ; then
-		/system/sdcard/bin/telegram p "$save_dir/$filename"
+	if [ "$telegram_alert_type" = "text" ] ; then
+		/system/sdcard/bin/telegram m "Motion detected"
 	else
-		/system/sdcard/bin/getimage > "/tmp/telegram_image.jpg"
- 		/system/sdcard/bin/telegram p "/tmp/telegram_image.jpg"
- 		rm "/tmp/telegram_image.jpg"
+		if [ "$save_snapshot" = true ] ; then
+			/system/sdcard/bin/telegram p "$save_dir/$filename"
+		else
+			/system/sdcard/bin/getimage > "/tmp/telegram_image.jpg"
+	 		/system/sdcard/bin/telegram p "/tmp/telegram_image.jpg"
+	 		rm "/tmp/telegram_image.jpg"
+		fi
 	fi
 fi
 

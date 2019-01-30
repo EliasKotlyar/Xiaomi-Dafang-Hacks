@@ -1,6 +1,6 @@
 #!/bin/sh
 PIDFILE="/run/v4l2rtspserver-master-h264.pid"
-LOGDIR="/system/sdcard/log"
+LOGDIR="/tmp"
 LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
 export LD_LIBRARY_PATH='/system/sdcard/lib/:/thirdlib:/system/lib'
 
@@ -86,6 +86,7 @@ start()
 
     echo "================== START ===============" >> "$LOGPATH"
     echo "/system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT" >> "$LOGPATH"
+    cd /system/sdcard/hls
     /system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT 2>> "$LOGPATH" >> "$LOGPATH" &
     echo "$!" > "$PIDFILE"
   fi

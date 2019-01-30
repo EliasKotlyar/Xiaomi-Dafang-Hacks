@@ -1,0 +1,30 @@
+<html>
+<link rel="shortcut icon" href="about:blank" />
+
+<body>
+  <!--fill streamList variable with the list of streams -->
+  <script src="/getStreamList?streamList"></script>
+  <h3>HLS</h3>
+  <video controls id="hlsvideo"></video>
+  <script src="hls.light.min.js"></script>
+  <script>
+    var video = document.getElementById("hlsvideo");
+    if (Hls.isSupported()) {
+      var hls = new Hls();
+      hls.loadSource(streamList[0] + ".m3u8");
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, function() {
+        video.play();
+      });
+    } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+      video.src = streamList[0] + ".m3u8";
+      video.addEventListener('loadedmetadata', function() {
+        video.play();
+      });
+    } else {
+      document.write("HLS not supported");
+    }
+  </script>
+</body>
+
+</html>
