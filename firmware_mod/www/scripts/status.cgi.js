@@ -37,7 +37,7 @@ $(document).ready(function() {
     b.toggleClass('is-loading');
     b.prop('disabled', !b.prop('disabled'));
     var formData = {
-      'tz': $('input[name=tz]').val(),
+      'timeZone': $('select[name=timeZone]').val(),
       'hostname': $('input[name=hostname]').val(),
       'ntp_srv': $('input[name=ntp_srv]').val()
     };
