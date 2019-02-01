@@ -47,7 +47,7 @@ cat << EOF
               <td> $(/system/sdcard/bin/busybox uname -i) </td>
             </tr>
             <tr>
-              <td> Firmware Version</td>
+              <td> Firmware Version </td>
               <td> $(cat /system/sdcard/.lastCommitDate) </td>
             </tr>
             <tr>
@@ -64,7 +64,7 @@ cat << EOF
             </tr>
             <tr>
               <td> Uptime </td>
-              <td> $(uptime | awk -F, '{sub(".*up ",x,$1);print $1,$2}') </td>
+              <td> $(uptime | sed 's/^.*up *//;s/, *[0-9]* user.*$/m/; s/ day[^0-9]*/d, /;s/ \([hms]\).*m$/\1/;s/:/h, /') </td>
             </tr>
             <tr>
               <td> Load Average </td>
