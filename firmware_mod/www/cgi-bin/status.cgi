@@ -44,7 +44,7 @@ cat << EOF
             </tr>
             <tr>
               <td> Model </td>
-              <td> $(/system/sdcard/bin/busybox uname -i) </td>
+              <td> $(/system/sdcard/scripts/detect_model.sh) </td>
             </tr>
             <tr>
               <td> Firmware Version</td>
