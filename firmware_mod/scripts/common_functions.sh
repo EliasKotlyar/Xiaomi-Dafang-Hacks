@@ -433,6 +433,15 @@ update_axis(){
   fi
 }
 
+# Set timezone from the timezone config file to system timezone
+set_timezone(){
+  timezone_name=`cat /system/sdcard/config/timezone.conf`
+  timezone=`/system/sdcard/bin/busybox awk -F '\t' -v tzn="$timezone_name" '($1==tzn) {print $2}' /system/sdcard/www/timezones.tsv`
+  if [ "$(cat /etc/TZ)" != "$timezone" ]; then
+    echo "$timezone" > /etc/TZ
+  fi
+}
+
 # Reboot the System
 reboot_system() {
   /sbin/reboot
