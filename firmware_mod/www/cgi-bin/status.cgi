@@ -1,5 +1,7 @@
 #!/bin/sh
 
+. /system/sdcard/scripts/common_functions.sh
+
 echo "Content-type: text/html"
 echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
@@ -44,7 +46,7 @@ cat << EOF
             </tr>
             <tr>
               <td> Model </td>
-              <td> $(/system/sdcard/bin/busybox uname -i) </td>
+              <td> $(detect_model) </td>
             </tr>
             <tr>
               <td> Firmware Version </td>
