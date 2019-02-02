@@ -44,6 +44,16 @@ if [ -n "$F_cmd" ]; then
           cat /system/sdcard/log/update.log
           ;;
 
+        6)
+          echo "Process List <br/>"
+          ps
+          ;;
+
+        7)
+          echo "Mounts <br/>"
+          mount
+          ;;
+
       esac
       echo "</pre>"
       return
