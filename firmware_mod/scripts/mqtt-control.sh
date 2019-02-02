@@ -206,7 +206,7 @@ killall mosquitto_sub.bin 2> /dev/null
       if [ -n "$COMMAND" ] && [ "$COMMAND" -eq "$COMMAND" ] 2>/dev/null; then   
         if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
           echo Changing motor from $COMMAND to $MOTORSTATE
-          TARGET=$(busybox expr $MOTORSTATE - $COMMAND - $MAX_Y)
+          TARGET=$(busybox expr $MOTORSTATE + $COMMAND - $MAX_Y)
         else
           echo Changing motor from $MOTORSTATE to $COMMAND
           TARGET=$(busybox expr $COMMAND - $MOTORSTATE)
