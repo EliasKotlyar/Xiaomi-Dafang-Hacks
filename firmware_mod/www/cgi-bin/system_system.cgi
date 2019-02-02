@@ -101,14 +101,6 @@ cat << EOF
     </div>
 </div>
 
-<!-- Original Xiaomi Software -->
-<div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>Start original Xiaomi firmware</p></header>
-    <div class='card-content'>
-        <button class="button" onClick="call('cgi-bin/action.cgi?cmd=xiaomi_start')">Start</button>
-    </div>
-</div>
-
 EOF
 script=$(cat /system/sdcard/www/scripts/status.cgi.js)
 echo "<script>$script</script>"
