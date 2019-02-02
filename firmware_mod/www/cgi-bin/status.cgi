@@ -49,8 +49,8 @@ cat << EOF
               <td> $(detect_model) </td>
             </tr>
             <tr>
-              <td> Firmware Version </td>
-              <td> $(cat /system/sdcard/.lastCommitDate) </td>
+              <td> Firmware Version</td>
+              <td> $(if [ -s "/system/sdcard/.lastCommitDate" ]; then cat /system/sdcard/.lastCommitDate; else echo "Update for version string"; fi) </td>
             </tr>
             <tr>
               <td> Kernel Version </td>
