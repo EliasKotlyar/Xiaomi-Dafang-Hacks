@@ -29,7 +29,7 @@ do
   else
     TARGET=$MOTORSTATE
   fi  
-  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "$(motor status vertical)"
+  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m  "$TARGET"
   MOTORSTATE=$(motor status horizontal)
   if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
     TARGET=$(busybox expr $MAX_X - $MOTORSTATE)
