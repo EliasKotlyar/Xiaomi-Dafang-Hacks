@@ -130,7 +130,10 @@ fi
 
 echo "udhcpc: $udhcpc_status" >> $LOGPATH
 
-## Sync the via NTP:
+## Set Timezone
+set_timezone
+
+## Sync the time via NTP:
 if [ ! -f $CONFIGPATH/ntp_srv.conf ]; then
   cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
 fi

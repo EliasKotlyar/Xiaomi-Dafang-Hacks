@@ -44,6 +44,16 @@ if [ -n "$F_cmd" ]; then
           cat /system/sdcard/log/update.log
           ;;
 
+        6)
+          echo "Process List <br/>"
+          ps
+          ;;
+
+        7)
+          echo "Mounts <br/>"
+          mount
+          ;;
+
       esac
       echo "</pre>"
       return
@@ -196,20 +206,11 @@ if [ -n "$F_cmd" ]; then
 
       timezone_name=$(printf '%b' "${F_timeZone//%/\\x}")
       if [ "$(cat /system/sdcard/config/timezone.conf)" != "$timezone_name" ]; then
-        echo "<p>Setting time zone name to '$timezone_name'...</p>"
+        echo "<p>Setting time zone to '$timezone_name'...</p>"
         echo "$timezone_name" > /system/sdcard/config/timezone.conf
-      fi 
-
-      timezone=$(/system/sdcard/bin/busybox awk -F '\t' -v tzn="$timezone_name" '($1==tzn) {print $2}' /system/sdcard/www/timezones.tsv)
-      if [ "$(cat /etc/TZ)" != "$timezone" ]; then
-        echo "<p>Setting TZ to '$timezone'...</p>"
-        echo "$timezone" > /etc/TZ
-        echo "<p>Syncing time...</p>"
-        if /system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv" > /dev/null 2>&1; then
-          echo "<p>Success</p>"
-        else echo "<p>Failed</p>"
-        fi
-      fi     
+        # Set system timezone from timezone name
+        set_timezone
+      fi      
 
       hst=$(printf '%b' "${F_hostname//%/\\x}")
       if [ "$(cat /system/sdcard/config/hostname.conf)" != "$hst" ]; then
