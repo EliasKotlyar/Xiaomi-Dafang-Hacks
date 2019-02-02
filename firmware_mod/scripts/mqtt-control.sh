@@ -203,9 +203,14 @@ killall mosquitto_sub.bin 2> /dev/null
     "${TOPIC}/motors/vertical/set "*)
       COMMAND=$(echo "$line" | awk '{print $2}')
       MOTORSTATE=$(motor status vertical)
-      if [ -n "$COMMAND" ] && [ "$COMMAND" -eq "$COMMAND" ] 2>/dev/null; then
-        echo Changing motor from $MOTORSTATE to $COMMAND
-        TARGET=$(busybox expr $COMMAND - $MOTORSTATE)
+      if [ -n "$COMMAND" ] && [ "$COMMAND" -eq "$COMMAND" ] 2>/dev/null; then   
+        if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
+          echo Changing motor from $COMMAND to $MOTORSTATE
+          TARGET=$(busybox expr $MOTORSTATE - $COMMAND - $MAX_Y)
+        else
+          echo Changing motor from $MOTORSTATE to $COMMAND
+          TARGET=$(busybox expr $COMMAND - $MOTORSTATE)
+        fi
         echo Moving $TARGET
         if [ "$TARGET" -lt 0 ]; then
           motor down $(busybox expr $TARGET \* -1)
@@ -216,6 +221,7 @@ killall mosquitto_sub.bin 2> /dev/null
         echo Requested $COMMAND is not a number
       fi
     ;;
+	
     "${TOPIC}/motors/horizontal/set left")
       motor left
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
@@ -230,8 +236,13 @@ killall mosquitto_sub.bin 2> /dev/null
       COMMAND=$(echo "$line" | awk '{print $2}')
       MOTORSTATE=$(motor status horizontal)
       if [ -n "$COMMAND" ] && [ "$COMMAND" -eq "$COMMAND" ] 2>/dev/null; then
-        echo Changing motor from $MOTORSTATE to $COMMAND
-        TARGET=$(busybox expr $COMMAND - $MOTORSTATE)
+        if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
+          echo Changing motor from $COMMAND to $MOTORSTATE
+          TARGET=$(busybox expr $MOTORSTATE + $COMMAND - $MAX_X)
+        else
+          echo Changing motor from $MOTORSTATE to $COMMAND
+          TARGET=$(busybox expr $COMMAND - $MOTORSTATE)
+        fi
         echo Moving $TARGET
         if [ "$TARGET" -lt 0 ]; then
           motor left $(busybox expr $TARGET \* -1)
