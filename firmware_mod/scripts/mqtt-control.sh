@@ -192,12 +192,24 @@ killall mosquitto_sub.bin 2> /dev/null
 
     "${TOPIC}/motors/vertical/set up")
       motor up
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status vertical)"
+	  MOTORSTATE=$(motor status vertical)
+	  if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
+		TARGET=$(busybox expr $MAX_Y - $MOTORSTATE)
+	  else
+		TARGET=$MOTORSTATE
+	  fi
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$TARGET"
     ;;
 
     "${TOPIC}/motors/vertical/set down")
       motor down
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status vertical)"
+	  MOTORSTATE=$(motor status vertical)
+	  if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
+		TARGET=$(busybox expr $MAX_Y - $MOTORSTATE)
+	  else
+		TARGET=$MOTORSTATE
+	  fi	   
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/vertical ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$TARGET"
     ;;
 
     "${TOPIC}/motors/vertical/set "*)
@@ -224,12 +236,24 @@ killall mosquitto_sub.bin 2> /dev/null
 	
     "${TOPIC}/motors/horizontal/set left")
       motor left
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
+	  MOTORSTATE=$(motor status horizontal)
+	  if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
+		TARGET=$(busybox expr $MAX_X - $MOTORSTATE)
+	  else
+		TARGET=$MOTORSTATE
+	  fi
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$TARGET"
     ;;
 
     "${TOPIC}/motors/horizontal/set right")
       motor right
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motor status horizontal)"
+	  MOTORSTATE=$(motor status horizontal)
+	  if [ `/system/sdcard/bin/setconf -g f` -eq 1 ]; then
+		TARGET=$(busybox expr $MAX_X - $MOTORSTATE)
+	  else
+		TARGET=$MOTORSTATE
+	  fi
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$TARGET"
     ;;
 
     "${TOPIC}/motors/horizontal/set "*)
