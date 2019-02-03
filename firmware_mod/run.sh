@@ -100,13 +100,14 @@ if [ ! -f $CONFIGPATH/hostname.conf ]; then
 fi
 hostname -F $CONFIGPATH/hostname.conf
 
+## Load network driver
 if [ -f $CONFIGPATH/usb_eth_driver.conf ]; then
   ## Start USB Ethernet:
   echo "USB_ETHERNET: Detected USB config. Loading USB Ethernet driver" >> $LOGPATH
   insmod /system/sdcard/driver/usbnet.ko
   insmod /system/sdcard/driver/asix.ko
-  ifconfig eth0 up
-  udhcpc_status=$(udhcpc -i eth0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
+
+  network_interface_name="eth0"
 else
   ## Start Wifi:
   if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
@@ -125,10 +126,28 @@ else
   fi
   wpa_supplicant_status="$(wpa_supplicant -d -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
   echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
-  udhcpc_status=$(udhcpc -i wlan0 -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
+
+  network_interface_name="wlan0"
 fi
 
-echo "udhcpc: $udhcpc_status" >> $LOGPATH
+## Configure network address
+if [ -f "$CONFIGPATH/staticip.conf" ]; then
+  # Install a resolv.conf if present so DNS can work
+  if [ -f "$CONFIGPATH/resolv.conf" ]; then
+    cp "$CONFIGPATH/resolv.conf" /etc/resolv.conf
+  fi
+
+  # Configure staticip/netmask from config/staticip.conf
+  staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
+  ifconfig "$network_interface_name" $staticip_and_netmask
+  ifconifg "$network_interface_name" up
+  echo "Configured $network_interface_name with static address $staticip_and_netmask" >> $LOGPATH
+else
+  # Configure with DHCP client
+  ifconifg "$network_interface_name" up
+  udhcpc_status=$(udhcpc -i "$network_interface_name" -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
+  echo "udhcpc: $udhcpc_status" >> $LOGPATH
+fi
 
 ## Set Timezone
 set_timezone

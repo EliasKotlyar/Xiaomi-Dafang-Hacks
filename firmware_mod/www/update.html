@@ -45,9 +45,9 @@
 
     function start() {
         var login = ""
-        if ($('#login').val().length > 0) {
-            login = "login=" + $('#login').val() + ":" + $('#password').val();
-        }
+        // if ($('#login').val().length > 0) {
+        //     login = "login=" + $('#login').val() + ":" + $('#password').val();
+        // }
         $.ajax({
             'url': 'cgi-bin/action.cgi?cmd=update',
             'type': 'POST',
@@ -66,44 +66,23 @@
 
 <div class='card status_card'>
     <header class='card-header'>
-        <p class='card-header-title'>GitHub login and password (not mandatory)</p>
+        <p class='card-header-title'>Update</p>
     </header>
     <div class='card-content'>
         <div class="field is-horizontal">
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <input class="input" id="login" name="login" type="text" size="12" value="" />
-                    </div>
-                </div>
-            </div>
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <input class="input" id="password" name="password" type="password" size="12" value="" />
-                    </div>
-                </div>
-            </div>
+            <p>You can replace the running firmware on this camera by the latest available from its <a target='_blank' href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks">Github repository</a>. Settings will be retained after update.</p>
         </div>
         <div class="field is-horizontal">
-            <div class="field-label is-normal">
-            </div>
             <div class="field-body">
                 <div class="field">
                     <div class="control">
-                        <input id="start" class="button is-primary" type="submit" value="Start" onclick="start()" />
+                        <input id="start" class="button is-primary" type="submit" value="Update firmware" onclick="start()" />
                     </div>
                 </div>
             </div>
         </div>
+        <h4 class="title is-4">Please note: at the end of this process the camera will reboot without notice</h4>
+        <progress id=progress name=progress class="progress is-danger" value=0 max="100"></progress>
+        <h1 id=message class="title is-1 has-text-centered"></h1>
     </div>
 </div>
-
-
-<pre>
-    <h4 class="title is-4">Please note that at the end of the process the camera will reboot without notice</h4>
-    <progress id=progress name=progress class="progress is-danger" value=0 max="100"></progress>
-    <h1 id=message class="title is-1 has-text-centered"></h1>
-</pre>
-
-
