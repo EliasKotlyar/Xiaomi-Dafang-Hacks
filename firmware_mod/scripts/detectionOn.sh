@@ -43,6 +43,67 @@ if [ "$save_snapshot" = true ] ; then
 	) &
 fi
 
+# FTP snapshot and video stream
+if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
+	(
+	ftpput_cmd="/system/sdcard/bin/busybox ftpput"
+	ftpput_url="ftp://"
+	if [ "$ftp_username" != "" ]; then
+		ftpput_cmd="$ftpput_cmd -u $ftp_username"
+		ftpput_url="${ftpput_url}${ftp_username}@"
+	fi
+	if [ "$ftp_password" != "" ]; then
+		ftpput_cmd="$ftpput_cmd -p $ftp_password"
+	fi
+	if [ "$ftp_port" != "" ]; then
+		ftpput_cmd="$ftpput_cmd -P $ftp_port"
+	fi
+	ftpput_cmd="$ftpput_cmd $ftp_host"
+	ftpput_url="${ftpput_url}${ftp_host}"
+	if [ "$ftp_port" != "" ]; then
+		ftpput_url="${ftpput_url}:$ftp_port"
+	fi
+
+	if [ "$ftp_snapshot" = true ]; then
+		debug_msg "Send FTP snapshot to $ftpput_url/$ftp_stills_dir/${snapshot_filename}.jpg"
+		$ftpput_cmd "$ftp_stills_dir/${snapshot_filename}.jpg" "$snapshot_tempfile"
+	fi
+
+	if [ "$ftp_video" = true ]; then
+		# We only want one video stream at a time. Try to grab an
+		# exclusive flock on file descriptor 5. Bail out if another
+		# process already has it. Touch the flock to update it's mod
+		# time as a signal to the background process to keep recording
+		# when motion is repeatedly observed.
+		touch /run/ftp_motion_video_stream.flock
+		exec 5<> /run/ftp_motion_video_stream.flock
+		if /system/sdcard/bin/busybox flock -n -x 5; then
+			# Got the lock
+			debug_msg "Begin FTP video stream to $ftpput_url/$ftp_videos_dir/${snapshot_filename}.avi for $ftp_video_duration seconds"
+
+			# XXX Uses avconv to stitch multiple JPEGs into 1fps video.
+			#  I couldn't get it working another way. /dev/videoX inputs
+			#  fail. Localhost rtsp takes very long (10+ seconds) to
+			#  start streaming and gets flaky when when memory or cpu
+			#  are pegged. This is a clugy method, but works well even
+			# at high res, fps, cpu, and memory load!
+			( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/ftp_motion_video_stream.flock)" + "$ftp_video_duration")" ]; do
+					/system/sdcard/bin/getimage
+					sleep 1
+				done ) \
+			| /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f avi - 2>/dev/null \
+			| $ftpput_cmd "$ftp_videos_dir/${snapshot_filename}.avi" - &
+		else
+			debug_msg "FTP video stream already running, continued another $ftp_video_duration seconds"
+		fi
+
+		# File descriptor 5 is inherited across fork to preserve lock,
+		# so we can close it here.
+		exec 5>&-
+	fi
+	) &
+fi
+
 # Publish a mqtt message
 if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true ] ; then
 	(
