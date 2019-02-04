@@ -144,7 +144,7 @@ if [ -f "$CONFIGPATH/staticip.conf" ]; then
   # Configure default gateway
   if [ -f "$CONFIGPATH/defaultgw.conf" ]; then
     defaultgw=$(cat "$CONFIGPATH/defaultgw.conf" | grep -v "^$" | grep -v "^#")
-    route add default gw $defaultgw wlan0
+    route add default gw $defaultgw $network_interface_name
     echo "Configured $defaultgw as default gateway" >> $LOGPATH
   fi
   echo "Configured $network_interface_name with static address $staticip_and_netmask" >> $LOGPATH
