@@ -141,6 +141,12 @@ if [ -f "$CONFIGPATH/staticip.conf" ]; then
   staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
   ifconfig "$network_interface_name" $staticip_and_netmask
   ifconifg "$network_interface_name" up
+  # Configure default gateway
+  if [ -f "$CONFIGPATH/defaultgw.conf" ]; then
+    defaultgw=$(cat "$CONFIGPATH/defaultgw.conf" | grep -v "^$" | grep -v "^#")
+    route add default gw $defaultgw $network_interface_name
+    echo "Configured $defaultgw as default gateway" >> $LOGPATH
+  fi
   echo "Configured $network_interface_name with static address $staticip_and_netmask" >> $LOGPATH
 else
   # Configure with DHCP client
