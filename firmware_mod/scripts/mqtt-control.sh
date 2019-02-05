@@ -73,7 +73,7 @@ killall mosquitto_sub.bin 2> /dev/null
     ;;
 
     "${TOPIC}/brightness")
-      if [ ! $SENDLDR == "false" ]; then
+      if [ "$SENDLDR" != "false" ]; then
         /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/brightness ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ldr status)"
       fi
     ;;
