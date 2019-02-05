@@ -180,12 +180,9 @@ else
   insmod /system/sdcard/driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 fi
 
-## Start FTP & SSH Server:
+## Start SSH Server:
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
 echo "dropbear: $dropbear_status" >> $LOGPATH
-
-bftpd_status=$(/system/sdcard/bin/bftpd -d)
-echo "bftpd: $bftpd_status" >> $LOGPATH
 
 ## Create a certificate for the webserver
 if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
