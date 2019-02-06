@@ -38,8 +38,7 @@ backtoOrigin() {
 #################### Start ###
 
 # If no argument that's mean the camera need to return to its original position
-if [ $# -eq 0 ]
-then
+if [ $# -eq 0 ]; then
     backtoOrigin
     return 0
 fi
@@ -50,8 +49,7 @@ echo $3 $4
 
 # Sum all the parameters, that gives the number of region detected
 # Only 2 are supported
-if [ $((${1} + ${2} + ${3} +${4})) -gt 2 ]
-then
+if [ $((${1} + ${2} + ${3} +${4})) -gt 2 ]; then
     echo "no move: more than 2 detected regions"
     return 0
 fi
@@ -61,41 +59,37 @@ DOWN=0
 RIGHT=0
 LEFT=0
 
-# Basic algorithm to calculate the movement
-
-if  [ "${1}" == "1" ] || [ "${2}" == "1" ]
-then
+# Calculate the movement
+if  [ "${1}" == "1" ] || [ "${2}" == "1" ]; then
     UP=1
 fi
 
-if [ "${3}" == "1" ] || [ "${4}" == "1" ]
-then
+if [ "${3}" == "1" ] || [ "${4}" == "1" ]; then
     DOWN=1
 fi
 
-if [ "${2}" == "1" ] || [ "${4}" == "1" ]
-then
+if [ "${2}" == "1" ] || [ "${4}" == "1" ]; then
     RIGHT=1
 fi
 
-if [ "${1}" == "1" ] || [ "${3}" == "1" ]
-then
+if [ "${1}" == "1" ] || [ "${3}" == "1" ]; then
     LEFT=1
 fi
 
 # Sanity checks
-if [ ${UP} != 0 ] && [ ${DOWN} != 0 ]
-then
+if [ ${UP} != 0 ] && [ ${DOWN} != 0 ]; then
     echo "no move vertically: up and down at the same time"
     UP=0
     DOWN=0
 fi
-if [ ${RIGHT} != 0 ] && [ ${LEFT} != 0 ]
-then
+
+if [ ${RIGHT} != 0 ] && [ ${LEFT} != 0 ]; then
     echo "no move horizontally: right and left at the same time"
     RIGHT=0
     LEFT=0
 fi
+
+# Do the actual movement
 if [ ${UP}    == 1 ]; then
     echo "Move up $STEPS"
     /system/sdcard/bin/motor -d u -s ${STEPS} &>/dev/null
