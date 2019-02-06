@@ -18,7 +18,7 @@
 
 STEPS=$STEP
 FILECAMERAPOS=/system/sdcard/config/cameraposition
-SLEEP_NUM=$(awk -v a="${STEPS//-/}" 'BEGIN{printf ("%f",a*1.3/1000)}')
+SLEEP_NUM=0.5
 
 backtoOrigin() {
 
@@ -96,11 +96,26 @@ then
     RIGHT=0
     LEFT=0
 fi
+if [ ${UP}    == 1 ]; then
+    echo "Move up $STEPS"
+    /system/sdcard/bin/motor -d u -s ${STEPS} &>/dev/null
+    sleep ${SLEEP_NUM}
+fi
 
-[ ${UP}    == 1 ] && echo "Move up"   ; /system/sdcard/bin/motor -d u -s ${STEPS} &>/dev/null
-[ ${DOWN}  == 1 ] && echo "Move down" ; /system/sdcard/bin/motor -d d -s ${STEPS} &>/dev/null
-[ ${RIGHT} == 1 ] && echo "Move right"; /system/sdcard/bin/motor -d r -s ${STEPS} &>/dev/null
-[ ${LEFT}  == 1 ] && echo "Move left" ; /system/sdcard/bin/motor -d l -s ${STEPS} &>/dev/null
+if [ ${DOWN}  == 1 ]; then
+    echo "Move down $STEPS"
+    /system/sdcard/bin/motor -d d -s ${STEPS} &>/dev/null
+    sleep ${SLEEP_NUM}
+fi
 
-# Waiting for the motor to run.
-sleep ${SLEEP_NUM}
+if [ ${RIGHT} == 1 ]; then
+    echo "Move right $STEPS"
+    /system/sdcard/bin/motor -d r -s ${STEPS} &>/dev/null
+    sleep ${SLEEP_NUM}
+fi
+
+if [ ${LEFT}  == 1 ]; then
+    echo "Move left $STEPS"
+    /system/sdcard/bin/motor -d l -s ${STEPS} &>/dev/null
+    sleep ${SLEEP_NUM}
+fi
