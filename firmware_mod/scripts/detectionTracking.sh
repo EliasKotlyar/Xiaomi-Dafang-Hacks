@@ -52,7 +52,7 @@ echo $3 $4
 # Only 2 are supported
 if [ $((${1} + ${2} + ${3} +${4})) -gt 2 ]
 then
-    echo "No move: more than 3 detected regions"
+    echo "no move: more than 2 detected regions"
     return 0
 fi
 
@@ -86,13 +86,15 @@ fi
 # Sanity checks
 if [ ${UP} != 0 ] && [ ${DOWN} != 0 ]
 then
-    echo "no move: up and down at the same time"
-    return 0
+    echo "no move vertically: up and down at the same time"
+    UP=0
+    DOWN=0
 fi
 if [ ${RIGHT} != 0 ] && [ ${LEFT} != 0 ]
 then
-    echo "no move: right and left at the same time"
-    return 0
+    echo "no move horizontally: right and left at the same time"
+    RIGHT=0
+    LEFT=0
 fi
 
 [ ${UP}    == 1 ] && echo "Move up"   ; /system/sdcard/bin/motor -d u -s ${STEPS} &>/dev/null
