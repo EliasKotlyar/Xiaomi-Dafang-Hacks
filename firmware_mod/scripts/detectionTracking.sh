@@ -56,40 +56,49 @@ then
     return 0
 fi
 
-# Diagonals are the only case where we have 2 opposing directions
-# (after having ruled out 3 regions or more)
-if [ [ "${1}" == "1" ] && [ "${4}" == "1" ] ] || \
-   [ [ "${2}" == "1" ] && [ "${3}" == "1" ] ]
-then
-    echo "No move: diagonally opposed regions"
-    return 0
-fi
+UP=0
+DOWN=0
+RIGHT=0
+LEFT=0
 
 # Basic algorithm to calculate the movement
 
 if  [ "${1}" == "1" ] || [ "${2}" == "1" ]
 then
-    echo "Move up"
-    /system/sdcard/bin/motor -d u -s ${STEPS} &
-fi	
-
-if [ "${1}" == "1" ] || [ "${3}" == "1" ]
-then
-    echo "Move left"
-    /system/sdcard/bin/motor -d l -s ${STEPS} &
-fi
-
-if [ "${2}" == "1" ] || [ "${4}" == "1" ]
-then
-    echo "Move right"
-    /system/sdcard/bin/motor -d r -s ${STEPS} &
+    UP=1
 fi
 
 if [ "${3}" == "1" ] || [ "${4}" == "1" ]
 then
-    echo "Move down"
-    /system/sdcard/bin/motor -d d -s ${STEPS} &
+    DOWN=1
 fi
+
+if [ "${2}" == "1" ] || [ "${4}" == "1" ]
+then
+    RIGHT=1
+fi
+
+if [ "${1}" == "1" ] || [ "${3}" == "1" ]
+then
+    LEFT=1
+fi
+
+# Sanity checks
+if [ ${UP} != 0 ] && [ ${DOWN} != 0 ]
+then
+    echo "no move: up and down at the same time"
+    return 0
+fi
+if [ ${RIGHT} != 0 ] && [ ${LEFT} != 0 ]
+then
+    echo "no move: right and left at the same time"
+    return 0
+fi
+
+[ ${UP}    == 1 ] && echo "Move up"   ; /system/sdcard/bin/motor -d u -s ${STEPS} &>/dev/null
+[ ${DOWN}  == 1 ] && echo "Move down" ; /system/sdcard/bin/motor -d d -s ${STEPS} &>/dev/null
+[ ${RIGHT} == 1 ] && echo "Move right"; /system/sdcard/bin/motor -d r -s ${STEPS} &>/dev/null
+[ ${LEFT}  == 1 ] && echo "Move left" ; /system/sdcard/bin/motor -d l -s ${STEPS} &>/dev/null
 
 # Waiting for the motor to run.
 sleep ${SLEEP_NUM}
