@@ -187,6 +187,9 @@ blue_led on
 ## Load motor driver module:
 insmod /driver/sample_motor.ko
 
+## Calibrate pan/tilt
+motor reset_pos_count
+
 ## Determine the image sensor model:
 insmod /system/sdcard/driver/sinfo.ko
 echo 1 >/proc/jz/sinfo/info
