@@ -338,7 +338,7 @@ cat << EOF
                         <input class="input" id="tlduration" name="tlduration" type="text" size="5" value="$(source /system/sdcard/config/timelapse.conf && echo "$TIMELAPSE_DURATION")"/> minutes
                     </div>
                     <p class="help">Set to 0 for unlimited</p>
-                    <p class="help">These settings configure the timelapse mode. Start the timelapse in the Services menu.</p>
+                    <p class="help">These settings configure the timelapse mode. Start the timelapse on the Services page.</p>
                 </div>
             </div>
         </div>
