@@ -311,9 +311,9 @@ cat << EOF
     </div>
 </div>
 
-<!-- Timelapse -->
+<!-- Timelapse Config-->
 <div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>Timelapse</p></header>
+    <header class='card-header'><p class='card-header-title'>Timelapse Settings</p></header>
     <div class='card-content'>
         <form id="formTimelapse" action="cgi-bin/action.cgi?cmd=conf_timelapse" method="post">
         <div class="field is-horizontal">
@@ -338,6 +338,7 @@ cat << EOF
                         <input class="input" id="tlduration" name="tlduration" type="text" size="5" value="$(source /system/sdcard/config/timelapse.conf && echo "$TIMELAPSE_DURATION")"/> minutes
                     </div>
                     <p class="help">Set to 0 for unlimited</p>
+                    <p class="help">These settings configure the timelapse mode. Start the timelapse in the Services menu.</p>
                 </div>
             </div>
         </div>
@@ -347,7 +348,7 @@ cat << EOF
             <div class="field-body">
                 <div class="field">
                 <div class="control">
-                    <input id="tlSubmit" class="button is-primary" type="submit" value="Set" />
+                    <input id="tlSubmit" class="button is-primary" type="submit" value="Save Configuration" />
                 </div>
                 </div>
             </div>
