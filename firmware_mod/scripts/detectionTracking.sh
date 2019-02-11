@@ -18,7 +18,6 @@
 
 STEPS=$STEP
 FILECAMERAPOS=/system/sdcard/config/cameraposition
-SLEEP_NUM=0.5
 
 backtoOrigin() {
 
@@ -89,27 +88,21 @@ if [ ${RIGHT} != 0 ] && [ ${LEFT} != 0 ]; then
     LEFT=0
 fi
 
-# Do the actual movement
-if [ ${UP}    == 1 ]; then
-    echo "Move up $STEPS"
-    /system/sdcard/bin/motor -d u -s ${STEPS} &>/dev/null
-    sleep ${SLEEP_NUM}
-fi
+# Do the actual movement in the background
+(
+    if [ ${UP} == 1 ]; then
+        motor up ${STEPS}
+    fi
 
-if [ ${DOWN}  == 1 ]; then
-    echo "Move down $STEPS"
-    /system/sdcard/bin/motor -d d -s ${STEPS} &>/dev/null
-    sleep ${SLEEP_NUM}
-fi
+    if [ ${DOWN} == 1 ]; then
+        motor down ${STEPS}
+    fi
 
-if [ ${RIGHT} == 1 ]; then
-    echo "Move right $STEPS"
-    /system/sdcard/bin/motor -d r -s ${STEPS} &>/dev/null
-    sleep ${SLEEP_NUM}
-fi
+    if [ ${RIGHT} == 1 ]; then
+        motor right ${STEPS}
+    fi
 
-if [ ${LEFT}  == 1 ]; then
-    echo "Move left $STEPS"
-    /system/sdcard/bin/motor -d l -s ${STEPS} &>/dev/null
-    sleep ${SLEEP_NUM}
-fi
+    if [ ${LEFT} == 1 ]; then
+        motor left $STEPS
+    fi
+) &>/dev/null
