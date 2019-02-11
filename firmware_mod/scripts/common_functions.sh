@@ -193,14 +193,16 @@ motor(){
     update_motor_pos $steps
     ;;
   reset_pos_count)
-    /system/sdcard/bin/motor -d v -s "$steps"
+    ##/system/sdcard/bin/motor -d v -s "$steps"
+    /system/sdcard/bin/motor.bin -d hcalibrate
+    /system/sdcard/bin/motor.bin -d vcalibrate
     update_motor_pos $steps
     ;;
   status)
     if [ "$2" = "horizontal" ]; then
-        /system/sdcard/bin/motor -d u -s 0 | grep "x:" | awk  '{print $2}'
+        /system/sdcard/bin/motor -d u -s 0 | grep "x_steps:" | awk  '{print $2}'
     else
-        /system/sdcard/bin/motor -d u -s 0 | grep "y:" | awk  '{print $2}'
+        /system/sdcard/bin/motor -d u -s 0 | grep "y_steps:" | awk  '{print $2}'
     fi
     ;;
   esac
@@ -440,7 +442,7 @@ snapshot(){
 # Update axis
 update_axis(){
   . /system/sdcard/config/osd.conf > /dev/null 2>/dev/null
-  AXIS=$(/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print "X="$2,"Y="$4}')
+  AXIS=$(/system/sdcard/bin/motor -d s | awk '{printf ("%s ",$0)}' | awk '{print "X="$10,"Y="$12}')
   if [ "$DISPLAY_AXIS" == "true" ]; then
     OSD="${OSD} ${AXIS}"
   fi

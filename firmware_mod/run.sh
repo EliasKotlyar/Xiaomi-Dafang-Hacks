@@ -185,7 +185,7 @@ yellow_led off
 blue_led on
 
 ## Load motor driver module:
-insmod /driver/sample_motor.ko
+insmod /system/sdcard/driver/sample_motor.ko
 
 ## Determine the image sensor model:
 insmod /system/sdcard/driver/sinfo.ko
