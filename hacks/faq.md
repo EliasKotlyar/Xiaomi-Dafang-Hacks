@@ -25,6 +25,15 @@ No that's not possible. It can be done, but there will be a lot of trouble in do
 
 Yes, you can flash a custom bootloader to achieve this. 
 
+## Can I use USB ethernet cards which is compatible with Linux?
+Yes, just create or copy usb_eth_driver.conf file in /system/sdcard/config.
+If this file exist as usb_eth_driver.conf the run.sh wont load any WIFI subsystem and instead try to load the usb ethernet subsystem.
+Currently it only supports the asix.ko driver
+```
+cp /system/sdcard/config/usb_eth_driver.conf.dist /system/sdcard/config/usb_eth_driver.conf
+reboot
+```
+
 [Custom Bootloader Installation](/hacks/flashinguboot.md)
 
 ## Which Features does the CFW contain?
