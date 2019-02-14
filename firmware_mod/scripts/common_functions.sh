@@ -314,8 +314,6 @@ motion_detection(){
     ;;
   off)
     /system/sdcard/bin/setconf -k m -v -1
-    rewrite_config /system/sdcard/config/motion.conf motion_sensitivity "-1"
-
     ;;
   status)
     status=$(/system/sdcard/bin/setconf -g m 2>/dev/null)
