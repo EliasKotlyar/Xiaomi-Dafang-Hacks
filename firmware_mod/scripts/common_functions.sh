@@ -53,6 +53,14 @@ setgpio() {
   echo "$2" > "/sys/class/gpio/gpio$GPIOPIN/value"
 }
 
+# Get value for a key in a config_file
+# ignore commented lines
+get_config(){
+  cfg_path=$1
+  cfg_key=$2
+  grep -v '^[[:space:]]*#' "$1"  | grep "$2" | cut -d "=" -f2
+}
+
 # Replace the old value of a config_key at the cfg_path with new_value
 # Don't rewrite commented lines
 rewrite_config(){
@@ -61,7 +69,7 @@ rewrite_config(){
   new_value=$3
 
   # Check if the value exists (without comment), if not add it to the file
-  $(grep -v '^[[:space:]]*#' $1  | grep -q $2)
+  $(grep -v '^[[:space:]]*#' "$1"  | grep -q "$2")
   ret="$?"
   if [ "$ret" == "1" ] ; then
       echo "$2=$3" >> $1
@@ -178,23 +186,23 @@ motor(){
   case "$1" in
   up)
     /system/sdcard/bin/motor -d u -s "$steps"
-    update_motor_pos $steps
+    update_motor_pos "$steps"
     ;;
   down)
     /system/sdcard/bin/motor -d d -s "$steps"
-    update_motor_pos $steps
+    update_motor_pos "$steps"
     ;;
   left)
     /system/sdcard/bin/motor -d l -s "$steps"
-    update_motor_pos $steps
+    update_motor_pos "$steps"
     ;;
   right)
     /system/sdcard/bin/motor -d r -s "$steps"
-    update_motor_pos $steps
+    update_motor_pos "$steps"
     ;;
   reset_pos_count)
     /system/sdcard/bin/motor -d v -s "$steps"
-    update_motor_pos $steps
+    update_motor_pos "$steps"
     ;;
   status)
     if [ "$2" = "horizontal" ]; then
@@ -302,10 +310,12 @@ rtsp_mjpeg_server(){
 motion_detection(){
   case "$1" in
   on)
-    /system/sdcard/bin/setconf -k m -v 4
+    /system/sdcard/bin/setconf -k m -v $(get_config /system/sdcard/config/motion.conf motion_sensitivity)
     ;;
   off)
     /system/sdcard/bin/setconf -k m -v -1
+    rewrite_config /system/sdcard/config/motion.conf motion_sensitivity "-1"
+
     ;;
   status)
     status=$(/system/sdcard/bin/setconf -g m 2>/dev/null)
@@ -448,8 +458,8 @@ update_axis(){
 
 # Set timezone from the timezone config file to system timezone
 set_timezone(){
-  timezone_name=`cat /system/sdcard/config/timezone.conf`
-  timezone=`/system/sdcard/bin/busybox awk -F '\t' -v tzn="$timezone_name" '($1==tzn) {print $2}' /system/sdcard/www/timezones.tsv`
+  timezone_name=$(cat /system/sdcard/config/timezone.conf)
+  timezone=$(/system/sdcard/bin/busybox awk -F '\t' -v tzn="$timezone_name" '($1==tzn) {print $2}' /system/sdcard/www/timezones.tsv)
   if [ "$(cat /etc/TZ)" != "$timezone" ]; then
     echo "$timezone" > /etc/TZ
   fi
