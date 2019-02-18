@@ -6,9 +6,13 @@ if [ ! -f /system/sdcard/config/motion.conf ]; then
 fi
 
 if [ -f /system/sdcard/config/motion.conf ] ; then
-    source /system/sdcard/config/motion.conf 2>/dev/null
+    . /system/sdcard/config/motion.conf 2>/dev/null
     /system/sdcard/bin/setconf -k r -v ${region_of_interest} 2>/dev/null
-    /system/sdcard/bin/setconf -k m -v ${motion_sensitivity} 2>/dev/null
+    if [ "$motion_detection" = false ]; then
+      /system/sdcard/bin/setconf -k m -v -1 2>/dev/null
+    else
+      /system/sdcard/bin/setconf -k m -v ${motion_sensitivity} 2>/dev/null
+    fi
     /system/sdcard/bin/setconf -k z -v ${motion_indicator_color} 2>/dev/null
     /system/sdcard/bin/setconf -k t -v ${motion_tracking} 2>/dev/null
 fi;

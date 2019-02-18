@@ -210,7 +210,7 @@ if [ -n "$F_cmd" ]; then
         echo "$timezone_name" > /system/sdcard/config/timezone.conf
         # Set system timezone from timezone name
         set_timezone
-      fi      
+      fi
 
       hst=$(printf '%b' "${F_hostname//%/\\x}")
       if [ "$(cat /system/sdcard/config/hostname.conf)" != "$hst" ]; then
@@ -314,19 +314,11 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     motion_detection_on)
-        motion_sensitivity=4
-        if [ -f /system/sdcard/config/motion.conf ]; then
-            source /system/sdcard/config/motion.conf
-        fi
-        if [ $motion_sensitivity -eq -1 ]; then
-             motion_sensitivity=4
-        fi
-        /system/sdcard/bin/setconf -k m -v $motion_sensitivity
-        rewrite_config /system/sdcard/config/motion.conf motion_sensitivity $motion_sensitivity
+      motion_detection on
     ;;
 
     motion_detection_off)
-      /system/sdcard/bin/setconf -k m -v -1
+      motion_detection off
     ;;
 
     set_video_size)

@@ -311,11 +311,11 @@ motion_detection(){
   case "$1" in
   on)
     /system/sdcard/bin/setconf -k m -v $(get_config /system/sdcard/config/motion.conf motion_sensitivity)
+    rewrite_config /system/sdcard/config/motion.conf motion_detection "on"
     ;;
   off)
     /system/sdcard/bin/setconf -k m -v -1
-    rewrite_config /system/sdcard/config/motion.conf motion_sensitivity "-1"
-
+    rewrite_config /system/sdcard/config/motion.conf motion_detection "off"
     ;;
   status)
     status=$(/system/sdcard/bin/setconf -g m 2>/dev/null)

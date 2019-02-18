@@ -1,4 +1,7 @@
 #!/bin/sh
+
+. /system/sdcard/scripts/common_functions.sh
+
 echo "Content-type: application/json"
 echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
@@ -49,6 +52,7 @@ fi
 
 echo "{\"motion_indicator_color\": ${motion_indicator_color},
 \"motion_sensitivity\": ${motion_sensitivity},
+\"motion_detection\": ${motion_detection status},
 \"region_of_interest\": [${region_of_interest}],
 \"motion_tracking\": ${motion_tracking},
 \"motion_timeout\": ${motion_timeout},
