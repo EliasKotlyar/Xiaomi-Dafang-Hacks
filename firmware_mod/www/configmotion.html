@@ -27,11 +27,10 @@
         </div>
 
         <div class="field">
-            <label class="label">Toggle motion detection</label>
             <div class="control">
-                <div class="checkbox">
+                <label  class="checkbox">
                   <input type="checkbox" name="motion_detection" id="motion_detection"> Enable motion detection
-                </div>
+                </label>
             </div>
         </div>
 
@@ -252,8 +251,11 @@
             if ($('#motion_tracking').prop('checked')) {
                 motion_tracking = 'true';
             }
+            var motion_detection = '';
             if ($('#motion_detection').prop('checked')) {
                 motion_detection = 'true';
+            } else {
+                motion_detection = 'false';
             }
             var formData = {
                 'x0': $('input[name=x0]').val(),

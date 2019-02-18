@@ -375,6 +375,14 @@ if [ -n "$F_cmd" ]; then
           /system/sdcard/bin/setconf -k t -v on
         fi
 
+        if [ "${F_motion_detection}" == "true" ]; then
+          echo "enabled motion detection"
+          motion_detection on
+        else
+          echo "disabled motion detection"
+          motion_detection off
+        fi
+
         /system/sdcard/bin/setconf -k r -v ${F_x0},${F_y0},${F_x1},${F_y1}
         /system/sdcard/bin/setconf -k m -v ${F_motion_sensitivity}
         /system/sdcard/bin/setconf -k z -v ${F_motion_indicator_color}
