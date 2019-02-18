@@ -4,18 +4,49 @@
 . /system/sdcard/config/motion.conf
 . /system/sdcard/scripts/common_functions.sh
 
-function debug_msg () {
-	if [ "$debug_msg_enable" == true ]; then
+debug_msg () {
+	if [ "$debug_msg_enable" = true ]; then
 		echo "DEBUG: $*" 1>&2
+	fi
+}
+
+record_video () {
+	# We only want one video stream at a time. Try to grab an
+	# exclusive flock on file descriptor 5. Bail out if another
+	# process already has it. Touch the flock to update it's mod
+	# time as a signal to the background process to keep recording
+	# when motion is repeatedly observed.
+	touch /run/recording_video.flock
+	exec 5<> /run/recording_video.flock
+	if /system/sdcard/bin/busybox flock -n -x 5; then
+		# Got the lock
+		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
+
+		# Use avconv to stitch multiple JPEGs into 1fps video.
+		# I couldn't get it working another way.
+		# /dev/videoX inputs fail.
+		# Localhost rtsp takes very long (10+ seconds) to start streaming and gets flaky when when memory or cpu are pegged.
+		# This is a clungy method, but works well even at high res, fps, cpu, and memory load!
+		( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/recording_video.flock)" + "$video_duration")" ]; do
+				/system/sdcard/bin/getimage
+				sleep 1
+			done ) | /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f mp4 -y "$video_tempfile"
+		debug_msg "Finished recording"
 	fi
 }
 
 # First, take a snapshot and record date ASAP
 snapshot_tempfile=$(mktemp /tmp/snapshot-XXXXXXX)
+video_tempfile=$(mktemp /tmp/video-XXXXXXX)
+
 snapshot_pattern="${save_file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
 snapshot_filename=$(date "$snapshot_pattern")
 /system/sdcard/bin/getimage > "$snapshot_tempfile"
 debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
+
+if [ "$save_video" = true  ] || [ "$telegram_alert_type" = "video" ] ; then
+	record_video
+fi
 
 # Turn on the amber led
 if [ "$motion_trigger_led" = true ] ; then
@@ -40,6 +71,24 @@ if [ "$save_snapshot" = true ] ; then
 	fi
 
 	cp "$snapshot_tempfile" "$save_dir/${snapshot_filename}.jpg"
+	) &
+fi
+
+# Save the video
+if [ "$save_video" = true ] ; then
+	(
+	debug_msg "Save video to $save_video_dir/${snapshot_filename}.mp4"
+
+	if [ ! -d "$save_video_dir" ]; then
+		mkdir -p "$save_video_dir"
+	fi
+
+	# Limit the number of videos
+	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_videos" ]; then
+		rm -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
+	fi
+
+	cp "$video_tempfile" "$save_video_dir/${snapshot_filename}.mp4"
 	) &
 fi
 
@@ -135,10 +184,22 @@ if [ "$send_telegram" = true ]; then
 	if [ "$telegram_alert_type" = "text" ] ; then
 		debug_msg "Send telegram text"
 		/system/sdcard/bin/telegram m "Motion detected"
-	else
+	elif [ "$telegram_alert_type" = "snapshot" ] ; then
 		debug_msg "Send telegram snapshot"
 		/system/sdcard/bin/telegram p "$snapshot_tempfile"
+	elif [ "$telegram_alert_type" = "video" ] ; then
+		debug_msg "Send telegram video"
+		/system/sdcard/bin/telegram v "$video_tempfile"
 	fi
+	) &
+fi
+
+# Send a matrix message
+if [ "$send_matrix" = true ]; then
+	(
+	include /system/sdcard/config/matrix.conf
+	debug_msg "Send matrix message"
+	/system/sdcard/bin/matrix m "Motion detected"
 	) &
 fi
 
@@ -157,7 +218,8 @@ for jobpid in $(jobs -p); do
 	debug_msg " Job $jobpid ended"
 done
 
-debug_msg "Cleanup snapshot_tempfile"
+debug_msg "Cleanup tempfiles"
 rm "$snapshot_tempfile"
+rm "$video_tempfile"
 
 debug_msg "DONE"
