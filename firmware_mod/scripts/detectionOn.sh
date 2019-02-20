@@ -184,8 +184,8 @@ if [ "$send_telegram" = true ]; then
 	if [ "$telegram_alert_type" = "text" ] ; then
 		debug_msg "Send telegram text"
 		/system/sdcard/bin/telegram m "Motion detected"
-	elif [ "$telegram_alert_type" = "snapshot" ] ; then
-		debug_msg "Send telegram snapshot"
+	elif [ "$telegram_alert_type" = "image" ] ; then
+		debug_msg "Send telegram image"
 		/system/sdcard/bin/telegram p "$snapshot_tempfile"
 	elif [ "$telegram_alert_type" = "video" ] ; then
 		debug_msg "Send telegram video"

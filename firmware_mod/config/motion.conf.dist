@@ -21,7 +21,7 @@ publish_mqtt_message=false
 publish_mqtt_snapshot=false
 send_email=false
 send_telegram=false
-telegram_alert_type=video
+telegram_alert_type=image
 send_matrix=false
 
 # Snapshots
