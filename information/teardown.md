@@ -12,3 +12,11 @@
 ![motor](/information/teardown/motor1.jpg)
 ![realtek](/information/teardown/realtek.jpg)
 ![wifi](/information/teardown/wifi.jpg)
+
+Old tilt end-stop vs new (missing) end-stop.
+
+![Old tilt end-stop vs new (missing) end-stop](/information/teardown/tilt-soft-endstop.png)
+
+Old pan end-stop vs new (missing) end-stop.
+
+![Old pan end-stop vs new (missing) end-stop](/information/teardown/pan-soft-endstop.png)

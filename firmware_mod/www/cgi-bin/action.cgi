@@ -44,6 +44,16 @@ if [ -n "$F_cmd" ]; then
           cat /system/sdcard/log/update.log
           ;;
 
+        6)
+          echo "Process List <br/>"
+          ps
+          ;;
+
+        7)
+          echo "Mounts <br/>"
+          mount
+          ;;
+
       esac
       echo "</pre>"
       return
@@ -194,16 +204,14 @@ if [ -n "$F_cmd" ]; then
         fi
       fi
 
-      tz=$(printf '%b' "${F_tz//%/\\x}")
-      if [ "$(cat /etc/TZ)" != "$tz" ]; then
-        echo "<p>Setting TZ to '$tz'...</p>"
-        echo "$tz" > /etc/TZ
-        echo "<p>Syncing time...</p>"
-        if /system/sdcard/bin/busybox ntpd -q -n -p "$ntp_srv" > /dev/null 2>&1; then
-          echo "<p>Success</p>"
-        else echo "<p>Failed</p>"
-        fi
+      timezone_name=$(printf '%b' "${F_timeZone//%/\\x}")
+      if [ "$(cat /system/sdcard/config/timezone.conf)" != "$timezone_name" ]; then
+        echo "<p>Setting time zone to '$timezone_name'...</p>"
+        echo "$timezone_name" > /system/sdcard/config/timezone.conf
+        # Set system timezone from timezone name
+        set_timezone
       fi
+
       hst=$(printf '%b' "${F_hostname//%/\\x}")
       if [ "$(cat /system/sdcard/config/hostname.conf)" != "$hst" ]; then
         echo "<p>Setting hostname to '$hst'...</p>"
@@ -306,19 +314,11 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     motion_detection_on)
-        motion_sensitivity=4
-        if [ -f /system/sdcard/config/motion.conf ]; then
-            source /system/sdcard/config/motion.conf
-        fi
-        if [ $motion_sensitivity -eq -1 ]; then
-             motion_sensitivity=4
-        fi
-        /system/sdcard/bin/setconf -k m -v $motion_sensitivity
-        rewrite_config /system/sdcard/config/motion.conf motion_sensitivity $motion_sensitivity
+      motion_detection on
     ;;
 
     motion_detection_off)
-      /system/sdcard/bin/setconf -k m -v -1
+      motion_detection off
     ;;
 
     set_video_size)
@@ -373,6 +373,14 @@ if [ -n "$F_cmd" ]; then
         else
           rewrite_config /system/sdcard/config/motion.conf motion_tracking on
           /system/sdcard/bin/setconf -k t -v on
+        fi
+
+        if [ "${F_motion_detection}" == "true" ]; then
+          echo "enabled motion detection"
+          motion_detection on
+        else
+          echo "disabled motion detection"
+          motion_detection off
         fi
 
         /system/sdcard/bin/setconf -k r -v ${F_x0},${F_y0},${F_x1},${F_y1}

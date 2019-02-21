@@ -21,13 +21,21 @@ Yes, you can. However there is no need to revert it back. If your SD-Card does n
 ### Is it possible to run the CFW without a microsd?
 No that's not possible. It can be done, but there will be a lot of trouble in doing this.
 
-## Can i have FullHD?
+### Can I have FullHD resolution?
 
-Yes, you can flash a custom bootloader to achieve this. 
+Yes, but you must flash a custom bootloader to achieve this. 
+
+### Can I use USB ethernet cards?
+Yes, just create a usb_eth_driver.conf file in /system/sdcard/config.
+```
+cp /system/sdcard/config/usb_eth_driver.conf.dist /system/sdcard/config/usb_eth_driver.conf
+reboot
+```
+If this file exists the run.sh won't start the WIFI driver but instead load the usb ethernet driver. Currently only the asix.ko driver is supported but others can be built.
 
 [Custom Bootloader Installation](/hacks/flashinguboot.md)
 
-## Which Features does the CFW contain?
+### Which Features does the CFW contain?
 - Full working RTSP with H264/MJPEG. Based on https://github.com/mpromonet/v4l2rtspserver
 - SSH-Server(dropbear) with username: root password: ismart12
 - FTP-Server(bftpd) with username: root password: ismart12
@@ -49,6 +57,7 @@ Recording Audio:
 ```
 - Curl
 - MQTT
+- Telegram
 - Anything other that you can compile yourself. There is a toolchain available.
 
 What if my scripts in config/userscripts/motiondetection are not executed or mqtt/telegram messages/emails are not sent on motion?

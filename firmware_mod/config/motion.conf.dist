@@ -2,25 +2,46 @@
 # edit this file and move it to /system/sdcard/config/motion.conf #
 ############################################################
 
+# Enable verbose debug messages to stderr
+debug_msg_enable=false
+
 # Configure the motion core parameters:
 
 region_of_interest=0,0,1280,720
-motion_sensitivity=4
+motion_sensitivity=2
 motion_indicator_color=2
 motion_timeout=-1
+motion_detection=on
 motion_tracking=off
 
 # Configure how to deal with motion events:
 
 motion_trigger_led=true
-max_snapshots=20
-# Notify about motion
 publish_mqtt_message=false
-# Send the actual image via mqtt
 publish_mqtt_snapshot=false
-# Save the image locally
-save_snapshot=false
-sendemail=false
+send_email=false
 send_telegram=false
-save_dir=/system/sdcard/motion/stills
+telegram_alert_type=image
+send_matrix=false
+
+# Snapshots
+save_snapshot=false
+save_dir=/media/motion/stills
 save_file_date_pattern="+%d-%m-%Y_%H.%M.%S"
+max_snapshots=20
+
+# Videos
+save_video=false
+save_video_dir=/media/motion/videos
+video_duration=10
+max_videos=10
+
+# Configure FTP snapshots and videos
+ftp_snapshot=false
+ftp_video=false
+ftp_host="ftp.myserver.net"
+ftp_port=21
+ftp_username="user1"
+ftp_password="password2"
+ftp_stills_dir="motion/stills"
+ftp_videos_dir="motion/videos"

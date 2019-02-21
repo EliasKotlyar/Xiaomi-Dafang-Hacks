@@ -10,7 +10,7 @@ MODEL="Dafang"
 VER="Dafang Hacks"
 
 # Motion sensor
-/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/binary_sensor/$DEVICE_NAME/motion/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion sensor\", \"unique_id\": \"$MAC_SIMPLE-motion-sensor\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:run\", \"state_topic\": \"$TOPIC/motion\", \"device_class\": \"motion\"}"
+/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/binary_sensor/$DEVICE_NAME/motion/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion sensor\", \"unique_id\": \"$MAC_SIMPLE-motion-sensor\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"state_topic\": \"$TOPIC/motion\", \"device_class\": \"motion\"}"
 
 # Motion detection on/off switch
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_detection/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion detection\", \"unique_id\": \"$MAC_SIMPLE-motion-detection\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:run\", \"state_topic\": \"$TOPIC/motion/detection\", \"command_topic\": \"$TOPIC/motion/detection/set\"}"
@@ -36,7 +36,7 @@ VER="Dafang Hacks"
 /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/ir_cut/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME ir filter\", \"unique_id\": \"$MAC_SIMPLE-ir-filter\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:image-filter-black-white\", \"state_topic\": \"$TOPIC/ir_cut\", \"command_topic\": \"$TOPIC/ir_cut/set\"}"
 
 # Light Sensor
-if [ ! $SENDLDR == "false" ]; then
+if [ "$SENDLDR" != "false" ]; then
   /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$AUTODISCOVERY_PREFIX/sensor/$DEVICE_NAME/ldr/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME light sensor\", \"unique_id\": \"$MAC_SIMPLE-light-sensor\", \"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$MANUFACTURER $MODEL\", \"sw_version\": \"$VER\"}, \"icon\": \"mdi:brightness-5\", \"unit_of_measurement\": \"%\", \"state_topic\": \"$TOPIC/brightness\"}"
 fi
 

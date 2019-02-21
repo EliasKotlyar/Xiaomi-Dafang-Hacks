@@ -1,8 +1,11 @@
 #!/bin/sh
+
 echo "Content-type: application/json"
 echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
 echo
+
+. /system/sdcard/scripts/common_functions.sh
 
 motion_indicator_color=`/system/sdcard/bin/setconf -g z 2>/dev/null`
 if [ "${motion_indicator_color}X" == "X" ]
@@ -47,8 +50,16 @@ then
     h="720"
 fi
 
+if [ "$(motion_detection status)" == "ON" ]
+then
+  motion_detection="true"
+else
+  motion_detection="false"
+fi
+
 echo "{\"motion_indicator_color\": ${motion_indicator_color},
 \"motion_sensitivity\": ${motion_sensitivity},
+\"motion_detection\": ${motion_detection},
 \"region_of_interest\": [${region_of_interest}],
 \"motion_tracking\": ${motion_tracking},
 \"motion_timeout\": ${motion_timeout},

@@ -1,0 +1,18 @@
+#!/bin/sh
+
+what="$1"
+shift
+data="$@"
+CURL="/system/sdcard/bin/curl"
+
+. /system/sdcard/config/matrix.conf
+
+sendMessage() {
+  text="$(echo "${@}" | sed 's:\\n:\n:g')"
+  echo "Sending message: $text"
+
+  $CURL -XPOST -d '{"msgtype":"m.text", "body":"$text"}' "https://$host:$port/_matrix/client/r0/rooms/$room_id/send/m.room.message?access_token=$access_token"
+}
+
+[ "$what" = "m" ] && sendMessage $data
+[ -z "$what" ] && echo -e "$0 <m|f|p> <data>\n m: message\n f: file\n p: picture"

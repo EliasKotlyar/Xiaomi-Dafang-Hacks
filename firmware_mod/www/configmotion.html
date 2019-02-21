@@ -27,11 +27,18 @@
         </div>
 
         <div class="field">
-            <label class="label">Set sensitivity or deactivate</label>
+            <div class="control">
+                <label  class="checkbox">
+                  <input type="checkbox" name="motion_detection" id="motion_detection"> Enable motion detection
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Set sensitivity</label>
             <div class="control">
                 <div class="select">
                     <select name="motion_sensitivity" id="motion_sensitivity">
-                        <option value="-1">Deactivated</option>
                         <option value="0">Very Low</option>
                         <option value="1">Low</option>
                         <option value="2">Moderate</option>
@@ -230,6 +237,7 @@
             $('#restart_server').val(0);
             $('#motion_indicator_color').val(motionInfo.motion_indicator_color).change();
             $('#motion_sensitivity').val(motionInfo.motion_sensitivity).change();
+            $('#motion_detection').prop('checked', motionInfo.motion_detection);
             $('#motion_tracking').prop('checked', motionInfo.motion_tracking);
             $('#motion_timeout').val(motionInfo.motion_timeout).change();
             setTracking($('#motion_tracking')[0], true);
@@ -243,6 +251,12 @@
             if ($('#motion_tracking').prop('checked')) {
                 motion_tracking = 'true';
             }
+            var motion_detection = '';
+            if ($('#motion_detection').prop('checked')) {
+                motion_detection = 'true';
+            } else {
+                motion_detection = 'false';
+            }
             var formData = {
                 'x0': $('input[name=x0]').val(),
                 'y0': $('input[name=y0]').val(),
@@ -252,6 +266,7 @@
                 'motion_sensitivity': $('select[name=motion_sensitivity]').val(),
                 'motion_indicator_color': $('select[name=motion_indicator_color]').val(),
                 'motion_tracking': motion_tracking,
+                'motion_detection': motion_detection,
                 'motion_timeout': $('input[name=motion_timeout]').val()
             };
             $.ajax({
