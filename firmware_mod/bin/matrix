@@ -11,7 +11,7 @@ sendMessage() {
   text="$(echo "${@}" | sed 's:\\n:\n:g')"
   echo "Sending message: $text"
 
-  $CURL -XPOST -d '{"msgtype":"m.text", "body":"$text"}' "https://$host:$port/_matrix/client/r0/rooms/$room_id/send/m.room.message?access_token=$access_token"
+  $CURL -XPOST -d '{"msgtype":"m.text", "body":"'$text'"}' "https://$host:$port/_matrix/client/r0/rooms/$room_id/send/m.room.message?access_token=$access_token"
 }
 
 [ "$what" = "m" ] && sendMessage $data
