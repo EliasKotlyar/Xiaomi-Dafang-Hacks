@@ -39,6 +39,7 @@ max_videos=10
 # Configure FTP snapshots and videos
 ftp_snapshot=false
 ftp_video=false
+ftp_video_duration=10
 ftp_host="ftp.myserver.net"
 ftp_port=21
 ftp_username="user1"
