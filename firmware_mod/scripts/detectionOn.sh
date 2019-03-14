@@ -70,7 +70,8 @@ if [ "$save_snapshot" = true ] ; then
 		rm -f "$save_dir/$(ls -ltr "$save_dir" | awk 'NR==2{print $9}')"
 	fi
 
-	cp "$snapshot_tempfile" "$save_dir/${snapshot_filename}.jpg"
+	chmod "$save_snapshot_attr" "$snapshot_tempfile"
+	cp -p "$snapshot_tempfile" "$save_dir/${snapshot_filename}.jpg"
 	) &
 fi
 
@@ -88,7 +89,8 @@ if [ "$save_video" = true ] ; then
 		rm -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
 	fi
 
-	cp "$video_tempfile" "$save_video_dir/${snapshot_filename}.mp4"
+	chmod "$save_video_attr" "$video_tempfile"
+	cp -p "$video_tempfile" "$save_video_dir/${snapshot_filename}.mp4"
 	) &
 fi
 
