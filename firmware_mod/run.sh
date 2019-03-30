@@ -140,7 +140,7 @@ if [ -f "$CONFIGPATH/staticip.conf" ]; then
   # Configure staticip/netmask from config/staticip.conf
   staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
   ifconfig "$network_interface_name" $staticip_and_netmask
-  ifconifg "$network_interface_name" up
+  ifconfig "$network_interface_name" up
   # Configure default gateway
   if [ -f "$CONFIGPATH/defaultgw.conf" ]; then
     defaultgw=$(cat "$CONFIGPATH/defaultgw.conf" | grep -v "^$" | grep -v "^#")
@@ -150,7 +150,7 @@ if [ -f "$CONFIGPATH/staticip.conf" ]; then
   echo "Configured $network_interface_name with static address $staticip_and_netmask" >> $LOGPATH
 else
   # Configure with DHCP client
-  ifconifg "$network_interface_name" up
+  ifconfig "$network_interface_name" up
   udhcpc_status=$(udhcpc -i "$network_interface_name" -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
   echo "udhcpc: $udhcpc_status" >> $LOGPATH
 fi
