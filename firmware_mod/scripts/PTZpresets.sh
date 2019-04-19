@@ -100,5 +100,4 @@ esac
 # Update OSD_AXIS
 update_axis
 logger "Move end motor coordinates:$AXIS"
-/system/sdcard/bin/setconf -k o -v "$OSD"
 exit_shell 0

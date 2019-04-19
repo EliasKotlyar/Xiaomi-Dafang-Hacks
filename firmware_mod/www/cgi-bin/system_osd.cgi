@@ -53,7 +53,7 @@ cat << EOF
                 <div class="field-body">
                     <div class="field is-grouped">
                         <p class="control">
-                            <input type="checkbox" name="OSDenable" value="enabled" $(if [ -f /system/sdcard/config/osd.conf ]; then echo checked; fi) />
+                            <input type="checkbox" name="OSDenable" value="enabled" $(if [ "$(grep ENABLE_OSD /system/sdcard/config/osd.conf | sed s/ENABLE_OSD=//)" == "true" ]; then echo checked; fi) />
                         </p>
                         <p class="control">
                             <input class="input" id="osdtext" name="osdtext" type="text" size="25" value="$(source /system/sdcard/config/osd.conf && echo "$OSD")"/>
