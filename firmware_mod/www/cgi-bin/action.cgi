@@ -240,23 +240,24 @@ if [ -n "$F_cmd" ]; then
       fontName=$(echo "$fontName" | sed -e "s/\\+/ /g")
 
       if [ ! -z "$axis_enable" ];then
-        update_axis
-        osdtext="${osdtext} ${AXIS}"
         echo "DISPLAY_AXIS=true" > /system/sdcard/config/osd.conf
-        echo DISPLAY_AXIS enable
+        echo "DISPLAY_AXIS enable<br />"
       else
         echo "DISPLAY_AXIS=false" > /system/sdcard/config/osd.conf
-        echo DISPLAY_AXIS disable
+        echo "DISPLAY_AXIS disable<br />"
       fi
+      
+      echo "OSD=\"${osdtext}\"" | sed -r 's/[ ]X=.*"/"/' >> /system/sdcard/config/osd.conf
+      echo "OSD set<br />"
 
       if [ ! -z "$enabled" ]; then
-        /system/sdcard/bin/setconf -k o -v "$osdtext"
-        echo "OSD=\"${osdtext}\"" | sed -r 's/[ ]X=.*"/"/' >> /system/sdcard/config/osd.conf
-        echo "OSD set"
+        echo "ENABLE_OSD=true" >> /system/sdcard/config/osd.conf
+        update_axis
+        echo "OSD enabled"
       else
-        echo "OSD removed"
+        echo "ENABLE_OSD=false" >> /system/sdcard/config/osd.conf
+        echo "OSD disabled"
         /system/sdcard/bin/setconf -k o -v ""
-        echo "OSD=\"\" " >> /system/sdcard/config/osd.conf
       fi
 
       echo "COLOR=${F_color}" >> /system/sdcard/config/osd.conf
@@ -489,13 +490,13 @@ if [ -n "$F_cmd" ]; then
        rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
        rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "-1"
 
-       echo "Audio format $audioinFormat <BR>"
-       echo "In audio bitrate $audioinBR <BR>"
-       echo "Out audio bitrate $audiooutBR <BR>"
-       echo "Filter $F_audioinFilter <BR>"
-       echo "High Pass Filter $F_HFEnabled <BR>"
-       echo "AEC Filter $F_AECEnabled <BR>"
-       echo "Volume $F_audioinVol <BR>"
+       echo "Audio format $audioinFormat <br/>"
+       echo "In audio bitrate $audioinBR <br/>"
+       echo "Out audio bitrate $audiooutBR <br/>"
+       echo "Filter $F_audioinFilter <br/>"
+       echo "High Pass Filter $F_HFEnabled <br/>"
+       echo "AEC Filter $F_AECEnabled <br/>"
+       echo "Volume $F_audioinVol <br/>"
        /system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
        /system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
        /system/sdcard/bin/setconf -k a -v "$F_AECEnabled" 2>/dev/null
