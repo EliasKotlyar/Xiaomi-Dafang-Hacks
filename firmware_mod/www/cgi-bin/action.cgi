@@ -321,6 +321,10 @@ if [ -n "$F_cmd" ]; then
     motion_detection_off)
       motion_detection off
     ;;
+    
+    snapshot)
+      snapshot
+    ;;
 
     set_video_size)
       video_size=$(echo "${F_video_size}"| sed -e 's/+/ /g')
