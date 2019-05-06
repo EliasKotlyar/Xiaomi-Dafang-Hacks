@@ -74,18 +74,17 @@ echo 39 > /sys/class/gpio/export
 echo out > /sys/class/gpio/gpio39/direction
 echo 0 > /sys/class/gpio/gpio39/active_low
 echo 0 > /sys/class/gpio/gpio39/value
+# Check if we're on a Wyzecam and properly enable the SD card interface
+if [ -f /driver/rtl8189ftv.ko ]; then
+    echo 43 >/sys/class/gpio/export
+    echo out >/sys/class/gpio/gpio43/direction
+    echo 0 >/sys/class/gpio/gpio43/value
+fi
 i="0"
 while true
 do
     echo "Trying to mount SDCard..."
-	
-	# Check if we're on a Wyzecam and properly mount SD card if so
-	if [ -f /driver/rtl8189ftv.ko ]; then
-		/system/bin/singleBoadTest
-	fi
-	
     if [ -e /dev/mmcblk0p1 ]; then
-
         mkdir /system/sdcard
         mount /dev/mmcblk0p1 /system/sdcard
         sleep 1
