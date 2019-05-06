@@ -95,9 +95,9 @@ do
             echo "Starting run.sh from sdcard"
             /system/sdcard/run.sh &
             exit 0
-        else
-            echo "Couldnt find run.sh, starting normal..."
         fi
+	echo "Couldnt find run.sh, starting normal..."
+	umount /system/sdcard
         break
     elif [ $i -gt 5 ]; then
         echo "Couldnt mount, starting normal..."
