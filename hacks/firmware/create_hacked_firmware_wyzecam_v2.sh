@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-FIRMWARE_ROOT=$(pwd)/../../firmware_original/wyzecam_v2/4.9.1.60/
+FIRMWARE_ROOT=$(pwd)/../../firmware_original/wyzecam_v2/4.9.4.28/
 TMPDIR=./rootfs
 OUTFILE=./rootfs.bin
 rm -r $TMPDIR $OUTFILE
