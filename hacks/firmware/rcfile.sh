@@ -69,7 +69,7 @@ if [ ! -f /system/.system ]; then
 fi
 
 
-# Start Pin:
+# Turn on blue LED
 echo 39 > /sys/class/gpio/export
 echo out > /sys/class/gpio/gpio39/direction
 echo 0 > /sys/class/gpio/gpio39/active_low
@@ -107,6 +107,7 @@ do
     sleep 1
     let i=i+1
 done
+# Turn off blue LED
 echo 1 > /sys/class/gpio/gpio39/value
 echo 39 > /sys/class/gpio/unexport
 
