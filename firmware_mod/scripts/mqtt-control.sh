@@ -6,8 +6,11 @@
 killall mosquitto_sub 2> /dev/null
 killall mosquitto_sub.bin 2> /dev/null
 
-/system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/# ${MOSQUITTOOPTS} | while read -r line ; do
+/system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/# -t "${LOCATION}/set" ${MOSQUITTOOPTS} | while read -r line ; do
   case $line in
+    "${LOCATION}/set announce")
+      /system/sdcard/scripts/mqtt-autodiscovery.sh
+      ;;
     "${TOPIC}/set help")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/help ${MOSQUITTOOPTS} -m "possible commands: configured topic + Yellow_LED/set on/off, configured topic + Blue_LED/set on/off, configured topic + set with the following commands: status, $(grep \)$ /system/sdcard/www/cgi-bin/action.cgi | grep -v '[=*]' | sed -e "s/ //g" | grep -v -E '(osd|setldr|settz|showlog)' | sed -e "s/)//g")"
     ;;
