@@ -10,7 +10,7 @@ if [ "$motion_trigger_led" = true ] ; then
 fi
 
 # Save a snapshot
-if [ "$save_snapshot" = true && "$opt" != 1] ; then
+if [[ "$save_snapshot" = true && "$opt" != 1 ]] ; then
 	save_dir=/system/sdcard/motion/stills
 	filename=$(date +%d-%m-%Y_%H.%M.%S).jpg
 	if [ ! -d "$save_dir" ]; then
