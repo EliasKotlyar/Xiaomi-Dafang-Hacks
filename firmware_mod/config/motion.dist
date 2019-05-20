@@ -16,3 +16,10 @@ motion_trigger_led=true
 save_snapshot=false
 publish_mqtt_message=false
 sendemail=false
+
+#configure snapshot quality/optimization
+opt=1           #set optimization on on/off
+scl=0          #set scale on/off
+sclv="1/2"      #set scale eg 1/4 is 25% of file resolution
+cln=1			#set cleanup on/off 
+clnd=2			#set cleanup after N days
