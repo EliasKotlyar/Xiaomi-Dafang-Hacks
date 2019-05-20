@@ -19,6 +19,17 @@ if [ "$save_snapshot" = true ] ; then
 	/system/sdcard/bin/getimage > $save_dir/$filename &
 fi
 
+#optimize image
+if [ "$opt" -eq 1 ]; then o="-optimize"; else o=""; fi
+if [ "$scl" -eq 1 ]; then s="-scale $sclv"; else s=""; fi
+if [[ "$opt" -eq 1 || "$scl" -eq 1 ]]; then
+/system/sdcard/bin/jpegtran ${s} ${o} -outfile $save_dir/$filename $save_dir/$filename
+rm "$save_dir/$filename"
+if [ "$cln" -eq 1 ]; then
+/system/sdcard/bin/busybox find $save_dir/ -type f -mtime $clnd | xargs rm -f
+fi
+fi
+
 # Publish a mqtt message
 if [ "$publish_mqtt_message" = true ] ; then
 	. /system/sdcard/config/mqtt.conf
