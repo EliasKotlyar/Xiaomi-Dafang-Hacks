@@ -140,10 +140,10 @@ you probably want to turn off motion detection when you or your family is home.
 - id: '13372'
   alias: 'Start motion detection when not at home'
   trigger:
-      platform: zone
-      event: leave
-      zone: zone.home
-      entity_id: device_tracker.your_device
+    platform: zone
+    event: leave
+    zone: zone.home
+    entity_id: device_tracker.your_device
   action:
     service: switch.turn_on
     data:
@@ -152,10 +152,10 @@ you probably want to turn off motion detection when you or your family is home.
 - id: '13373'
   alias: 'Stop motion detection when at home'
   trigger:
-      platform: zone
-      event: enter
-      zone: zone.home
-      entity_id: device_tracker.your_device
+    platform: zone
+    event: enter
+    zone: zone.home
+    entity_id: device_tracker.your_device
   action:
     service: switch.turn_off
     data:
