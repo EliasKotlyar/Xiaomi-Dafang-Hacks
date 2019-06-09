@@ -29,12 +29,12 @@
 It should look like this:
 ```
 E:/
-├── Media
 ├── autoupdate.sh
 ├── bin
 ├── config
 ├── controlscripts
 ├── driver
+├── media
 ├── run.sh
 ├── scripts
 ├── uEnv.bootfromnand.txt
