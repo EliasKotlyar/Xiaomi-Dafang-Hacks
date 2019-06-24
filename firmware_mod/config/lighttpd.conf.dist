@@ -32,7 +32,6 @@ cgi.assign = ( ".cgi" => "/bin/sh" )
 $SERVER["socket"] == ":443" {
   ssl.engine = "enable"
   ssl.pemfile = "/system/sdcard/config/lighttpd.pem"
-  ssl.ca-file = "/system/sdcard/config/fullchain.crt"
 }
 
 
