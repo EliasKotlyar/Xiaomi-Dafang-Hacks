@@ -43,6 +43,12 @@ video_tempfile=$(mktemp /tmp/video-XXXXXXX)
 filename_pattern="${file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
 filename=$(date "$filename_pattern")
 
+# Turn on the amber led
+if [ "$motion_trigger_led" = true ] ; then
+	debug_msg "Trigger LED"
+	yellow_led on
+fi
+
 # First, take a snapshot (always)
 /system/sdcard/bin/getimage > "$snapshot_tempfile"
 debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
@@ -50,12 +56,6 @@ debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 # Then, record video (if necessary)
 if [ "$save_video" = true -o "$ftp_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" ] ; then
 	record_video
-fi
-
-# Turn on the amber led
-if [ "$motion_trigger_led" = true ] ; then
-	debug_msg "Trigger LED"
-	yellow_led on
 fi
 
 # Next, start background tasks for all configured notifications
