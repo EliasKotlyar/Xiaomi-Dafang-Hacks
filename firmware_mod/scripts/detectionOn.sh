@@ -35,16 +35,20 @@ record_video () {
 	fi
 }
 
-# First, take a snapshot and record date ASAP
+# Prepare temp files
 snapshot_tempfile=$(mktemp /tmp/snapshot-XXXXXXX)
 video_tempfile=$(mktemp /tmp/video-XXXXXXX)
 
-snapshot_pattern="${save_file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
-snapshot_filename=$(date "$snapshot_pattern")
+# Prepare filename, save datetime ASAP
+filename_pattern="${file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
+filename=$(date "$filename_pattern")
+
+# First, take a snapshot (always)
 /system/sdcard/bin/getimage > "$snapshot_tempfile"
 debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 
-if [ "$save_video" = true  ] || [ "$telegram_alert_type" = "video" ] ; then
+# Then, record video (if necessary)
+if [ "$save_video" = true -o "$ftp_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" ] ; then
 	record_video
 fi
 
@@ -59,26 +63,26 @@ fi
 # Save a snapshot
 if [ "$save_snapshot" = true ] ; then
 	(
-	debug_msg "Save snapshot to $save_dir/${snapshot_filename}.jpg"
+	debug_msg "Save snapshot to $save_snapshot_dir/${filename}.jpg"
 
-	if [ ! -d "$save_dir" ]; then
-		mkdir -p "$save_dir"
+	if [ ! -d "$save_snapshot_dir" ]; then
+		mkdir -p "$save_snapshot_dir"
 	fi
 
 	# Limit the number of snapshots
-	if [ "$(ls "$save_dir" | wc -l)" -ge "$max_snapshots" ]; then
-		rm -f "$save_dir/$(ls -ltr "$save_dir" | awk 'NR==2{print $9}')"
+	if [ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshots" ]; then
+		rm -f "$save_snapshot_dir/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
 	fi
 
 	chmod "$save_snapshot_attr" "$snapshot_tempfile"
-	cp -p "$snapshot_tempfile" "$save_dir/${snapshot_filename}.jpg"
+	cp -p "$snapshot_tempfile" "$save_snapshot_dir/${filename}.jpg"
 	) &
 fi
 
 # Save the video
 if [ "$save_video" = true ] ; then
 	(
-	debug_msg "Save video to $save_video_dir/${snapshot_filename}.mp4"
+	debug_msg "Save video to $save_video_dir/${filename}.mp4"
 
 	if [ ! -d "$save_video_dir" ]; then
 		mkdir -p "$save_video_dir"
@@ -90,18 +94,44 @@ if [ "$save_video" = true ] ; then
 	fi
 
 	chmod "$save_video_attr" "$video_tempfile"
-	cp -p "$video_tempfile" "$save_video_dir/${snapshot_filename}.mp4"
+	cp -p "$video_tempfile" "$save_video_dir/${filename}.mp4"
 	) &
 fi
 
-# FTP snapshot and video stream
+# SMB snapshot and video
+if [ "$smb_snapshot" = true -o "$smb_video" = true ]; then
+    (
+    smbclient_cmd="/system/bin/smbclient $smb_share"
+    if [ "$smb_password" != "" ]; then
+        smbclient_cmd="$smbclient_cmd $smb_password"
+    else
+        smbclient_cmd="$smbclient_cmd -N"
+    fi
+    if [ "$smb_username" != "" ]; then
+        smbclient_cmd="$smbclient_cmd -U $smb_username"
+    fi
+
+    # Save snapshot
+    if [ "$smb_snapshot" = true ]; then
+        debug_msg "Saving SMB snapshot to $smb_share/$smb_stills_path"
+        snapshot_tempfilename=${snapshot_tempfile:5}
+        $smbclient_cmd -D "$smb_stills_path" -c "lcd /tmp; put $snapshot_tempfilename; rename $snapshot_tempfilename ${filename}.jpg"
+    fi
+    # Save video
+    if [ "$smb_video" = true ]; then
+        debug_msg "Saving SMB video to $smb_share/$smb_videos_path"
+        video_tempfilename=${video_tempfile:5}
+        $smbclient_cmd -D "$smb_videos_path" -c "lcd /tmp; put $video_tempfilename; rename $video_tempfilename ${filename}.mp4"
+    fi
+    ) &
+fi
+
+# FTP snapshot and video
 if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 	(
 	ftpput_cmd="/system/sdcard/bin/busybox ftpput"
-	ftpput_url="ftp://"
 	if [ "$ftp_username" != "" ]; then
 		ftpput_cmd="$ftpput_cmd -u $ftp_username"
-		ftpput_url="${ftpput_url}${ftp_username}@"
 	fi
 	if [ "$ftp_password" != "" ]; then
 		ftpput_cmd="$ftpput_cmd -p $ftp_password"
@@ -110,47 +140,15 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 		ftpput_cmd="$ftpput_cmd -P $ftp_port"
 	fi
 	ftpput_cmd="$ftpput_cmd $ftp_host"
-	ftpput_url="${ftpput_url}${ftp_host}"
-	if [ "$ftp_port" != "" ]; then
-		ftpput_url="${ftpput_url}:$ftp_port"
-	fi
 
 	if [ "$ftp_snapshot" = true ]; then
-		debug_msg "Send FTP snapshot to $ftpput_url/$ftp_stills_dir/${snapshot_filename}.jpg"
-		$ftpput_cmd "$ftp_stills_dir/${snapshot_filename}.jpg" "$snapshot_tempfile"
+		debug_msg "Sending FTP snapshot to ftp://$ftp_host/$ftp_stills_dir/${filename}.jpg"
+		$ftpput_cmd "$ftp_stills_dir/${filename}.jpg" "$snapshot_tempfile"
 	fi
 
 	if [ "$ftp_video" = true ]; then
-		# We only want one video stream at a time. Try to grab an
-		# exclusive flock on file descriptor 5. Bail out if another
-		# process already has it. Touch the flock to update it's mod
-		# time as a signal to the background process to keep recording
-		# when motion is repeatedly observed.
-		touch /run/ftp_motion_video_stream.flock
-		exec 5<> /run/ftp_motion_video_stream.flock
-		if /system/sdcard/bin/busybox flock -n -x 5; then
-			# Got the lock
-			debug_msg "Begin FTP video stream to $ftpput_url/$ftp_videos_dir/${snapshot_filename}.avi for $ftp_video_duration seconds"
-
-			# XXX Uses avconv to stitch multiple JPEGs into 1fps video.
-			#  I couldn't get it working another way. /dev/videoX inputs
-			#  fail. Localhost rtsp takes very long (10+ seconds) to
-			#  start streaming and gets flaky when when memory or cpu
-			#  are pegged. This is a clugy method, but works well even
-			# at high res, fps, cpu, and memory load!
-			( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/ftp_motion_video_stream.flock)" + "$ftp_video_duration")" ]; do
-					/system/sdcard/bin/getimage
-					sleep 1
-				done ) \
-			| /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f avi - 2>/dev/null \
-			| $ftpput_cmd "$ftp_videos_dir/${snapshot_filename}.avi" - &
-		else
-			debug_msg "FTP video stream already running, continued another $ftp_video_duration seconds"
-		fi
-
-		# File descriptor 5 is inherited across fork to preserve lock,
-		# so we can close it here.
-		exec 5>&-
+		debug_msg "Sending FTP video to ftp://$ftp_host/$ftp_videos_dir/${filename}.mp4"
+		$ftpput_cmd "$ftp_videos_dir/${filename}.mp4" "$video_tempfile"
 	fi
 	) &
 fi
@@ -167,7 +165,10 @@ if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true ] ; then
 
 	if [ "$publish_mqtt_snapshot" = true ] ; then
 		debug_msg "Send MQTT snapshot"
-		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/snapshot ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f "$snapshot_tempfile"
+		/system/sdcard/bin/jpegtran -scale 1/2 "$snapshot_tempfile" > "${snapshot_tempfile}-s"
+		/system/sdcard/bin/jpegoptim -m 70 "${snapshot_tempfile}-s"
+		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/snapshot ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f "${snapshot_tempfile}-s"
+		rm "${snapshot_tempfile}-s"
 	fi
 	) &
 fi
