@@ -75,15 +75,19 @@ main() {
     return 0
   fi;
 
-  chatId=$(echo "$json" | $JQ -r '.result[0].message.chat.id // ""')
+  messageAttr="message"
+  messageVal=$(echo "$json" | $JQ -r '.result[0].message // ""')
+  [ -z "$messageVal" ] && messageAttr="edited_message"
+
+  chatId=$(echo "$json" | $JQ -r ".result[0].$messageAttr.chat.id // \"\"")
   [ -z "$chatId" ] && return 0 # no new messages
 
-  cmd=$(echo "$json" | $JQ -r '.result[0].message.text // ""')
+  cmd=$(echo "$json" | $JQ -r ".result[0].$messageAttr.text // \"\"")
   updateId=$(echo "$json" | $JQ -r '.result[0].update_id // ""')
 
   if [ "$chatId" != "$userChatId" ]; then
-    username=$(echo "$json" | $JQ -r '.result[0].message.from.username // ""')
-    firstName=$(echo "$json" | $JQ -r '.result[0].message.from.first_name // ""')
+    username=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.username // \"\"")
+    firstName=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.first_name // \"\"")
     $TELEGRAM m "Received message from not authrized chat: $chatId\nUser: $username($firstName)\nMessage: $cmd"
   else
     respond $cmd
