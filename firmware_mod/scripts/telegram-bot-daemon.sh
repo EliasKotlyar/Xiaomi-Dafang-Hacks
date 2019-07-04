@@ -43,13 +43,13 @@ imageAlerts() {
 
 respond() {
   case $1 in
-    /mem) sendMem;;
-    /shot) sendShot;;
-    /on) detectionOn;;
-    /off) detectionOff;;
-    /textalerts) textAlerts;;
-    /imagealerts) imageAlerts;;
-    /help) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a shot\n# /on - motion detect on\n# /off - motion detect off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection";;
+    /mem*) sendMem;;
+    /shot*) sendShot;;
+    /on*) detectionOn;;
+    /off*) detectionOff;;
+    /textalerts*) textAlerts;;
+    /imagealerts*) imageAlerts;;
+    /help*) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a shot\n# /on - motion detect on\n# /off - motion detect off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection";;
     *) $TELEGRAM m "I can't respond to '$1' command"
   esac
 }
