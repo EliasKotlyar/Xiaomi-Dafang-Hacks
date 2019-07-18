@@ -23,6 +23,9 @@ stop()
   PID=$(cat $PIDFILE)
   kill -9 $PID
   rm $PIDFILE
+  cd /system/sdcard/DCIM/timelapse/$(date +%Y-%m-%d)
+  /system/sdcard/bin/avconv -y -r 30 -f image2 -i img%03d.jpg  $(date +%Y-%m-%d_%H%M%S).mov
+  rm *.jpg
 }
 
 if [ $# -eq 0 ]; then
