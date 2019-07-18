@@ -28,15 +28,15 @@ while true; do
     if [ ! -d "$SAVE_DIR" ]; then
         mkdir -p $SAVE_DIR
     fi
-    filename_prefix="$(date +%Y-%m-%d_%H%M%S)"
-    if [ "$filename_prefix" = "$last_prefix" ]; then
-        counter=$(($counter + 1))
-    else
-        counter=1
-        last_prefix="$filename_prefix"
-    fi
+    #filename_prefix="$(date +%Y-%m-%d_%H%M%S)"
+    #if [ "$filename_prefix" = "$last_prefix" ]; then
+    #    counter=$(($counter + 1))
+    #else
+    #    counter=1
+    #    last_prefix="$filename_prefix"
+    #fi
     counter_formatted=$(printf '%03d' $counter)
-    filename="${filename_prefix}_${counter_formatted}.jpg"
+    filename="img${counter_formatted}.jpg"
     if [ -z "$COMPRESSION_QUALITY" ]; then
          /system/sdcard/bin/getimage > "$SAVE_DIR/$filename" &
     else
@@ -55,3 +55,7 @@ done
 
 # loop completed so let's purge pid file
 rm "$PIDFILE"
+
+cd /system/sdcard/DCIM/timelapse/$(date +%Y-%m-%d)
+/system/sdcard/bin/avconv -y -r 30 -f image2 -i img%03d.jpg  $(date +%Y-%m-%d_%H%M%S).mov
+rm *.jpg
