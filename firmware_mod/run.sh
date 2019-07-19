@@ -56,7 +56,7 @@ mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
 ## Create a swap file on SD if desired
-SWAP=false
+SWAP=true
 SWAPPATH="/system/sdcard/swapfile"
 SWAPSIZE=256
 if [ "$SWAP" = true ]; then
