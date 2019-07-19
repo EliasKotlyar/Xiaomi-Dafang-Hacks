@@ -20,14 +20,15 @@ counter=0
 last_prefix=''
 ts_started=$(date +%s)
 
-while true; do
-    SAVE_DIR=$BASE_SAVE_DIR
+SAVE_DIR=$BASE_SAVE_DIR
     if [ $SAVE_DIR_PER_DAY -eq 1 ]; then
         SAVE_DIR="$BASE_SAVE_DIR/$(date +%Y-%m-%d)"
     fi
     if [ ! -d "$SAVE_DIR" ]; then
         mkdir -p $SAVE_DIR
     fi
+
+while true; do
     #filename_prefix="$(date +%Y-%m-%d_%H%M%S)"
     #if [ "$filename_prefix" = "$last_prefix" ]; then
     #    counter=$(($counter + 1))
