@@ -15,4 +15,5 @@ if [ -f /system/sdcard/config/motion.conf ] ; then
     fi
     /system/sdcard/bin/setconf -k z -v ${motion_indicator_color} 2>/dev/null
     /system/sdcard/bin/setconf -k t -v ${motion_tracking} 2>/dev/null
+    /system/sdcard/bin/setconf -k u -v ${motion_timeout} 2>/dev/null
 fi;
