@@ -3,8 +3,10 @@
 
 ctrl_interface=/var/run/wpa_supplicant
 ctrl_interface_group=0
+
 ap_scan=1
 
+# Connect to infrastructure WiFi network (access point)
 network={
         ssid="SSID"
         # Uncomment to connect to Hidden SSIDs
@@ -15,3 +17,22 @@ network={
         psk="PW"
         priority=2
 }
+
+# Connect to Ad-Hoc WiFi network (IBSS) with a simple shared WEP key
+# Uncomment this block for WiFi mesh and enable config/batman-adv.conf
+#  Be sure to use the same ssid, frequency, and keys on all mesh nodes
+#network={
+#        mode=1
+#        ssid="AD-HOC-SSID"
+#        frequency=2412
+#
+#        key_mgmt=NONE
+#        auth_alg=SHARED
+#        wep_key0=0102030405
+#        wep_key1=0102030406
+#        wep_key2=0102030407
+#        wep_tx_keyidx=0
+#
+#        priority=2
+#}
+

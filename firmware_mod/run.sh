@@ -130,6 +130,34 @@ else
   network_interface_name="wlan0"
 fi
 
+## Enable mesh network, if configured
+if [ -f  "$CONFIGPATH/batman-adv.conf" ]; then
+  source "$CONFIGPATH/batman-adv.conf"
+
+  if [ "$bat_mesh_enable" == "true" ]; then
+    # XXX Load dependencies not part of the stock kernel image
+    insmod /system/sdcard/driver/crc16.ko
+    insmod /system/sdcard/driver/libcrc32c.ko
+
+    # Load batman module
+    insmod /system/sdcard/driver/batman-adv.ko
+
+    # Create and configure mesh interface
+    /system/sdcard/bin/busybox ip link add name bat0 type batadv
+    if [ -n "$bat_mesh_orig_interval" ]; then
+      echo "$bat_mesh_orig_interval" > /sys/class/net/bat0/mesh/orig_interval
+    fi
+
+    # Increase mtu of real NIC 1500->1532 to accommodate batman header
+    ifconfig "$network_interface_name" mtu 1532
+
+    # Slave the real NIC to mesh
+    /system/sdcard/bin/busybox ip link set dev "$network_interface_name" master bat0
+
+    network_interface_name="bat0"
+  fi
+fi
+
 ## Configure network address
 if [ -f "$CONFIGPATH/staticip.conf" ]; then
   # Install a resolv.conf if present so DNS can work

@@ -1,0 +1,11 @@
+# Config options for Batman Advanced mesh networking
+# https://www.kernel.org/doc/html/latest/networking/batman-adv.html
+
+# Set "true" to load batman-adv module + dependencies and slaves the
+# primary NIC to a mesh network.
+bat_mesh_enable="false"
+
+# Determines how often batman broadcast a beacon (in ms) to update
+# originator table. Smaller values make the mesh more responsive to
+# topology changes but consume more bandwidth and power.
+bat_mesh_orig_interval="3000"
