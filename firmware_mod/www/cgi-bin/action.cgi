@@ -600,6 +600,11 @@ if [ -n "$F_cmd" ]; then
           return
           ;;
 
+       disable_wifi)
+          ifconfig wlan0 down
+          return
+          ;;
+
      *)
         echo "Unsupported command '$F_cmd'"
         ;;
