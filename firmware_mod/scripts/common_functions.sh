@@ -305,6 +305,66 @@ rtsp_mjpeg_server(){
   esac
 }
 
+# Control the video recorder
+recording(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/recording start
+    ;;
+  off)
+    /system/sdcard/controlscripts/recording stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/recording status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+# Control the ftp server
+ftp_server(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/ftp_server start
+    ;;
+  off)
+    /system/sdcard/controlscripts/ftp_server stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/ftp_server status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+# Control the timelapse
+timelapse(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/timelapse start
+    ;;
+  off)
+    /system/sdcard/controlscripts/timelapse stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/timelapse status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
 # Control the motion detection function
 motion_detection(){
   case "$1" in
