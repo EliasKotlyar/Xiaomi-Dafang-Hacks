@@ -7,12 +7,12 @@ This repository contains custom firmwares for the following devices:
 Name | Picture
 --- | ---
 Xiaomi Dafang | ![Dafang](/dafang.png)
-Xiaomi Xiaofang 1S | ![XiaoFang](/xiaofang.png)
+Xiaomi Xiaofang 1S (only old Version with T20, newer Version with T20L not supported yet!) | ![XiaoFang](/xiaofang.png)
 Wyzecam Pan | ![Dafang](/dafang.png)
 Wyzecam V2 | ![XiaoFang](/xiaofang.png)
 Neos SmartCam (NB The original firmware is not yet available, proceed with caution!) | ![XiaoFang](/xiaofang.png)
-Sannce I21AG, MixSight HX-I2110T2, WanScam HW0036, Escam G02, Digoo BB-M2 | ![XiaoFang](/sannce.jpg)
-Any other Device with Ingenic T10/T20 Device | ![T20](/t20.png)
+Sannce I21AG, MixSight HX-I2110T2, WanScam HW0036, Digoo BB-M2 | ![XiaoFang](/sannce.jpg)
+Any other Device with Ingenic T10/T20 Device https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues/980 | ![T20](/t20.png)
 
 If you have a classic XiaoFang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
 
