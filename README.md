@@ -7,7 +7,7 @@ This repository contains custom firmwares for the following devices:
 Name | Picture
 --- | ---
 Xiaomi Dafang | ![Dafang](/dafang.png)
-Xiaomi Xiaofang 1S (only old Version wit T20, newer Version with T20L not supported!) | ![XiaoFang](/xiaofang.png)
+Xiaomi Xiaofang 1S (only old Version with T20, newer Version with T20L not supported yet!) | ![XiaoFang](/xiaofang.png)
 Wyzecam Pan | ![Dafang](/dafang.png)
 Wyzecam V2 | ![XiaoFang](/xiaofang.png)
 Neos SmartCam (NB The original firmware is not yet available, proceed with caution!) | ![XiaoFang](/xiaofang.png)
