@@ -17,16 +17,16 @@ status()
 start()
 {
   if [ -f $PIDFILE ]; then
-    echo "Recording already running";
+    echo "Recording already running.";
   else
-    echo "Start recording"
+    echo "Started recording."
     SUB_DIR="$(date +%m%dFANG)"
     if [ ! -d "$DCIM_PATH/$SUB_DIR" ]; then
       mkdir -p "$DCIM_PATH/$SUB_DIR"
     fi
-    FILE_NAME="MOV_$(date +%H%M.mov)"
+    FILE_NAME="MOV_$(date +%H%M.h264)"
     RECORDING_PATH="$DCIM_PATH/$SUB_DIR/$FILE_NAME"
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -rtsp_transport tcp -y -i rtsp://0.0.0.0:8554/unicast -vcodec copy -c:a aac -strict experimental "$RECORDING_PATH"  &>/dev/null &
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -flags low_delay -fflags nobuffer -probesize 32 -i rtsp://0.0.0.0:8554/unicast -strict experimental -y -vcodec copy -an $RECORDING_PATH &>/dev/null &
     echo "$!" > "$PIDFILE"
   fi
 }
@@ -36,7 +36,7 @@ stop()
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
     kill "$pid" &&  rm "$PIDFILE"
-    echo "Stopped recording"
+    echo "Stopped recording."
   else
     echo "Could not find a running recording to stop."
   fi
