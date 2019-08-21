@@ -37,7 +37,32 @@ sendPhoto() {
     -F caption="${caption}"
 }
 
+sendVideo() {
+  caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
+  echo "Sending Video: $1 $caption" >> /tmp/telegram.log
+  $CURL -s \
+    -X POST \
+    https://api.telegram.org/bot$apiToken/sendVideo \
+    -F chat_id="$userChatId" \
+    -F video="@${1}" \
+    -F caption="${caption}"
+}
+
+sendAnimation() {
+  caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
+  echo "Sending Animation: $1 $caption" >> /tmp/telegram.log
+  $CURL -s \
+    -X POST \
+    https://api.telegram.org/bot$apiToken/sendAnimation \
+    -F chat_id="$userChatId" \
+    -F animation="@${1}" \
+    -F caption="${caption}"
+}
+
 [ "$what" == "m" ] && sendMessage $data
 [ "$what" == "f" ] && sendFile $data
 [ "$what" == "p" ] && sendPhoto $data
-[ -z "$what" ] && echo -e "$0 <m|f|p> <data>\n m: message\n f: file\n p: picture"
+[ "$what" == "v" ] && sendVideo $data
+[ "$what" == "a" ] && sendAnimation $data
+
+[ -z "$what" ] && echo -e "$0 <m|f|p> <data>\n m: message\n f: file\n p: picture\n v: video\n a: animation"
