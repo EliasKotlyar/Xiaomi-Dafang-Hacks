@@ -26,14 +26,14 @@ send_matrix=false
 
 # Snapshots
 save_snapshot=false
-save_dir=/media/motion/stills
+save_dir=/system/sdcard/DCIM/motion/stills
 save_snapshot_attr="0666"
 save_file_date_pattern="+%d-%m-%Y_%H.%M.%S"
 max_snapshots=20
 
 # Videos
 save_video=false
-save_video_dir=/media/motion/videos
+save_video_dir=/system/sdcard/DCIM/motion/videos
 save_video_attr="0666"
 video_duration=10
 max_videos=10
