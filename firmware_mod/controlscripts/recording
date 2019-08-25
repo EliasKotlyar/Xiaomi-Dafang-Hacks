@@ -40,7 +40,8 @@ stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
-    kill "$pid" &&  rm "$PIDFILE"
+    kill "$pid"
+    rm "$PIDFILE" 1> /dev/null 2>&1
     echo "Stopped recording."
   else
     echo "Could not find a running recording to stop."
