@@ -26,6 +26,11 @@ start()
     fi
     FILE_NAME="MOV_$(date +%H%M.h264)"
     RECORDING_PATH="$DCIM_PATH/$SUB_DIR/$FILE_NAME"
+    # wait for rtspserver to become available
+    until pids=$(pidof v4l2rtspserver-master)
+    do
+      sleep 1
+    done
     /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -flags low_delay -fflags nobuffer -probesize 32 -i rtsp://0.0.0.0:8554/unicast -strict experimental -y -vcodec copy -an $RECORDING_PATH &>/dev/null &
     echo "$!" > "$PIDFILE"
   fi
