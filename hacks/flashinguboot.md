@@ -12,6 +12,7 @@
 
 ## What are the disadvantages?
 If you flash the wrong u-boot, you can brick your device. I am not taking any responsibility for that!
+Also, you will be unable to revert to stock firmware by removing the microSD card.
 
 ## Requirements:
 
