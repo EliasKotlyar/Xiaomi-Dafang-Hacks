@@ -56,9 +56,12 @@ mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
 ## Create a swap file on SD if desired
-SWAP=false
-SWAPPATH="/system/sdcard/swapfile"
-SWAPSIZE=256
+## please view the swap.conf.dist file for more infomation
+if [ -f "$CONFIGPATH/swap.conf" ]; then
+  . $CONFIGPATH/swap.conf
+else
+  SWAP=false
+fi
 if [ "$SWAP" = true ]; then
   if [ ! -f $SWAPPATH ]; then
     echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
@@ -240,8 +243,8 @@ for i in /system/sdcard/config/autostart/*; do
 done
 
 ## Autostart startup userscripts
-for i in /system/sdcard/config/userscripts/startup/*; do             
-  $i                                                                 
-done 
+for i in /system/sdcard/config/userscripts/startup/*; do
+  $i
+done
 
 echo "Startup finished!" >> $LOGPATH
