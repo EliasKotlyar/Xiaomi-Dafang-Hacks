@@ -1,3 +1,2 @@
-# if you need to enable swap on your camera just configure this file with the Size on Megas
-# this could be usefull for cameras that require swap.
+# if you need to enable swap on your camera just configure this file with the size of megabytes
 256
