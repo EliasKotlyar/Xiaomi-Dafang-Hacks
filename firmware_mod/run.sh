@@ -56,14 +56,12 @@ mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
 ## Create a swap file on SD if desired
-## please view enabledswap.conf.dist file for more info
-if [ -f "$CONFIGPATH/enableswap.conf" ]; then
-  SWAP=true
-  SWAPSIZE=$(cat "$CONFIGPATH/enableswap.conf"|grep -v "^$"|grep -v "^#")
+## please view the swap.conf.dist file for more infomation
+if [ -f "$CONFIGPATH/swap.conf" ]; then
+  . $CONFIGPATH/swap.conf
 else
   SWAP=false
 fi
-SWAPPATH="/system/sdcard/swapfile"
 if [ "$SWAP" = true ]; then
   if [ ! -f $SWAPPATH ]; then
     echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
