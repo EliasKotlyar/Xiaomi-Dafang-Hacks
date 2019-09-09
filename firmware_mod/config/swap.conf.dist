@@ -2,5 +2,5 @@
 # in particular on the xiaofang & clones with only 64 mb 
 
 SWAP=false
-SWAPPATH=/system/sdcard/swapfile
+SWAPPATH="/system/sdcard/swapfile"
 SWAPSIZE=256
