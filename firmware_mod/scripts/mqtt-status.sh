@@ -12,5 +12,6 @@ quality=$(/system/bin/iwconfig 2>/dev/null | grep "Quali" | sed -e "s/  *//")
 noise_level=$(echo "$quality" | awk '{ print $6}' | sed -e 's/.*=//' | sed -e 's/\/100/\%/')
 link_quality=$(echo "$quality" | awk '{ print $2}' | sed -e 's/.*=//' | sed -e 's/\/100/\%/')
 signal_level=$(echo "$quality" | awk '{ print $4}' | sed -e 's/.*=//' | sed -e 's/\/100/\%/')
+isp_exposure=$(grep -oP '(?<=ISP exposure log2 id: )[0-9]+' /proc/jz/isp/isp_info)
 
-echo "{\"uptime\":\"$uptime\",  \"ssid\":\"$ssid\", \"bitrate\":\"$bitrate\", \"signal_level\":\"$signal_level\", \"link_quality\":\"$link_quality\", \"noise_level\":\"$noise_level\" }"
+echo "{\"uptime\":\"$uptime\",  \"ssid\":\"$ssid\", \"bitrate\":\"$bitrate\", \"signal_level\":\"$signal_level\", \"link_quality\":\"$link_quality\", \"noise_level\":\"$noise_level\", \"isp_exposure\":\"$isp_exposure\" }"
