@@ -35,8 +35,11 @@ MOSQUITTOPUBOPTS=""
 # Send a mqtt statusupdate every n seconds
 STATUSINTERVAL=30
 
-# Publish and update the light dependant resistor (LDR) status or not. The
-# default value if the variable is not set is to send it. This might be useful
-# for owners of devices that lack the hardware sensor to avoid publishing
-# rubbish.
-SENDLDR="true"
+# Define whether you would like to have light level exposed (by hardware sensor og virtual calcuations).
+# If the device doesn't come with a hardware sensor, your only option is to use 'virtual'.
+# 
+#  Options:
+#     hw = Use 'hw' if the device has build in hardware light sensor. For more details, see . See issue eg. #1120 for more details...
+#     virtual = Use 'virtual' calculations, based on the lightlevel on the image, also known as ISP exposure (from /proc/jz/isp/isp_info)
+#     false = Use 'false' (default) to DISABLE the topic (It will not publishing details about light level)
+LIGHT_SENSOR="false"
