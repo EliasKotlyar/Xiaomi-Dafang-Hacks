@@ -76,8 +76,12 @@ killall mosquitto_sub.bin 2> /dev/null
     ;;
 
     "${TOPIC}/brightness")
-      if [ "$SENDLDR" != "false" ]; then
+      if [ $LIGHT_SENSOR == 'hw' ]
+      then
         /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/brightness ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(ldr status)"
+      elif [ $LIGHT_SENSOR == 'virtual' ]
+      then
+        /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/brightness ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(exposure status)"
       fi
     ;;
 
