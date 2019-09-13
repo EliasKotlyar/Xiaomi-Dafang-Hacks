@@ -236,7 +236,7 @@ ldr(){
 exposure(){
   case "$1" in
   status)
-    isp_exposure=$(grep -oP '(?<=ISP exposure log2 id: )[0-9]+' /proc/jz/isp/isp_info)
+    isp_exposure=$(grep 'ISP exposure log2 id:' /proc/jz/isp/isp_info  | sed 's/^.*: //')
     echo "$isp_exposure"
   esac
 }
