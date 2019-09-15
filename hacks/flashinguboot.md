@@ -35,30 +35,37 @@ i.e. you have a device with 128 Mb RAM.
 ## Flashing the U-Boot bootloader:
 
 1. Login via SSH
-2. Download the correct [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) for your device and RAM size.  NOTE: if you are using wget, you need to use the RAW link to the .bin file so that you don't accidentally download a html file.
-3. Put the bootloader file in the root of your microsd card `/system/sdcard`. 
-4. **Verify the MD5 hash of the file!! Do not skip this step or you may brick your camera!**
-5. Write the bootloader to flash
-6. Rename the uEnv.bootfromnand.txt in your minisd card root to uEnv.txt
-
 ```bash
+ssh root@dafang.local
 cd /system/sdcard/
-
-wget https://github.com/Dafang-Hacks/uboot/raw/master/compiled_bootloader/NAME_OF_YOUR_BOOTLOADER_FILE.bin 
-
-md5sum NAME_OF_YOUR_BOOTLOADER_FILE.bin 
 ```
 
-The `md5sum` command will output a string of hex. That should match the hash listed next to the bin file you downloaded for your [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) Again, do not proceed unless the MD5 matches the version you downloaded. Now erase and write the bootloader. Do not do anything else between these commands as once you have erased your bootloader. Your device will be unable to boot until you have written a new bootloader.  
+2. Backup the original bootloader in case you decide to restore later
 
+```bash
+dd if=/dev/mtd0 of=/system/sdcard/original-bootloader.bin
+```
+
+3. Download the correct [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) for your device and RAM size.  NOTE: if you are using wget, you need to use the RAW link to the .bin file so that you don't accidentally download a html file.
+
+```bash
+wget https://github.com/Dafang-Hacks/uboot/raw/master/compiled_bootloader/NAME_OF_YOUR_BOOTLOADER_FILE.bin 
+```
+
+4. Put the bootloader file in the root of your microsd card `/system/sdcard`. 
+5. **Verify the MD5 hash of the file!! Do not skip this step or you may brick your camera!**
+
+```bash
+md5sum NAME_OF_YOUR_NEW_BOOTLOADER_FILE.bin 
+```
+The `md5sum` command will output a string of hex. That should match the hash listed next to the bin file you downloaded for your [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) Again, do not proceed unless the MD5 matches the version you downloaded.
+
+6. Now erase and write the bootloader. Do not do anything else between these commands once you have erased your bootloader. Your device will be unable to boot until you have written a new bootloader.
 
 ```bash
 flash_eraseall /dev/mtd0
 
 dd if=/system/sdcard/NAME_OF_YOUR_BOOTLOADER_FILE.bin of=/dev/mtd0
-
-mv uEnv.bootfromnand.txt uEnv.txt
-
 ```
 
 For example, if you're flashing dafang_128mb_v2.bin, your command should look like this:
@@ -67,9 +74,10 @@ For example, if you're flashing dafang_128mb_v2.bin, your command should look li
 dd if=/system/sdcard/dafang_128mb_v2.bin of=/dev/mtd0
 ```
 
-Don't do anything stupid inbetween.
-If you crash your camera, you end up without a working bootloader.
-
+7. Rename the uEnv.bootfromnand.txt in your minisd card root to uEnv.txt to enable booting from NAND:
+```bash
+mv uEnv.bootfromnand.txt uEnv.txt
+```
 ## Verify that the U-Boot-Loader works correctly
 
 Reboot your camera
