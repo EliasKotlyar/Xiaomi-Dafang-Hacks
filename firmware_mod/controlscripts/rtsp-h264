@@ -1,7 +1,5 @@
 #!/bin/sh
 PIDFILE="/run/v4l2rtspserver-master-h264.pid"
-LOGDIR="/tmp"
-LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
 export LD_LIBRARY_PATH='/system/sdcard/lib/:/thirdlib:/system/lib'
 
 if [ ! -f /system/sdcard/config/rtspserver.conf ]; then
@@ -10,6 +8,10 @@ fi
 
 if [ -f /system/sdcard/config/rtspserver.conf ]; then
   . /system/sdcard/config/rtspserver.conf
+fi
+
+if [ "$LOG" != true ] ; then
+  LOGPATH="/dev/null"
 fi
 
 if [ -f /system/sdcard/config/osd.conf ]; then

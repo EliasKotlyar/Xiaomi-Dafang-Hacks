@@ -6,6 +6,10 @@
 # Configure RTSP Servers
 # Use /system/sdcard/bin/v4l2rtspserver-master -h to see available options
 
+LOG=false
+LOGDIR="/tmp"
+LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
+
 PORT=8554
 
 # H264 RTSP server options
