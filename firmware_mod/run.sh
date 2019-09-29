@@ -239,12 +239,12 @@ fi
 
 ## Autostart all enabled services:
 for i in /system/sdcard/config/autostart/*; do
-  $i
+  $i &
 done
 
 ## Autostart startup userscripts
 for i in /system/sdcard/config/userscripts/startup/*; do
-  $i
+  $i &
 done
 
 echo "Startup finished!" >> $LOGPATH
