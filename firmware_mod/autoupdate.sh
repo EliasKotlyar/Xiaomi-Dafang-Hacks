@@ -24,7 +24,7 @@ SHA="/system/sdcard/bin/openssl dgst -sha256"
 BASENAME="/system/sdcard/bin/busybox basename"
 FIND="/system/sdcard/bin/busybox find"
 
-TMPFILE=/tmp/udpate.tmp
+TMPFILE=/tmp/update.tmp
 BACKUPEXT=.backup
 _PRINTONLY=0
 _V=0
