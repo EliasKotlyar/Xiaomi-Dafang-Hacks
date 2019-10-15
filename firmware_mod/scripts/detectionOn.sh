@@ -35,6 +35,12 @@ record_video () {
 	fi
 }
 
+# Turn on the amber led
+if [ "$motion_trigger_led" = true ] ; then
+	debug_msg "Trigger LED"
+	yellow_led on
+fi
+
 # First, take a snapshot and record date ASAP
 snapshot_tempfile=$(mktemp /tmp/snapshot-XXXXXXX)
 video_tempfile=$(mktemp /tmp/video-XXXXXXX)
@@ -46,12 +52,6 @@ debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 
 if [ "$save_video" = true  ] || [ "$telegram_alert_type" = "video" ] ; then
 	record_video
-fi
-
-# Turn on the amber led
-if [ "$motion_trigger_led" = true ] ; then
-	debug_msg "Trigger LED"
-	yellow_led on
 fi
 
 # Next, start background tasks for all configured notifications
