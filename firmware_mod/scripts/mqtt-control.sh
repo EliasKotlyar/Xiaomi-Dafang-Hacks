@@ -6,6 +6,25 @@
 killall mosquitto_sub 2> /dev/null
 killall mosquitto_sub.bin 2> /dev/null
 
+while true; do
+  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/init ${MOSQUITTOOPTS} -n
+  case $? in
+	0)
+		break 2
+		;;
+	5)
+		# Not authorized
+		logger "MQTT: credentials are not valid"
+		break 2
+		;;
+	14)
+		# Connection error, retry
+		logger "MQTT: cannot connect to $HOST at $PORT, retry in 60s"
+		sleep 60
+		;;
+  esac
+done
+
 /system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/# -t "${LOCATION}/set" ${MOSQUITTOOPTS} | while read -r line ; do
   case $line in
     "${LOCATION}/set announce")
