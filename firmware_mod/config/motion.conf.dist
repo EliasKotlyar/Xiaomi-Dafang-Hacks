@@ -49,3 +49,12 @@ ftp_username="user1"
 ftp_password="password2"
 ftp_stills_dir="motion/stills"
 ftp_videos_dir="motion/videos"
+
+# Configure SMB snapshots and videos
+smb_snapshot=false
+smb_video=false
+smb_share="//DEVICE/SHARE"
+smb_username="admin"
+smb_password="admin"
+smb_stills_path="dafang_camera/stills"
+smb_videos_path="dafang_camera/videos"
