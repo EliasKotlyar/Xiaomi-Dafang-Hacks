@@ -22,16 +22,21 @@ record_video () {
 		# Got the lock
 		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
 
-		# Use avconv to stitch multiple JPEGs into 1fps video.
-		# I couldn't get it working another way.
-		# /dev/videoX inputs fail.
-		# Localhost rtsp takes very long (10+ seconds) to start streaming and gets flaky when when memory or cpu are pegged.
-		# This is a clungy method, but works well even at high res, fps, cpu, and memory load!
-		( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/recording_video.flock)" + "$video_duration")" ]; do
-				/system/sdcard/bin/getimage
-				sleep 1
-			done ) | /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f mp4 -y "$video_tempfile"
-		debug_msg "Finished recording"
+        if [ "$video_use_rtsp" = true ]; then
+            /system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://127.0.0.1:8554/unicast > "$video_tempfile"
+        else
+            # Use avconv to stitch multiple JPEGs into 1fps video.
+            # I couldn't get it working another way.
+            # /dev/videoX inputs fail.
+            # Localhost rtsp takes very long (10+ seconds) to start streaming and gets flaky when when memory or cpu are pegged.
+            # This is a clungy method, but works well even at high res, fps, cpu, and memory load!
+            ( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/recording_video.flock)" + "$video_duration")" ]; do
+                    /system/sdcard/bin/getimage
+                    sleep 1
+                done ) | /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f mp4 -y "$video_tempfile"
+        fi
+
+        debug_msg "Finished recording"
 	fi
 }
 

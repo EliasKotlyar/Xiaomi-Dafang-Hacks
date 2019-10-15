@@ -1,6 +1,6 @@
-############################################################
+###################################################################
 # edit this file and move it to /system/sdcard/config/motion.conf #
-############################################################
+###################################################################
 
 # Enable verbose debug messages to stderr
 debug_msg_enable=false
@@ -27,6 +27,13 @@ send_matrix=false
 # General
 file_date_pattern="+%d-%m-%Y_%H.%M.%S"
 video_duration=10
+
+# Record from RTSP (RTSP H264 must be enabled)
+# RTSP is alternative for `record_video` function in `detectionOn.sh` - instead of 1s-getimage gets real video.
+video_use_rtsp=false
+video_rtsp_w=1280
+video_rtsp_h=720
+video_rtsp_f=15
 
 # Snapshots
 save_snapshot=false
