@@ -53,7 +53,8 @@ filename=$(date "$filename_pattern")
 /system/sdcard/bin/getimage > "$snapshot_tempfile"
 debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 
-if [ "$save_video" = true  ] || [ "$telegram_alert_type" = "video" ] ; then
+# Then, record video (if necessary)
+if [ "$save_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" ] ; then
 	record_video
 fi
 
@@ -101,10 +102,8 @@ fi
 if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 	(
 	ftpput_cmd="/system/sdcard/bin/busybox ftpput"
-	ftpput_url="ftp://"
 	if [ "$ftp_username" != "" ]; then
 		ftpput_cmd="$ftpput_cmd -u $ftp_username"
-		ftpput_url="${ftpput_url}${ftp_username}@"
 	fi
 	if [ "$ftp_password" != "" ]; then
 		ftpput_cmd="$ftpput_cmd -p $ftp_password"
@@ -113,13 +112,9 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 		ftpput_cmd="$ftpput_cmd -P $ftp_port"
 	fi
 	ftpput_cmd="$ftpput_cmd $ftp_host"
-	ftpput_url="${ftpput_url}${ftp_host}"
-	if [ "$ftp_port" != "" ]; then
-		ftpput_url="${ftpput_url}:$ftp_port"
-	fi
 
 	if [ "$ftp_snapshot" = true ]; then
-		debug_msg "Send FTP snapshot to $ftpput_url/$ftp_stills_dir/${filename}.jpg"
+		debug_msg "Sending FTP snapshot to ftp://$ftp_host/$ftp_stills_dir/${filename}.jpg"
 		$ftpput_cmd "$ftp_stills_dir/${filename}.jpg" "$snapshot_tempfile"
 	fi
 
@@ -133,7 +128,7 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 		exec 5<> /run/ftp_motion_video_stream.flock
 		if /system/sdcard/bin/busybox flock -n -x 5; then
 			# Got the lock
-			debug_msg "Begin FTP video stream to $ftpput_url/$ftp_videos_dir/${filename}.avi for $video_duration seconds"
+			debug_msg "Begin FTP video stream to ftp://$ftp_host/$ftp_videos_dir/${filename}.avi for $video_duration seconds"
 
 			# XXX Uses avconv to stitch multiple JPEGs into 1fps video.
 			#  I couldn't get it working another way. /dev/videoX inputs
@@ -156,6 +151,34 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 		exec 5>&-
 	fi
 	) &
+fi
+
+# SMB snapshot and video
+if [ "$smb_snapshot" = true -o "$smb_video" = true ]; then
+    (
+    smbclient_cmd="/system/bin/smbclient $smb_share"
+    if [ "$smb_password" != "" ]; then
+        smbclient_cmd="$smbclient_cmd $smb_password"
+    else
+        smbclient_cmd="$smbclient_cmd -N"
+    fi
+    if [ "$smb_username" != "" ]; then
+        smbclient_cmd="$smbclient_cmd -U $smb_username"
+    fi
+
+    # Save snapshot
+    if [ "$smb_snapshot" = true ]; then
+        debug_msg "Saving SMB snapshot to $smb_share/$smb_stills_path"
+        snapshot_tempfilename=${snapshot_tempfile:5}
+        $smbclient_cmd -D "$smb_stills_path" -c "lcd /tmp; put $snapshot_tempfilename; rename $snapshot_tempfilename ${filename}.jpg"
+    fi
+    # Save video
+    if [ "$smb_video" = true ]; then
+        debug_msg "Saving SMB video to $smb_share/$smb_videos_path"
+        video_tempfilename=${video_tempfile:5}
+        $smbclient_cmd -D "$smb_videos_path" -c "lcd /tmp; put $video_tempfilename; rename $video_tempfilename ${filename}.mp4"
+    fi
+    ) &
 fi
 
 # Publish a mqtt message
