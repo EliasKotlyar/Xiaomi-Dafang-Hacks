@@ -51,6 +51,8 @@ snapshot_tempfile=$(mktemp /tmp/snapshot-XXXXXXX)
 video_tempfile=$(mktemp /tmp/video-XXXXXXX)
 
 # Prepare filename, save datetime ASAP
+group_pattern="${group_date_pattern:-+%d-%m-%Y}"
+groupname=$(date "$group_pattern")
 filename_pattern="${file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
 filename=$(date "$filename_pattern")
 
@@ -68,7 +70,7 @@ fi
 # Save a snapshot
 if [ "$save_snapshot" = true ] ; then
 	(
-	debug_msg "Save snapshot to $save_snapshot_dir/${filename}.jpg"
+	debug_msg "Save snapshot to $save_snapshot_dir/${groupname}/${filename}.jpg"
 
 	if [ ! -d "$save_snapshot_dir" ]; then
 		mkdir -p "$save_snapshot_dir"
@@ -80,14 +82,14 @@ if [ "$save_snapshot" = true ] ; then
 	fi
 
 	chmod "$save_snapshot_attr" "$snapshot_tempfile"
-	cp -p "$snapshot_tempfile" "$save_snapshot_dir/${filename}.jpg"
+	cp -p "$snapshot_tempfile" "$save_snapshot_dir/${groupname}/${filename}.jpg"
 	) &
 fi
 
 # Save the video
 if [ "$save_video" = true ] ; then
 	(
-	debug_msg "Save video to $save_video_dir/${filename}.mp4"
+	debug_msg "Save video to $save_video_dir/${groupname}/${filename}.mp4"
 
 	if [ ! -d "$save_video_dir" ]; then
 		mkdir -p "$save_video_dir"
@@ -99,7 +101,7 @@ if [ "$save_video" = true ] ; then
 	fi
 
 	chmod "$save_video_attr" "$video_tempfile"
-	cp -p "$video_tempfile" "$save_video_dir/${filename}.mp4"
+	cp -p "$video_tempfile" "$save_video_dir/${groupname}/${filename}.mp4"
 	) &
 fi
 
@@ -119,8 +121,8 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 	ftpput_cmd="$ftpput_cmd $ftp_host"
 
 	if [ "$ftp_snapshot" = true ]; then
-		debug_msg "Sending FTP snapshot to ftp://$ftp_host/$ftp_stills_dir/${filename}.jpg"
-		$ftpput_cmd "$ftp_stills_dir/${filename}.jpg" "$snapshot_tempfile"
+		debug_msg "Sending FTP snapshot to ftp://$ftp_host/$ftp_stills_dir/${groupname}/${filename}.jpg"
+		$ftpput_cmd "$ftp_stills_dir/${groupname}/${filename}.jpg" "$snapshot_tempfile"
 	fi
 
 	if [ "$ftp_video" = true ]; then
@@ -133,7 +135,7 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 		exec 5<> /run/ftp_motion_video_stream.flock
 		if /system/sdcard/bin/busybox flock -n -x 5; then
 			# Got the lock
-			debug_msg "Begin FTP video stream to ftp://$ftp_host/$ftp_videos_dir/${filename}.avi for $video_duration seconds"
+			debug_msg "Begin FTP video stream to ftp://$ftp_host/$ftp_videos_dir/${groupname}/${filename}.avi for $video_duration seconds"
 
 			# XXX Uses avconv to stitch multiple JPEGs into 1fps video.
 			#  I couldn't get it working another way. /dev/videoX inputs
@@ -146,7 +148,7 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 					sleep 1
 				done ) \
 			| /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f avi - 2>/dev/null \
-			| $ftpput_cmd "$ftp_videos_dir/${filename}.avi" - &
+			| $ftpput_cmd "$ftp_videos_dir/${groupname}/${filename}.avi" - &
 		else
 			debug_msg "FTP video stream already running, continued another $video_duration seconds"
 		fi
@@ -175,13 +177,13 @@ if [ "$smb_snapshot" = true -o "$smb_video" = true ]; then
     if [ "$smb_snapshot" = true ]; then
         debug_msg "Saving SMB snapshot to $smb_share/$smb_stills_path"
         snapshot_tempfilename=${snapshot_tempfile:5}
-        $smbclient_cmd -D "$smb_stills_path" -c "lcd /tmp; put $snapshot_tempfilename; rename $snapshot_tempfilename ${filename}.jpg"
+        $smbclient_cmd -D "$smb_stills_path" -c "lcd /tmp; mkdir ${groupname}; cd ${groupname}; put $snapshot_tempfilename; rename $snapshot_tempfilename ${filename}.jpg"
     fi
     # Save video
     if [ "$smb_video" = true ]; then
         debug_msg "Saving SMB video to $smb_share/$smb_videos_path"
         video_tempfilename=${video_tempfile:5}
-        $smbclient_cmd -D "$smb_videos_path" -c "lcd /tmp; put $video_tempfilename; rename $video_tempfilename ${filename}.mp4"
+        $smbclient_cmd -D "$smb_videos_path" -c "lcd /tmp; mkdir ${groupname}; cd ${groupname}; put $video_tempfilename; rename $video_tempfilename ${filename}.mp4"
     fi
     ) &
 fi
