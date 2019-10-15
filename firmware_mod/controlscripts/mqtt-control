@@ -34,10 +34,15 @@ start()
 stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
+  current=$(status)
   if [ "$pid" ]; then
-     kill "$pid" && rm "$PIDFILE"
-     killall mosquitto_sub 2>/dev/null
-     killall mosquitto_sub.bin 2>/dev/null
+    if [ "$current" != 1 ]; then
+      kill "$pid" && rm "$PIDFILE"
+    else
+      rm "$PIDFILE"
+    fi
+    killall mosquitto_sub 2>/dev/null
+    killall mosquitto_sub.bin 2>/dev/null
   fi
 }
 
