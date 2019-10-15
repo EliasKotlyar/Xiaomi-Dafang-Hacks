@@ -199,7 +199,10 @@ if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true ] ; then
 
 	if [ "$publish_mqtt_snapshot" = true ] ; then
 		debug_msg "Send MQTT snapshot"
-		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/snapshot ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f "$snapshot_tempfile"
+		/system/sdcard/bin/jpegtran -scale 1/2 "$snapshot_tempfile" > "${snapshot_tempfile}-s"
+		/system/sdcard/bin/jpegoptim -m 70 "${snapshot_tempfile}-s"
+		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/snapshot ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -f "${snapshot_tempfile}-s"
+		rm "${snapshot_tempfile}-s"
 	fi
 	) &
 fi
