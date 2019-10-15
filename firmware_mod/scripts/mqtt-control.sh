@@ -19,6 +19,13 @@ killall mosquitto_sub.bin 2> /dev/null
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/ ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(/system/sdcard/scripts/mqtt-status.sh)"
     ;;
 
+    "${TOPIC}/play "*)
+      AUDIOFILE=$(echo "$line" | awk '{print $2}')
+      VOLUME=$(echo "$line" | awk '{print $3}')
+      VOLUME=${VOLUME:-50}
+      /system/sdcard/bin/audioplay "/system/sdcard/media/$AUDIOFILE" "$VOLUME" $
+    ;;
+
     "${TOPIC}/leds/blue")
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/leds/blue ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(blue_led status)"
     ;;
