@@ -40,13 +40,13 @@ video_rtsp_f=15
 save_snapshot=false
 save_snapshot_dir=/system/sdcard/DCIM/motion/stills
 save_snapshot_attr="0666"
-max_snapshots=20
+max_snapshot_days=20
 
 # Videos
 save_video=false
 save_video_dir=/system/sdcard/DCIM/motion/videos
 save_video_attr="0666"
-max_videos=10
+max_video_days=10
 
 # Configure FTP snapshots and videos
 ftp_snapshot=false
