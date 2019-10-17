@@ -72,12 +72,12 @@ if [ "$save_snapshot" = true ] ; then
 	(
 	debug_msg "Save snapshot to $save_snapshot_dir/$groupname/$filename.jpg"
 
-	if [ ! -d "$save_snapshot_dir" ]; then
-		mkdir -p "$save_snapshot_dir"
+	if [ ! -d "$save_snapshot_dir/$groupname" ]; then
+		mkdir -p "$save_snapshot_dir/$groupname"
 	fi
 
 	# Limit the number of snapshots
-	if [ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshots" ]; then
+	if [ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshot_days" ]; then
 		rm -f "$save_snapshot_dir/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
 	fi
 
@@ -91,12 +91,12 @@ if [ "$save_video" = true ] ; then
 	(
 	debug_msg "Save video to $save_video_dir/$groupname/$filename.mp4"
 
-	if [ ! -d "$save_video_dir" ]; then
-		mkdir -p "$save_video_dir"
+	if [ ! -d "$save_video_dir/$groupname" ]; then
+		mkdir -p "$save_video_dir/$groupname"
 	fi
 
 	# Limit the number of videos
-	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_videos" ]; then
+	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_video_days" ]; then
 		rm -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
 	fi
 

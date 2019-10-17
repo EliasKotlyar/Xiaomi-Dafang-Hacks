@@ -34,7 +34,6 @@ start()
 stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
-  current=$(status)
   if [ "$pid" ]; then
     kill "$pid"
     rm "$PIDFILE" 1> /dev/null 2>&1
