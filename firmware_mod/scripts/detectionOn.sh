@@ -121,8 +121,8 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 	ftpput_cmd="$ftpput_cmd $ftp_host"
 
 	if [ "$ftp_snapshot" = true ]; then
-		debug_msg "Sending FTP snapshot to ftp://$ftp_host/$ftp_stills_dir/$groupname/$filename.jpg"
-		$ftpput_cmd "$ftp_stills_dir/$groupname/$filename.jpg" "$snapshot_tempfile"
+		debug_msg "Sending FTP snapshot to ftp://$ftp_host/$ftp_stills_dir/$filename.jpg"
+		$ftpput_cmd "$ftp_stills_dir/$filename.jpg" "$snapshot_tempfile"
 	fi
 
 	if [ "$ftp_video" = true ]; then
@@ -135,7 +135,7 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 		exec 5<> /run/ftp_motion_video_stream.flock
 		if /system/sdcard/bin/busybox flock -n -x 5; then
 			# Got the lock
-			debug_msg "Begin FTP video stream to ftp://$ftp_host/$ftp_videos_dir/$groupname/$filename.avi for $video_duration seconds"
+			debug_msg "Begin FTP video stream to ftp://$ftp_host/$ftp_videos_dir/$filename.avi for $video_duration seconds"
 
 			# XXX Uses avconv to stitch multiple JPEGs into 1fps video.
 			#  I couldn't get it working another way. /dev/videoX inputs
@@ -148,7 +148,7 @@ if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 					sleep 1
 				done ) \
 			| /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f avi - 2>/dev/null \
-			| $ftpput_cmd "$ftp_videos_dir/$groupname/$filename.avi" - &
+			| $ftpput_cmd "$ftp_videos_dir/$filename.avi" - &
 		else
 			debug_msg "FTP video stream already running, continued another $video_duration seconds"
 		fi
@@ -227,7 +227,7 @@ if [ "$send_telegram" = true ]; then
 		/system/sdcard/bin/telegram p "$snapshot_tempfile"
 	elif [ "$telegram_alert_type" = "video" ] ; then
 		debug_msg "Send telegram video"
-		/system/sdcard/bin/avconv -i "$video_tempfile"  "$video_tempfile-lo.mp4"
+		/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
 		/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
 		rm "$video_tempfile-lo.mp4"
 	fi
