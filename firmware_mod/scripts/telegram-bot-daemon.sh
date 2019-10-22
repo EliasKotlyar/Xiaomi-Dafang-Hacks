@@ -55,7 +55,7 @@ respond() {
     /textalerts) textAlerts;;
     /imagealerts) imageAlerts;;
     /videoalerts) videoAlerts;;
-    /help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a snapshot\n# /on - motion detect on\n# /off - motion detect off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection"\n# /videoalerts - Video alerts on motion detection;;
+    /help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a snapshot\n# /on - motion detection on\n# /off - motion detection off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection\n# /videoalerts - Video alerts on motion detection";;
     *) $TELEGRAM m "I can't respond to '$cmd' command"
   esac
 }
@@ -94,7 +94,7 @@ main() {
   if [ "$chatId" != "$userChatId" ]; then
     username=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.username // \"\"")
     firstName=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.first_name // \"\"")
-    $TELEGRAM m "Received message from unauthorized chat: $chatId\nUser: $username($firstName)\nMessage: $cmd"
+    $TELEGRAM m "Received message from unauthorized chat id: $chatId\nUser: $username($firstName)\nMessage: $cmd"
   else
     respond $cmd
   fi;
