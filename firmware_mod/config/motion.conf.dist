@@ -31,7 +31,7 @@ video_duration=10
 
 # Record from RTSP (RTSP H264 must be enabled)
 # RTSP is alternative for `record_video` function in `detectionOn.sh` - instead of 1s-getimage gets real video.
-video_use_rtsp=false
+video_use_rtsp=true
 video_rtsp_w=1280
 video_rtsp_h=720
 video_rtsp_f=15
