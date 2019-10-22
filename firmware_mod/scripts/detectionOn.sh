@@ -227,9 +227,13 @@ if [ "$send_telegram" = true ]; then
 		/system/sdcard/bin/telegram p "$snapshot_tempfile"
 	elif [ "$telegram_alert_type" = "video" ] ; then
 		debug_msg "Send telegram video"
-		/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
-		/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
-		rm "$video_tempfile-lo.mp4"
+		if [ "$video_use_rtsp" = true ]; then
+			/system/sdcard/bin/telegram v "$video_tempfile"
+        	else
+			/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
+			/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
+			rm "$video_tempfile-lo.mp4"
+		fi
 	fi
 	) &
 fi
