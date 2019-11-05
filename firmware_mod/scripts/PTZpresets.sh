@@ -19,9 +19,7 @@ else
 fi
 
 logger(){
-   if $LOG; then
-        echo "$(date '+%Y-%m-%d-%H:%M:%S') $1" >> /system/sdcard/log/ptz.log
-   fi
+   [ $LOG ] && echo "$(date '+%Y-%m-%d-%H:%M:%S') $1" >> /system/sdcard/log/ptz.log
 }
 
 # exit

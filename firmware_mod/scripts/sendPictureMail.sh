@@ -56,10 +56,7 @@ Content-Disposition: attachment; filename=\"${FILENAME}${i}.jpg\"
 
     echo
 
-	if [ ${i} -lt ${NUMBEROFPICTURES} ]
-	then
-		sleep ${TIMEBETWEENSNAPSHOT}
-	fi
+  [ ${i} -lt ${NUMBEROFPICTURES} ] && sleep ${TIMEBETWEENSNAPSHOT}
 done
 
 # print last boundary with closing --

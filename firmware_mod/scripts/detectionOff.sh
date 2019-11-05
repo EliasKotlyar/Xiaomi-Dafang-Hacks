@@ -5,9 +5,7 @@
 . /system/sdcard/scripts/common_functions.sh
 
 # Turn off the amber LED
-if [ "$motion_trigger_led" = true ] ; then
-	yellow_led off
-fi
+[ "$motion_trigger_led" = true ] && yellow_led off
 
 # Publish a mqtt message
 if [ "$publish_mqtt_message" = true ] ; then

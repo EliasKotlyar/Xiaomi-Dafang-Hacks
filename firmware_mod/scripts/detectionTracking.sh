@@ -59,21 +59,10 @@ RIGHT=0
 LEFT=0
 
 # Calculate the movement
-if  [ "${1}" == "1" ] || [ "${2}" == "1" ]; then
-    UP=1
-fi
-
-if [ "${3}" == "1" ] || [ "${4}" == "1" ]; then
-    DOWN=1
-fi
-
-if [ "${2}" == "1" ] || [ "${4}" == "1" ]; then
-    RIGHT=1
-fi
-
-if [ "${1}" == "1" ] || [ "${3}" == "1" ]; then
-    LEFT=1
-fi
+[ "${1}" == "1" ] || [ "${2}" == "1" ] && UP=1
+[ "${3}" == "1" ] || [ "${4}" == "1" ] && DOWN=1
+[ "${2}" == "1" ] || [ "${4}" == "1" ] && RIGHT=1
+[ "${1}" == "1" ] || [ "${3}" == "1" ] && LEFT=1
 
 # Sanity checks
 if [ ${UP} != 0 ] && [ ${DOWN} != 0 ]; then
@@ -90,19 +79,8 @@ fi
 
 # Do the actual movement in the background
 (
-    if [ ${UP} == 1 ]; then
-        motor up ${STEPS}
-    fi
-
-    if [ ${DOWN} == 1 ]; then
-        motor down ${STEPS}
-    fi
-
-    if [ ${RIGHT} == 1 ]; then
-        motor right ${STEPS}
-    fi
-
-    if [ ${LEFT} == 1 ]; then
-        motor left $STEPS
-    fi
+    [ ${UP} == 1 ] && motor up ${STEPS}
+    [ ${DOWN} == 1 ] && motor down ${STEPS}
+    [ ${RIGHT} == 1 ] && motor right ${STEPS}
+    [ ${LEFT} == 1 ] && motor left $STEPS
 ) &>/dev/null

@@ -5,9 +5,7 @@
 . /system/sdcard/scripts/common_functions.sh
 
 debug_msg () {
-	if [ "$debug_msg_enable" = true ]; then
-		echo "DEBUG: $*" 1>&2
-	fi
+	[ "$debug_msg_enable" = true ] && echo "DEBUG: $*" 1>&2
 }
 
 record_video () {
@@ -61,9 +59,7 @@ filename=$(date "$filename_pattern")
 debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 
 # Then, record video (if necessary)
-if [ "$save_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" ] ; then
-	record_video
-fi
+[ "$save_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" ] && record_video
 
 # Next, start background tasks for all configured notifications
 
@@ -72,14 +68,10 @@ if [ "$save_snapshot" = true ] ; then
 	(
 	debug_msg "Save snapshot to $save_snapshot_dir/$groupname/$filename.jpg"
 
-	if [ ! -d "$save_snapshot_dir/$groupname" ]; then
-		mkdir -p "$save_snapshot_dir/$groupname"
-	fi
+	[ ! -d "$save_snapshot_dir/$groupname" ] && mkdir -p "$save_snapshot_dir/$groupname"
 
 	# Limit the number of snapshots
-	if [ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshot_days" ]; then
-		rm -f "$save_snapshot_dir/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
-	fi
+	[ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshot_days" ] && rm -f "$save_snapshot_dir/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
 
 	chmod "$save_snapshot_attr" "$snapshot_tempfile"
 	cp -p "$snapshot_tempfile" "$save_snapshot_dir/$groupname/$filename.jpg"
@@ -91,14 +83,10 @@ if [ "$save_video" = true ] ; then
 	(
 	debug_msg "Save video to $save_video_dir/$groupname/$filename.mp4"
 
-	if [ ! -d "$save_video_dir/$groupname" ]; then
-		mkdir -p "$save_video_dir/$groupname"
-	fi
+	[ ! -d "$save_video_dir/$groupname" ] && mkdir -p "$save_video_dir/$groupname"
 
 	# Limit the number of videos
-	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_video_days" ]; then
-		rm -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
-	fi
+	[ "$(ls "$save_video_dir" | wc -l)" -ge "$max_video_days" ] && rm -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
 
 	chmod "$save_video_attr" "$video_tempfile"
 	cp -p "$video_tempfile" "$save_video_dir/$groupname/$filename.mp4"
@@ -109,15 +97,9 @@ fi
 if [ "$ftp_snapshot" = true -o "$ftp_video" = true ]; then
 	(
 	ftpput_cmd="/system/sdcard/bin/busybox ftpput"
-	if [ "$ftp_username" != "" ]; then
-		ftpput_cmd="$ftpput_cmd -u $ftp_username"
-	fi
-	if [ "$ftp_password" != "" ]; then
-		ftpput_cmd="$ftpput_cmd -p $ftp_password"
-	fi
-	if [ "$ftp_port" != "" ]; then
-		ftpput_cmd="$ftpput_cmd -P $ftp_port"
-	fi
+	[ "$ftp_username" != "" ] && ftpput_cmd="$ftpput_cmd -u $ftp_username"
+	[ "$ftp_password" != "" ] && ftpput_cmd="$ftpput_cmd -p $ftp_password"
+	[ "$ftp_port" != "" ] && ftpput_cmd="$ftpput_cmd -P $ftp_port"
 	ftpput_cmd="$ftpput_cmd $ftp_host"
 
 	if [ "$ftp_snapshot" = true ]; then
@@ -169,9 +151,7 @@ if [ "$smb_snapshot" = true -o "$smb_video" = true ]; then
     else
         smbclient_cmd="$smbclient_cmd -N"
     fi
-    if [ "$smb_username" != "" ]; then
-        smbclient_cmd="$smbclient_cmd -U $smb_username"
-    fi
+	[ "$smb_username" != "" ] && smbclient_cmd="$smbclient_cmd -U $smb_username"
 
     # Save snapshot
     if [ "$smb_snapshot" = true ]; then

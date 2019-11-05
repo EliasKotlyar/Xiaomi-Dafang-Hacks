@@ -2,9 +2,7 @@
 . /system/sdcard/config/mqtt.conf
 . /system/sdcard/scripts/common_functions.sh
 
-if [ "$STATUSINTERVAL" -lt 30 ]; then
-  STATUSINTERVAL=30
-fi
+[ "$STATUSINTERVAL" -lt 30 ] && STATUSINTERVAL=30
 
 while true
 do

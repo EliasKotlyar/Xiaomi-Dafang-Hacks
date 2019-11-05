@@ -2,13 +2,11 @@
 
 . /system/sdcard/scripts/common_functions.sh
 
+#read config in every iteration, so we can change the average online
 while true; do
-  if [ -f /system/sdcard/config/ldr-average.conf ]; then
-    . /system/sdcard/config/ldr-average.conf 2>/dev/null
-    #read config in every iteration, so we can change the average online
-  fi
+  [ -f /system/sdcard/config/ldr-average.conf ] && . /system/sdcard/config/ldr-average.conf 2>/dev/null
 
-  if [ -z "$AVG" ]; then AVG=1; fi
+  [ -z "$AVG" ] && AVG=1
   # if no config availabe, use 1 as average
 
   dd if=/dev/jz_adc_aux_0 count=20  |  sed -e 's/[^\.]//g' | wc -m >> /var/run/ldr
@@ -19,7 +17,7 @@ while true; do
   # cut /var/run/ldr to desired number of lines
 
   LINES=$(wc -l < /var/run/ldr)
-  if [ "$LINES" -lt "$AVG" ]; then AVG=$LINES; fi
+  [ "$LINES" -lt "$AVG" ] && AVG=$LINES
   # to avoid slow switching when starting up, use the number of lines when there are less than the average
   # this may cause some flickering when starting up
 

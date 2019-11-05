@@ -521,10 +521,7 @@ update_axis(){
   AXIS=$(/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print " X="$2,"Y="$4}')
   
   if [ "$ENABLE_OSD" = "true" ]; then
-    if [ "$DISPLAY_AXIS" = "true" ]; then
-      OSD="${OSD}${AXIS}"
-    fi
-    
+    [ "$DISPLAY_AXIS" = "true" ] && OSD="${OSD}${AXIS}"
     /system/sdcard/bin/setconf -k o -v "$OSD"
   fi
 }
@@ -533,9 +530,7 @@ update_axis(){
 set_timezone(){
   timezone_name=$(cat /system/sdcard/config/timezone.conf)
   timezone=$(/system/sdcard/bin/busybox awk -F '\t' -v tzn="$timezone_name" '($1==tzn) {print $2}' /system/sdcard/www/timezones.tsv)
-  if [ "$(cat /etc/TZ)" != "$timezone" ]; then
-    echo "$timezone" > /etc/TZ
-  fi
+  [ "$(cat /etc/TZ)" != "$timezone" ] && echo "$timezone" > /etc/TZ
 }
 
 # Reboot the System
