@@ -1,9 +1,7 @@
 #!/bin/sh
 # Motion detection (must be set before the server starting)
 
-if [ ! -f /system/sdcard/config/motion.conf ]; then
-  cp /system/sdcard/config/motion.conf.dist /system/sdcard/config/motion.conf
-fi
+[ ! -f /system/sdcard/config/motion.conf ] && cp /system/sdcard/config/motion.conf.dist /system/sdcard/config/motion.conf
 
 if [ -f /system/sdcard/config/motion.conf ] ; then
     . /system/sdcard/config/motion.conf 2>/dev/null

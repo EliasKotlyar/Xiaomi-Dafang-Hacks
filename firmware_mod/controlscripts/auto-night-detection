@@ -5,18 +5,13 @@ CONF_FILE="/system/sdcard/config/autonight.conf"
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
-  fi
+  [ "$pid" ] && kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
 }
 
 start()
 {
   AUTONIGHT_OPTS=
-  if [ -f $CONF_FILE ]
-  then
-        AUTONIGHT_OPTS=$(cat $CONF_FILE)
-  fi
+  [ -f $CONF_FILE ] && AUTONIGHT_OPTS=$(cat $CONF_FILE)
   if [ -f /run/auto-night-detection.pid ]; then
     echo "Auto Night Detection already running";
   else
@@ -29,9 +24,7 @@ start()
 stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-     kill "$pid" && rm "$PIDFILE"
-  fi
+  [ "$pid" ] && kill "$pid" && rm "$PIDFILE"
 }
 
 if [ $# -eq 0 ]; then

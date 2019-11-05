@@ -8,16 +8,12 @@
 
 PIDFILE="/run/telegram-bot.pid"
 
-if [ ! -f /system/sdcard/config/telegram.conf ]; then
-  echo "You have to configure telegram first. Please see /system/sdcard/config/telegram.conf.dist for further instructions"
-fi
+[ ! -f /system/sdcard/config/telegram.conf ] && echo "You have to configure telegram first. Please see /system/sdcard/config/telegram.conf.dist for further instructions"
 
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
-  fi
+  [ "$pid" ] && kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
 }
 
 start()

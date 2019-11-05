@@ -1,25 +1,17 @@
 #!/bin/sh
 PIDFILE="/run/recording.pid"
 DCIM_PATH="/system/sdcard/DCIM"
-if [ -f /system/sdcard/config/rtspserver.conf ]; then
-  . /system/sdcard/config/rtspserver.conf
-fi
+[ -f /system/sdcard/config/rtspserver.conf ] && . /system/sdcard/config/rtspserver.conf
 
 ## UserName and password
-if [ "$USERNAME" != "" ]; then
-    CREDENTIALS="$USERNAME:$USERPASSWORD@"
-fi
+[ "$USERNAME" != "" ] && CREDENTIALS="$USERNAME:$USERPASSWORD@"
 
-if [ ! -d "$DCIM_PATH" ]; then
-  mkdir -p $DCIM_PATH
-fi
+[ ! -d "$DCIM_PATH" ] && mkdir -p $DCIM_PATH
 
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
-  fi
+  [ "$pid" ] && kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
 }
 
 start()
@@ -29,9 +21,7 @@ start()
   else
     echo "Started recording."
     SUB_DIR="$(date +%m%dFANG)"
-    if [ ! -d "$DCIM_PATH/$SUB_DIR" ]; then
-      mkdir -p "$DCIM_PATH/$SUB_DIR"
-    fi
+    [ ! -d "$DCIM_PATH/$SUB_DIR" ] && mkdir -p "$DCIM_PATH/$SUB_DIR"
     FILE_NAME="MOV_$(date +%H%M.h264)"
     RECORDING_PATH="$DCIM_PATH/$SUB_DIR/$FILE_NAME"
     # wait for rtspserver to become available

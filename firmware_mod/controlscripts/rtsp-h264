@@ -2,29 +2,20 @@
 PIDFILE="/run/v4l2rtspserver-master-h264.pid"
 export LD_LIBRARY_PATH='/system/sdcard/lib/:/thirdlib:/system/lib'
 
-if [ ! -f /system/sdcard/config/rtspserver.conf ]; then
-  cp /system/sdcard/config/rtspserver.conf.dist /system/sdcard/config/rtspserver.conf
-fi
+[ ! -f /system/sdcard/config/rtspserver.conf ] && cp /system/sdcard/config/rtspserver.conf.dist /system/sdcard/config/rtspserver.conf
 
-if [ -f /system/sdcard/config/rtspserver.conf ]; then
-  . /system/sdcard/config/rtspserver.conf
-fi
+[ -f /system/sdcard/config/rtspserver.conf ] && . /system/sdcard/config/rtspserver.conf
 
-if [ "$LOG" != true ] ; then
-  LOGPATH="/dev/null"
-fi
+[ "$LOG" != true ] && LOGPATH="/dev/null"
 
-if [ -f /system/sdcard/config/osd.conf ]; then
-  . /system/sdcard/config/osd.conf 2>/dev/null
-fi
+[ -f /system/sdcard/config/osd.conf ] && . /system/sdcard/config/osd.conf 2>/dev/null
+
 
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-    # Prints PID: $pid if exists and returns 0(no error) else returns 1(error condition)
-    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
-  fi
+  # Prints PID: $pid if exists and returns 0(no error) else returns 1(error condition)
+  [ "$pid" ] && kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
 }
 
 start()
@@ -36,21 +27,15 @@ start()
     /system/sdcard/controlscripts/rtsp-mjpeg stop
 
     ## Configure OSD
-    if [ -f /system/sdcard/controlscripts/configureOsd ]; then
-      . /system/sdcard/controlscripts/configureOsd  2>/dev/null
-    fi
+    [ -f /system/sdcard/controlscripts/configureOsd ] && . /system/sdcard/controlscripts/configureOsd  2>/dev/null
 
     ## Configure Motion
-    if [ -f /system/sdcard/controlscripts/configureMotion ]; then
-      . /system/sdcard/controlscripts/configureMotion  2>/dev/null
-    fi
+    [ -f /system/sdcard/controlscripts/configureMotion ] && . /system/sdcard/controlscripts/configureMotion  2>/dev/null
     ## Bitrate
     /system/sdcard/bin/setconf -k b -v ${BITRATE} 2>/dev/null
 
     ## Framerate
-    if [ "$FRAMERATE_DEN" != "" ] && [ "$FRAMERATE_NUM" != "" ]; then
-        /system/sdcard/bin/setconf -k d -v "$FRAMERATE_NUM,$FRAMERATE_DEN" 2>/dev/null
-    fi
+    [ "$FRAMERATE_DEN" != "" ] && [ "$FRAMERATE_NUM" != "" ] && /system/sdcard/bin/setconf -k d -v "$FRAMERATE_NUM,$FRAMERATE_DEN" 2>/dev/null
 
     ## Audio
     if [ "$AUDIOFORMAT" != "OFF" ] ; then
@@ -65,19 +50,13 @@ start()
     fi
 
     ## Video format
-    if [ "$VIDEOFORMAT" != "" ]; then
-	    VIDEOFORMAT="-r $VIDEOFORMAT"
-    fi
+    [ "$VIDEOFORMAT" != "" ] && VIDEOFORMAT="-r $VIDEOFORMAT"
 
     ## UserName and password
-    if [ "$USERNAME" != "" ]; then
-        CREDENTIAL="-U $USERNAME:$USERPASSWORD"
-    fi
+    [ "$USERNAME" != "" ] && CREDENTIAL="-U $USERNAME:$USERPASSWORD"
 
     ## Port
-    if [ "$PORT" != "" ]; then
-        PORT="-P $PORT"
-    fi
+    [ "$PORT" != "" ] && PORT="-P $PORT"
 
     ## FLIP
     if [ "$FLIP" == "ON" ]; then

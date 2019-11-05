@@ -2,9 +2,7 @@
 
 status()
 {
-  if [ -f /system/sdcard/config/autostart/sound-on-startup ]; then
-    echo "enabled"
-  fi
+  [ -f /system/sdcard/config/autostart/sound-on-startup ] && echo "enabled"
 }
 
 start()

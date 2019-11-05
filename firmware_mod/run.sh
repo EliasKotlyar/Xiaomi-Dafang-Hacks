@@ -5,9 +5,7 @@ export LD_LIBRARY_PATH='/system/sdcard/lib/:/thirdlib:/system/lib'
 CONFIGPATH="/system/sdcard/config"
 LOGDIR="/system/sdcard/log"
 LOGPATH="$LOGDIR/startup.log"
-if [ ! -d $LOGDIR ]; then
-  mkdir -p $LOGDIR
-fi
+[ ! -d $LOGDIR ] && mkdir -p $LOGDIR
 echo "==================================================" >> $LOGPATH
 echo "Starting the Dafang Hacks Custom Application Layer" >> $LOGPATH
 echo "==================================================" >> $LOGPATH
@@ -98,9 +96,7 @@ fi
 /system/sdcard/bin/busybox crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
 
 ## Set Hostname
-if [ ! -f $CONFIGPATH/hostname.conf ]; then
-  cp $CONFIGPATH/hostname.conf.dist $CONFIGPATH/hostname.conf
-fi
+[ ! -f $CONFIGPATH/hostname.conf ] && cp $CONFIGPATH/hostname.conf.dist $CONFIGPATH/hostname.conf
 hostname -F $CONFIGPATH/hostname.conf
 
 ## Load network driver
@@ -113,9 +109,7 @@ if [ -f $CONFIGPATH/usb_eth_driver.conf ]; then
   network_interface_name="eth0"
 else
   ## Start Wifi:
-  if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
-  echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
-  fi
+  [ ! -f $CONFIGPATH/wpa_supplicant.conf ] && echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
   MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
   if [ -f /driver/8189es.ko ]; then
     # Its a DaFang
@@ -136,9 +130,7 @@ fi
 ## Configure network address
 if [ -f "$CONFIGPATH/staticip.conf" ]; then
   # Install a resolv.conf if present so DNS can work
-  if [ -f "$CONFIGPATH/resolv.conf" ]; then
-    cp "$CONFIGPATH/resolv.conf" /etc/resolv.conf
-  fi
+  [ -f "$CONFIGPATH/resolv.conf" ] && cp "$CONFIGPATH/resolv.conf" /etc/resolv.conf
 
   # Configure staticip/netmask from config/staticip.conf
   staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
@@ -162,9 +154,7 @@ fi
 set_timezone
 
 ## Sync the time via NTP:
-if [ ! -f $CONFIGPATH/ntp_srv.conf ]; then
-  cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
-fi
+[ ! -f $CONFIGPATH/ntp_srv.conf ] && cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
 ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
 timeout -t 30 sh -c "until ping -c1 \"$ntp_srv\" &>/dev/null; do sleep 3; done";
 /system/sdcard/bin/busybox ntpd -p "$ntp_srv"
@@ -221,21 +211,15 @@ if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
 fi
 
 ## Start Webserver:
-if [ ! -f $CONFIGPATH/lighttpd.conf ]; then
-  cp $CONFIGPATH/lighttpd.conf.dist $CONFIGPATH/lighttpd.conf
-fi
+[ ! -f $CONFIGPATH/lighttpd.conf ] && cp $CONFIGPATH/lighttpd.conf.dist $CONFIGPATH/lighttpd.conf
 lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
 echo "lighttpd: $lighttpd_status" >> $LOGPATH
 
 ## Configure OSD:
-if [ -f /system/sdcard/controlscripts/configureOsd ]; then
-    . /system/sdcard/controlscripts/configureOsd  2>/dev/null
-fi
+[ -f /system/sdcard/controlscripts/configureOsd ] && . /system/sdcard/controlscripts/configureOsd  2>/dev/null
 
 ## Configure Motion:
-if [ -f /system/sdcard/controlscripts/configureMotion ]; then
-    . /system/sdcard/controlscripts/configureMotion  2>/dev/null
-fi
+[ -f /system/sdcard/controlscripts/configureMotion ] && . /system/sdcard/controlscripts/configureMotion  2>/dev/null
 
 ## Autostart all enabled services:
 for i in /system/sdcard/config/autostart/*; do

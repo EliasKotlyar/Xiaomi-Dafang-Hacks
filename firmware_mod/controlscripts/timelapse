@@ -3,9 +3,7 @@ PIDFILE='/run/timelapse.pid'
 
 status()
 {  PID=$(cat $PIDFILE)
-   if [ "$PID" != "" ]; then
-   cat $PIDFILE
-   fi
+   [ "$PID" != "" ] && cat $PIDFILE
 }
 
 start()

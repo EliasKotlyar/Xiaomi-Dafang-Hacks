@@ -1,16 +1,12 @@
 #!/bin/sh
 PIDFILE="/run/mqtt-status.pid"
 
-if [ ! -f /system/sdcard/config/mqtt.conf ]; then
-  echo "You have to configure mqtt first. Please see /system/sdcard/config/mqtt.conf.dist for further instructions"
-fi
+[ ! -f /system/sdcard/config/mqtt.conf ] && echo "You have to configure mqtt first. Please see /system/sdcard/config/mqtt.conf.dist for further instructions"
 
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
-  fi
+  [ "$pid" ] && kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
 }
 
 start()
@@ -27,9 +23,7 @@ start()
 stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
-  if [ "$pid" ]; then
-     kill "$pid" && rm "$PIDFILE"
-  fi
+  [ "$pid" ] && kill "$pid" && rm "$PIDFILE"
 }
 
 if [ $# -eq 0 ]; then
