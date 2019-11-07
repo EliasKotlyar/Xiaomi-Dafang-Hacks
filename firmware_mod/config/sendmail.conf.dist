@@ -8,7 +8,7 @@
 FROM="House.home@gmail.com"
 FROMNAME="`hostname`"
 
-# Login and pasword to access snmtp server
+# Login and pasword to access smtp server
 AUTH="john.doe"
 PASS="JOHNDOEPASSWORD"
 
