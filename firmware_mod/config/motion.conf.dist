@@ -35,6 +35,9 @@ video_use_rtsp=true
 video_rtsp_w=1280
 video_rtsp_h=720
 video_rtsp_f=15
+# Uncomment these with appropriate values from rtspserver.conf if set there
+#video_rtsp_username="user1"
+#video_rtsp_password="password2"
 
 # Snapshots
 save_snapshot=false

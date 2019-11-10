@@ -23,7 +23,11 @@ record_video () {
 		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
 
         if [ "$video_use_rtsp" = true ]; then
-            /system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://127.0.0.1:8554/unicast > "$video_tempfile"
+            rtsp_cmd="/system/sdcard/bin/openRTSP -4"
+            if [ -n "$video_rtsp_username" ]; then
+                rtsp_cmd="$rtsp_cmd -u $video_rtsp_username $video_rtsp_password"
+            fi
+            $rtsp_cmd -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://127.0.0.1:8554/unicast > "$video_tempfile"
         else
             # Use avconv to stitch multiple JPEGs into 1fps video.
             # I couldn't get it working another way.
