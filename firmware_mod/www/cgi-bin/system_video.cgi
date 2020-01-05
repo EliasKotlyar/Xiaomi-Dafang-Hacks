@@ -103,6 +103,7 @@ cat << EOF
                             <div class="select">
                                 <select name="video_size">
                                 <option value="-W640 -H360"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W640 -H360" ]; then echo selected; fi) >640x360</option>
+                                <option value="-W768 -H432"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W768 -H432" ]; then echo selected; fi) >768x432</option>
                                 <option value="-W960 -H540"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W960 -H540" ]; then echo selected; fi) >960x540</option>
                                 <option value="-W1280 -H720"  $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W1280 -H720" ] || [ -z "$RTSPH264OPTS" ]; then echo selected; fi) >1280x720</option>
                                 <option value="-W1600 -H900"  $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W1600 -H900" ]; then echo selected; fi) >1600x900</option>
