@@ -74,6 +74,9 @@ if [ "$SWAP" = true ]; then
   echo "Swap set on file $SWAPPATH" >> $LOGPATH
 fi
 
+## Remove stale PID files /run/
+rm /run/*.pid
+
 ## Create crontab dir and start crond:
 if [ ! -d /system/sdcard/config/cron ]; then
   mkdir -p ${CONFIGPATH}/cron/crontabs
@@ -226,6 +229,9 @@ if [ ! -f $CONFIGPATH/lighttpd.conf ]; then
 fi
 lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
 echo "lighttpd: $lighttpd_status" >> $LOGPATH
+
+## Motor  Calibration
+/system/sdcard/bin/motor -d v -s 100
 
 ## Configure OSD:
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
