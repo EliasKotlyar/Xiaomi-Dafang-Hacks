@@ -29,6 +29,10 @@ if [ -n "$F_cmd" ]; then
     echo $(ir_cut status)
     ;;
 
+  night_mode)
+    echo $(night_mode status)
+    ;;
+
   rtsp_h264)
     echo $(rtsp_h264_server status)
     ;;
@@ -100,7 +104,7 @@ if [ -n "$F_cmd" ]; then
       echo "OFF"
     fi
     ;;
-    
+
   motion_led)
     . /system/sdcard/config/motion.conf 2> /dev/null
     if [ "$motion_trigger_led" == "true" ]; then
