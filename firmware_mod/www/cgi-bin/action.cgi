@@ -303,6 +303,14 @@ if [ -n "$F_cmd" ]; then
     toggle-rtsp-nightvision-off)
       /system/sdcard/bin/setconf -k n -v 0
     ;;
+    
+    night_mode_on)
+      night_mode on
+    ;;
+
+    night_mode_off)
+      night_mode off
+    ;;
 
     flip-on)
       rewrite_config /system/sdcard/config/rtspserver.conf FLIP "ON"
