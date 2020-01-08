@@ -309,7 +309,7 @@ if [ -n "$F_cmd" ]; then
     ;;
 
     night_mode_off)
-     night_mode off
+      night_mode off
     ;;
 
     flip-on)
