@@ -305,15 +305,11 @@ if [ -n "$F_cmd" ]; then
     ;;
     
     night_mode_on)
-      ir_led on
-      ir_cut off
-      /system/sdcard/bin/setconf -k n -v 1
+      night_mode on
     ;;
 
     night_mode_off)
-     ir_led off
-     ir_cut on
-     /system/sdcard/bin/setconf -k n -v 0
+     night_mode off
     ;;
 
     flip-on)
