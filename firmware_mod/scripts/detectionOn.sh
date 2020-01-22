@@ -24,7 +24,7 @@ record_video () {
 		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
 
         if [ "$video_use_rtsp" = true ]; then
-			if [ -z "$var" ]; then 
+			if [ -z "$USERNAME" ]; then 
 				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://127.0.0.1:8554/unicast > "$video_tempfile"
 			else
 				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:8554/unicast > "$video_tempfile"
