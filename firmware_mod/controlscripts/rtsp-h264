@@ -79,6 +79,11 @@ start()
         PORT="-P $PORT"
     fi
 
+    ## Multicast
+    if [ "$MULTICASTDEST" != "" ]; then
+        MULTICASTDEST="-M $MULTICASTDEST"
+    fi
+
     ## FLIP
     if [ "$FLIP" == "ON" ]; then
         /system/sdcard/bin/setconf -k f -v 1
@@ -87,9 +92,9 @@ start()
     fi
 
     echo "================== START ===============" >> "$LOGPATH"
-    echo "/system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT" >> "$LOGPATH"
+    echo "/system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT $MULTICASTDEST" >> "$LOGPATH"
     cd /system/sdcard/hls
-    /system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT 2>> "$LOGPATH" >> "$LOGPATH" &
+    /system/sdcard/bin/v4l2rtspserver-master $RTSPH264OPTS $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT $MULTICASTDEST 2>> "$LOGPATH" >> "$LOGPATH" &
     echo "$!" > "$PIDFILE"
   fi
 }
