@@ -26,6 +26,11 @@ RTSPH264OPTS=""
 # RTSPMJPEGOPTS="-U user:password"
 RTSPMJPEGOPTS=""
 
+# Enable multicast stream
+# Example:
+# MULTICASTDEST="239.1.2.3:23912"
+MULTICASTDEST=""
+
 # Video
 BITRATE=5000
 # Framerate
