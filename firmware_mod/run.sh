@@ -227,6 +227,11 @@ fi
 lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
 echo "lighttpd: $lighttpd_status" >> $LOGPATH
 
+## Copy autonight configuration:
+if [ ! -f $CONFIGPATH/autonight.conf ]; then
+  cp $CONFIGPATH/autonight.conf.dist $CONFIGPATH/autonight.conf
+fi
+
 ## Configure OSD:
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
     . /system/sdcard/controlscripts/configureOsd  2>/dev/null
