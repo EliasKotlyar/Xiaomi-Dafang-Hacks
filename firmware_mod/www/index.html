@@ -182,14 +182,7 @@
                 <!-- left menu -->
                 <div class="navbar-start" id="common_nav">
                     <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">Status</span>
-                        <div class="navbar-dropdown is-boxed">
-                            <a id="status_overview" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/status_overview.cgi">Overview</a>
-                            <a id="logs" class="navbar-item onpage" href="javascript: void(0)" data-target="logs.html">Logs</a>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">System</span>
+                        <span class="navbar-link">Configuration</span>
                         <div class="navbar-dropdown is-boxed">
                             <a id="system" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_system.cgi">System</a>
                             <a id="admin" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_admin.cgi">Administration</a>
@@ -198,23 +191,25 @@
                             <a id="osdconfig" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_osd.cgi">OSD</a>
                             <a id="ptconfig" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_pt.cgi">Pan / Tilt</a>
                             <a id="ledconfig" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_led.cgi">LED configuration</a>
+                       <a id="configmotion" class="navbar-item onpage" href="javascript: void(0)" data-target="configmotion.html">Motion Detection</a>
+                            <a id="sw_night" class="navbar-item onpage" href="javascript: void(0)" data-target="sw_night_configure.html">SW night configuration</a>
+                        </div>
+                    </div>
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <span class="navbar-link">System</span>
+                        <div class="navbar-dropdown is-boxed">
+                                                        <a id="scripts" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/scripts.cgi">Services</a>
                             <a id="update" class="navbar-item onpage" href="javascript: void(0)" data-target="update.html">Update</a>
                             <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to reboot?" data-target="cgi-bin/action.cgi?cmd=reboot">Reboot</a>
                             <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to shutdown?" data-target="cgi-bin/action.cgi?cmd=shutdown">Shutdown</a>
                         </div>
                     </div>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">Services</span>
+                      <div class="navbar-item has-dropdown is-hoverable">
+                        <span class="navbar-link">Information</span>
                         <div class="navbar-dropdown is-boxed">
-                            <a id="scripts" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/scripts.cgi">Services</a>
-                            <a id="configmotion" class="navbar-item onpage" href="javascript: void(0)" data-target="configmotion.html">Motion Detection</a>
-                            <a id="sw_night" class="navbar-item onpage" href="javascript: void(0)" data-target="sw_night_configure.html">SW night configuration</a>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">Network</span>
-                        <div class="navbar-dropdown is-boxed">
-                            <a id="network" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/network.cgi">Network Information</a>
+                            <a id="status_overview" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/status_overview.cgi">Overview</a>
+                             <a id="network" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/network.cgi">Network</a>
+                            <a id="logs" class="navbar-item onpage" href="javascript: void(0)" data-target="logs.html">Logs</a>
                         </div>
                     </div>                    
 
