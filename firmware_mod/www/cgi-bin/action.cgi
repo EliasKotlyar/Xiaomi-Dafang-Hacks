@@ -434,7 +434,7 @@ if [ -n "$F_cmd" ]; then
 
     save_sw_night_config)
       night_mode_conf=$(echo "${F_val}"| sed "s/+/ /g" | sed "s/%2C/,/g")
-      rewrite_config /system/sdcard/config/autonight.conf sw_parameters $night_mode_conf
+      rewrite_config /system/sdcard/config/autonight.conf sw_parameters "$night_mode_conf"
       echo Saved $night_mode_conf
     ;;
 
