@@ -3,6 +3,7 @@
 # Source your custom motion configurations
 . /system/sdcard/config/motion.conf
 . /system/sdcard/scripts/common_functions.sh
+. /system/sdcard/config/rtspserver.conf
 
 debug_msg () {
 	if [ "$debug_msg_enable" = true ]; then
@@ -23,7 +24,12 @@ record_video () {
 		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
 
         if [ "$video_use_rtsp" = true ]; then
-            /system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://127.0.0.1:8554/unicast > "$video_tempfile"
+			if [ -z "$USERNAME" ]; then 
+				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://127.0.0.1:$PORT/unicast > "$video_tempfile"
+			else
+				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast > "$video_tempfile"
+			fi
+            
         else
             # Use avconv to stitch multiple JPEGs into 1fps video.
             # I couldn't get it working another way.
@@ -183,7 +189,7 @@ if [ "$smb_snapshot" = true -o "$smb_video" = true ]; then
     if [ "$smb_video" = true ]; then
         debug_msg "Saving SMB video to $smb_share/$smb_videos_path"
         video_tempfilename=${video_tempfile:5}
-        $smbclient_cmd -D "$smb_videos_path" -c "lcd /tmp; mkdir $groupname; cd $groupname; put $video_tempfilename; rename $video_tempfilename $filename.mp4"
+		$smbclient_cmd -D "$smb_videos_path" -c "lcd /tmp; mkdir $groupname; cd $groupname; put $video_tempfilename; rename $video_tempfilename $filename.mp4"
     fi
     ) &
 fi

@@ -25,6 +25,9 @@ No that's not possible. It can be done, but there will be a lot of trouble in do
 
 Yes, but you must [flash a custom bootloader](/hacks/flashinguboot.md) to achieve this.
 
+### Can the camera send a multicast stream?
+Yes, uncomment and customize the multicast destination IP and port in /system/sdcard/config/rtspserver.conf and restart.
+
 ### Can I use USB ethernet cards?
 Yes, just create a usb_eth_driver.conf file in /system/sdcard/config.
 ```

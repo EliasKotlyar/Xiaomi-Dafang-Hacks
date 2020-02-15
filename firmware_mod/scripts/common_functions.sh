@@ -469,7 +469,12 @@ night_mode(){
   case "$1" in
   on)
     /system/sdcard/bin/setconf -k n -v 1
-    ir_led on
+    . /system/sdcard/config/autonight.conf
+    if [ -z "$ir_led_off" ] || [ $ir_led_off = false ]; then
+        ir_led on
+    else
+        ir_led off
+    fi
     ir_cut off
     ;;
   off)
@@ -519,12 +524,12 @@ snapshot(){
 update_axis(){
   . /system/sdcard/config/osd.conf > /dev/null 2>/dev/null
   AXIS=$(/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print " X="$2,"Y="$4}')
-  
+
   if [ "$ENABLE_OSD" = "true" ]; then
     if [ "$DISPLAY_AXIS" = "true" ]; then
       OSD="${OSD}${AXIS}"
     fi
-    
+
     /system/sdcard/bin/setconf -k o -v "$OSD"
   fi
 }

@@ -64,7 +64,7 @@ start()
 
     ## Video format
     if [ "$VIDEOFORMAT" != "" ]; then
-	    VIDEOFORMAT="-r $VIDEOFORMAT"
+	    VIDEOFORMAT="-r $VIDEOFORMAT -F $FRAMERATE_NUM"
     fi
 
     ## UserName and password
@@ -77,6 +77,11 @@ start()
         PORT="-P $PORT"
     fi
 
+    ## Multicast
+    if [ "$MULTICASTDEST" != "" ]; then
+        MULTICASTDEST="-M $MULTICASTDEST"
+    fi
+
     ## FLIP
     if [ "$FLIP" == "ON" ]; then
         /system/sdcard/bin/setconf -k f -v 1
@@ -85,8 +90,8 @@ start()
     fi
 
     echo "================== START ===============" >> "$LOGPATH"
-    echo "/system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT" >> "$LOGPATH"
-    /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT  2>> "$LOGPATH" >> "$LOGPATH" &
+    echo "/system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT $MULTICASTDEST" >> "$LOGPATH"
+    /system/sdcard/bin/v4l2rtspserver-master -fMJPG $RTSPMJPEGOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT $MULTICASTDEST 2>> "$LOGPATH" >> "$LOGPATH" &
     echo "$!" > "$PIDFILE"
   fi
 }

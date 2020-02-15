@@ -233,6 +233,11 @@ echo "lighttpd: $lighttpd_status" >> $LOGPATH
 ## Motor  Calibration
 /system/sdcard/bin/motor -d v -s 100
 
+## Copy autonight configuration:
+if [ ! -f $CONFIGPATH/autonight.conf ]; then
+  cp $CONFIGPATH/autonight.conf.dist $CONFIGPATH/autonight.conf
+fi
+
 ## Configure OSD:
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
     . /system/sdcard/controlscripts/configureOsd  2>/dev/null

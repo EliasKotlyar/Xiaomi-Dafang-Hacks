@@ -1,0 +1,5 @@
+autonight_mode=sw
+hw_parameters=
+sw_parameters='-S -j 3 -w 3 -1 1200000 -2 930000,14,10 -3 3000,17,8'
+# set ir_led_off to true in front of IR reflecting windows
+ir_led_off=false

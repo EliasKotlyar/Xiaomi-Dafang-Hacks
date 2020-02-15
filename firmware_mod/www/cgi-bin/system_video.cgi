@@ -103,6 +103,7 @@ cat << EOF
                             <div class="select">
                                 <select name="video_size">
                                 <option value="-W640 -H360"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W640 -H360" ]; then echo selected; fi) >640x360</option>
+                                <option value="-W768 -H432"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W768 -H432" ]; then echo selected; fi) >768x432</option>
                                 <option value="-W960 -H540"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W960 -H540" ]; then echo selected; fi) >960x540</option>
                                 <option value="-W768 -H432"   $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W768 -H432" ]; then echo selected; fi) >768x432</option>
                                 <option value="-W1280 -H720"  $(source /system/sdcard/config/rtspserver.conf; if [ "$RTSPH264OPTS" == "-W1280 -H720" ] || [ -z "$RTSPH264OPTS" ]; then echo selected; fi) >1280x720</option>
@@ -211,9 +212,9 @@ cat << EOF
         <div class="column">
             <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_start')">On</button>
             <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=auto_night_mode_stop')">Off</button>
-            <input class="is-checkradio" id="night_config_hw" type="radio" name="night_config" $(if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" != 0 ]; then echo "checked";  fi) onClick="call('cgi-bin/action.cgi?cmd=autonight_hw')" >
+            <input class="is-checkradio" id="night_config_hw" type="radio" name="night_config" $(if [ "$(grep -q -e "=hw" /system/sdcard/config/autonight.conf; echo $?)" != 0 ]; then echo "checked";  fi) onClick="call('cgi-bin/action.cgi?cmd=autonight_hw')" >
             <label for="night_config_hw">HW</label>
-            <input class="is-checkradio" id="night_config_sw" type="radio" name="night_config" $(if [ "$(grep -q -e "-S" /system/sdcard/config/autonight.conf; echo $?)" == 0 ]; then echo "checked";  fi)  onClick="call('cgi-bin/action.cgi?cmd=autonight_sw')">
+            <input class="is-checkradio" id="night_config_sw" type="radio" name="night_config" $(if [ "$(grep -q -e "=sw" /system/sdcard/config/autonight.conf; echo $?)" == 0 ]; then echo "checked";  fi)  onClick="call('cgi-bin/action.cgi?cmd=autonight_sw')">
             <label for="night_config_sw">SW</label>
         </div>
         <div class="column">
