@@ -24,6 +24,8 @@ status()
   if [ "$pid" ]; then
     # Prints PID: $pid if exists and returns 0(no error) else returns 1(error condition)
     kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+  else
+    return 2
   fi
 }
 
