@@ -1,6 +1,8 @@
 #!/bin/sh
 PIDFILE="/run/recording.pid"
 DCIM_PATH="/system/sdcard/DCIM"
+
+PORT=8554
 if [ -f /system/sdcard/config/rtspserver.conf ]; then
   . /system/sdcard/config/rtspserver.conf
 fi
@@ -39,7 +41,7 @@ start()
     do
       sleep 1
     done
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -flags low_delay -fflags nobuffer -probesize 32 -i rtsp://"$CREDENTIALS"0.0.0.0:8554/unicast -strict experimental -y -vcodec copy -an $RECORDING_PATH &>/dev/null &
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -flags low_delay -fflags nobuffer -probesize 32 -i rtsp://"$CREDENTIALS"0.0.0.0:$PORT/unicast -strict experimental -y -vcodec copy -an $RECORDING_PATH &>/dev/null &
     echo "$!" > "$PIDFILE"
   fi
 }
