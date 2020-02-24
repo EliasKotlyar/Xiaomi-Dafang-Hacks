@@ -1,11 +1,8 @@
 #!/bin/sh
+. /system/sdcard/config/rtspserver.conf
+
 PIDFILE="/run/recording.pid"
 DCIM_PATH="/system/sdcard/DCIM"
-
-PORT=8554
-if [ -f /system/sdcard/config/rtspserver.conf ]; then
-  . /system/sdcard/config/rtspserver.conf
-fi
 
 ## UserName and password
 if [ "$USERNAME" != "" ]; then
