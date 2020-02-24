@@ -22,8 +22,12 @@ status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
-    # Prints PID: $pid if exists and returns 0(no error) else returns 1(error condition)
+    # return current pid if pidfile exists and contained pid is alive
+    # return 1 if pidfile existed but the contained pid is dead
     kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+  else
+    # return 2 if pidfile did not exist
+    return 2
   fi
 }
 
