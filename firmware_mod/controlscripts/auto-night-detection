@@ -12,16 +12,17 @@ status()
 
 start()
 {
-  AUTONIGHT_OPTS=
-  if [ -f $CONF_FILE ]
-  then
-        AUTONIGHT_OPTS=$(cat $CONF_FILE)
-  fi
+  . $CONF_FILE
   if [ -f /run/auto-night-detection.pid ]; then
-    echo "Auto Night Detection already running";
+    echo "Auto night detection already running";
   else
-    echo "Starting Auto Night Detection"
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/autonight $AUTONIGHT_OPTS &>/dev/null &
+    if [ "$autonight_mode" == "sw" ]; then
+        echo "Starting software auto night detection"
+        /system/sdcard/bin/busybox nohup /system/sdcard/bin/autonight $sw_parameters &>/dev/null &
+    else
+        echo "Starting hardware auto night detection"
+        /system/sdcard/bin/busybox nohup /system/sdcard/bin/autonight $hw_parameters &>/dev/null &
+    fi
     echo "$!" > "$PIDFILE"
   fi
 }
