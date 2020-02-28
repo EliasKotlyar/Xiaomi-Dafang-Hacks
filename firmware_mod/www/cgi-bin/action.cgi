@@ -588,72 +588,107 @@ if [ -n "$F_cmd" ]; then
         ;;
 
      motion_detection_mail_on)
-         rewrite_config /system/sdcard/config/motion.conf send_email "true"
+         motion_send_mail on
          return
          ;;
 
      motion_detection_mail_off)
-          rewrite_config /system/sdcard/config/motion.conf send_email "false"
+          motion_send_mail off
           return
           ;;
 
-	 motion_detection_mail_status)
-		  motion_send_mail status
-		  return
-		  ;;
+     motion_detection_mail_status)
+          motion_send_mail status
+          return
+          ;;
 
      motion_detection_telegram_on)
-          rewrite_config /system/sdcard/config/motion.conf send_telegram "true"
+          motion_send_telegram on
           return
           ;;
 
      motion_detection_telegram_off)
-          rewrite_config /system/sdcard/config/motion.conf send_telegram "false"
+          motion_send_telegram off
           return
           ;;
 
-	 motion_detection_telegram_status)
+     motion_detection_telegram_status)
           motion_send_telegram status
           return
           ;;
 
      motion_detection_led_on)
-          rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "true"
+          motion_led on
           return
           ;;
 
      motion_detection_led_off)
-          rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "false"
+          motion_led off
+          return
+          ;;
+
+     motion_detection_led_status)
+          motion_led status
           return
           ;;
 
      motion_detection_snapshot_on)
-          rewrite_config /system/sdcard/config/motion.conf save_snapshot "true"
+          motion_snapshot on
           return
           ;;
 
      motion_detection_snapshot_off)
-          rewrite_config /system/sdcard/config/motion.conf save_snapshot "false"
+          motion_snapshot off
+          return
+          ;;
+
+     motion_detection_snapshot_status)
+          motion_snapshot status
+          return
+          ;;
+
+     motion_detection_video_on)
+          motion_video on
+          return
+          ;;
+
+     motion_detection_video_off)
+          motion_video off
+          return
+          ;;
+
+     motion_detection_video_status)
+          motion_video status
           return
           ;;
 
      motion_detection_mqtt_publish_on)
-          rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "true"
+          motion_mqtt_publish on
           return
           ;;
 
      motion_detection_mqtt_publish_off)
-          rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "false"
+          motion_mqtt_publish off
           return
           ;;
 
-     motion_detection_mqtt_snapshot_on)
-          rewrite_config /system/sdcard/config/motion.conf publish_mqtt_snapshot "true"
+     motion_detection_mqtt_publish_status)
+          motion_mqtt_publish status
           return
           ;;
 
      motion_detection_mqtt_snapshot_off)
-          rewrite_config /system/sdcard/config/motion.conf publish_mqtt_snapshot "false"
+          motion_mqtt_snapshot off
+          return
+          ;;
+
+     motion_detection_mqtt_snapshot_on)
+          motion_mqtt_snapshot on
+          return
+          ;;
+
+	 motion_detection_mqtt_snapshot_status)
+          motion_mqtt_snapshot status
           return
           ;;
 
