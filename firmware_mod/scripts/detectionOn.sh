@@ -104,7 +104,7 @@ if [ "$save_video" = true ] ; then
 
 	# Limit the number of videos
 	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_video_days" ]; then
-		rm -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
+		rm -r -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
 	fi
 
 	chmod "$save_video_attr" "$video_tempfile"
