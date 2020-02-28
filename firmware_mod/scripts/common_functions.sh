@@ -530,7 +530,7 @@ motion_tracking(){
   esac
 }
 
-#Control the motion detection publish MQTT-messsage function 
+# Control the motion detection publish MQTT-message function 
 motion_mqtt_publish(){
   case "$1" in
   on)
