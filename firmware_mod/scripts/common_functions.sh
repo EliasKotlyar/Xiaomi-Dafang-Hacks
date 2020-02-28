@@ -552,7 +552,7 @@ motion_mqtt_publish(){
   esac
 }
 
-#Control the motion detection publish snapshots in MQTT-messsage function
+# Control the motion detection publish snapshots in MQTT-message function
 motion_mqtt_snapshot(){
   case "$1" in
   on)
