@@ -24,11 +24,11 @@ record_video () {
 		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
 
         if [ "$video_use_rtsp" = true ]; then
-			receive_bit="$((($BITRATE*100)+150000))"
+			output_buffer_size="$((($BITRATE*100)+150000))"
 			if [ -z "$USERNAME" ]; then 
-				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$receive_bit" rtsp://127.0.0.1:$PORT/unicast > "$video_tempfile"
+				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://127.0.0.1:$PORT/unicast > "$video_tempfile"
 			else
-				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$receive_bit" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast > "$video_tempfile"
+				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast > "$video_tempfile"
 			fi
             
         else
