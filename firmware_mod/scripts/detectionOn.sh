@@ -25,12 +25,12 @@ record_video () {
 
         if [ "$video_use_rtsp" = true ]; then
 			output_buffer_size="$((($BITRATE*100)+150000))"
-			if [ -z "$USERNAME" ]; then 
+			if [ -z "$USERNAME" ]; then
 				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://127.0.0.1:$PORT/unicast > "$video_tempfile"
 			else
 				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast > "$video_tempfile"
 			fi
-            
+
         else
             # Use avconv to stitch multiple JPEGs into 1fps video.
             # I couldn't get it working another way.
@@ -68,7 +68,7 @@ filename=$(date "$filename_pattern")
 debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 
 # Then, record video (if necessary)
-if [ "$save_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" ] ; then
+if [ "$save_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" -o "$publish_mqtt_video" = true ] ; then
 	record_video
 fi
 
@@ -196,13 +196,17 @@ if [ "$smb_snapshot" = true -o "$smb_video" = true ]; then
 fi
 
 # Publish a mqtt message
-if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true ] ; then
+if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true -o "$publish_mqtt_video" = true ] ; then
 	(
 	. /system/sdcard/config/mqtt.conf
 
 	if [ "$publish_mqtt_message" = true ] ; then
 		debug_msg "Send MQTT message"
 		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -m "ON"
+	fi
+
+	if [ "$publish_mqtt_video" = true ] ; then
+		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/video $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$video_tempfile"
 	fi
 
 	if [ "$publish_mqtt_snapshot" = true ] ; then
@@ -213,6 +217,7 @@ if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true ] ; then
 		# rm "$snapshot_tempfile-s"
 		/system/sdcard/bin/jpegoptim -m 70 "$snapshot_tempfile"
 		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/snapshot $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$snapshot_tempfile"
+
 	fi
 	) &
 fi

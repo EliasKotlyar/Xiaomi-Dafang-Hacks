@@ -211,7 +211,7 @@
                              <a id="network" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/network.cgi">Network</a>
                             <a id="logs" class="navbar-item onpage" href="javascript: void(0)" data-target="logs.html">Logs</a>
                         </div>
-                    </div>                    
+                    </div>
 
                 </div>
                 <!-- right menu -->
@@ -318,6 +318,12 @@
                                 <input id="motion_mqtt_snapshot" type="checkbox" name="motion_mqtt_snapshot" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_snapshot_on"
                                        data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_snapshot_off">
                                 <label for="motion_mqtt_snapshot">Motion - MQTT Snapshot</label>
+                            </span>
+                            <!-- Motion: MQTT Message -->
+                            <span class="navbar-item">
+                                <input id="motion_mqtt_video" type="checkbox" name="motion_mqtt_video" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_video_on"
+                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_video_off">
+                                <label for="motion_mqtt_video">Motion - MQTT Video</label>
                             </span>
                         </div>
                     </div>

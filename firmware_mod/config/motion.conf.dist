@@ -19,6 +19,7 @@ motion_tracking=off
 motion_trigger_led=true
 publish_mqtt_message=false
 publish_mqtt_snapshot=false
+publish_mqtt_video=false
 send_email=false
 send_telegram=false
 telegram_alert_type=image
