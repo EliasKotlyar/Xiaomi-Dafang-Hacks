@@ -206,6 +206,7 @@ if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true -o "$publ
 	fi
 
 	if [ "$publish_mqtt_video" = true ] ; then
+		debug_msg "Send MQTT video"
 		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/video $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$video_tempfile"
 	fi
 
