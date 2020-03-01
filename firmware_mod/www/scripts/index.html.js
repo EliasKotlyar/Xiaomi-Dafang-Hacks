@@ -3,7 +3,7 @@ var SWITCHES = [
     "rtsp_h264", "rtsp_mjpeg", "auto_night_detection",
     "mqtt_status", "mqtt_control",
     "sound_on_startup", "motion_detection", "motion_mail", "motion_telegram",
-    "motion_led","motion_snapshot","motion_mqtt", "motion_mqtt_snapshot"];
+    "motion_led","motion_snapshot","motion_mqtt", "motion_mqtt_snapshot", "motion_mqtt_video"];
 
 var timeoutJobs = {};
 
@@ -53,14 +53,14 @@ function showResult(txt) {
 $(document).ready(function () {
 
     setTheme(getThemeChoice());
-    
+
     // Set title page and menu with hostname
     $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(title){document.title = title;document.getElementById("title").innerHTML = title;});
-    
-    
+
+
     // Set git version to bottim page
     $.get("cgi-bin/state.cgi", {cmd: "version"}, function(version){document.getElementById("version").innerHTML = version;});
-   
+
     // Load link into #content
     $('.onpage').click(function () {
         var e = $(this);
