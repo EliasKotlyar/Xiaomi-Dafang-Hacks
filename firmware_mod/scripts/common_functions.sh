@@ -530,7 +530,7 @@ motion_tracking(){
   esac
 }
 
-# Control the motion detection publish MQTT-message function 
+# Control the motion detection publish MQTT-message function
 motion_mqtt_publish(){
   case "$1" in
   on)
@@ -563,6 +563,28 @@ motion_mqtt_snapshot(){
     ;;
   status)
     status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'publish_mqtt_snapshot'|cut -f2 -d \=)
+    case $status in
+      true)
+        echo "ON"
+        ;;
+      false)
+        echo "OFF"
+        ;;
+    esac
+  esac
+}
+
+# Control the motion detection publish video in MQTT-message function
+motion_mqtt_video(){
+  case "$1" in
+  on)
+    rewrite_config /system/sdcard/config/motion.conf publish_mqtt_video "true"
+    ;;
+  off)
+    rewrite_config /system/sdcard/config/motion.conf publish_mqtt_video "false"
+    ;;
+  status)
+    status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'publish_mqtt_video'|cut -f2 -d \=)
     case $status in
       true)
         echo "ON"

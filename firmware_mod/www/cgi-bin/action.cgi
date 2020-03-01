@@ -325,7 +325,7 @@ if [ -n "$F_cmd" ]; then
     auto_night_mode_stop)
       /system/sdcard/controlscripts/auto-night-detection stop
     ;;
-    
+
 	auto_night_mode_status)
       auto_night_mode status
       return
@@ -691,6 +691,21 @@ if [ -n "$F_cmd" ]; then
           motion_mqtt_snapshot status
           return
           ;;
+
+    motion_detection_mqtt_video_off)
+         motion_mqtt_video off
+         return
+         ;;
+
+    motion_detection_mqtt_video_on)
+         motion_mqtt_video on
+         return
+         ;;
+
+    motion_detection_mqtt_video_status)
+         motion_mqtt_video status
+         return
+         ;;
 
      show_HWmodel)
           detect_model
