@@ -398,6 +398,28 @@ motion_detection(){
   esac
 }
 
+# Control the motion detection led function
+motion_led(){
+  case "$1" in
+  on)
+    rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "true"
+    ;;
+  off)
+    rewrite_config /system/sdcard/config/motion.conf motion_trigger_led "false"
+    ;;
+  status)
+    status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'motion_trigger_led'|cut -f2 -d \=)
+    case $status in
+      true)
+        echo "ON"
+        ;;
+      false)
+        echo "OFF"
+        ;;
+    esac
+  esac
+}
+
 # Control the motion detection mail function
 motion_send_mail(){
   case "$1" in
@@ -408,7 +430,7 @@ motion_send_mail(){
     rewrite_config /system/sdcard/config/motion.conf send_email "false"
     ;;
   status)
-    status=$(awk '/send_email/' /system/sdcard/config/motion.conf |cut -f2 -d \=)
+    status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'send_email'|cut -f2 -d \=)
     case $status in
       false)
         echo "OFF"
@@ -430,12 +452,56 @@ motion_send_telegram(){
     rewrite_config /system/sdcard/config/motion.conf send_telegram "false"
     ;;
   status)
-    status=$(awk '/send_telegram/' /system/sdcard/config/motion.conf |cut -f2 -d \=)
+    status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'send_telegram'|cut -f2 -d \=)
     case $status in
       true)
         echo "ON"
         ;;
       *)
+        echo "OFF"
+        ;;
+    esac
+  esac
+}
+
+# Control the motion detection snapshot function
+motion_snapshot(){
+  case "$1" in
+  on)
+    rewrite_config /system/sdcard/config/motion.conf save_snapshot "true"
+    ;;
+  off)
+    rewrite_config /system/sdcard/config/motion.conf save_snapshot "false"
+    ;;
+  status)
+    status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'save_snapshot[^_]'|cut -f2 -d \=)
+    case $status in
+      false)
+        echo "OFF"
+        ;;
+      true)
+        echo "ON"
+        ;;
+    esac
+  esac
+}
+
+# Control the motion detection video function
+motion_video(){
+  case "$1" in
+  on)
+    rewrite_config /system/sdcard/config/motion.conf save_video "true"
+    ;;
+  off)
+    rewrite_config /system/sdcard/config/motion.conf save_video "false"
+    ;;
+  status)
+    status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'save_video[^_]'|cut -f2 -d \=)
+    case $status in
+      true)
+        echo "ON"
+        ;;
+      false)
         echo "OFF"
         ;;
     esac
@@ -458,6 +524,50 @@ motion_tracking(){
         echo "ON"
         ;;
       *)
+        echo "OFF"
+        ;;
+    esac
+  esac
+}
+
+# Control the motion detection publish MQTT-message function 
+motion_mqtt_publish(){
+  case "$1" in
+  on)
+    rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "true"
+    ;;
+  off)
+    rewrite_config /system/sdcard/config/motion.conf publish_mqtt_message "false"
+    ;;
+  status)
+    status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'publish_mqtt_message'|cut -f2 -d \=)
+    case $status in
+      true)
+        echo "ON"
+        ;;
+      false)
+        echo "OFF"
+        ;;
+    esac
+  esac
+}
+
+# Control the motion detection publish snapshots in MQTT-message function
+motion_mqtt_snapshot(){
+  case "$1" in
+  on)
+    rewrite_config /system/sdcard/config/motion.conf publish_mqtt_snapshot "true"
+    ;;
+  off)
+    rewrite_config /system/sdcard/config/motion.conf publish_mqtt_snapshot "false"
+    ;;
+  status)
+    status=$(grep '^[^#;]' /system/sdcard/config/motion.conf|grep 'publish_mqtt_snapshot'|cut -f2 -d \=)
+    case $status in
+      true)
+        echo "ON"
+        ;;
+      false)
         echo "OFF"
         ;;
     esac
