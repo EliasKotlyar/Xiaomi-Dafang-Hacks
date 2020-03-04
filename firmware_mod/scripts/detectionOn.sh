@@ -81,6 +81,7 @@ if [ "$save_snapshot" = true ] ; then
 
 	if [ ! -d "$save_snapshot_dir/$groupname" ]; then
 		mkdir -p "$save_snapshot_dir/$groupname"
+		chmod "$save_snapshot_attr" "$save_snapshot_dir/$groupname"
 	fi
 
 	# Limit the number of snapshots
@@ -89,7 +90,7 @@ if [ "$save_snapshot" = true ] ; then
 	fi
 
 	chmod "$save_snapshot_attr" "$snapshot_tempfile"
-	cp -p "$snapshot_tempfile" "$save_snapshot_dir/$groupname/$filename.jpg"
+	cp "$snapshot_tempfile" "$save_snapshot_dir/$groupname/$filename.jpg"
 	) &
 fi
 
@@ -100,6 +101,7 @@ if [ "$save_video" = true ] ; then
 
 	if [ ! -d "$save_video_dir/$groupname" ]; then
 		mkdir -p "$save_video_dir/$groupname"
+		chmod "$save_snapshot_attr" "$save_video_dir/$groupname"
 	fi
 
 	# Limit the number of videos
@@ -108,7 +110,7 @@ if [ "$save_video" = true ] ; then
 	fi
 
 	chmod "$save_video_attr" "$video_tempfile"
-	cp -p "$video_tempfile" "$save_video_dir/$groupname/$filename.mp4"
+	cp "$video_tempfile" "$save_video_dir/$groupname/$filename.mp4"
 	) &
 fi
 
