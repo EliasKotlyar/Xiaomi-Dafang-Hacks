@@ -132,7 +132,7 @@ To publish the image itself, also set
 publish_mqtt_snapshot=true
 ```
 
-You should now be getting messages on topic `myhome/mycamera/motion` and images on `myhome/mycamera/motion/snapshot` while `myhome/mycamera/motion/detection` is set to ON.
+You should now be getting messages on topic `myhome/mycamera/motion` and images on `myhome/mycamera/motion/snapshot/image` while `myhome/mycamera/motion/detection` is set to ON.
 
 To react on a motion event, in your `automations.yaml` define something like:
 
