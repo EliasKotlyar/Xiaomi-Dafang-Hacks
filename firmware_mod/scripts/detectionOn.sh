@@ -58,9 +58,9 @@ snapshot_tempfile=$(mktemp /tmp/snapshot-XXXXXXX)
 video_tempfile=$(mktemp /tmp/video-XXXXXXX)
 
 # Prepare filename, save datetime ASAP
-group_pattern="${group_date_pattern:-+%d-%m-%Y}"
+group_pattern="${group_date_pattern:-+%Y-%m-%d}"
 groupname=$(date "$group_pattern")
-filename_pattern="${file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
+filename_pattern="${file_date_pattern:-+%Y-%m-%d_%H-%M-%S}"
 filename=$(date "$filename_pattern")
 
 # First, take a snapshot (always)

@@ -94,7 +94,6 @@ main() {
   [ -z "$chatId" ] && return 0 # no new messages
 
   cmd=$(echo "$json" | $JQ -r ".result[0].$messageAttr.text // \"\"")
-  
 
   if [ "$chatId" != "$userChatId" ]; then
     username=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.username // \"\"")
