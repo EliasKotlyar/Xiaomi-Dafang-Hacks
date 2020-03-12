@@ -58,9 +58,9 @@ snapshot_tempfile=$(mktemp /tmp/snapshot-XXXXXXX)
 video_tempfile=$(mktemp /tmp/video-XXXXXXX)
 
 # Prepare filename, save datetime ASAP
-group_pattern="${group_date_pattern:-+%d-%m-%Y}"
+group_pattern="${group_date_pattern:-+%Y-%m-%d}"
 groupname=$(date "$group_pattern")
-filename_pattern="${file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
+filename_pattern="${file_date_pattern:-+%Y-%m-%d_%H-%M-%S}"
 filename=$(date "$filename_pattern")
 
 # First, take a snapshot (always)
@@ -81,6 +81,7 @@ if [ "$save_snapshot" = true ] ; then
 
 	if [ ! -d "$save_snapshot_dir/$groupname" ]; then
 		mkdir -p "$save_snapshot_dir/$groupname"
+		chmod "$save_snapshot_attr" "$save_snapshot_dir/$groupname"
 	fi
 
 	# Limit the number of snapshots
@@ -89,7 +90,7 @@ if [ "$save_snapshot" = true ] ; then
 	fi
 
 	chmod "$save_snapshot_attr" "$snapshot_tempfile"
-	cp -p "$snapshot_tempfile" "$save_snapshot_dir/$groupname/$filename.jpg"
+	cp "$snapshot_tempfile" "$save_snapshot_dir/$groupname/$filename.jpg"
 	) &
 fi
 
@@ -100,6 +101,7 @@ if [ "$save_video" = true ] ; then
 
 	if [ ! -d "$save_video_dir/$groupname" ]; then
 		mkdir -p "$save_video_dir/$groupname"
+		chmod "$save_snapshot_attr" "$save_video_dir/$groupname"
 	fi
 
 	# Limit the number of videos
@@ -108,7 +110,7 @@ if [ "$save_video" = true ] ; then
 	fi
 
 	chmod "$save_video_attr" "$video_tempfile"
-	cp -p "$video_tempfile" "$save_video_dir/$groupname/$filename.mp4"
+	cp "$video_tempfile" "$save_video_dir/$groupname/$filename.mp4"
 	) &
 fi
 
@@ -214,7 +216,7 @@ if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true -o "$publ
 		debug_msg "Send MQTT snapshot"
 		/system/sdcard/bin/jpegtran -scale 1/2 "$snapshot_tempfile" > "$snapshot_tempfile-s"
 		/system/sdcard/bin/jpegoptim -m 70 "$snapshot_tempfile-s"
-		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/snapshot $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$snapshot_tempfile-s"
+		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/snapshot/image $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$snapshot_tempfile-s"
 		rm "$snapshot_tempfile-s"
 	fi
 	) &

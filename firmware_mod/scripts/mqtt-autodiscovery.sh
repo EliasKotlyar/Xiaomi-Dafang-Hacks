@@ -3,10 +3,10 @@
   . /system/sdcard/config/mqtt.conf
   . /system/sdcard/scripts/common_functions.sh
 
-  MAC=$(cat /sys/class/net/wlan0/address)                                         
-  MAC_SIMPLE=$(cat /sys/class/net/wlan0/address | tr -d :)                        
-  MANUFACTURER="Xiaomi"                                                           
-  MODEL="Dafang"                                                                  
+  MAC=$(cat /sys/class/net/wlan0/address)
+  MAC_SIMPLE=$(cat /sys/class/net/wlan0/address | tr -d :)
+  MANUFACTURER="Xiaomi"
+  MODEL="Dafang"
   VER=`cat /system/sdcard/.lastCommitDate`
 
   MQTT_COMMAND="/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t"
@@ -24,8 +24,8 @@
   # Motion send telegram alert on/off switch
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_telegram/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion send telegram\", \"unique_id\": \"$MAC_SIMPLE-motion-send-telegram\", $DEVICE_INFO, \"icon\": \"mdi:telegram\", \"state_topic\": \"$TOPIC/motion/send_telegram\", \"command_topic\": \"$TOPIC/motion/send_telegram/set\"}"
 
-  # Motion detection snapshots 
-  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/camera/$DEVICE_NAME/motion_snapshot/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion snapshot\", \"unique_id\": \"$MAC_SIMPLE-motion-snapshot\", $DEVICE_INFO,\"topic\": \"$TOPIC/motion/snapshot\"}"
+  # Motion detection snapshots
+  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/camera/$DEVICE_NAME/motion_snapshot/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion snapshot\", \"unique_id\": \"$MAC_SIMPLE-motion-snapshot\", $DEVICE_INFO,\"topic\": \"$TOPIC/motion/snapshot/image\"}"
 
   # Motion tracking on/off switch
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_tracking/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME motion tracking\", \"unique_id\": \"$MAC_SIMPLE-motion-tracking\", $DEVICE_INFO, \"icon\": \"mdi:track-light\", \"state_topic\": \"$TOPIC/motion/tracking\", \"command_topic\": \"$TOPIC/motion/tracking/set\"}"
@@ -49,7 +49,7 @@
   # Night mode automatic
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/auto_night_mode/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME night mode auto\", \"unique_id\": \"$MAC_SIMPLE-night-mode-auto\", $DEVICE_INFO, \"icon\": \"mdi:weather-night\", \"state_topic\": \"$TOPIC/night_mode/auto\", \"command_topic\": \"$TOPIC/night_mode/auto/set\"}"
 
-  # RTSP Server               
+  # RTSP Server
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/rtsp_h264_server/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME h264 rtsp server\", \"unique_id\": \"$MAC_SIMPLE-h264-rtsp-server\", $DEVICE_INFO, \"icon\": \"mdi:cctv\", \"state_topic\": \"$TOPIC/rtsp_h264_server\", \"command_topic\": \"$TOPIC/rtsp_h264_server/set\"}"
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/rtsp_mjpeg_server/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME mjpeg rtsp server\", \"unique_id\": \"$MAC_SIMPLE-mjpeg-rtsp-server\", $DEVICE_INFO, \"icon\": \"mdi:cctv\", \"state_topic\": \"$TOPIC/rtsp_mjpeg_server\", \"command_topic\": \"$TOPIC/rtsp_mjpeg_server/set\"}"
 

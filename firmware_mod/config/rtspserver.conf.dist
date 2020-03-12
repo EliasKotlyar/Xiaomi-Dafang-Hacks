@@ -12,6 +12,9 @@ LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
 
 PORT=8554
 
+USERNAME=
+USERPASSWORD=
+
 # H264 RTSP server options
 # Examples:
 # RTSPH264OPTS="-W960 -H540"
