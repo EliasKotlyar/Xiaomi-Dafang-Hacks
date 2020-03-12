@@ -39,9 +39,11 @@ $SERVER["socket"] == ":443" {
 # (we don't want to upgrade to SSL nor auth' this path)
 $HTTP["url"] !~ "^/.well-known/(.*)" {
 
-    auth.backend                = "htdigest"
-    auth.backend.htdigest.userfile = "/system/sdcard/config/lighttpd.user"
-    auth.require = ( "/" => ("method" => "basic", "realm" => "all", "require" => "user=root"))
+    $HTTP["scheme"] == "https" {
+        auth.backend                = "htdigest"
+        auth.backend.htdigest.userfile = "/system/sdcard/config/lighttpd.user"
+        auth.require = ( "/" => ("method" => "basic", "realm" => "all", "require" => "user=root"))
+    }
 
 #If below 7 lines are commented out then SSL is disabled if un-commented SSL is enabled
 #SSL is enabled by default
