@@ -241,10 +241,10 @@ done
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/mqtt_snapshot ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_mqtt_snapshot status)"
     ;;
         
-    "${TOPIC}/motion/mqtt_snapshot GET")
+    "${TOPIC}/mqtt_snapshot GET")
       /system/sdcard/bin/getimage > "/tmp/mqtt_snapshot"
       /system/sdcard/bin/jpegoptim -S 25k "/tmp/mqtt_snapshot"
-      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/snapshot/image ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -f "/tmp/mqtt_snapshot"
+      /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/snapshot/image ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -f "/tmp/mqtt_snapshot"
       rm "/tmp/mqtt_snapshot"
     ;;
 
