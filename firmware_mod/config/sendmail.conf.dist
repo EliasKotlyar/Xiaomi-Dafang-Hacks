@@ -9,7 +9,7 @@ FROM="House.home@gmail.com"
 FROMNAME="`hostname`"
 
 # Login and pasword to access smtp server
-AUTH="john.doe"
+AUTH="john.doe@gmail.com"
 PASS="JOHNDOEPASSWORD"
 
 # Destination email

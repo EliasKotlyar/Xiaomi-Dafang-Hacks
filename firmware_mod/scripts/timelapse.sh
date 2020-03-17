@@ -5,7 +5,7 @@
 
 PIDFILE='/run/timelapse.pid'
 TIMELAPSE_CONF='/system/sdcard/config/timelapse.conf'
-BASE_SAVE_DIR='/system/sdcard/DCIM/timelapse'
+DCIM_PATH='/system/sdcard/DCIM/Timelapse'
 
 if [ -f "$TIMELAPSE_CONF" ]; then
     . "$TIMELAPSE_CONF" 2>/dev/null
@@ -21,14 +21,14 @@ last_prefix=''
 ts_started=$(date +%s)
 
 while true; do
-    SAVE_DIR=$BASE_SAVE_DIR
+    SAVE_DIR=$DCIM_PATH
     if [ $SAVE_DIR_PER_DAY -eq 1 ]; then
-        SAVE_DIR="$BASE_SAVE_DIR/$(date +%Y-%m-%d)"
+        SAVE_DIR="$DCIM_PATH/$(date +%Y-%m-%d)/$(date +%H)"
     fi
     if [ ! -d "$SAVE_DIR" ]; then
         mkdir -p $SAVE_DIR
     fi
-    filename_prefix="$(date +%Y-%m-%d_%H%M%S)"
+    filename_prefix="$(date +%Y-%m-%d_%H-%M-%S)"
     if [ "$filename_prefix" = "$last_prefix" ]; then
         counter=$(($counter + 1))
     else
