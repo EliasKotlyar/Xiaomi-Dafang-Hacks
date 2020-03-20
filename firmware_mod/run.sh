@@ -232,6 +232,11 @@ if [ ! -f $CONFIGPATH/autonight.conf ]; then
   cp $CONFIGPATH/autonight.conf.dist $CONFIGPATH/autonight.conf
 fi
 
+## Copy onvif camera ptz configuration:
+if [ ! -f $CONFIGPATH/ptz_presets.conf ]; then
+  cp $CONFIGPATH/ptz_presets.conf.dist $CONFIGPATH/ptz_presets.conf
+fi
+
 ## Configure OSD:
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
     . /system/sdcard/controlscripts/configureOsd  2>/dev/null
