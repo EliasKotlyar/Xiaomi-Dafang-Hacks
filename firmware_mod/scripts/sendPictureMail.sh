@@ -66,8 +66,8 @@ done
 printf '%s\n' "--${boundary}--"
 printf '%s\n' "-- End --"
 
-} |  /system/sdcard/bin/busybox sendmail \
--H"exec /system/sdcard/bin/openssl s_client -quiet -connect $SERVER:$PORT -tls1 -starttls smtp" \
+} | /system/sdcard/bin/busybox sendmail \
+-H"exec /system/sdcard/bin/openssl s_client -CAfile /system/sdcard/config/ssl/cacert/cacert.pem -quiet -connect $SERVER:$PORT -starttls smtp" \
 -f"$FROM" -au"$AUTH" -ap"$PASS" $TO 2>/dev/null
 
 rm /tmp/sendPictureMail.lock
