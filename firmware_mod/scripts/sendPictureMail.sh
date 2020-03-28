@@ -19,6 +19,8 @@ fi
 
 touch /tmp/sendPictureMail.lock
 
+export OPENSSL_CONF=/system/sdcard/config/openssl.cnf
+
 # Build headers of the emails
 {
 
