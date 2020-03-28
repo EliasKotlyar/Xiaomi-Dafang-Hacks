@@ -55,23 +55,29 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
-## Create a swap file on SD if desired
-## please view the swap.conf.dist file for more infomation
 if [ -f "$CONFIGPATH/swap.conf" ]; then
   . $CONFIGPATH/swap.conf
-else
-  SWAP=false
 fi
-if [ "$SWAP" = true ]; then
-  if [ ! -f $SWAPPATH ]; then
-    echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
-    dd if=/dev/zero of=$SWAPPATH bs=1M count=$SWAPSIZE
-    mkswap $SWAPPATH
-    echo "Swap file created in $SWAPPATH" >> $LOGPATH
+
+## Create a swap file on SD if desired
+if [ "$SWAPFILE" = true ]; then
+  if [ ! -f $SWAPFILE_PATH ]; then
+    echo "Creating ${SWAPFILE_SIZE}MB swap file on SD card"  >> $LOGPATH
+    dd if=/dev/zero of=$SWAPFILE_PATH bs=1M count=$SWAPFILE_SIZE
+    mkswap $SWAPFILE_PATH
+    echo "Swap file created in $SWAPFILE_PATH" >> $LOGPATH
   fi
   echo "Configuring swap file" >> $LOGPATH
-  swapon $SWAPPATH
+  swapon $SWAPFILE_PATH
   echo "Swap set on file $SWAPPATH" >> $LOGPATH
+fi
+
+# Create ZRAM swap as on the original firmware
+if [ ! "$SWAP_ZRAM" = false ]; then
+    echo 100 > /proc/sys/vm/swappiness
+    echo 16777216 > /sys/block/zram0/disksize
+    mkswap /dev/zram0
+    swapon /dev/zram0
 fi
 
 ## Create crontab dir and start crond:
