@@ -4,8 +4,7 @@ boundary="ZZ_/afg6432dfgkl.94531q"
 FILENAME=$(date "+%Y%m%d%H%M%S-")
 MAILDATE=$(date -R)
 
-if [ ! -f /system/sdcard/config/sendmail.conf ]
-then
+if [ ! -f /system/sdcard/config/sendmail.conf ]; then
   echo "You must configure /system/sdcard/config/sendmail.conf before using sendPictureMail"
   exit 1
 fi
@@ -38,30 +37,29 @@ Content-Disposition: inline
 
 ${BODY}
 "
-for i in $(seq 1 ${NUMBEROFPICTURES})
-do
-	# now loop over
-	# and produce the corresponding part,
-	printf '%s\n' "--${boundary}
+for i in $(seq 1 ${NUMBEROFPICTURES}); do
+    # using sleep and wait so each step takes the specified amount of time
+    # instead of the loop-time + the time between snapshots
+    if [ ${i} -lt ${NUMBEROFPICTURES} ]; then
+        sleep ${TIMEBETWEENSNAPSHOT} &
+    fi
+
+    printf '%s\n' "--${boundary}
 Content-Type: image/jpeg
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename=\"${FILENAME}${i}.jpg\"
 "
 
-    if [ ${QUALITY} -eq -1 ]
-    then
+    if [ ${QUALITY} -eq -1 ]; then
         /system/sdcard/bin/getimage | /system/sdcard/bin/openssl enc -base64
     else
-       /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout  | /system/sdcard/bin/openssl enc -base64
-
+       /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout --quiet  | /system/sdcard/bin/openssl enc -base64
     fi
 
     echo
 
-	if [ ${i} -lt ${NUMBEROFPICTURES} ]
-	then
-		sleep ${TIMEBETWEENSNAPSHOT}
-	fi
+    # wait for our sleep to finish
+    wait
 done
 
 # print last boundary with closing --
