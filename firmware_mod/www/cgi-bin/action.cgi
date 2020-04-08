@@ -571,6 +571,22 @@ if [ -n "$F_cmd" ]; then
         echo $processId
         return
       ;;
+    betaupdate)
+        processId=$(ps | grep autoupdate.sh | grep -v grep)
+        if [ "$processId" == "" ]
+        then
+            echo "===============" >> /system/sdcard/log/update.log
+            date >> /var/log/update.log
+            if [ "$F_login" != "" ]; then
+                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f -r beta -u $F_login  >> "/system/sdcard/log/update.log" &
+            else
+                /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f -r beta >> "/system/sdcard/log/update.log" &
+            fi
+            processId=$(ps | grep autoupdate.sh | grep -v grep)
+        fi
+        echo $processId
+        return
+      ;;
 
      show_updateProgress)
         processId=$(ps | grep autoupdate.sh | grep -v grep)
