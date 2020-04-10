@@ -209,6 +209,7 @@ else
 fi
 
 ## Start SSH Server:
+mkdir -p /etc/dropbear/
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
 echo "dropbear: $dropbear_status" >> $LOGPATH
 
