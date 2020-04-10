@@ -60,15 +60,15 @@ if [ -f "$CONFIGPATH/swap.conf" ]; then
 fi
 
 ## Create a swap file on SD if desired
-if [ "$SWAPFILE" = true ]; then
-  if [ ! -f $SWAPFILE_PATH ]; then
-    echo "Creating ${SWAPFILE_SIZE}MB swap file on SD card"  >> $LOGPATH
-    dd if=/dev/zero of=$SWAPFILE_PATH bs=1M count=$SWAPFILE_SIZE
-    mkswap $SWAPFILE_PATH
-    echo "Swap file created in $SWAPFILE_PATH" >> $LOGPATH
+if [ "$SWAP" = true ]; then
+  if [ ! -f $SWAPPATH ]; then
+    echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
+    dd if=/dev/zero of=$SWAPPATH bs=1M count=$SWAPSIZE
+    mkswap $SWAPPATH
+    echo "Swap file created in $SWAPPATH" >> $LOGPATH
   fi
   echo "Configuring swap file" >> $LOGPATH
-  swapon $SWAPFILE_PATH
+  swapon $SWAPPATH
   echo "Swap set on file $SWAPPATH" >> $LOGPATH
 fi
 

@@ -3,6 +3,7 @@
 
 SWAP_ZRAM=true
 
-SWAPFILE=false
-SWAPFILE_PATH="/system/sdcard/swapfile"
-SWAPFILE_SIZE=256
+# in case you want to use an additional swapfile, enable it here
+SWAP=false
+SWAPPATH="/system/sdcard/swapfile"
+SWAPSIZE=256
