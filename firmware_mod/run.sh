@@ -215,6 +215,7 @@ fi
 
 ## Start SSH Server:
 ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
+touch /var/log/lastlog 2>/dev/null
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
 echo "dropbear: $dropbear_status" >> $LOGPATH
 
