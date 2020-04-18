@@ -57,5 +57,8 @@ firmware_mod/config/rtspserver.conf
 firmware_mod/config/ntp_srv.conf
 firmware_mod/config/lighttpd.user
 firmware_mod/config/lighttpd.pem
-firmware_mod/config/userscripts/*/*
+firmware_mod/config/userscripts/motiondetection/*
+!firmware_mod/config/userscripts/motiondetection/*.dist
+firmware_mod/config/userscripts/startup/*
+!firmware_mod/config/userscripts/startup/*.dist
 firmware_mod/root/.ssh/*

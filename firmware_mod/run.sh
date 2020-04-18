@@ -260,7 +260,9 @@ done
 
 ## Autostart startup userscripts
 for i in /system/sdcard/config/userscripts/startup/*; do
-  $i &
+  if [ $i != *".dist" ]; then
+    $i &
+  fi
 done
 
 echo "Startup finished!" >> $LOGPATH
