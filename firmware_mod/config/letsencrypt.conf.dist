@@ -1,0 +1,20 @@
+# this file configures the behavior of the config/ssl/letsencrypt_configure.sh script
+
+# domain for which to request a certificate
+LETSENCRYPT_DOMAIN=
+
+# method to use for verification
+# allowed parameters: webroot, dns
+LETSENCRYPT_METHOD=webroot
+
+# dns provider you want to use for LETSENCRYPT_METHOD=dns
+# LETSENCRYPT_DNS_PROVIDER=dns_acmedns
+
+# Export your acme.sh config variables here:
+#
+# example for acmedns
+# 
+# export ACMEDNS_UPDATE_URL="https://acme-dns.mydomain.org/update"
+# export ACMEDNS_USERNAME="username"
+# export ACMEDNS_PASSWORD="password"
+# export ACMEDNS_SUBDOMAIN="subdomain"

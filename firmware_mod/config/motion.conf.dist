@@ -19,14 +19,15 @@ motion_tracking=off
 motion_trigger_led=true
 publish_mqtt_message=false
 publish_mqtt_snapshot=false
+publish_mqtt_video=false
 send_email=false
 send_telegram=false
 telegram_alert_type=image
 send_matrix=false
 
 # General
-group_date_pattern="+%d-%m-%Y"
-file_date_pattern="+%d-%m-%Y_%H.%M.%S"
+group_date_pattern="+%Y-%m-%d"
+file_date_pattern="+%Y-%m-%d_%H-%M-%S"
 video_duration=10
 
 # Record from RTSP (RTSP H264 must be enabled)
@@ -38,13 +39,13 @@ video_rtsp_f=15
 
 # Snapshots
 save_snapshot=false
-save_snapshot_dir=/system/sdcard/DCIM/motion/stills
+save_snapshot_dir=/system/sdcard/DCIM/Motion/Stills
 save_snapshot_attr="0666"
 max_snapshot_days=20
 
 # Videos
 save_video=false
-save_video_dir=/system/sdcard/DCIM/motion/videos
+save_video_dir=/system/sdcard/DCIM/Motion/Videos
 save_video_attr="0666"
 max_video_days=10
 

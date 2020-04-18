@@ -137,6 +137,15 @@ if [ -n "$F_cmd" ]; then
     fi
     ;;
 
+  motion_mqtt_video)
+    . /system/sdcard/config/motion.conf 2> /dev/null
+    if [ "$publish_mqtt_video" == "true" ]; then
+      echo "ON"
+    else
+      echo "OFF"
+    fi
+    ;;
+
   hostname)
     echo $(hostname);
     ;;

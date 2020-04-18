@@ -24,12 +24,13 @@ record_video () {
 		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
 
         if [ "$video_use_rtsp" = true ]; then
-			if [ -z "$USERNAME" ]; then 
-				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://127.0.0.1:$PORT/unicast > "$video_tempfile"
+			output_buffer_size="$((($BITRATE*100)+150000))"
+			if [ -z "$USERNAME" ]; then
+				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://127.0.0.1:$PORT/unicast > "$video_tempfile"
 			else
-				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast > "$video_tempfile"
+				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast > "$video_tempfile"
 			fi
-            
+
         else
             # Use avconv to stitch multiple JPEGs into 1fps video.
             # I couldn't get it working another way.
@@ -57,9 +58,9 @@ snapshot_tempfile=$(mktemp /tmp/snapshot-XXXXXXX)
 video_tempfile=$(mktemp /tmp/video-XXXXXXX)
 
 # Prepare filename, save datetime ASAP
-group_pattern="${group_date_pattern:-+%d-%m-%Y}"
+group_pattern="${group_date_pattern:-+%Y-%m-%d}"
 groupname=$(date "$group_pattern")
-filename_pattern="${file_date_pattern:-+%d-%m-%Y_%H.%M.%S}"
+filename_pattern="${file_date_pattern:-+%Y-%m-%d_%H-%M-%S}"
 filename=$(date "$filename_pattern")
 
 # First, take a snapshot (always)
@@ -67,7 +68,7 @@ filename=$(date "$filename_pattern")
 debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 
 # Then, record video (if necessary)
-if [ "$save_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" ] ; then
+if [ "$save_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video" -o "$publish_mqtt_video" = true ] ; then
 	record_video
 fi
 
@@ -80,6 +81,7 @@ if [ "$save_snapshot" = true ] ; then
 
 	if [ ! -d "$save_snapshot_dir/$groupname" ]; then
 		mkdir -p "$save_snapshot_dir/$groupname"
+		chmod "$save_snapshot_attr" "$save_snapshot_dir/$groupname"
 	fi
 
 	# Limit the number of snapshots
@@ -88,7 +90,7 @@ if [ "$save_snapshot" = true ] ; then
 	fi
 
 	chmod "$save_snapshot_attr" "$snapshot_tempfile"
-	cp -p "$snapshot_tempfile" "$save_snapshot_dir/$groupname/$filename.jpg"
+	cp "$snapshot_tempfile" "$save_snapshot_dir/$groupname/$filename.jpg"
 	) &
 fi
 
@@ -99,15 +101,16 @@ if [ "$save_video" = true ] ; then
 
 	if [ ! -d "$save_video_dir/$groupname" ]; then
 		mkdir -p "$save_video_dir/$groupname"
+		chmod "$save_snapshot_attr" "$save_video_dir/$groupname"
 	fi
 
 	# Limit the number of videos
 	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_video_days" ]; then
-		rm -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
+		rm -r -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
 	fi
 
 	chmod "$save_video_attr" "$video_tempfile"
-	cp -p "$video_tempfile" "$save_video_dir/$groupname/$filename.mp4"
+	cp "$video_tempfile" "$save_video_dir/$groupname/$filename.mp4"
 	) &
 fi
 
@@ -195,7 +198,7 @@ if [ "$smb_snapshot" = true -o "$smb_video" = true ]; then
 fi
 
 # Publish a mqtt message
-if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true ] ; then
+if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true -o "$publish_mqtt_video" = true ] ; then
 	(
 	. /system/sdcard/config/mqtt.conf
 
@@ -204,11 +207,16 @@ if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true ] ; then
 		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -m "ON"
 	fi
 
+	if [ "$publish_mqtt_video" = true ] ; then
+		debug_msg "Send MQTT video"
+		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/video $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$video_tempfile"
+	fi
+
 	if [ "$publish_mqtt_snapshot" = true ] ; then
 		debug_msg "Send MQTT snapshot"
 		/system/sdcard/bin/jpegtran -scale 1/2 "$snapshot_tempfile" > "$snapshot_tempfile-s"
 		/system/sdcard/bin/jpegoptim -m 70 "$snapshot_tempfile-s"
-		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/snapshot $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$snapshot_tempfile-s"
+		/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/snapshot/image $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$snapshot_tempfile-s"
 		rm "$snapshot_tempfile-s"
 	fi
 	) &

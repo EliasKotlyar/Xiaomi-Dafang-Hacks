@@ -28,8 +28,10 @@
                     $('#message').text("Error starting update process");
                 }
                 $('#start').removeAttr('disabled');
+                $('#startBeta').removeAttr('disabled');
             } else {
                 $('#start').attr("disabled", "disabled");
+                $('#startBeta').attr("disabled", "disabled");
                 $('#message').text("Update in progress");
                 $('#progress').val(log);
                 // This is the end, start the reboot count down
@@ -55,13 +57,37 @@
         }).done(function(result) {
             if (result.length > 0) {
                  $('#start').attr("disabled", "disabled");
+                 $('#startBeta').attr("disabled", "disabled");
                 update(false);
             } else {
                 $('#message').text("Error starting update progress");
                 $('#start').removeAttr('disabled');
+                $('#startBeta').removeAttr('disabled');
             }
         });
     }
+    function startBeta() {
+        var login = ""
+        // if ($('#login').val().length > 0) {
+        //     login = "login=" + $('#login').val() + ":" + $('#password').val();
+        // }
+        $.ajax({
+            'url': 'cgi-bin/action.cgi?cmd=betaupdate',
+            'type': 'POST',
+            'data': login
+        }).done(function(result) {
+            if (result.length > 0) {
+                 $('#start').attr("disabled", "disabled");
+                 $('#startBeta').attr("disabled", "disabled");
+                update(false);
+            } else {
+                $('#message').text("Error starting update progress");
+                $('#start').removeAttr('disabled');
+                $('#startBeta').removeAttr('disabled');
+            }
+        });
+    }
+
 </script>
 
 <div class='card status_card'>
@@ -72,15 +98,20 @@
         <div class="field is-horizontal">
             <p>You can replace the running firmware on this camera by the latest available from its <a target='_blank' href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks">Github repository</a>. Settings will be retained after update.</p>
         </div>
-        <div class="field is-horizontal">
-            <div class="field-body">
-                <div class="field">
-                    <div class="control">
-                        <input id="start" class="button is-primary" type="submit" value="Update firmware" onclick="start()" />
-                    </div>
-                </div>
-            </div>
-        </div>
+	<div class='card-content'>
+		<div class="columns">
+			<div class="column">
+                    		<div class="control">
+                        		<input id="start" class="button is-primary" type="submit" value="Update firmware (stable)" onclick="start()" />
+                    		</div>
+                	</div>
+		  	<div class="column">
+                    		<div class="control">
+                        		<input id="startBeta" class="button is-light" type="submit" value="Update firmware (beta)" onclick="startBeta()" />
+                    		</div>
+    		  	</div>
+    		</div>
+    	</div>
         <h4 class="title is-4">Please note: at the end of this process the camera will reboot without notice</h4>
         <progress id=progress name=progress class="progress is-danger" value=0 max="100"></progress>
         <h1 id=message class="title is-1 has-text-centered"></h1>

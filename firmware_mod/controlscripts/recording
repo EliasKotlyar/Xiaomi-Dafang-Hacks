@@ -1,9 +1,8 @@
 #!/bin/sh
+. /system/sdcard/config/rtspserver.conf
+
 PIDFILE="/run/recording.pid"
-DCIM_PATH="/system/sdcard/DCIM"
-if [ -f /system/sdcard/config/rtspserver.conf ]; then
-  . /system/sdcard/config/rtspserver.conf
-fi
+DCIM_PATH="/system/sdcard/DCIM/Recording"
 
 ## UserName and password
 if [ "$USERNAME" != "" ]; then
@@ -28,18 +27,21 @@ start()
     echo "Recording already running.";
   else
     echo "Started recording."
-    SUB_DIR="$(date +%m%dFANG)"
+	# Add sub directory to main dcim path seperated by date then by
+	# hour for faster loading over ftp
+    SUB_DIR="$(date +%Y-%m-%d)/$(date +%H)"
     if [ ! -d "$DCIM_PATH/$SUB_DIR" ]; then
       mkdir -p "$DCIM_PATH/$SUB_DIR"
     fi
-    FILE_NAME="MOV_$(date +%H%M.h264)"
+	# Create the recording with timestamp
+    FILE_NAME="REC_$(date +%H-%M-%S.h264)"
     RECORDING_PATH="$DCIM_PATH/$SUB_DIR/$FILE_NAME"
     # wait for rtspserver to become available
     until pids=$(pidof v4l2rtspserver-master)
     do
       sleep 1
     done
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -flags low_delay -fflags nobuffer -probesize 32 -i rtsp://"$CREDENTIALS"0.0.0.0:8554/unicast -strict experimental -y -vcodec copy -an $RECORDING_PATH &>/dev/null &
+    /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -flags low_delay -fflags nobuffer -probesize 32 -i rtsp://"$CREDENTIALS"0.0.0.0:$PORT/unicast -strict experimental -y -vcodec copy -an $RECORDING_PATH &>/dev/null &
     echo "$!" > "$PIDFILE"
   fi
 }

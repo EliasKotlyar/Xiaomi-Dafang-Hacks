@@ -27,22 +27,27 @@ server.modules = ("mod_auth",
 
 cgi.assign = ( ".cgi" => "/bin/sh" )
 
-
-
+#If below 4 lines are commented out then SSL is disabled if un-commented SSL is enabled
+#SSL is enabled by default
+#If disabling SSL you must clear your site cookie
 $SERVER["socket"] == ":443" {
   ssl.engine = "enable"
   ssl.pemfile = "/system/sdcard/config/lighttpd.pem"
 }
 
-
 # Support letsencrypt SSL cert paths
 # (we don't want to upgrade to SSL nor auth' this path)
 $HTTP["url"] !~ "^/.well-known/(.*)" {
 
-    auth.backend                = "htdigest"
-    auth.backend.htdigest.userfile = "/system/sdcard/config/lighttpd.user"
-    auth.require = ( "/" => ("method" => "basic", "realm" => "all", "require" => "user=root"))
+    $HTTP["scheme"] == "https" {
+        auth.backend                = "htdigest"
+        auth.backend.htdigest.userfile = "/system/sdcard/config/lighttpd.user"
+        auth.require = ( "/" => ("method" => "basic", "realm" => "all", "require" => "user=root"))
+    }
 
+#If below 7 lines are commented out then SSL is disabled if un-commented SSL is enabled
+#SSL is enabled by default
+#If disabling SSL you must clear your site cookie
     $HTTP["scheme"] == "http" {
         # capture vhost name with regex conditiona -> %0 in redirect pattern
         # must be the most inner block to the redirect rule

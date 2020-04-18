@@ -4,8 +4,7 @@ boundary="ZZ_/afg6432dfgkl.94531q"
 FILENAME=$(date "+%Y%m%d%H%M%S-")
 MAILDATE=$(date -R)
 
-if [ ! -f /system/sdcard/config/sendmail.conf ]
-then
+if [ ! -f /system/sdcard/config/sendmail.conf ]; then
   echo "You must configure /system/sdcard/config/sendmail.conf before using sendPictureMail"
   exit 1
 fi
@@ -18,6 +17,8 @@ if [ -f /tmp/sendPictureMail.lock ]; then
 fi
 
 touch /tmp/sendPictureMail.lock
+
+export OPENSSL_CONF=/system/sdcard/config/openssl.cnf
 
 # Build headers of the emails
 {
@@ -36,38 +37,37 @@ Content-Disposition: inline
 
 ${BODY}
 "
-for i in $(seq 1 ${NUMBEROFPICTURES})
-do
-	# now loop over
-	# and produce the corresponding part,
-	printf '%s\n' "--${boundary}
+for i in $(seq 1 ${NUMBEROFPICTURES}); do
+    # using sleep and wait so each step takes the specified amount of time
+    # instead of the loop-time + the time between snapshots
+    if [ ${i} -lt ${NUMBEROFPICTURES} ]; then
+        sleep ${TIMEBETWEENSNAPSHOT} &
+    fi
+
+    printf '%s\n' "--${boundary}
 Content-Type: image/jpeg
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename=\"${FILENAME}${i}.jpg\"
 "
 
-    if [ ${QUALITY} -eq -1 ]
-    then
+    if [ ${QUALITY} -eq -1 ]; then
         /system/sdcard/bin/getimage | /system/sdcard/bin/openssl enc -base64
     else
-       /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout  | /system/sdcard/bin/openssl enc -base64
-
+       /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout --quiet  | /system/sdcard/bin/openssl enc -base64
     fi
 
     echo
 
-	if [ ${i} -lt ${NUMBEROFPICTURES} ]
-	then
-		sleep ${TIMEBETWEENSNAPSHOT}
-	fi
+    # wait for our sleep to finish
+    wait
 done
 
 # print last boundary with closing --
 printf '%s\n' "--${boundary}--"
 printf '%s\n' "-- End --"
 
-} |  /system/sdcard/bin/busybox sendmail \
--H"exec /system/sdcard/bin/openssl s_client -quiet -connect $SERVER:$PORT -tls1 -starttls smtp" \
+} | /system/sdcard/bin/busybox sendmail \
+-H"exec /system/sdcard/bin/openssl s_client -CAfile /system/sdcard/config/ssl/cacert/cacert.pem -quiet -connect $SERVER:$PORT -starttls smtp" \
 -f"$FROM" -au"$AUTH" -ap"$PASS" $TO 2>/dev/null
 
 rm /tmp/sendPictureMail.lock
