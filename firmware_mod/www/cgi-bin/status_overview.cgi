@@ -56,7 +56,7 @@ cat << EOF
                 </tr>
                 <tr>
                   <td> Firmware commit </td>
-                  <td> $(if [ -s "/system/sdcard/VERSION" ]; then /system/sdcard/bin/jq -r .commit /system/sdcard/VERSION; else echo "Never updated. Make an update to get version."; fi) </td>
+                  <td> $(if [ -s "/system/sdcard/VERSION" ]; then $(check_commit; else echo "Never updated. Make an update to get version."; fi) </td>
                 </tr>
                 
                 <tr>
