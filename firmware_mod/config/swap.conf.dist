@@ -2,6 +2,7 @@
 # in particular on the xiaofang & clones with only 64 mb 
 
 SWAP_ZRAM=true
+SWAP_ZRAM_SIZE=16777216
 
 # in case you want to use an additional swapfile, enable it here
 SWAP=false

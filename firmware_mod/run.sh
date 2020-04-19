@@ -75,7 +75,7 @@ fi
 # Create ZRAM swap as on the original firmware
 if [ ! "$SWAP_ZRAM" = false ]; then
     echo 100 > /proc/sys/vm/swappiness
-    echo 16777216 > /sys/block/zram0/disksize
+    echo $SWAP_ZRAM_SIZE > /sys/block/zram0/disksize
     mkswap /dev/zram0
     swapon -p 20 /dev/zram0
 fi
