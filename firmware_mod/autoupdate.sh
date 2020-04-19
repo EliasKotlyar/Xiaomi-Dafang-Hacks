@@ -23,6 +23,12 @@ JQ="/system/sdcard/bin/jq"
 SHA="/system/sdcard/bin/openssl dgst -sha256"
 BASENAME="/system/sdcard/bin/busybox basename"
 FIND="/system/sdcard/bin/busybox find"
+VERSION_FILE='/system/sdcard/VERSION'
+COMMITS_FILE='/tmp/Update/.lastcommit'
+$(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} --output $COMMITS_FILE)
+REMOTECOMMITDATE=$(${JQ} -r '.commit .author .date' ${COMMITS_FILE})
+REMOTECOMMITID=$(${JQ} -r '.sha[0:7]' ${COMMITS_FILE} )
+
 
 TMPFILE=/tmp/update.tmp
 BACKUPEXT=.backup
@@ -125,13 +131,6 @@ ismatch()
 
     echo notmatch
 }
-##########################################################################
-# Return the current (last) commit from the specified repo and branch
-getCurrentCommitDateFromRemote()
-{
-    LASTCOMMITDATE=$(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} | grep date | head -1 | cut -d'"' -f 4)
-    echo ${LASTCOMMITDATE}
-}
 
 ##########################################################################
 # Print the files from repo of the folder $1
@@ -166,6 +165,12 @@ countdownreboot()
         sleep 1;
     done
     action reboot
+}
+##########################################################################
+# Generate VERSION file
+generateVersionFile ()
+{
+    echo "{\"date\":\"${REMOTECOMMITDATE}\",\"branch\":\"${BRANCH}\",\"commit\":\"${REMOTECOMMITID}\"}" > $VERSION_FILE
 }
 ##########################################################################
 # Script real start
@@ -219,6 +224,18 @@ do
     esac
 done
 
+if [ -f "$VERSION_FILE" ]; then
+    LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})  
+    if [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
+        echo "You have already last version"
+        exit 1
+    else
+        echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
+    fi
+else
+    echo "Version file missing. Upgrade to last commit ${REMOTECOMMITID}"
+    
+fi
 log "Starting AutoUpdate on branch ${BRANCH}"
 
 if [ ${_FORCE} = 1 ]; then
@@ -234,7 +251,6 @@ if [ ${_BACKUP} = 1 ]; then
 fi
 
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
-
 
 
 log "Getting list of remote files."
@@ -351,8 +367,7 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
 
     # Everythings was OK, save the date
-    echo -n $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
-    echo " ## ${BRANCH} branch" >> /system/sdcard/.lastCommitDate
+    generateVersionFile
     echo "---------------    Reboot    ------------"
     if [ ${_FORCEREBOOT} = 1 ]; then
         countdownreboot
@@ -365,7 +380,6 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
         fi
     fi
 else
-    echo -n $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
-    echo " ## ${BRANCH} branch" >> /system/sdcard/.lastCommitDate
+    generateVersionFile
     echo "No files to update."
 fi
