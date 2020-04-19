@@ -68,7 +68,7 @@ if [ "$SWAP" = true ]; then
     echo "Swap file created in $SWAPPATH" >> $LOGPATH
   fi
   echo "Configuring swap file" >> $LOGPATH
-  swapon $SWAPPATH
+  swapon -p 10 $SWAPPATH
   echo "Swap set on file $SWAPPATH" >> $LOGPATH
 fi
 
@@ -77,7 +77,7 @@ if [ ! "$SWAP_ZRAM" = false ]; then
     echo 100 > /proc/sys/vm/swappiness
     echo 16777216 > /sys/block/zram0/disksize
     mkswap /dev/zram0
-    swapon /dev/zram0
+    swapon -p 20 /dev/zram0
 fi
 
 ## Create crontab dir and start crond:
