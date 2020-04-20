@@ -55,6 +55,16 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
+mkdir /tmp/usr_bin_tmp
+mount -t tmpfs -o size=128k tmpfs /tmp/usr_bin_tmp
+cp -d /usr/bin/*  /tmp/usr_bin_tmp/
+ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/ssh
+ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/dbclient
+ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/scp
+mount -o bind /tmp/usr_bin_tmp /usr/bin
+umount /tmp/usr_bin_tmp
+
+
 ## Create busybox aliases
 if [ ! -f ~/.busybox_aliases ]; then
   /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases
@@ -237,7 +247,7 @@ lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.
 echo "lighttpd: $lighttpd_status" >> $LOGPATH
 
 ## Motor  Calibration
-/system/sdcard/bin/motor -d v -s 100
+#/system/sdcard/bin/motor -d v -s 100
 
 ## Copy autonight configuration:
 if [ ! -f $CONFIGPATH/autonight.conf ]; then
