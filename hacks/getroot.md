@@ -9,16 +9,13 @@
 
 3. Boot into the Root-Shell using "boot"
 
-## Using normal login
+## Using normal login (via serial connection)
 
 Use following Credentials:
 
 Username: root
 Password:  ismart12
 
-Attention: You will get a lot of Debug-Messages, and you wont be able to work "normal"
-
-You can try to disable the iCamera, but it will restart the System(there is a watchdog)
-kill -9 (pidof iCamera)
-
+Attention: You will get a lot of debug messages, and you wont be able to work "normal".
+To cirvumvent this, it's recommended to start a telnet daemon: `telnetd &` and connect to the device via telnet.
 
