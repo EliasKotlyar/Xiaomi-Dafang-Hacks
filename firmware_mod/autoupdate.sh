@@ -41,9 +41,10 @@ usage()
 {
     echo "Usage: $1 [OPTIONS]"
     echo "$1 will update a local folder with the ${REPO} github repo (first copy all the files in ${DESTOVERRIDE}, stop services and reboot"
-    echo "Usage this script to update the ${REPO} github repo from ${BRANCH} branch"
+    echo "Usage this script to update the ${REPO} github repo from ${BRANCH} (default) branch"
     echo "Options:"
     echo "-b (--backup) backup erased file (add extension ${BACKUPEXT} to the local file before ovewrite it) "
+    echo "-r (--branch) to set the branch"
     echo "-f (--force) force update"
     echo "-d (--dest) set the destination folder (default is ${DESTFOLDER})"
     echo "-p (--print) print action only, do nothing"
@@ -206,6 +207,11 @@ do
             _PROGRESS=1;
            shift
            ;;
+        -r | --branch)
+	    BRANCH=$2
+	    shift
+            shift
+           ;;
         *|-h |\? | --help)
             usage $0
             exit 1
@@ -213,7 +219,7 @@ do
     esac
 done
 
-log "Starting AutoUpdate"
+log "Starting AutoUpdate on branch ${BRANCH}"
 
 if [ ${_FORCE} = 1 ]; then
     log "Forcing update."
@@ -345,7 +351,8 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
 
     # Everythings was OK, save the date
-    echo $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
+    echo -n $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
+    echo " ## ${BRANCH} branch" >> /system/sdcard/.lastCommitDate
     echo "---------------    Reboot    ------------"
     if [ ${_FORCEREBOOT} = 1 ]; then
         countdownreboot
@@ -358,6 +365,7 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
         fi
     fi
 else
-    echo $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
+    echo -n $(getCurrentCommitDateFromRemote) > /system/sdcard/.lastCommitDate
+    echo " ## ${BRANCH} branch" >> /system/sdcard/.lastCommitDate
     echo "No files to update."
 fi

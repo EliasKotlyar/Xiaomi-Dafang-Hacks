@@ -7,7 +7,7 @@
 
 source /system/sdcard/scripts/common_functions.sh
 
-MOTOR=/system/sdcard/bin/motor
+MOTOR=/system/sdcard/bin/motor.bin
 pid=$$
 echo $pid > /run/PTZ_$pid.pid
 

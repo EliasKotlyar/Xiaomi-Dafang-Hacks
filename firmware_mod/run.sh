@@ -55,6 +55,11 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
+## Create busybox aliases
+if [ ! -f ~/.busybox_aliases ]; then
+  /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases
+fi
+
 ## Create a swap file on SD if desired
 ## please view the swap.conf.dist file for more infomation
 if [ -f "$CONFIGPATH/swap.conf" ]; then
@@ -209,6 +214,7 @@ else
 fi
 
 ## Start SSH Server:
+ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
 echo "dropbear: $dropbear_status" >> $LOGPATH
 
@@ -232,6 +238,11 @@ if [ ! -f $CONFIGPATH/autonight.conf ]; then
   cp $CONFIGPATH/autonight.conf.dist $CONFIGPATH/autonight.conf
 fi
 
+## Copy onvif camera ptz configuration:
+if [ ! -f $CONFIGPATH/ptz_presets.conf ]; then
+  cp $CONFIGPATH/ptz_presets.conf.dist $CONFIGPATH/ptz_presets.conf
+fi
+
 ## Configure OSD:
 if [ -f /system/sdcard/controlscripts/configureOsd ]; then
     . /system/sdcard/controlscripts/configureOsd  2>/dev/null
@@ -249,7 +260,9 @@ done
 
 ## Autostart startup userscripts
 for i in /system/sdcard/config/userscripts/startup/*; do
-  $i &
+  if [ $i != *".dist" ]; then
+    $i &
+  fi
 done
 
 echo "Startup finished!" >> $LOGPATH
