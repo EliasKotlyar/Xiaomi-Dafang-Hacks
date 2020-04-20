@@ -61,8 +61,8 @@ cp -d /usr/bin/*  /tmp/usr_bin_tmp/
 ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/ssh
 ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/dbclient
 ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/scp
-mount -o bind /tmp/usr_bin_tmp /usr/bin
-umount /tmp/usr_bin_tmp
+mount -o move /tmp/usr_bin_tmp /usr/bin
+rmdir /tmp/usr_bin_tmp
 
 
 ## Create busybox aliases
