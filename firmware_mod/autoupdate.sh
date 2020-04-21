@@ -18,16 +18,14 @@ DESTOVERRIDE="/tmp/Update"
 EXCLUDEFILTER="*.conf|*.user|passwd|shadow"
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
-CURL="/system/sdcard/bin/curl -k"
+CURL="/system/sdcard/bin/curl -k -L"
 JQ="/system/sdcard/bin/jq"
 SHA="/system/sdcard/bin/openssl dgst -sha256"
 BASENAME="/system/sdcard/bin/busybox basename"
 FIND="/system/sdcard/bin/busybox find"
 VERSION_FILE='/system/sdcard/VERSION'
-COMMITS_FILE='/tmp/Update/.lastcommit'
-$(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} --output $COMMITS_FILE)
-REMOTECOMMITDATE=$(${JQ} -r '.commit .author .date' ${COMMITS_FILE})
-REMOTECOMMITID=$(${JQ} -r '.sha[0:7]' ${COMMITS_FILE} )
+COMMITS_FILE='/tmp/.lastcommit'
+
 
 
 TMPFILE=/tmp/update.tmp
@@ -224,19 +222,13 @@ do
     esac
 done
 
-if [ -f "$VERSION_FILE" ]; then
-    LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})  
-    if [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
-        echo "You have already last version"
-        exit 1
-    else
-        echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
-    fi
-else
-    echo "Version file missing. Upgrade to last commit ${REMOTECOMMITID}"
-    
-fi
 log "Starting AutoUpdate on branch ${BRANCH}"
+
+######################################################""
+# Get date and las commit ID from Github
+$(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} --output $COMMITS_FILE)
+REMOTECOMMITDATE=$(${JQ} -r '.commit .author .date' ${COMMITS_FILE})
+REMOTECOMMITID=$(${JQ} -r '.sha[0:7]' ${COMMITS_FILE} )
 
 if [ ${_FORCE} = 1 ]; then
     log "Forcing update."
@@ -252,10 +244,22 @@ fi
 
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
-
-log "Getting list of remote files."
-FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
-FILES=$(getfiles "${FIRST}")
+if [ -f "$VERSION_FILE" ]; then
+    LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})  
+    if [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
+        logerror "You have already last version"
+        exit 1
+    else
+        echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
+        log "Getting list of remote files."
+        FILES=$(${CURL} -s ${GITHUBURL}/${REPO}/compare/${LOCALCOMMITID}...${REMOTECOMMITID} | ${JQ} -r '.files[].raw_url' | grep ${REMOTEFOLDER})        
+    fi
+else
+    echo "Version file missing. Upgrade to last commit ${REMOTECOMMITID}"
+    log "Getting list of remote files."
+    FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
+    FILES=$(getfiles "${FIRST}")
+fi
 
 if [ $_PROGRESS = 1 ]; then
    _NBTOTALFILES=$(echo $FILES | wc -w)
@@ -268,8 +272,7 @@ for i in ${FILES}
 do
     progress
     # String to remove to get the local path
-    REMOVE="${GITHUBURLRAW}/${REPO}/${BRANCH}/${REMOTEFOLDER}/"
-    LOCALFILE="${i#$REMOVE}"
+    LOCALFILE=$(echo ${i} | awk -F ${REMOTEFOLDER}/ '{print $2}')
     # Remove files that match the filter
     res=$(ismatch ${LOCALFILE})
     if [ "$res" == "match" ]; then

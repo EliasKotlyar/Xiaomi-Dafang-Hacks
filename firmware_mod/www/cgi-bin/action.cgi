@@ -727,7 +727,21 @@ if [ -n "$F_cmd" ]; then
           detect_model
           return
           ;;
-
+    check_update)
+        if [ -s /system/sdcard/VERSION ]; then
+          localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
+          localbranch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
+          remotecommit=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
+          if [ ${localcommit} = ${remotecommit} ]; then
+            echo -n 0
+          else
+            echo -n 1
+        fi
+        else
+          echo -n 1
+        fi
+        return
+        ;;
      *)
         echo "Unsupported command '$F_cmd'"
         ;;
