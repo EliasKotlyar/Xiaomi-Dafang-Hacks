@@ -55,6 +55,11 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
+## Create busybox aliases
+if [ ! -f ~/.busybox_aliases ]; then
+  /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases
+fi
+
 if [ -f "$CONFIGPATH/swap.conf" ]; then
   . $CONFIGPATH/swap.conf
 fi
@@ -215,6 +220,7 @@ else
 fi
 
 ## Start SSH Server:
+ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
 echo "dropbear: $dropbear_status" >> $LOGPATH
 
@@ -260,7 +266,9 @@ done
 
 ## Autostart startup userscripts
 for i in /system/sdcard/config/userscripts/startup/*; do
-  $i &
+  if [ $i != *".dist" ]; then
+    $i &
+  fi
 done
 
 echo "Startup finished!" >> $LOGPATH
