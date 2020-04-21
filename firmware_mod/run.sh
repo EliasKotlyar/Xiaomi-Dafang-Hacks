@@ -60,13 +60,11 @@ if [ ! -f ~/.busybox_aliases ]; then
   /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases
 fi
 
-## Create a swap file on SD if desired
-## please view the swap.conf.dist file for more infomation
 if [ -f "$CONFIGPATH/swap.conf" ]; then
   . $CONFIGPATH/swap.conf
-else
-  SWAP=false
 fi
+
+## Create a swap file on SD if desired
 if [ "$SWAP" = true ]; then
   if [ ! -f $SWAPPATH ]; then
     echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
@@ -75,8 +73,16 @@ if [ "$SWAP" = true ]; then
     echo "Swap file created in $SWAPPATH" >> $LOGPATH
   fi
   echo "Configuring swap file" >> $LOGPATH
-  swapon $SWAPPATH
+  swapon -p 10 $SWAPPATH
   echo "Swap set on file $SWAPPATH" >> $LOGPATH
+fi
+
+# Create ZRAM swap as on the original firmware
+if [ ! "$SWAP_ZRAM" = false ]; then
+    echo 100 > /proc/sys/vm/swappiness
+    echo $SWAP_ZRAM_SIZE > /sys/block/zram0/disksize
+    mkswap /dev/zram0
+    swapon -p 20 /dev/zram0
 fi
 
 ## Create crontab dir and start crond:
