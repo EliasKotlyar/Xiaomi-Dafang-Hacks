@@ -55,6 +55,23 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
+## Overlay a tmpfs on /usr/bin in order to create symbolic for scp
+# first create a temp dir to have a mount point
+mkdir /tmp/usr_bin_tmp
+# mount a small tmpfs on it
+mount -t tmpfs -o size=128k tmpfs /tmp/usr_bin_tmp
+# copy the content of /usr/bin to it, preserving links, rights etc.
+cp -d /usr/bin/*  /tmp/usr_bin_tmp/
+# create the symoblic links we need
+ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/ssh
+ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/dbclient
+ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/scp
+# move the tmp mount point to the actuel /usr/bin dir
+mount -o move /tmp/usr_bin_tmp /usr/bin
+# we can delete the tmp mount point
+rmdir /tmp/usr_bin_tmp
+echo "Overlay mounted /usr/bin" >> $LOGPATH
+
 ## Create busybox aliases
 if [ ! -f ~/.busybox_aliases ]; then
   /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases
