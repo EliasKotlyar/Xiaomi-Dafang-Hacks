@@ -78,4 +78,4 @@ It is possible to run your own scripts on motion detection. See [here](/integrat
 
 ## Contributions:
 
-Any contribution to the development is highly welcome. Simply open a pull request on GitHub.
+Any contribution to the development is highly welcome. Simply open a pull request against our beta branch on GitHub.
