@@ -11,6 +11,8 @@ MOTOR=/system/sdcard/bin/motor.bin
 pid=$$
 echo $pid > /run/PTZ_$pid.pid
 
+FILECAMERAPOS=/system/sdcard/config/cameraposition
+
 # set log
 if [[ -z $3 ]]; then
     LOG=false
@@ -77,25 +79,34 @@ while [[ "$whit_pid" != "" ]] ;do
 done
 
 # Main
-case "$1" in
-  *[!0-9]*|"")
-    logger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
-    exit_shell 1
-    ;;  
-  [0-9]*)
-    move X $1
-    ;;
-esac
+# if cameraposition is defined blank arguments go "home"
+if [ $# -eq 0 ] && [ -f ${FILECAMERAPOS} ]; then
+  # Get values in saved config file
+  origin_x_axis=`grep "x:" ${FILECAMERAPOS} | sed "s/x: //"`
+  origin_y_axis=`grep "y:" ${FILECAMERAPOS} | sed "s/y: //"`
+  move X $origin_x_axis
+  move Y $origin_y_axis
+else
+  case "$1" in
+    *[!0-9]*|"")
+      logger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
+      exit_shell 1
+      ;;
+    [0-9]*)
+      move X $1
+      ;;
+  esac
 
-case "$2" in
-  *[!0-9]*|"")
-    logger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
-    exit_shell 2
-    ;;  
-  [0-9]*)
-    move Y $2
-    ;; 
-esac
+  case "$2" in
+    *[!0-9]*|"")
+      logger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
+      exit_shell 2
+      ;;
+    [0-9]*)
+      move Y $2
+      ;;
+  esac
+fi
 
 # Update OSD_AXIS
 update_axis
