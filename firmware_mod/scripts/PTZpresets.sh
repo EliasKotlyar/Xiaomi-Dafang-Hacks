@@ -3,6 +3,8 @@
 ################################################
 # Created by Nero                              #
 # neroxps@gmail.com | 2018-5-28 | v0.0.6 Beta  #
+# Extended to support presets by slm4996       #
+# slm4996+github@gmail.com | 2020-4-28         #
 ################################################
 
 source /system/sdcard/scripts/common_functions.sh
@@ -87,31 +89,34 @@ done
 # If no arguments are provided then go to preset "home"
 if [ $# -eq 0 ]; then
   # Get values in saved presets file
-  origin_x_axis=`cat ${FILEPRESETS} | jq '.presets.home.x'`
-  origin_y_axis=`cat ${FILEPRESETS} | jq '.presets.home.y'`
-  move X $origin_x_axis
-  move Y $origin_y_axis
+  target_x_axis=`cat ${FILEPRESETS} | jq '.presets.home.x'`
+  target_y_axis=`cat ${FILEPRESETS} | jq '.presets.home.y'`
+elif [ "$1" == 'preset' ]; then
+  target_x_axis=`cat ${FILEPRESETS} | jq ".presets.${2}.x"`
+  target_y_axis=`cat ${FILEPRESETS} | jq ".presets.${2}.y"`
 else
   case "$1" in
     *[!0-9]*|"")
       logger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
-      exit_shell 1
+      exit_shell 2
       ;;
     [0-9]*)
-      move X $1
+      target_x_axis=$1
       ;;
   esac
-
   case "$2" in
     *[!0-9]*|"")
       logger "Usage: $(basename $0) [axis_X number] [axis_Y number]"
       exit_shell 2
       ;;
     [0-9]*)
-      move Y $2
+      target_y_axis=$2
       ;;
   esac
 fi
+
+move X $target_x_axis
+move Y $target_y_axis
 
 # Update OSD_AXIS
 update_axis
