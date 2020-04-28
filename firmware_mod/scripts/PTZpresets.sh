@@ -11,7 +11,12 @@ MOTOR=/system/sdcard/bin/motor.bin
 pid=$$
 echo $pid > /run/PTZ_$pid.pid
 
-FILECAMERAPOS=/system/sdcard/config/cameraposition
+FILEPRESETS=/system/sdcard/config/ptz_presets.conf
+
+# Check for presets file load defaults if not present
+if [ ! -f ${FILEPRESETS} ]; then
+  cp /system/sdcard/config/ptz_presets.conf.dist /system/sdcard/config/ptz_presets.conf
+fi
 
 # set log
 if [[ -z $3 ]]; then
@@ -79,11 +84,11 @@ while [[ "$whit_pid" != "" ]] ;do
 done
 
 # Main
-# if cameraposition is defined blank arguments go "home"
-if [ $# -eq 0 ] && [ -f ${FILECAMERAPOS} ]; then
-  # Get values in saved config file
-  origin_x_axis=`grep "x:" ${FILECAMERAPOS} | sed "s/x: //"`
-  origin_y_axis=`grep "y:" ${FILECAMERAPOS} | sed "s/y: //"`
+# If no arguments are provided then go to preset "home"
+if [ $# -eq 0 ]; then
+  # Get values in saved presets file
+  origin_x_axis=`cat ${FILEPRESETS} | jq '.presets.home.x'`
+  origin_y_axis=`cat ${FILEPRESETS} | jq '.presets.home.y'`
   move X $origin_x_axis
   move Y $origin_y_axis
 else
