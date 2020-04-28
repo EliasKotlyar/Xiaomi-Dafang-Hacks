@@ -21,6 +21,14 @@ sendMem() {
   $TELEGRAM m $(free -k | awk '/^Mem/ {print "Mem: used "$3" free "$4} /^Swap/ {print "Swap: used "$3}')
 }
 
+nightOn() {
+  night_mode on && $TELEGRAM m "Night mode active"
+}
+
+nightOff() {
+  night_mode off && $TELEGRAM m "Night mode inactive"
+}
+
 detectionOn() {
   motion_detection on && $TELEGRAM m "Motion detection started"
 }
@@ -52,10 +60,12 @@ respond() {
     /shot) sendShot;;
     /on) detectionOn;;
     /off) detectionOff;;
+    /nighton) nightOn;;
+    /nightoff) nightOff;;
     /textalerts) textAlerts;;
     /imagealerts) imageAlerts;;
     /videoalerts) videoAlerts;;
-    /help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a snapshot\n# /on - motion detection on\n# /off - motion detection off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection\n# /videoalerts - Video alerts on motion detection";;
+    /help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a snapshot\n# /on - motion detection on\n# /off - motion detection off\n# /nighton - night mode on\n# /nightoff - night mode off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection\n# /videoalerts - Video alerts on motion detection";;
     *) $TELEGRAM m "I can't respond to '$cmd' command"
   esac
 }
