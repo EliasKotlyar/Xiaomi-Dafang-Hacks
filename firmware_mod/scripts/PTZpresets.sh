@@ -82,8 +82,8 @@ calculate_relative_steps() {
 
 # Handle preset arguments
 preset() {
-    target_x_axis=$(jq ".presets.${1}.x" ${FILEPRESETS})
-    target_y_axis=$(jq ".presets.${1}.y" ${FILEPRESETS})
+    target_x_axis=$(/system/sdcard/bin/jq ".presets.$1.x" "$FILEPRESETS")
+    target_y_axis=$(/system/sdcard/bin/jq ".presets.$1.y" "$FILEPRESETS")
     if [ "$target_y_axis" = 'null' ]; then
         logger "Error: Preset \"$1\" is not defined!"
         exit 1
