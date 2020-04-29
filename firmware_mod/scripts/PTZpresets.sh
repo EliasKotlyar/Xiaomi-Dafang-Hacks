@@ -28,7 +28,7 @@ then
 fi
 
 # write pidfile
-if ! logger $$ >"$PIDFILE"
+if ! echo $$ >"$PIDFILE"
 then
     # If we couldn't save the PID to the lockfile...
     logger "Failed to create PID file for PID $$ in $PIDFILE; exiting"
