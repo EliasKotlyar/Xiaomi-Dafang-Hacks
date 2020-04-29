@@ -47,9 +47,18 @@ cat << EOF
                   <td> $(detect_model) </td>
                 </tr>
                 <tr>
-                  <td> Firmware Version </td>
-                  <td> $(if [ -s "/system/sdcard/.lastCommitDate" ]; then cat /system/sdcard/.lastCommitDate; else echo "Update for version string"; fi) </td>
+                  <td> Firmware date </td>
+                  <td> $(if [ -s "/system/sdcard/VERSION" ]; then /system/sdcard/bin/jq -r .date /system/sdcard/VERSION; else echo "Never updated. Make an update to get version."; fi) </td>
                 </tr>
+                <tr>
+                  <td> Firmware branch </td>
+                  <td> $(if [ -s "/system/sdcard/VERSION" ]; then /system/sdcard/bin/jq -r .branch /system/sdcard/VERSION; else echo "Never updated. Make an update to get version."; fi) </td>
+                </tr>
+                <tr>
+                  <td> Firmware commit </td>
+                  <td> $(if [ -s "/system/sdcard/VERSION" ]; then $(check_commit; else echo "Never updated. Make an update to get version."; fi) </td>
+                </tr>
+                
                 <tr>
                   <td> Kernel Version </td>
                   <td> $(/system/sdcard/bin/busybox uname -v) </td>
