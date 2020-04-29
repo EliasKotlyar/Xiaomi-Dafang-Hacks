@@ -225,7 +225,7 @@ done
 log "Starting AutoUpdate on branch ${BRANCH}"
 
 ######################################################""
-# Get date and las commit ID from Github
+# Get date and last commit ID from Github
 $(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} --output $COMMITS_FILE)
 REMOTECOMMITDATE=$(${JQ} -r '.commit .author .date' ${COMMITS_FILE})
 REMOTECOMMITID=$(${JQ} -r '.sha[0:7]' ${COMMITS_FILE} )
@@ -247,7 +247,7 @@ action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 if [ -f "$VERSION_FILE" ]; then
     LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})  
     if [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
-        logerror "You have already last version"
+        logerror "You have already lastest version"
         exit 1
     else
         echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"

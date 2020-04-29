@@ -156,7 +156,7 @@ if [ -n "$F_cmd" ]; then
     V_COMMIT=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
     echo "commit <b>${V_COMMIT}</b> from branch <b>${V_BRANCH}</b>"
     else                                    
-       echo "No version file. Need upgrade" 
+       echo "Need to update to create a version file." 
     fi                                      
     ;; 
 
