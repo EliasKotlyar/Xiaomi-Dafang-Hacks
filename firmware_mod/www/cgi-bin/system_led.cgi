@@ -65,7 +65,7 @@ cat << EOF
     </div>
 </div>
 
-<!-- IR LED / Cut-->
+<!-- IR LED / (Filter)Cut-->
 <div class='card status_card'>
     <header class='card-header'><p class='card-header-title'>IR</p></header>
     <div class='card-content'>
@@ -79,7 +79,7 @@ cat << EOF
         </div>
 
         <div class="column">
-            <label>IR Cut</label>
+            <label>IR Filter</label>
             <div class="buttons">
             <button class="button is-link" onClick="call('cgi-bin/action.cgi?cmd=ir_cut_on')">On</button>
             <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=ir_cut_off')">Off</button>
