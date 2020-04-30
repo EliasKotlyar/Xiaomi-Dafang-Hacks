@@ -60,13 +60,11 @@ if [ ! -f ~/.busybox_aliases ]; then
   /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases
 fi
 
-## Create a swap file on SD if desired
-## please view the swap.conf.dist file for more infomation
 if [ -f "$CONFIGPATH/swap.conf" ]; then
   . $CONFIGPATH/swap.conf
-else
-  SWAP=false
 fi
+
+## Create a swap file on SD if desired
 if [ "$SWAP" = true ]; then
   if [ ! -f $SWAPPATH ]; then
     echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
