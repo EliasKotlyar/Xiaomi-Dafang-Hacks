@@ -57,7 +57,6 @@ $(document).ready(function () {
     // Set title page and menu with hostname
     $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(title){document.title = title;document.getElementById("title").innerHTML = title;});
 
-
     // Set git version to bottim page
     $.get("cgi-bin/state.cgi", {cmd: "version"}, function(version){document.getElementById("version").innerHTML = version;});
 
