@@ -1,5 +1,6 @@
 <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(function() {      
+        checkversion();
         update(true)
     });
 
@@ -16,6 +17,20 @@
         }
     };
 
+    function checkversion(result) {
+        $.ajax({
+            'url': 'cgi-bin/action.cgi?cmd=check_update'
+        }).done(function(result){
+            if (result == 0) {
+                var div = document.getElementById("no_updatebox");
+                
+            } else {
+                var div = document.getElementById("updatebox");
+            }
+            div.style.display = '';
+            div.style.visibility = 'visible';
+        });
+    }
 
     function update(onStart) {
         $.ajax({
@@ -94,11 +109,16 @@
     <header class='card-header'>
         <p class='card-header-title'>Update</p>
     </header>
-    <div class='card-content'>
+    <div class='card-content' style="display: none; visibility: hidden;" id='no_updatebox'>
+        <div class="field is-horizontal">
+            <p>You have already the lastest version.</p>
+        </div>
+    </div>
+    <div class='card-content' style="display: none; visibility: hidden;" id='updatebox'>
         <div class="field is-horizontal">
             <p>You can replace the running firmware on this camera by the latest available from its <a target='_blank' href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks">Github repository</a>. Settings will be retained after update.</p>
         </div>
-	<div class='card-content'>
+	<div class='card-content' id=update>
 		<div class="columns">
 			<div class="column">
                     		<div class="control">
@@ -111,7 +131,8 @@
                     		</div>
     		  	</div>
     		</div>
-    	</div>
+       
+        <div class='u'>
         <h4 class="title is-4">Please note: at the end of this process the camera will reboot without notice</h4>
         <progress id=progress name=progress class="progress is-danger" value=0 max="100"></progress>
         <h1 id=message class="title is-1 has-text-centered"></h1>

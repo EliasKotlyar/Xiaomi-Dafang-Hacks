@@ -1,6 +1,10 @@
 # If you need to run many services in parallel you may want to enable swap on your camera to avoid running out of memory
 # in particular on the xiaofang & clones with only 64 mb 
 
+SWAP_ZRAM=true
+SWAP_ZRAM_SIZE=16777216
+
+# in case you want to use an additional swapfile, enable it here
 SWAP=false
 SWAPPATH="/system/sdcard/swapfile"
 SWAPSIZE=256

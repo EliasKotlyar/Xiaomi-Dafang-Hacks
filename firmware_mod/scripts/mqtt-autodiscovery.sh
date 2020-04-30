@@ -7,8 +7,15 @@
   MAC_SIMPLE=$(cat /sys/class/net/wlan0/address | tr -d :)
   MANUFACTURER="Xiaomi"
   MODEL="Dafang"
-  VER=`cat /system/sdcard/.lastCommitDate`
-
+  JQ="/system/sdcard/bin/jq -r"
+  if [ -s "/system/sdcard/VERSION" ]; then
+   V_DATE=$(${JQ} .date /system/sdcard/VERSION)
+   V_BRANCH=$(${JQ} .branch /system/sdcard/VERSION)
+   V_COMMIT=$(${JQ} .commit /system/sdcard/VERSION)
+   VER="${V_DATE} - ${V_BRANCH} - ${V_COMMIT}"
+  else
+   VER="Need upgrade to have VERSION file"
+  fi
   MQTT_COMMAND="/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t"
   DEVICE_INFO="\"device\": {\"identifiers\": \"$MAC_SIMPLE\", \"connections\": [[\"mac\", \"$MAC\"]], \"manufacturer\": \"$MANUFACTURER\", \"model\": \"$MODEL\", \"name\": \"$DEVICE_NAME\", \"sw_version\": \"$VER\"}"
 

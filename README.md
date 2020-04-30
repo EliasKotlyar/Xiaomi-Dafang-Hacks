@@ -10,7 +10,7 @@ Xiaomi Dafang | ![Dafang](/dafang.png)
 Xiaomi Xiaofang 1S (only old Version with T20, newer Version with T20L not supported yet!) | ![XiaoFang](/xiaofang.png)
 Wyzecam Pan | ![Dafang](/dafang.png)
 Wyzecam V2 | ![XiaoFang](/xiaofang.png)
-Neos SmartCam (NB The original firmware is not yet available, proceed with caution!) | ![XiaoFang](/xiaofang.png)
+Neos SmartCam | ![XiaoFang](/xiaofang.png)
 Sannce I21AG, MixSight HX-I2110T2, WanScam HW0036, Digoo BB-M2 | ![XiaoFang](/sannce.jpg)
 Any other Device with Ingenic T10/T20 Device https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues/980 | ![T20](/t20.png)
 
@@ -78,4 +78,4 @@ It is possible to run your own scripts on motion detection. See [here](/integrat
 
 ## Contributions:
 
-Any contribution to the development is highly welcome. Simply open a pull request on GitHub.
+Any contribution to the development is highly welcome. Simply open a pull request against our beta branch on GitHub.
