@@ -685,7 +685,7 @@ remount_sdcard() {
   mount -o remount,rw /system/sdcard
 }
 
-# Check commit between VERSION file and hithub
+# Check commit between VERSION file and github
 check_commit() {
   if [ -s /system/sdcard/VERSION ]; then
     localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
