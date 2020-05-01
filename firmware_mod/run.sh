@@ -193,10 +193,11 @@ echo 1 > /sys/class/gpio/gpio49/active_low
 echo "Initialized gpios" >> $LOGPATH
 
 ## Set leds to default startup states:
+## LED's off by default to inscrease camera stealth
 ir_led off
 ir_cut on
 yellow_led off
-blue_led on
+blue_led off
 
 ## Load motor driver module:
 insmod /driver/sample_motor.ko
@@ -221,6 +222,7 @@ fi
 
 ## Start SSH Server:
 ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
+touch /var/log/lastlog 2>/dev/null
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
 echo "dropbear: $dropbear_status" >> $LOGPATH
 
