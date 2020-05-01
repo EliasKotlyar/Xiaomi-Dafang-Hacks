@@ -742,6 +742,26 @@ if [ -n "$F_cmd" ]; then
         fi
         return
         ;;
+     recording_files)
+      for file in $(find /system/sdcard/DCIM/Recording/ -type f)
+        do
+         if [[ -f $file ]]; then
+          file_size=$(ls -lh $file | awk '{print $5}')
+          file_url=$(ls -lh $file | awk '{print $9}' | sed 's/\/system\/sdcard\/DCIM/https:\/\/192.168.76.105\/viewer/')
+          file_date=$(ls -lh $file | awk '{print $6 "-" $7 "-" $8}')
+          file_name=$(ls -lh $file | awk '{print $9}' | awk -F / '{print $(NF)}')
+          echo "
+            <tr>
+              <td>${file_name}</td>
+              <td>${file_size}</td>
+              <td>${file_date}</td>
+              <td><a href="${file_url}">download</a>
+            </tr>
+          " 
+          fi
+        done
+      return
+      ;;
      *)
         echo "Unsupported command '$F_cmd'"
         ;;

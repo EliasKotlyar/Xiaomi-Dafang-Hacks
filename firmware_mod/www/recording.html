@@ -1,0 +1,22 @@
+<h1 class="is-size-4">Recording file on SD Card</h1>
+    <script type="text/javascript" src="scripts/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript">
+     
+      $(document).ready(function () {
+        $.get("/cgi-bin/action.cgi?cmd=recording_files", function(files)
+            {
+                $("#files").append(files);
+            });
+      });
+       
+    </script>
+
+    <table id="files">
+        <tr class="header">
+            <th>Filename</th>
+            <th>Size</th>
+            <th>Date</th>
+            <th>Actions</th>
+        </tr>
+
+    </table>
