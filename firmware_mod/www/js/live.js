@@ -1,16 +1,33 @@
-//Functions for live stream with images
+//Array for timeouts
 var timeoutJobs = {};
+var stateSideBar = false;
 
+//Functions for live stream with images
 function refreshLiveImage() {
     var ts = new Date().getTime();
     $("#liveview").attr("src", "/cgi-bin/currentpic.cgi?" + ts);
 }
 
-function scheduleRefreshLiveImage(interval) {
-    if (timeoutJobs['refreshLiveImage'] != undefined) {
-        clearTimeout(timeoutJobs['refreshLiveImage']);
+
+//Function to refresh side bar buttons
+function refreshSideBar() {
+    $.get("https://192.168.76.105/cgi-bin/state.cgi", {cmd: "all"}, function (result) {
+       var switches = result.split("\n");
+       for (var i = 0; i < switches.length-1; i++) {
+        var switch_info = switches[i].split(":");
+        $('#'+switch_info[0]).prop('checked', (switch_info[1] == "ON"));
+       }
+       if(stateSideBar)
+        setTimeout(refreshSideBar, 1000);
+    });
+}
+
+//Function manage refresh jobs
+function scheduleRefreshJob(job,func,interval) {
+    if (timeoutJobs[job] != undefined) {
+        clearTimeout(timeoutJobs[job]);
     }
-    timeoutJobs['refreshLiveImage'] = setTimeout(refreshLiveImage, interval);
+    timeoutJobs[job] = setTimeout(func, interval);
 }
 
 //Function for PTZ control
@@ -60,28 +77,21 @@ function moveCamera(move) {
     setTimeout(refreshLiveImage, 500);
 }
 
-//Function to sync control switch on the left
-function syncControlSwitches() {
-    $.get("https://192.168.76.105/cgi-bin/state.cgi", {cmd: "all"}, function (result) {
-       var switches = result.split("\n");
-       for (var i = 0; i < switches.length-1; i++) {
-        var switch_info = switches[i].split(":");
-        $('#'+switch_info[0]).prop('checked', (switch_info[1] == "ON"));
-       }
-    });
-}
 
 //Function to open sidebar
 function w3_open() {
-  document.getElementById("cameraSidebar").style.display = "block";
+  document.getElementById("sideBar").style.display = "block";
   document.getElementById("myOverlay").style.display = "block";
-  syncControlSwitches();
+  // refresh switches when control menu open
+  stateSideBar = true;
+  refreshSideBar();
 }
 
 //Function to close side bar
 function w3_close() {
-  document.getElementById("cameraSidebar").style.display = "none";
+  document.getElementById("sideBar").style.display = "none";
   document.getElementById("myOverlay").style.display = "none";
+  stateSideBar = false;
 }
 
 
@@ -101,7 +111,7 @@ function onLoad() {
     });
 
     // Make liveview self refresh
-    $("#liveview").attr("onload", "scheduleRefreshLiveImage(1000);");
+    $("#liveview").attr("onload", "scheduleRefreshJob('live','refreshLiveImage()',1000);");
 }
 
 onLoad();
