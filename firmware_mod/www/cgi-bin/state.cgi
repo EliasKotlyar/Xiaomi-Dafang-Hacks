@@ -13,6 +13,18 @@ echo ""
 
 if [ -n "$F_cmd" ]; then
   case "$F_cmd" in
+  all)
+    echo "auto_night_mode:$(auto_night_mode status)"
+    if [ -f /system/sdcard/config/autostart/sound-on-startup ];
+      then sound_on_startup="ON";
+    else
+      sound_on_startup="OFF";
+    fi
+    echo "sound_on_startup:$sound_on_startup"
+    echo "blue_led:$(blue_led status)"
+    echo "yellow_led:$(yellow_led status)"
+    echo "ircut:$(ir_cut status)"
+    ;;
   blue_led)
     echo $(blue_led status)
     ;;
