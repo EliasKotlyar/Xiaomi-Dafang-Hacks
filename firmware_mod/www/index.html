@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- CSS Framework -->
-    <link href="css/bulma.0.7.2.min.css" rel="stylesheet">
+    <link href="css/bulma.0.8.2.min.css" rel="stylesheet">
     <link href="css/bulma-switch.1.0.1.min.css" rel="stylesheet">
     <link href="css/bulma-badge.1.0.1.min.css" rel="stylesheet">
     <link href="css/bulma-quickview.1.0.1.min.css" rel="stylesheet">
@@ -164,6 +164,27 @@
           -moz-transform-origin: 0 0;
           -webkit-transform-origin: 0 0;
         }
+        #files {
+  border-collapse: collapse; /* Collapse borders */
+  width: 100%; /* Full-width */
+  border: 1px solid #ddd; /* Add a grey border */
+  font-size: 18px; /* Increase font-size */
+}
+
+#files th, #files td {
+  text-align: left; /* Left-align text */
+  padding: 12px; /* Add padding */
+}
+
+#files tr {
+  /* Add a bottom border to all table rows */
+  border-bottom: 1px solid #ddd;
+}
+
+#files tr.header, #files tr:hover {
+  /* Add a grey background color to the table header and on hover */
+  background-color: #f1f1f1;
+}
     </style>
 </head>
 
@@ -181,6 +202,14 @@
             <div class="navbar-menu" id="nav_menu">
                 <!-- left menu -->
                 <div class="navbar-start" id="common_nav">
+                    <div class="navbar-item has-dropdown is-hoverable">
+                        <span class="navbar-link">SD card</span>
+                        <div class="navbar-dropdown is-boxed">
+                            <a id="viewer" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/list_files.cgi?dir=recording">Recordings</a>
+                            <a id="viewer" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/list_files.cgi?dir=timelapse">Timelapse</a>
+                       
+                        </div>
+                    </div>
                     <div class="navbar-item has-dropdown is-hoverable">
                         <span class="navbar-link">Configuration</span>
                         <div class="navbar-dropdown is-boxed">
@@ -204,7 +233,7 @@
                             <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to shutdown?" data-target="cgi-bin/action.cgi?cmd=shutdown">Shutdown</a>
                         </div>
                     </div>
-                      <div class="navbar-item has-dropdown is-hoverable">
+                    <div class="navbar-item has-dropdown is-hoverable">
                         <span class="navbar-link">Information</span>
                         <div class="navbar-dropdown is-boxed">
                             <a id="status_overview" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/status_overview.cgi">Overview</a>
@@ -228,7 +257,7 @@
                             <!-- IR Cut -->
                             <span class="navbar-item">
                                 <input id="ir_cut" type="checkbox" name="ir_cut" class="switch" data-checked="cgi-bin/action.cgi?cmd=ir_cut_on" data-unchecked="cgi-bin/action.cgi?cmd=ir_cut_off">
-                                <label for="ir_cut">IR-Cut</label>
+                                <label for="ir_cut">IR Filter</label>
                             </span>
                             <!-- Auto Night Detect -->
                             <span class="navbar-item">

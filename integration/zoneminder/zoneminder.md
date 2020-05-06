@@ -30,7 +30,7 @@ The rest as-is ![pic](Screenshot%202018-04-30%2011.52.42.png)
 BEFORE you can configure the Control tab
 
 If you don't see this make sure you enabled OPT_CONTROL in the ZM options.
-Copy the [gist](https://gist.github.com/joshstrange/73a2f24dfaf5cd5b470024096ce2680f) into a file named Xiaomi.pm in /usr/share/perl5/ZoneMinder/Control/ (May be different for your distro, make sure it has the same permissions as the other controls)
+Copy [Xiaomi.pm](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/integration/zoneminder/Xiaomi.pm) into a file named Xiaomi.pm in /usr/share/perl5/ZoneMinder/Control/ (May be different for your distro, make sure it has the same permissions as the other controls)
 
 Navigate to the control tab for your camera
 

@@ -55,13 +55,16 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
-## Create a swap file on SD if desired
-## please view the swap.conf.dist file for more infomation
+## Create busybox aliases
+if [ ! -f ~/.busybox_aliases ]; then
+  /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases
+fi
+
 if [ -f "$CONFIGPATH/swap.conf" ]; then
   . $CONFIGPATH/swap.conf
-else
-  SWAP=false
 fi
+
+## Create a swap file on SD if desired
 if [ "$SWAP" = true ]; then
   if [ ! -f $SWAPPATH ]; then
     echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
@@ -70,8 +73,16 @@ if [ "$SWAP" = true ]; then
     echo "Swap file created in $SWAPPATH" >> $LOGPATH
   fi
   echo "Configuring swap file" >> $LOGPATH
-  swapon $SWAPPATH
+  swapon -p 10 $SWAPPATH
   echo "Swap set on file $SWAPPATH" >> $LOGPATH
+fi
+
+# Create ZRAM swap as on the original firmware
+if [ ! "$SWAP_ZRAM" = false ]; then
+    echo 100 > /proc/sys/vm/swappiness
+    echo $SWAP_ZRAM_SIZE > /sys/block/zram0/disksize
+    mkswap /dev/zram0
+    swapon -p 20 /dev/zram0
 fi
 
 ## Create crontab dir and start crond:
@@ -182,10 +193,11 @@ echo 1 > /sys/class/gpio/gpio49/active_low
 echo "Initialized gpios" >> $LOGPATH
 
 ## Set leds to default startup states:
+## LED's off by default to inscrease camera stealth
 ir_led off
 ir_cut on
 yellow_led off
-blue_led on
+blue_led off
 
 ## Load motor driver module:
 insmod /driver/sample_motor.ko
@@ -209,6 +221,7 @@ else
 fi
 
 ## Start SSH Server:
+ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
 touch /var/log/lastlog 2>/dev/null
 dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
 echo "dropbear: $dropbear_status" >> $LOGPATH
@@ -255,7 +268,9 @@ done
 
 ## Autostart startup userscripts
 for i in /system/sdcard/config/userscripts/startup/*; do
-  $i &
+  if [ $i != *".dist" ]; then
+    $i &
+  fi
 done
 
 echo "Startup finished!" >> $LOGPATH

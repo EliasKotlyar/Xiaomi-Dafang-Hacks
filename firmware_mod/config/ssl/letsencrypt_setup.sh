@@ -8,33 +8,42 @@ DEBUG="--test --debug"
 
 CONFIGPATH="/system/sdcard/config"
 ACMEPATH="${CONFIGPATH}/ssl/acme"
-SSL_DOMAIN_PATH="${CONFIGPATH}/ssl_domain.conf"
 
-if [ ! -f "acme.sh" ]; then
+mkdir -p "${ACMEPATH}"
+
+if [ ! -f "${CONFIGPATH}/letsencrypt.conf" ]; then
+  echo "You must configure ${CONFIGPATH}/letsencrypt.conf before using letsencrypt_setup.sh"
+  exit 1
+fi
+
+. $CONFIGPATH/letsencrypt.conf
+
+if [ ! -d "acme.sh" ]; then
   echo "- Downloading the acme.sh script..."
-  curl -s https://raw.githubusercontent.com/Neilpang/acme.sh/master/acme.sh > acme.sh
+  wget -q https://github.com/acmesh-official/acme.sh/archive/master.zip
+  unzip -q master.zip
+  mv acme.sh-master acme.sh
+  rm master.zip
 fi
 
-if [ ! -f "${SSL_DOMAIN_PATH}" ]; then
-   echo "ERROR: Please set domain name in file: ${SSL_DOMAIN_PATH}"
-   echo "  ie, echo 'cam.example.org' > ${SSL_DOMAIN_PATH}"
-   exit 1
-fi
-
-SSL_DOMAIN=$(cat ${SSL_DOMAIN_PATH})
-export OPENSSL_CONF="${CONFIGPATH}/openssl.cnf"
-
-if [ -d "${ACMEPATH}/${SSL_DOMAIN}" ]; then
+if [ -d "${ACMEPATH}/${LETSENCRYPT_DOMAIN}" ]; then
   echo "ERROR: It seems this process has already been done, you might want to delete:"
   echo " - $ rm -r ${ACMEPATH}/"
   exit 1
 fi
 
-./acme.sh --issue -d ${SSL_DOMAIN} --home ${ACMEPATH} \
+export OPENSSL_CONF="${CONFIGPATH}/openssl.cnf"
+if [ "$LETSENCRYPT_METHOD" = "webroot" ]; then
+    ./acme.sh/acme.sh --issue -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
           -w ${CONFIGPATH}/../www/ \
           ${DEBUG}
+elif [ "$LETSENCRYPT_METHOD" = "dns" ]; then
+    ./acme.sh/acme.sh --issue -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
+          --dns ${LETSENCRYPT_DNS_PROVIDER} \
+          ${DEBUG}
+fi
 
-./acme.sh --install-cert -d ${SSL_DOMAIN} --home ${ACMEPATH} \
+./acme.sh/acme.sh --install-cert -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
           --cert-file ${ACMEPATH}/host.crt \
           --key-file  ${ACMEPATH}/host.key \
           --fullchain-file ${ACMEPATH}/fullchain.crt \
@@ -50,7 +59,7 @@ PATH=/system/sdcard/bin:/system/bin:/bin:/sbin:/usr/bin:/usr/sbin
 CONFIGPATH="/system/sdcard/config"
 export OPENSSL_CONF="${CONFIGPATH}/openssl.cnf"
 
-$(pwd)/acme.sh --cron --home ${ACMEPATH} >> /tmp/letsencrypt_cron.log 2>&1
+$(pwd)/acme.sh/acme.sh --cron --home ${ACMEPATH} >> /tmp/letsencrypt_cron.log 2>&1
 EOF
 
 if [ ! -z "${DEBUG}" ]; then
