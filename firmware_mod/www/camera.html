@@ -1,56 +1,86 @@
 <div class="w3-panel w3-card">
 <h1>Camera configuration</h1>
 <div class="w3-row">
-    <a href="javascript:void(0)" onclick="openCameraTab(event, 'video');">
-      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-teal">Video</div>
+    <a href="javascript:void(0)" onclick="openTab(event, 'video');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Video</div>
     </a>
-    <a href="javascript:void(0)" onclick="openCameraTab(event, 'audio');">
+    <a href="javascript:void(0)" onclick="openTab(event, 'audio');">
       <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Audio</div>
     </a>
-    <a href="javascript:void(0)" onclick="openCameraTab(event, 'osd');">
+    <a href="javascript:void(0)" onclick="openTab(event, 'osd');">
       <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">OSD</div>
     </a>
-    <a href="javascript:void(0)" onclick="openCameraTab(event, 'led');">
+    <a href="javascript:void(0)" onclick="openTab(event, 'led');">
       <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">LED</div>
     </a>
   </div>
 
-  <div id="video" class="w3-container camTab">
-    <h2>Video</h2>
-    <button class="accordion">Interfaces</button>
+  <div id="video" class="w3-container tab">
+    <form class="w3-container" onsubmit="return false;">
+    <p></p>
+    <button class="accordion">Settings</button>
     <div class="panel">
-      <p>Lorem ipsum...</p>
+      <p></p>
+      <label>Video size</label>
+      <input id="hostname" class="w3-input" type="text">
+      <br />
+      <label>Bitrate</label>
+      <input id="hostname" class="w3-input" type="text">
+      <br />
+      <label>Format</label>
+      <input id="hostname" class="w3-input" type="text">
+      <br />
+      <label>Frame rate (images per secondes)</label>
+      <input id="hostname" class="w3-input" type="text">
+      <br />
     </div>
     
-    <button class="accordion">Routes</button>
+    <button class="accordion">Auto Night</button>
     <div class="panel">
-      <p>Lorem ipsum...</p>
+      <p></p>
+      <label>Auto Night mode</label>
+      <select id="timezone" class="w3-select" name="option">
+        <option>Hardware</option>
+        <option>Software</option>
+      </select>
+      <br />
+      <label>Use average measurement on switching.
+
+        Number of measurements</label>
+        <select id="timezone" class="w3-select" name="option">
+          <option>Hardware</option>
+          <option>Software</option>
+        </select>
+      <p></p>
     </div>
     
-    <button class="accordion">DNS</button>
+    <button class="accordion">Timelapse Settings</button>
     <div class="panel">
       <p>Lorem ipsum...</p>
     </div>
     <p></p>
   </div>
 
-  <div id="audio" class="w3-container camTab" style="display:none">
+  <div id="audio" class="w3-container tab" style="display:none">
     <h2>Audio</h2>
     <p>Paris is the capital of France.</p> 
   </div>
 
-  <div id="osd" class="w3-container camTab" style="display:none">
+  <div id="osd" class="w3-container tab" style="display:none">
     <h2>OSD</h2>
     <p>Tokyo is the capital of Japan.</p>
   </div>
-    <div id="pantilt" class="w3-container camTab" style="display:none">
+    <div id="pantilt" class="w3-container tab" style="display:none">
     <h2>PAN/Tilt</h2>
     <p>Tokyo is the capital of Japan.</p>
   </div>
-    <div id="led" class="w3-container camTab" style="display:none">
+    <div id="led" class="w3-container tab" style="display:none">
     <h2>led</h2>
     <p>Tokyo is the capital of Japan.</p>
   </div>
+  <button class="w3-btn w3-theme" >Save</button>
+  <p></p>
+</form>
 </div>
 
 <script type="text/javascript" src="js/camera.js"></script>
