@@ -248,6 +248,7 @@ if [ -f "$VERSION_FILE" ]; then
     LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})  
     if [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
         logerror "You have already lastest version"
+        echo "You have already lastest version"
         exit 1
     else
         echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
