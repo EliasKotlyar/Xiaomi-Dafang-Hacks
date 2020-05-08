@@ -1,5 +1,5 @@
 <div class="w3-panel w3-card">
-
+  <h1>SD Card files</h1>
 <div class="w3-row">
     <a href="javascript:void(0)" onclick="openTab(event, 'recording');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-teal">Recording</div>
@@ -29,18 +29,3 @@
   </div>
 </div>
 
-<script>
-function openTab(evt, tabName) {
-  var i, x, tablinks;
-  x = document.getElementsByClassName("tab");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" w3-border-theme", "");
-  }
-  document.getElementById(tabName).style.display = "block";
-  evt.currentTarget.firstElementChild.className += " w3-border-theme";
-}
-</script>

@@ -1,14 +1,14 @@
 <div class="w3-panel w3-card">
-
+<h1>Informations</h1>
 <div class="w3-row">
     <a href="javascript:void(0)" onclick="openTab(event, 'overview');">
-      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-teal">Overview</div>
+      <div id='tab' class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Overview</div>
     </a>
     <a href="javascript:void(0)" onclick="openTab(event, 'network');">
-      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Network</div>
+      <div id='tab' class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Network</div>
     </a>
     <a href="javascript:void(0)" onclick="openTab(event, 'logs');">
-      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Logs</div>
+      <div id='tab' class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Logs</div>
     </a>
   </div>
 
@@ -20,27 +20,58 @@
 
   <div id="network" class="w3-container tab" style="display:none">
     <h2>Network</h2>
-    <p>Paris is the capital of France.</p> 
+    <button class="accordion">Interfaces</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    
+    <button class="accordion">Routes</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    
+    <button class="accordion">DNS</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    <p></p>
   </div>
 
-  <div id="logs" class="w3-container tab" style="display:none">
+  <div id="logs" class="w3-container tab " style="display:none">
     <h2>Logs</h2>
-    <p>Tokyo is the capital of Japan.</p>
+    <button class="accordion">Summary</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    
+    <button class="accordion">dmesg</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    
+    <button class="accordion">logcat</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    <button class="accordion">video server</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    <button class="accordion">last update</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    <button class="accordion">process list</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    <button class="accordion">mounts</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    <p></p>
   </div>
+  </div>
+  <p></p>
 </div>
-
-<script>
-function openTab(evt, tabName) {
-  var i, x, tablinks;
-  x = document.getElementsByClassName("tab");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" w3-border-teal", "");
-  }
-  document.getElementById(tabName).style.display = "block";
-  evt.currentTarget.firstElementChild.className += " w3-border-teal";
-}
-</script>
+<script type="text/javascript" src="js/info.js"></script>

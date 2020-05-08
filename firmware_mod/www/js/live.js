@@ -11,14 +11,14 @@ function refreshLiveImage() {
 
 //Function to refresh side bar buttons
 function refreshSideBar() {
-    $.get("https://192.168.76.105/cgi-bin/state.cgi", {cmd: "all"}, function (result) {
+    $.get("https://192.168.76.105/cgi-bin/live.cgi", {cmd: "status_all"}, function (result) {
        var switches = result.split("\n");
        for (var i = 0; i < switches.length-1; i++) {
         var switch_info = switches[i].split(":");
         $('#'+switch_info[0]).prop('checked', (switch_info[1] == "ON"));
        }
        if(stateSideBar)
-        setTimeout(refreshSideBar, 1000);
+        setTimeout(refreshSideBar, 2000);
     });
 }
 
@@ -38,6 +38,7 @@ function PTZControl(view) {
         $("#btn-ptz-right").removeClass("w3-hide");
         $("#btn-ptz-up").removeClass("w3-hide");
         $("#btn-ptz-down").removeClass("w3-hide");
+        $('#btn-ptz-calibrate').removeClass("w3-hide");
         
         //Change onclik function value and change color of button PTZ
         $("#btn-ptz").attr("onclick","PTZControl('hide')");
@@ -50,7 +51,8 @@ function PTZControl(view) {
         $("#btn-ptz-right").addClass("w3-hide");
         $("#btn-ptz-up").addClass("w3-hide");
         $("#btn-ptz-down").addClass("w3-hide");
-        
+        $('#btn-ptz-calibrate').addClass("w3-hide");
+
         //Change onclick function value and change color of button PTZ
         $("#btn-ptz").attr("onclick","PTZControl('show')");
         $("#btn-ptz").removeClass("w3-grey");   
@@ -72,7 +74,7 @@ function camControl(view) {
 
 //Function to move the camra
 function moveCamera(move) {
-    var cmd = "cgi-bin/action.cgi?cmd=motor_" + move;
+    var cmd = "cgi-bin/live.cgi?cmd=motor&move=" + move;
     $.get(cmd);
     setTimeout(refreshLiveImage, 500);
 }
@@ -85,6 +87,8 @@ function w3_open() {
   // refresh switches when control menu open
   stateSideBar = true;
   refreshSideBar();
+  //Activate listen toggler switch when side bar open
+  toggleSideBar();
 }
 
 //Function to close side bar
@@ -94,19 +98,27 @@ function w3_close() {
   stateSideBar = false;
 }
 
+//Function toggle action on side bar button
+function toggleSideBar() {
+    $('input').click(function(){
+        var action="off";
+        if (this.checked)
+            action="on"
+        var cmd = "cgi-bin/live.cgi?cmd="+ this.id +"&action=" + action;
+        $.get(cmd);      
+    });
 
-
-
+}
 
 //Function loaded when script load
 function onLoad() {
     // Show dpad according camera version
-    $.get("cgi-bin/action.cgi", {cmd: "show_HWmodel"}, function(model){      
+    $.get("cgi-bin/live.cgi", {cmd: "show_HWmodel"}, function(model){      
         if (model != "Xiaomi Dafang\n") 
             $("#btn-ptz").addClass("w3-hide");
     });
 
-    $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){
+    $.get("cgi-bin/live.cgi", {cmd: "hostname"}, function(hostname){
         $("#hostname").html(hostname);
     });
 
@@ -114,4 +126,6 @@ function onLoad() {
     $("#liveview").attr("onload", "scheduleRefreshJob('live','refreshLiveImage()',1000);");
 }
 
+//Main program
 onLoad();
+

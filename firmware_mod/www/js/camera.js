@@ -1,0 +1,4 @@
+
+//Activate accordion
+accordion();
+

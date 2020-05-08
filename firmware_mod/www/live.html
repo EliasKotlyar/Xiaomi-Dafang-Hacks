@@ -17,6 +17,11 @@
         <button class="w3-button w3-circle w3-black" onclick="moveCamera('down')"><i class="fa fa-angle-down"></i></button>
         <p></p>
       </div>
+      <div id="btn-ptz-calibrate" class="w3-display-topright w3-container w3-hide">
+        <p></p>
+        <button class="w3-button w3-circle w3-black" onclick="moveCamera('reset_pos_count')">Calibrate</button>
+        
+      </div>
         <div id="cam-control" class="w3-display-bottomright w3-container w3-hide">
           <button id="btn-ptz" class="w3-button w3-circle w3-black" onclick="PTZControl('show')"> <i class="fa fa-arrows-alt"></i></button>
           <button id="btn-settings" class="w3-button w3-circle w3-black" onclick="w3_open()"> <i class="fa fa-cog"></i></button>
