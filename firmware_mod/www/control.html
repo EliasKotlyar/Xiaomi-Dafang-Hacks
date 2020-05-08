@@ -1,0 +1,27 @@
+ <!-- Control card -->
+ <div class="w3-panel w3-card">
+    <h1> Control system</h1>
+    <div class="w3-row">
+        <a href="javascript:void(0)" onclick="openTab(event, 'services');">
+          <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Services</div>
+        </a>
+        <a href="javascript:void(0)" onclick="openTab(event, 'update');">
+          <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Update</div>
+        </a>
+        <a href="javascript:void(0)" onclick="openTab(event, 'power');">
+            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Power</div>
+          </a>
+      </div>
+    
+      <div id="services" class="w3-container tab">
+        <p>Services</p>
+      </div>
+    
+      <div id="update" class="w3-container tab" style="display:none">
+        <p>Update</p>
+      </div>
+      <div id="power" class="w3-container tab" style="display:none">
+        <p>POWER</p>
+      </div>
+    </div>
+    <script type="text/javascript" src="js/control.js"></script>

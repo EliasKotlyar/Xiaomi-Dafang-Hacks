@@ -1,5 +1,5 @@
 <div class="w3-panel w3-card">
-
+<h1>Camera configuration</h1>
 <div class="w3-row">
     <a href="javascript:void(0)" onclick="openCameraTab(event, 'video');">
       <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-teal">Video</div>
@@ -10,9 +10,6 @@
     <a href="javascript:void(0)" onclick="openCameraTab(event, 'osd');">
       <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">OSD</div>
     </a>
-    <a href="javascript:void(0)" onclick="openCameraTab(event, 'pantilt');">
-      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Pan/Tilt</div>
-    </a>
     <a href="javascript:void(0)" onclick="openCameraTab(event, 'led');">
       <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">LED</div>
     </a>
@@ -20,7 +17,21 @@
 
   <div id="video" class="w3-container camTab">
     <h2>Video</h2>
-    <p>London is the capital city of England.</p>
+    <button class="accordion">Interfaces</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    
+    <button class="accordion">Routes</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    
+    <button class="accordion">DNS</button>
+    <div class="panel">
+      <p>Lorem ipsum...</p>
+    </div>
+    <p></p>
   </div>
 
   <div id="audio" class="w3-container camTab" style="display:none">
@@ -42,18 +53,5 @@
   </div>
 </div>
 
-<script>
-function openCameraTab(evt, tabName) {
-  var i, x, tablinks;
-  x = document.getElementsByClassName("camTab");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablink");
-  for (i = 0; i < x.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" w3-border-teal", "");
-  }
-  document.getElementById(tabName).style.display = "block";
-  evt.currentTarget.firstElementChild.className += " w3-border-teal";
-}
-</script>
+<script type="text/javascript" src="js/camera.js"></script>
+

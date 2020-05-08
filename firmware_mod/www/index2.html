@@ -3,15 +3,15 @@
 <title>Dafang Hacks</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/w3.css">
-<link rel="stylesheet" href="css/w3-indigo.css">
-<link rel="stylesheet" href="css/toggle.css">
+<link rel="stylesheet" href="css/w3-theme-light-green.css">
+<link rel="stylesheet" href="css/w3-toggle.css">
+<link rel="stylesheet" href="css/w3-accordion.css">
 <body>
 <!-- Sidebar for control camera -->
 <div class="w3-sidebar w3-bar-block w3-animate-left" style="display:none;z-index:5" id="sideBar">
   <button class="w3-bar-item w3-button w3-large w3-theme" onclick="w3_close()">Close &times;</button>
   <p class="w3-large">Camera</p>
   <label class="switch"><input id="auto_night_mode" type="checkbox"><span class="slider round"></span></label> Auto night detecion<br />
-  <label class="switch"><input id="sound_on_startup" type="checkbox"><span class="slider round"></span></label> Sound on startup<br />
   <label class="switch"><input id="ir_led" type="checkbox"><span class="slider round"></span></label> IR Led<br />
   <label class="switch"><input id="ir_cut" type="checkbox"><span class="slider round"></span></label> IR Filter<br />
   <label class="switch"><input id="blue_led" type="checkbox"><span class="slider round"></span></label> Blue led<br />
@@ -37,19 +37,12 @@
     <div class="w3-dropdown-content w3-bar-block w3-card-4">
       <a href="?url=system" class="w3-bar-item w3-button">System</a>
       <a href="?url=camera" class="w3-bar-item w3-button">Camera</a>
-      <a href="#" class="w3-bar-item w3-button">Recording</a>
       <a href="?url=motion" class="w3-bar-item w3-button">Motion Detection</a>
       <a href="?url=softnight" class="w3-bar-item w3-button">Software Night Detection</a>
     </div>
   </div>
     <div class="w3-dropdown-hover">
-    <button class="w3-button"><i class="fa fa-server"></i></button>
-    <div class="w3-dropdown-content w3-bar-block w3-card-4">
-      <a href="#" class="w3-bar-item w3-button">Services</a>
-      <a href="#" class="w3-bar-item w3-button">Update</a>
-      <a href="#" class="w3-bar-item w3-button">Reboot</a>
-      <a href="#" class="w3-bar-item w3-button">Shutdown</a>
-    </div>
+      <a class="w3-bar-item w3-button" href="?url=control"><i class="fa fa-server"></i></a>
   </div>
   <a class="w3-bar-item w3-button" href="?url=info"><i class="fa fa-info-circle"></i></a>
  
