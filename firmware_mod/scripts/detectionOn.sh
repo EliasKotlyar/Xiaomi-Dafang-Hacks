@@ -86,7 +86,7 @@ if [ "$save_snapshot" = true ] ; then
 
 	# Limit the number of snapshots
 	if [ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshot_days" ]; then
-		rm -f "$save_snapshot_dir/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
+		rm -rf "$save_snapshot_dir/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
 	fi
 
 	chmod "$save_files_attr" "$snapshot_tempfile"
@@ -106,7 +106,7 @@ if [ "$save_video" = true ] ; then
 
 	# Limit the number of videos
 	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_video_days" ]; then
-		rm -r -f "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
+		rm -rf "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
 	fi
 
 	chmod "$save_files_attr" "$video_tempfile"
