@@ -57,9 +57,17 @@ $(document).ready(function () {
     // Set title page and menu with hostname
     $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(title){document.title = title;document.getElementById("title").innerHTML = title;});
 
-
-    // Set git version to bottim page
+    // Set git version to bottom page
     $.get("cgi-bin/state.cgi", {cmd: "version"}, function(version){document.getElementById("version").innerHTML = version;});
+
+    // Show dpad according camera version
+    $.get("cgi-bin/action.cgi", {cmd: "show_HWmodel"}, function(model){
+        
+        if (model == "Xiaomi Dafang\n") 
+            document.getElementById("dpad_container").style.visibility = "visible";
+        else
+            document.getElementById("dpad_container").style.visibility = "hidden";
+    });
 
     // Load link into #content
     $('.onpage').click(function () {
