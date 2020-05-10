@@ -55,16 +55,6 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
-mkdir /tmp/usr_bin_tmp
-mount -t tmpfs -o size=128k tmpfs /tmp/usr_bin_tmp
-cp -d /usr/bin/*  /tmp/usr_bin_tmp/
-ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/ssh
-ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/dbclient
-ln -s /system/sdcard/bin/dropbearmulti /tmp/usr_bin_tmp/scp
-mount -o move /tmp/usr_bin_tmp /usr/bin
-rmdir /tmp/usr_bin_tmp
-
-
 ## Create busybox aliases
 if [ ! -f ~/.busybox_aliases ]; then
   /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases
