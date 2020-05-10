@@ -354,6 +354,108 @@ ftp_server(){
   esac
 }
 
+# Control the MQTT control
+mqtt_control(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/mqtt_control start
+    ;;
+  off)
+    /system/sdcard/controlscripts/mqtt_control stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/mqtt_control status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+# Control the MQTT status
+mqtt_status(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/mqtt_status start
+    ;;
+  off)
+    /system/sdcard/controlscripts/mqtt_status stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/mqtt_status status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+# Control the ONVIF status
+onvif_srvd(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/onvif-srvd.sh start
+    ;;
+  off)
+    /system/sdcard/controlscripts/onvif-srvd.sh stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/onvif-srvd.sh status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+# Control the sound on startup status
+sound_on_startup(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/sound-on-startup start
+    ;;
+  off)
+    /system/sdcard/controlscripts/sound-on-startup stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/sound-on-startup status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
+
+
+# Control the timelapse
+debug_on_osd(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/debug-on-osd start
+    ;;
+  off)
+    /system/sdcard/controlscripts/debug-on-osd stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/debug-on-osd status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
+  esac
+}
+
 # Control the timelapse
 timelapse(){
   case "$1" in
@@ -439,6 +541,26 @@ motion_send_mail(){
         echo "ON"
         ;;
     esac
+  esac
+}
+
+# Control the telegram service
+telegram_bot(){
+  case "$1" in
+  on)
+    /system/sdcard/controlscripts/telegram-bot start
+    ;;
+  off)
+    /system/sdcard/controlscripts/telegram-bot stop
+    ;;
+  status)
+    if /system/sdcard/controlscripts/telegram-bot status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
   esac
 }
 
