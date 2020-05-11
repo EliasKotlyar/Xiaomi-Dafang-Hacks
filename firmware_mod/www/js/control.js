@@ -129,26 +129,62 @@ function saveConfig() {
     
 }
 
+//Function control service (stop/start)
+function controlService(action,serviceName) {
+    $.get("cgi-bin/control.cgi", {cmd: "services",service: serviceName, action: action}, function(result){
+        if (action == 'on') {
+            $('#start_'+serviceName).removeAttr('onclick');
+            $('#stop_'+serviceName).attr('onclick','controlService("off","'+serviceName+'")');
+            $('#start_'+serviceName).removeClass('w3-text-green');
+            $('#start_'+serviceName).addClass('w3-text-grey');
+            $('#stop_'+serviceName).removeClass('w3-text-grey');
+            $('#stop_'+serviceName).addClass('w3-text-red');
+        }
+        else {
+            $('#stop_'+serviceName).removeAttr('onclick');
+            $('#start_'+serviceName).attr('onclick','controlService("on","'+serviceName+'")');
+            $('#start_'+serviceName).removeClass('w3-text-grey');
+            $('#start_'+serviceName).addClass('w3-text-green');
+            $('#stop_'+serviceName).removeClass('w3-text-red');
+            $('#stop_'+serviceName).addClass('w3-text-grey');
+        }
+        $('#start').append("<tr><td>"+config_info[0]+"</td><td><i class='fa fa-play-circle w3-xxlarge "+color_start+"</i> <i class='fa fa-stop-circle w3-xxlarge "+color_stop+"</i></td><td><input class='w3-check' type='checkbox' "+checked+"></td></tr>");
+    });
+}
+
+//Function to control autostart
+function autoStartService(action,serviceName) {
+    $.get("cgi-bin/control.cgi", {cmd: "autoStartService",service: serviceName, action: action});
+    $('#autoStart_'+serviceName).removeAttr('onclick');
+    if(action == "true") {
+        $('#autoStart_'+serviceName).attr('onclick','autoStartService("false","'+serviceName+'")');
+    }
+    else {
+        $('#autoStart_'+serviceName).attr('onclick','autoStartService("true","'+serviceName+'")');
+    }
+}
+
 //Function get config
-function getConfig() {
+function getServices() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/control.cgi", {cmd: "get_config"}, function(config){             
+    $.get("cgi-bin/control.cgi", {cmd: "get_services"}, function(config){             
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");       
-         // If element is a select, selected good value
-         if (config_info[0] == "osdFonts") {
-            $('#'+config_info[0]).html(config_info[1]);
+         // Select button color accrding status
+         if (config_info[1] == "ON") {
+             var color_start = "w3-text-grey' id='start_"+config_info[0]+"'>";
+             var color_stop = "w3-text-red'onclick='controlService(\"off\",\""+config_info[0]+"\")' id='stop_"+config_info[0]+"'>";
          }
-         else if ($('#'+config_info[0]).is('select'))
-            $('#'+config_info[0]+' > option').each(function() {
-                if($(this).val() == config_info[1])
-                    $(this).attr('selected','selected');
-            });
-         
-         else
-            $('#'+config_info[0]).attr("value",config_info[1]);
-       }
+         else {
+            var color_start = "w3-text-green' onclick='controlService(\"on\",\""+config_info[0]+"\")' id='start_"+config_info[0]+"'>";
+            var color_stop = "w3-text-grey' id='stop_"+config_info[0]+"'>";
+         }
+         var checked = "onclick='autoStartService(\"true\",\""+config_info[0]+"\")')";
+         if(config_info[2] == "true")
+            checked = "checked onclick='autoStartService(\"false\",\""+config_info[0]+"\")')";
+         $('#tabServices').append("<tr><td>"+config_info[0]+"</td><td><i class='fa fa-play-circle w3-xxlarge "+color_start+"</i> <i class='fa fa-stop-circle w3-xxlarge "+color_stop+"</i></td><td><input id='autoStart_"+config_info[0]+"' class='w3-check' type='checkbox' "+checked+"></td></tr>");
+        }
     });
 
 }
@@ -172,9 +208,9 @@ function onLoad() {
     //Activate accordion
     accordion();
     //Get configuration
-    getConfig();
-    showupdatepage();
-    update(true);
+    getServices();
+    //showupdatepage();
+    //update(true);
 }
 
 onLoad();
