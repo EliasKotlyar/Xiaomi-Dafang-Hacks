@@ -268,7 +268,7 @@ done
 
 ## Autostart startup userscripts
 for i in /system/sdcard/config/userscripts/startup/*; do
-  if [ $i != *".dist" ]; then
+  if [[ ${i: -3} == ".sh" ]]; then
     $i &
   fi
 done
