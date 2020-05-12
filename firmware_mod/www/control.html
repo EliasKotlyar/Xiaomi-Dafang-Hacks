@@ -5,7 +5,7 @@
         <a href="javascript:void(0)" onclick="openTab(event, 'services');">
           <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Services</div>
         </a>
-        <a href="javascript:void(0)" onclick="openTab(event, 'update');">
+        <a href="javascript:void(0)" onclick="openTab(event, 'update');showupdatepage();">
           <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Update</div>
         </a>
         <a href="javascript:void(0)" onclick="openTab(event, 'power');">
@@ -31,50 +31,16 @@
     
       <div id="update" class="w3-container tab" style="display:none">
         <!-- Update Tab-->
-        <div class='card status_card'>
-          <h2 id='updatemsg'></h2>
-        <div class='card-content' id=update>
-          <div class="columns" id='updatebtn'>
-            <div class="column" id='btn_update_master' style="display:none;visibility: hidden;">
-                              <div class="control">
-                                  <input id="start" class="button is-primary" type="submit" value="Update firmware (stable)" onclick="start('master','cumul')" />
-                              </div>
-                        </div>
-              <div class="column" id='btn_update_beta' style="display:none;visibility: hidden;">
-                              <div class="control">
-                                  <input id="start" class="button is-primary" type="submit" value="Update firmware (beta)" onclick="start('beta','cumul')" />
-                              </div>
-                        </div>
-                      <div class="column" id='btn_switch_beta' style="display:none;visibility: hidden;">
-                          <div class="control">
-                              <input id="start" class="button is-primary" type="submit" value="Switch to beta firmware" onclick="start('beta','full')" />
-                          </div>
-                </div>
-                <div class="column" id='btn_switch_master' style="display:none;visibility:hidden">
-                  <div class="control">
-                      <input id="start" class="button is-primary" type="submit" value="Switch to stable firmware" onclick="start('master','full')" />
-                  </div>
-        </div>
-        <div class="column" id='btn_force_update_master' style="display:none;visibility:hidden">
-          <div class="control" >
-              <input id="update" class="button is-primary" type="submit" value="Full update to master (remove version file + update)" onclick="start('master','full')" />
-          </div>
-      </div>
-      <div class="column" id='btn_force_update_beta' style="display:none;visibility:hidden">
-          <div class="control" >
-              <input id="update" class="button is-primary" type="submit" value="Force full update to beta(remove version file + update)" onclick="start('beta','full')" />
-          </div>
-      </div>
-              </div>
-             
-              <div class='u' id="progressbox" style="display:none;visibility:hidden">
-              <h4 class="title is-4">Please note: at the end of this process the camera will reboot without notice</h4>
-              <progress id=progress name=progress class="progress is-danger" value=0 max="100"></progress>
-              <h1 id=message class="title is-1 has-text-centered"></h1>
-          </div>
+        <h2 id='updatemsg'>Seaching update informations...</h2>
+        <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (stable)" onclick="start('master','cumul')" style="display:none;visibility: hidden;"/><br />
+        <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (beta)" onclick="start('beta','cumul')" style="display:none;visibility: hidden;"/><br />
+        <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to beta firmware" onclick="start('beta','full')" style="display:none;visibility: hidden;"/><br />
+        <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to stable firmware" onclick="start('master','full')" style="display:none;visibility: hidden;"/><br />
+        <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to stable (remove version file + update)" onclick="start('master','full')" style="display:none;visibility: hidden;"/><br />
+        <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to beta(remove version file + update)" onclick="start('beta','full')" style="display:none;visibility: hidden;"/><br />
       </div>
         
-      </div>
+      
       <div id="power" class="w3-container tab" style="display:none">
         <p></p>
         <div class="w3-row-padding">
