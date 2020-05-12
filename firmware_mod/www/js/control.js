@@ -21,13 +21,11 @@ function update(onStart) {
                 $('#message').text("Error starting update progress");
                 $('#message').text("Error starting update process");
             }
-            $('#start').removeAttr('disabled');
-            $('#startBeta').removeAttr('disabled');
         } else {
-            $('#start').attr("disabled", "disabled");
-            $('#startBeta').attr("disabled", "disabled");
             $('#message').text("Update in progress");
-            $('#progress').val(log);
+            $('#progress').removeAttr('style');
+            $('#progress').attr('style','width:'+log+'%');
+            $('#progressValue').html(log+'%');
             // This is the end, start the reboot count down
             if (log >= 100) {
                 timedRefresh(45);
@@ -49,36 +47,36 @@ function showupdatepage(result) {
         if (update_status == 0) {
             $('#updatemsg').html("You have already the lastest version from branch " + update[0])
             if (update[0] == "master") {
-                $('#btn_switch_beta').removeAttr('style');
-                $('#btn_force_update_master').removeAttr('style');
+                $('#switchBeta').removeAttr('style');
+                $('#fullStable').removeAttr('style');
             }
             else {
-                $('#btn_switch_master').removeAttr('style');
-                $('#btn_force_update_beta').removeAttr('style');
+                $('#switchStable').removeAttr('style');
+                $('#fullBeta').removeAttr('style');
             }
         } 
         else if (update_status == -1) {
             $('#updatemsg').html("No version file found. <br /> You can update the running firmware on this camera by the latest available from its <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
-            $('#btn_update_master').removeAttr('style');
-            $('#btn_update_beta').removeAttr('style');
+            $('#updateStable').removeAttr('style');
+            $('#updateBeta').removeAttr('style');
         }
         else if (update_status > 0) {
             $('#updatemsg').html("You are "+ update_status +" commits behind "+ update[0] + " branch");
             if (update[0] == "master") {
-                $('#btn_update_master').removeAttr('style');
-                $('#btn_switch_beta').removeAttr('style');
-                $('#btn_force_update_master').removeAttr('style');
+                $('#updateStable').removeAttr('style');
+                $('#switchBeta').removeAttr('style');
+                $('#fullStable').removeAttr('style');
             }
             else {
-                $('#btn_update_beta').removeAttr('style');
-                $('#btn_switch_master').removeAttr('style');
-                $('#btn_force_update_beta').removeAttr('style');
+                $('#updateBeta').removeAttr('style');
+                $('#switchStable').removeAttr('style');
+                $('#fullBeta').removeAttr('style');
             }
         }
         else {
             $('#updatemsg').text("Problem with your VERSION file. Need a full update to get a correct VERSION file.");
-            $('#btn_force_update_master').removeAttr('style');
-            $('#btn_force_update_beta').removeAttr('style');
+            $('#fullStable').removeAttr('style');
+            $('#fullBeta').removeAttr('style');
         }
     });
 }
@@ -88,10 +86,12 @@ function start(branch,mode) {
     // if ($('#login').val().length > 0) {
     //     login = "login=" + $('#login').val() + ":" + $('#password').val();
     // }
-    $('#updatebox').removeAttr('style');
-    $('#updatebtn').attr('style','display:none;visibility: hidden;');
-    $('#updatemsg').html("");
-    $('#progressbox').removeAttr('style');
+    //Open modal window
+    document.getElementById('confirm_box').style.display='block'
+    $('#confirm_title').html('Update in progress');
+    $('#confirm_content').html('<h4>Please note: at the end of this process the camera will reboot without notice</h4> \
+    <div class="w3-light-grey"><div id="progress" class="w3-container w3-theme" style="width:0%"><span id="progressValue">0%</span></div></div><br><h4 id=message></h4>');
+
     var url = 'cgi-bin/action.cgi?cmd=update&release='+branch+'&mode='+mode;
     $.ajax({
         'url': url,
@@ -100,33 +100,11 @@ function start(branch,mode) {
     }).done(function(result) {
 
         if (result.length > 0) {
-             $('#start').attr("disabled", "disabled");
-             $('#startBeta').attr("disabled", "disabled");
             update(false);
         } else {
-            $('#message').text("Error starting update progress");
-            $('#start').removeAttr('disabled');
-            $('#startBeta').removeAttr('disabled');
+            $('#confrim_content').text("Error starting update progress");
         }
     });
-}
-
-//Function save config
-function saveConfig() {
-    //Open modal window
-    document.getElementById('save_confirm').style.display='block'
-    var postData = { cmd: "save_config" }
-    $("#camera input, select").each(function(){
-        var input = $(this);
-        postData[input.attr('id')] = input.val();
-    });
-    $.post("cgi-bin/camera.cgi",postData,function(result){
-        if ( result != "")
-            $('#save_result').html(result);
-        else
-            $('#save_result').html("Nothing to update");
-    });
-    
 }
 
 //Function control service (stop/start)
@@ -209,8 +187,6 @@ function onLoad() {
     accordion();
     //Get configuration
     getServices();
-    //showupdatepage();
-    //update(true);
 }
 
 onLoad();
