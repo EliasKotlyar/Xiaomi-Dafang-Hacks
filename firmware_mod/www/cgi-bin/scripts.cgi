@@ -75,17 +75,18 @@ else
     if [ -x "$SCRIPT_HOME/$i" ]; then
       if grep -q "^status()" "$SCRIPT_HOME/$i"; then
         status=$("$SCRIPT_HOME/$i" status)
+        badgestatus=$status
         if [ $? -eq 0 ]; then
           if [ -n "$status" ]; then
             badge="";
-          else 
+          else
             badge="is-badge-warning";
           fi
         else
           badge="is-badge-danger"
-          status="NOK"
+          badgestatus="NOK"
         fi
-        echo "<span class='badge $badge' data-badge='$status'>$i</span>"
+        echo "<span class='badge $badge' data-badge='$badgestatus'>$i</span>"
       else
         echo "$i"
       fi
