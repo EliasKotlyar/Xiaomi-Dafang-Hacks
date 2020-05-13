@@ -274,3 +274,6 @@ for i in /system/sdcard/config/userscripts/startup/*; do
 done
 
 echo "Startup finished!" >> $LOGPATH
+echo "" >> $LOGPATH
+echo "Contents of dmesg after startup:" >> $LOGPATH
+dmesg >> $LOGPATH
