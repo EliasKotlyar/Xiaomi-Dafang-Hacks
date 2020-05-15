@@ -274,9 +274,12 @@ done
 
 ## Autostart startup userscripts
 for i in /system/sdcard/config/userscripts/startup/*; do
-  if [ $i != *".dist" ]; then
+  if [[ ${i: -3} == ".sh" ]]; then
     $i &
   fi
 done
 
 echo "Startup finished!" >> $LOGPATH
+echo "" >> $LOGPATH
+echo "Contents of dmesg after startup:" >> $LOGPATH
+dmesg >> $LOGPATH
