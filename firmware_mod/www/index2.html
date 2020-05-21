@@ -1,12 +1,46 @@
 <!DOCTYPE html>
 <html>
+<head>
 <title>Dafang Hacks</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/w3.css">
-<link rel="stylesheet" href="css/w3-theme-light-green.css">
+
 <link rel="stylesheet" href="css/w3-toggle.css">
 <link rel="stylesheet" href="css/w3-accordion.css">
+<!-- jQuery  -->
+<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
+<!-- fontawesome -->
+<script type="text/javascript" src="fontawesome-free-5.13.0-web/js/all.js" defer></script>
+<!-- Login form not working with Basic Auth
+<script type="text/javascript" src="js/login.js"></script>
+-->
+<script type="text/javascript">
+  function getCookie(cname) {
+  var name = cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
 
+  if (getCookie("w3theme") != "") {
+    css = getCookie("w3theme");
+  } else {
+    css = "w3-theme-teal.css";
+  }
+
+  $('head').append("<link rel='stylesheet' href='css/"+css+"'>");
+
+</script>
+</head>
 <body>
 <!-- Sidebar for control camera -->
 <div class="w3-sidebar w3-bar-block w3-animate-left" style="display:none;z-index:5" id="sideBar">
@@ -38,6 +72,7 @@
     <div class="w3-dropdown-content w3-bar-block w3-card-4">
       <a href="?url=system" class="w3-bar-item w3-button">System</a>
       <a href="?url=camera" class="w3-bar-item w3-button">Camera</a>
+      <a href="?url=net_services" class="w3-bar-item w3-button">Network Services</a>
       <a href="?url=motion" class="w3-bar-item w3-button">Motion Detection</a>
       <a href="?url=softnight" class="w3-bar-item w3-button">Software Night Detection</a>
     </div>
@@ -66,10 +101,7 @@
   </p>
 </div>
 </div>
-<!-- jQuery  -->
-<script type="text/javascript" src="js/jquery-3.5.1.min.js"></script>
-<!-- fontawesome -->
-<script type="text/javascript" src="fontawesome-free-5.13.0-web/js/all.js" defer></script>
+
 <script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>

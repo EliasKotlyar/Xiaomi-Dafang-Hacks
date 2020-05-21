@@ -161,6 +161,7 @@ function getServices() {
          var checked = "onclick='autoStartService(\"true\",\""+config_info[0]+"\")')";
          if(config_info[2] == "true")
             checked = "checked onclick='autoStartService(\"false\",\""+config_info[0]+"\")')";
+         
          $('#tabServices').append("<tr><td>"+config_info[0]+"</td><td><i class='fa fa-play-circle w3-xxlarge "+color_start+"</i> <i class='fa fa-stop-circle w3-xxlarge "+color_stop+"</i></td><td><input id='autoStart_"+config_info[0]+"' class='w3-check' type='checkbox' "+checked+"></td></tr>");
         }
     });

@@ -43,7 +43,6 @@ function accordion() {
 }
 
 $(document).ready(function () {
-   
   
     // Set git version to bottom page
     $.get("cgi-bin/state.cgi", {cmd: "version"}, function(version){document.getElementById("version").innerHTML = version;});

@@ -1,0 +1,39 @@
+﻿.w3-btn, .w3-btn:link, .w3-btn:visited {background-color: #8AC007;}
+.w3-code {border-left: 4px solid #8AC007 !important;}
+.w3-sidenav h2 {color: #8AC007;font-size:20px;margin-left: 16px;}
+.w3-topnav {font-size: 20px}
+.w3-example {margin-top:16px}
+#main {margin-left: 220px;}
+.w3-sidenav {font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;width: 220px;}
+.active {background-color:#8AC007 !important;color:#fff !important;}
+
+@media only screen and (max-width: 728px) {
+.w3-sidenav {display: none;}
+.w3-opennav {display:inline-block !important;}
+#main {margin-left:0% !important;}
+}
+.w3-theme-l5 {color:#000 !important;background-color:#f3f9e6 !important}
+.w3-theme-l4 {color:#000 !important;background-color:#e8f2cd !important}
+.w3-theme-l3 {color:#000 !important;background-color:#d0e69c !important}
+.w3-theme-l2 {color:#000 !important;background-color:#b9d96a !important}
+.w3-theme-l1 {color:#000 !important;background-color:#a1cd39 !important}
+.w3-theme-d1 {color:#fff !important;background-color:#7cad06 !important}
+.w3-theme-d2 {color:#fff !important;background-color:#6e9a06 !important}
+.w3-theme-d3 {color:#fff !important;background-color:#618605 !important}
+.w3-theme-d4 {color:#fff !important;background-color:#537304 !important}
+.w3-theme-d5 {color:#fff !important;background-color:#446003 !important}
+
+.w3-theme-light {color:#000 !important;background-color:#f3f9e6 !important}
+.w3-theme-dark {color:#fff !important;background-color:#446003 !important}
+.w3-theme-action {color:#fff !important;background-color:#537304 !important}
+
+.w3-theme {color:#fff !important;background-color:#8AC007 !important}
+.w3-text-theme {color:#8AC007 !important}
+.w3-border-theme {border-color:#8AC007 !important}
+
+.w3-hover-theme:hover {color:#fff !important;background-color:#8AC007 !important}
+.w3-hover-text-theme:hover {color:#8AC007 !important}
+.w3-hover-border-theme:hover {border-color:#8AC007 !important}
+
+
+
