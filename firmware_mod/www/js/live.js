@@ -11,7 +11,7 @@ function refreshLiveImage() {
 
 //Function to refresh side bar buttons
 function refreshSideBar() {
-    $.get("https://192.168.76.105/cgi-bin/live.cgi", {cmd: "status_all"}, function (result) {
+    $.get("/cgi-bin/live.cgi", {cmd: "status_all"}, function (result) {
        var switches = result.split("\n");
        for (var i = 0; i < switches.length-1; i++) {
         var switch_info = switches[i].split(":");
