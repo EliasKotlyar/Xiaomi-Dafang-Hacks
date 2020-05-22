@@ -7,10 +7,14 @@
 </p>
 
 <div id="motion_img_container" style="margin: 1em 0; position:relative;">
-    <img id="motion_picture" src="cgi-bin/currentpic.cgi" style="width:100%"/>
+    <img id="motion_picture" src="cgi-bin/currentpic.cgi" />
     <span id="region_disabled" class="has-text-danger is-size-1" style="display: none; position: absolute; top: 10%; left: 30%; padding: 0.25em 0.5em; background-color: rgba(20, 20, 20, 0.5); border-radius: 0.25em;">
         Region disabled
     </span>
+    <p></p>
+    <input type="button" id="btnNew" value="Add New" class="actionOn w3-btn w3-theme" />
+    <input type="button" id="btnViewRel" value="Set areas" class="actionOn w3-btn w3-theme" />
+    <input type="button" id="btnReset" value="Reset" class="actionOn w3-btn w3-theme" />
 </div>
 
 <div class="column is-two-thirds">
@@ -24,7 +28,7 @@
         <div class="field">
             <label class="label">Region Boundaries</label>
             <div class="control">
-                <span id="region_xy"></span>
+                <div id="output" class='output'> </div>
             </div>
         </div>
 
@@ -92,7 +96,7 @@
         </div>
     </form>
 </div>
-
+<script type="text/javascript" src="js/motion.js"></script>
 <script type="text/javascript">
 
     var originalMotionInfo;
