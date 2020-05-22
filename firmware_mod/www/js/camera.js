@@ -1,9 +1,10 @@
 //Function save config
-function saveConfig() {
+function saveConfig(elements) {
     //Open modal window
     document.getElementById('save_confirm').style.display='block'
+    $('#save_result').html("Waiting for save result...");
     var postData = { cmd: "save_config" }
-    $("#camera input, select").each(function(){
+    $("#"+elements+" input, #"+elements+" select").each(function(){
         var input = $(this);
         postData[input.attr('id')] = input.val();
     });

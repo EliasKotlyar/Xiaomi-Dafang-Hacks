@@ -49,29 +49,29 @@ if [ -n "$F_cmd" ]; then
 	echo "osdFonts#:#$(getFonts)"
   ;;
   save_config)
-	if [ -n ${F_videoSize} ]; then
+	if [ -n "${F_videoSize+x}" ]; then
 	  	video_size=$(echo "${F_videoSize}"| sed -e 's/+/ /g')
 		rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"$video_size\""
 		rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"$video_size\""
 		echo "Video resolution set to $video_size<br/>"
 	fi
-	if [ -n ${F_bitRate} ]; then
+	if [ -n "${F_bitRate+x}" ]; then
 		brbitrate=$(printf '%b' "${F_bitRate/%/\\x}")
 		rewrite_config /system/sdcard/config/rtspserver.conf BITRATE "$brbitrate"
 		echo "Bitrate set to $brbitrate<br/>"
 	fi
-	if [ -n ${F_format} ]; then
+	if [ -n  "${F_format+x}" ]; then
 		video_format=$(printf '%b' "${F_format/%/\\x}")
 		rewrite_config /system/sdcard/config/rtspserver.conf VIDEOFORMAT "$video_format"
-	
+		echo "Video format set to $video_format (0 = FixedQp, 1 = CBR, 2 = VBR and 3 = SMART)<br/>"
 	fi
-	if [ -n ${F_frmRateNum} ]; then
+	if [ -n  "${F_frmRateNum+x}" ]; then
 		frmRateNum=$(printf '%b' "${F_frmRateNum/%/\\x}")
 		if [ "$frmRateNum" != "" ]; then
 	  		rewrite_config /system/sdcard/config/rtspserver.conf FRAMERATE_NUM "$frmRateNum"
 		fi
 	fi
-	if [ -n ${F_frmRateDen} ]; then
+	if [ -n  "${F_frmRateDen+x}" ]; then
 		frmRateDen=$(printf '%b' "${F_frmRateDen/%/\\x}")
 		if [ "$frmRateDen" != "" ]; then
 		  rewrite_config /system/sdcard/config/rtspserver.conf FRAMERATE_DEN "$frmRateDen"
@@ -79,35 +79,32 @@ if [ -n "$F_cmd" ]; then
 		echo "FrameRate set to $frmRateDen/$frmRateNum <br/>"
 		/system/sdcard/bin/setconf -k d -v "$frmRateNum,$frmRateDen" 2>/dev/null
 	fi
-
-	if [ -n ${F_videoUser} ]; then
+	if [ -n  "${F_videoUser+x}" ]; then
 		videouser=$(printf '%b' "${F_videoUser//%/\\x}")
 		rewrite_config /system/sdcard/config/rtspserver.conf USERNAME "$videouser"
+
 	fi
-	if [ -n ${F_videoPassword} ]; then
+	if [ -n  "${F_videoPassword+x}" ]; then
 		videopassword=$(printf '%b' "${F_videoPassword//%/\\x}")
 		rewrite_config /system/sdcard/config/rtspserver.conf USERPASSWORD "$videopassword"
+		echo "Set user and password for video stream<br />"
 	fi
-	if [ -n ${F_videoPort} ]; then
-		videoport=$(echo "${F_videoPort}"| sed -e 's/+/ /g')
+	if [ -n  "${F_videoPort+x}" ]; then
+		videoport=$(echo "${F_videoPort}"| tr '\n')
 		rewrite_config /system/sdcard/config/rtspserver.conf PORT "$videoport"
+		echo "Set video port tp ${videoport}"
 	fi
-	if [ -n ${F_autoNightMode} ]; then
-		if [ -z ${F_autoNightMode} ]; then
-			echo "Activate auto night mode"
-			/system/sdcard/controlscripts/auto-night-detection start
-		else
-			echo "Disable auto night mode"
-			/system/sdcard/controlscripts/auto-night-detection stop
-		fi
+	if [ -n "${F_autoNightMode+x}" ]; then
+		rewrite_config /system/sdcard/config/autonight.conf autonight_mode $F_autoNightMode
+		echo "Set autonight to mode ${F_autoNightMode} <br />"
 	fi
-	if [ -n ${F_avg} ]; then
+	if [ -n  "${F_avg+x}" ]; then
 		ldravg=$(printf '%b' "${F_avg/%/\\x}")
 		ldravg=$(echo "$ldravg" | sed "s/[^0-9]//g")
 		echo AVG="$ldravg" > /system/sdcard/config/ldr-average.conf
-		echo "Average set to $ldravg iterations."
+		echo "Average set to $ldravg iterations. <br />"
 	fi
-	if [ -n ${F_audioinFormat} ]; then
+	if [ -n  "${F_audioinFormat+x}" ]; then
 		audioinFormat=$(printf '%b' "${F_audioinFormat/%/\\x}")
 		if [ "$audioinFormat" == "OPUS" ]; then
 		  audioOutBR="48000"
@@ -121,7 +118,7 @@ if [ -n "$F_cmd" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf AUDIOFORMAT "$audioinFormat"
 		echo "Audio format $audioinFormat <br/>"
 	fi
-	if [ -n ${F_audioinBR} ]; then
+	if [ -n  "${F_audioinBR+x}" ]; then
 		audioinBR=$(printf '%b' "${F_audioinBR/%/\\x}")
 		if [ "$audioinBR" == "" ]; then
 		  audioinBR="8000"
@@ -129,7 +126,7 @@ if [ -n "$F_cmd" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf AUDIOINBR "$audioinBR"
 		echo "In audio bitrate $audioinBR <br/>"
 	fi
-	if [ -n ${F_audiooutBR} ]; then
+	if [ -n  "${F_audiooutBR+x}" ]; then
 		audiooutBR=$(printf '%b' "${F_audiooutBR/%/\\x}")
 		if [ "$audiooutBR" == "" ]; then
 			audioOutBR = audioinBR
@@ -137,100 +134,108 @@ if [ -n "$F_cmd" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf AUDIOOUTBR "$audiooutBR"
 		echo "Out audio bitrate $audiooutBR <br/>"
 	fi
-	if [ -n ${F_audioinFilter} ]; then
+	if [ -n  "${F_audioinFilter+x}" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf FILTER "$F_audioinFilter"
 		echo "Filter $F_audioinFilter <br/>"
 		system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
 	fi
-	if [ -n ${F_HFEnabled} ]; then
+	if [ -n  "${F_HFEnabled+x}" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf HIGHPASSFILTER "$F_HFEnabled"
 		echo "High Pass Filter $F_HFEnabled <br/>"
 		/system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
 	fi
-	if [ -n ${F_AECEnabled} ]; then
+	if [ -n  "${F_AECEnabled+x}" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf AECFILTER "$F_AECEnabled"
 		echo "AEC Filter $F_AECEnabled <br/>"
 		/system/sdcard/bin/setconf -k a -v "$F_AECEnabled" 2>/dev/null
 	fi
-	if [ -n ${F_audioinVol} ]; then
+	if [ -n  "${F_audioinVol+x}" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
 		rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "-1"
 		echo "Volume $F_audioinVol <br/>"
 		/system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
 	fi
-	if [ -n ${F_tlinterval} ]; then
+	if [ -n  "${F_tlinterval+x}" ]; then
 		tlinterval=$(printf '%b' "${F_tlinterval/%/\\x}")
 		tlinterval=$(echo "$tlinterval" | sed "s/[^0-9\.]//g")
 		if [ "$tlinterval" ]; then
 	  		rewrite_config /system/sdcard/config/timelapse.conf TIMELAPSE_INTERVAL "$tlinterval"
-	  		echo "Timelapse interval set to $tlinterval seconds."
+	  		echo "Timelapse interval set to $tlinterval seconds. <br />"
 		else
-	  	echo "Invalid timelapse interval"
+	  	echo "Invalid timelapse interval <br />"
 		fi
 	fi
-	if [ -n ${F_tlduration} ]; then
+	if [ -n  "${F_tlduration+x}" ]; then
 		tlduration=$(printf '%b' "${F_tlduration/%/\\x}")
 		tlduration=$(echo "$tlduration" | sed "s/[^0-9\.]//g")
 		if [ "$tlduration" ]; then
 	  		rewrite_config /system/sdcard/config/timelapse.conf TIMELAPSE_DURATION "$tlduration"
-	  		echo "Timelapse duration set to $tlduration minutes."
+	  		echo "Timelapse duration set to $tlduration minutes. <br />"
 		else
-	  		echo "Invalid timelapse duration"
+	  		echo "Invalid timelapse duration <br />"
 		fi
 	fi
-	if [ -n ${F_osdEnable} ]; then
+	if [ -n  "${F_osdEnable+x}" ]; then
 		enabled=$(printf '%b' "${F_osdEnable}")
 		if [ ! -z "$enabled" ]; then
-	  		echo "ENABLE_OSD=true" >> /system/sdcard/config/osd.conf
+	  		echo "ENABLE_OSD=true" > /system/sdcard/config/osd.conf
 	  		update_axis
-	  		echo "OSD enabled"
+	  		echo "OSD enabled <br />"
 		else
-	  		echo "ENABLE_OSD=false" >> /system/sdcard/config/osd.conf
-	  		echo "OSD disabled"
+	  		echo "ENABLE_OSD=false" > /system/sdcard/config/osd.conf
+	  		echo "OSD disabled <br />"
 	  		/system/sdcard/bin/setconf -k o -v ""
 		fi
 	fi
-	if [ -n ${F_osdText} ]; then
+	if [ -n  "${F_osdText+x}" ]; then
 		osdtext=$(printf '%b' "${F_osdText//%/\\x}")
 		osdtext=$(echo "$osdtext" | sed -e "s/\\+/ /g")
 		echo "OSD=\"${osdtext}\"" | sed -r 's/[ ]X=.*"/"/' >> /system/sdcard/config/osd.conf
-		echo "OSD set<br />"
+		echo "OSD set text ${osdtext}<br />"
 	fi
-	if [ -n ${F_osdAxis} ]; then
-		axis_enable=$(printf '%b' "${F_osdAxis}")
-		if [ ! -z "$axis_enable" ];then
-	  		echo "DISPLAY_AXIS=true" > /system/sdcard/config/osd.conf
-	  		echo "DISPLAY_AXIS enable<br />"
+	if [ -n "${F_osdAxis+x}" ];then
+		if [[ ${F_osdAxis}]]; then
+			echo "DISPLAY_AXIS=true" >> /system/sdcard/config/osd.conf
+			echo "OSD Display axis enabled<br />"
 		else
-	  		echo "DISPLAY_AXIS=false" > /system/sdcard/config/osd.conf
-	  		echo "DISPLAY_AXIS disable<br />"
+			echo "DISPLAY_AXIS=false" >> /system/sdcard/config/osd.conf
+			echo "OSD Display axis disabled<br />"
 		fi
 	fi
-	if [ -n ${F_osdColor} ]; then
+	if [ -n  "${F_osdColor+x}" ]; then
+		color='white black red green blue cyan yellow purple'
 		echo "COLOR=${F_osdColor}" >> /system/sdcard/config/osd.conf
 		/system/sdcard/bin/setconf -k c -v "${F_osdColor}"
+		echo -n "Set text color to "
+		echo -n $(echo $color | cut -d ' ' -f $(($F_osdColor + 1)))
+		echo "<br />"
 	fi
-	if [ -n ${F_osdSize} ]; then
+	if [ -n  "${F_osdSize+x}" ]; then
 		echo "SIZE=${F_osdSize}" >> /system/sdcard/config/osd.conf
 		/system/sdcard/bin/setconf -k s -v "${F_osdSize}"
+		echo "Set OSD text size to ${F_osdSize}<br />"
 	fi
-	if [ -n ${F_osdPixel} ]; then
+	if [ -n  "${F_osdPixel+x}" ]; then
 		echo "SPACE=${F_osdPixel}" >> /system/sdcard/config/osd.conf
 		/system/sdcard/bin/setconf -k p -v "${F_osdPixel}"
+		echo "Set OSD pixel betwwen chars to ${F_osdPixel}<br />"
 	fi
-	if [ -n ${F_osdY} ]; then
+	if [ -n  "${F_osdY+x}" ]; then
 		echo "POSY=${F_osdY}" >> /system/sdcard/config/osd.conf
 		system/sdcard/bin/setconf -k x -v "${F_osdY}"
+		echo "Set OSD Y position to ${F_osdY}<br />"
 	fi
-	if [ -n ${F_osdFixW} ]; then
+	if [ -n  "${F_osdFixW+x}" ]; then
 		echo "FIXEDW=${F_osdFixW}" >> /system/sdcard/config/osd.conf
 		/system/sdcard/bin/setconf -k w -v "${F_osdFixW}"
+		echo "Set OSD fixed width to ${F_osdFixW}<br />"
 	fi
-	if [ -n ${F_osdFonts} ]; then
+	if [ -n  "${F_osdFonts+x}" ]; then
 		fontName=$(printf '%b' "${F_osdFonts//%/\\x}")
 		fontName=$(echo "$fontName" | sed -e "s/\\+/ /g")
 		echo "FONTNAME=${fontName}" >> /system/sdcard/config/osd.conf
 		/system/sdcard/bin/setconf -k e -v "${fontName}"
+		echo "Set OSD font to ${fontName}<br />"
 	fi
 	if [ "$(rtsp_h264_server status)" = "ON" ]; then
 	  echo "Restart H264 rtsp server"
