@@ -26,7 +26,7 @@ telegram_alert_type=image
 send_matrix=false
 
 # General
-group_date_pattern="+%Y-%m-%d"
+group_date_pattern="+%Y-%m-%d/%H"
 file_date_pattern="+%Y-%m-%d_%H-%M-%S"
 video_duration=10
 save_files_attr="0644"
