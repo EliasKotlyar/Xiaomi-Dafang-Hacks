@@ -1,0 +1,64 @@
+ <!-- System card-->
+<div class="w3-panel w3-card">
+<form class="w3-container" onsubmit="saveConfig();return false;">
+<h1> Network services configuration</h1>
+<div class="w3-row">
+    <a href="javascript:void(0)" onclick="openTab(event, 'mqtt');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">MQTT</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'ftp');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">FTP</div>
+    </a>
+  </div>
+
+  <div id="mqtt" class="w3-container tab">
+        <p></p>
+        <label>Server address</label>
+        <input id="hostname" class="w3-input" type="text">
+        <br />
+        <label>MQTT user</label>
+        <input id="hostname" class="w3-input" type="text">
+        <br />
+        <label>MQTT password</label>
+        <input id="password" class="w3-input" type="password" value="*****">
+        <br />
+        <label>Location</label>
+        <input id="hostname" class="w3-input" type="text">
+        <br />
+        <label>Device name</label>
+        <input id="hostname" class="w3-input" type="text">
+        <br />
+        <label>Status interval</label>
+        <input id="hostname" class="w3-input" type="text">
+  </div>
+
+  <div id="ftp" class="w3-container tab" style="display:none">
+        <p id='currenttime'></p>
+        <label>Port</label>
+        <select id="timezone" class="w3-select">
+        </select>
+        <br />
+        <label>NTP Server</label>
+        <input id="ntp" class="w3-input" type="text">
+ </div>
+
+  <p></p>
+  <button class="w3-btn w3-theme">Save</button>
+  <p></p>
+
+</div>
+<div id="save_confirm" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-theme">
+        <span onclick="document.getElementById('save_confirm').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+       <h2>Save config</h2>
+     </header>
+     <div class="w3-container">
+     <p id="save_result">Waiting for save result...</p>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+<script type="text/javascript" src="js/system.js"></script>

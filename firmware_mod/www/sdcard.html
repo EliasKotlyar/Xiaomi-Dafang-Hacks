@@ -1,0 +1,64 @@
+  <div class="w3-panel w3-card">
+  <h1>SD Card files</h1>
+<div class="w3-row">
+    <a href="javascript:void(0)" onclick="openTab(event, 'recording');getFiles('recording');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Recording</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'timelapse');getFiles('timelapse');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Timelapse</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'motion');getFiles('motion');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Motion</div>
+    </a>
+  </div>
+
+  <div id="recording" class="w3-container tab">
+    <p></p>
+    <table class="w3-table-all" id="tabrecording">
+      <thead>
+        <tr class="w3-theme">
+          <th>Filename</th>
+          <th>Size</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <p></p>
+  </div>
+
+  <div id="timelapse" class="w3-container tab" style="display:none">
+    <p></p>
+    <table class="w3-table-all" id="tabtimelapse">
+      <thead>
+        <tr class="w3-theme">
+          <th>Filename</th>
+          <th>Size</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table> 
+    <p></p>
+  </div>
+
+  <div id="motion" class="w3-container tab" style="display:none">
+    <p></p>
+    <table class="w3-table-all" id="tabmotion">
+      <thead>
+        <tr class="w3-theme">
+          <th>Filename</th>
+          <th>Size</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table> 
+    <p></p>
+  </div>
+</div>
+
+<script type="text/javascript" src="js/sdcard.js"></script>

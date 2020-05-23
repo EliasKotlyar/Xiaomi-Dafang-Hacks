@@ -1,0 +1,81 @@
+ <!-- Control card -->
+ <div class="w3-panel w3-card">
+    <h1> Control system</h1>
+    <div class="w3-row">
+        <a href="javascript:void(0)" onclick="openTab(event, 'services');">
+          <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Services</div>
+        </a>
+        <a href="javascript:void(0)" onclick="openTab(event, 'update');showupdatepage();">
+          <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Update</div>
+        </a>
+        <a href="javascript:void(0)" onclick="openTab(event, 'power');">
+            <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Power</div>
+          </a>
+      </div>
+    
+      <div id="services" class="w3-container tab">
+        <!-- Services Tab-->
+        <p></p>
+        <table class="w3-table-all" id="tabServices">
+          <thead>
+            <tr class="w3-theme">
+              <th>Service name</th>
+              <th>Control</th>
+              <th>Autostart</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p></p>
+      </div>
+    
+      <div id="update" class="w3-container tab" style="display:none">
+        <!-- Update Tab-->
+        <h2 id='updatemsg'>Seaching update informations...</h2>
+        <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (stable)" onclick="start('master','cumul')" style="display:none;visibility: hidden;"/><br />
+        <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (beta)" onclick="start('beta','cumul')" style="display:none;visibility: hidden;"/><br />
+        <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to beta firmware" onclick="start('beta','full')" style="display:none;visibility: hidden;"/><br />
+        <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to stable firmware" onclick="start('master','full')" style="display:none;visibility: hidden;"/><br />
+        <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to stable (remove version file + update)" onclick="start('master','full')" style="display:none;visibility: hidden;"/><br />
+        <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to beta(remove version file + update)" onclick="start('beta','full')" style="display:none;visibility: hidden;"/><br />
+      </div>
+        
+      
+      <div id="power" class="w3-container tab" style="display:none">
+        <p></p>
+        <div class="w3-row-padding">
+          <div class="w3-half">
+            <button class="w3-btn w3-block w3-theme" type="text" onclick="system('reboot');">Reboot</button>
+          </div>
+          <div class="w3-half">
+            <button class="w3-btn w3-block w3-theme" type="text" onclick="system('shutdown');">Shutdown</button>
+          </div>
+        </div>
+        <p></p>
+      </div>
+      <div id="confirm_box" class="w3-modal">
+        <div class="w3-modal-content">
+          <header class="w3-container w3-theme">
+              <span onclick="document.getElementById('confirm_box').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+             <h2 id="confirm_title"></h2>
+           </header>
+           <div class="w3-container">
+           <p id="confirm_content">Waiting ...</p>
+          </div>
+        </div>
+      </div>
+      <div id="configure_box" class="w3-modal">
+        <div class="w3-modal-content">
+          <header class="w3-container w3-theme">
+              <span onclick="document.getElementById('configure_box').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+             <h2 id="configure_title"></h2>
+           </header>
+           <div class="w3-container">
+           <p id="configure_content">Waiting ...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="js/control.js"></script>
