@@ -62,7 +62,7 @@ $(document).ready(function () {
 
     // Show dpad according camera version
     $.get("cgi-bin/action.cgi", {cmd: "show_HWmodel"}, function(model){
-        
+
         if (model == "Xiaomi Dafang\n") 
             document.getElementById("dpad_container").style.visibility = "visible";
         else
