@@ -1,86 +1,93 @@
-			$(document).ready(function () {
-				$('img#motion_picture').selectAreas({
-					minSize: [10, 10],
-					onChanged: debugQtyAreas,
-					width: 640
-				});
-				$('#btnView').click(function () {
-					var areas = $('img#motion_picture').selectAreas('areas');
-					displayAreas(areas);
-				});
-				$('#btnViewRel').click(function () {
-					var areas = $('img#motion_picture').selectAreas('relativeAreas');
-					displayAreas(areas);
-				});
-				$('#btnReset').click(function () {
-					output("reset")
-					$('img#motion_picture').selectAreas('reset');
-				});
-				$('#btnDestroy').click(function () {
-					$('img#motion_picture').selectAreas('destroy');
+// Function to 
+function zones() {
+	var ratio = $('img#motion_picture').get(0).naturalWidth / 640;
+	var zones = $('#currentRegions').val();
+	var zones_d = zones.split(",");
+	var zones_r = new Array();
+	for (var i = 0; i < zones_d.length-1; i=i+4) {
+		var zone = new Object();
+		zone.x = zones_d[i] / ratio;
+		zone.y = zones_d[i+1] / ratio;
+		zone.width = zones_d[i+2] / ratio;
+		zone.height = zones_d[i+3] / ratio;
+		zones_r.push(zone);
+	}
+	$('img#motion_picture').selectAreas({
+		minSize: [10, 10],
+		width: 640,
+		maxAreas: 5,
+		areas: zones_r
+	});
+}			
 
-					output("destroyed")
-					$('.actionOn').attr("disabled", "disabled");
-					$('.actionOff').removeAttr("disabled")
-				});
-				$('#btnCreate').attr("disabled", "disabled").click(function () {
-					$('img#motion_picture').selectAreas({
-						minSize: [10, 10],
-						onChanged : debugQtyAreas,
-						width: 500,
-					});
 
-					output("created")
-					$('.actionOff').attr("disabled", "disabled");
-					$('.actionOn').removeAttr("disabled")
-				});
-				$('#btnNew').click(function () {
-					var areaOptions = {
-						x: Math.floor((Math.random() * 200)),
-						y: Math.floor((Math.random() * 200)),
-						width: Math.floor((Math.random() * 100)) + 50,
-						height: Math.floor((Math.random() * 100)) + 20,
-					};
-					output("Add a new area: " + areaToString(areaOptions))
-					$('img#motion_picture').selectAreas('add', areaOptions);
-				});
-				$('#btnNews').click(function () {
-					var areaOption1 = {
-						x: Math.floor((Math.random() * 200)),
-						y: Math.floor((Math.random() * 200)),
-						width: Math.floor((Math.random() * 100)) + 50,
-						height: Math.floor((Math.random() * 100)) + 20,
-					}, areaOption2 = {
-						x: areaOption1.x + areaOption1.width + 10,
-						y: areaOption1.y + areaOption1.height - 20,
-						width: 50,
-						height: 20,
-					};
-					output("Add a new area: " + areaToString(areaOption1) + " and " + areaToString(areaOption2))
-					$('img#motion_picture').selectAreas('add', [areaOption1, areaOption2]);
-				});
-			});
+//Function save config
+function saveConfig(elements) {
+    //Open modal window
+    document.getElementById('save_confirm').style.display='block'
+    $('#save_result').html("Waiting for save result...");
+	var postData = { cmd: "save_config" }
+	if( elements == "regions" ) {
+		var areas = $('img#motion_picture').selectAreas('relativeAreas');
+		var regions = "";
+		var i = 0;
+		$.each(areas, function (id, area) {
+			if ( i != 0 )
+				regions += ',';
+			i++;
+			regions += area.x + ',' + area.y  + ',' + area.width + ',' + area.height;
 
-			var selectionExists;
+		});
+		postData['regions'] = regions;
+	}
+	else {
+    	$("#"+elements+" input, #"+elements+" select").each(function(){
+        	var input = $(this);
+        	postData[input.attr('id')] = input.val();
+		});
+	}
+	
+    $.post("cgi-bin/motion.cgi",postData,function(result){
+        if ( result != "")
+            $('#save_result').html(result);
+        else
+            $('#save_result').html("Nothing to update");
+    });
+    
+}
 
-			function areaToString (area) {
-				return (typeof area.id === "undefined" ? "" : (area.id + ": ")) + area.x + ':' + area.y  + ' ' + area.width + 'x' + area.height + '<br />'
-			}
+//Function get config
+function getConfig() {
+    // get config and put to hmtl elements
+    $.get("cgi-bin/motion.cgi", {cmd: "get_config"}, function(config){             
+        var config_all = config.split("\n");
+        for (var i = 0; i < config_all.length-1; i++) {
+         var config_info = config_all[i].split("#:#");       
+         // If element is a select, selected good value
+		 if ($('#'+config_info[0]).is('select'))
+            $('#'+config_info[0]+' > option').each(function() {
+                if($(this).val() == config_info[1])
+                    $(this).attr('selected','selected');
+            });
+         else
+            $('#'+config_info[0]).attr("value",config_info[1]);
+       }
+    });
+}
+				
+//Function loaded when script load
+function onLoad() {
+    //Activate accordion
+    accordion();
+    //Get configuration
+    getConfig();
 
-			function output (text) {
-				$('#output').html(text);
-			}
+}
 
-			// Log the quantity of selections
-			function debugQtyAreas (event, id, areas) {
-				console.log(areas.length + " areas", arguments);
-			};
+onLoad();
+				
+			
 
-			// Display areas coordinates in a div
-			function displayAreas (areas) {
-				var text = "";
-				$.each(areas, function (id, area) {
-					text += areaToString(area);
-				});
-				output(text);
-			};
+			
+
+
