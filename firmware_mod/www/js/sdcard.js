@@ -2,6 +2,7 @@
 function getFiles(dir) {
     // Get files from dir
     $.get("cgi-bin/sdcard.cgi", {cmd: "getFiles", dir: dir}, function(config){             
+        $('#tab'+dir+' > tbody').html("");
         var config_all = config.split("\n");    
         if ( config_all.length == 1)
             $('#tab'+dir).append("<tr><td colspan='4'>No files found</td></tr>");
