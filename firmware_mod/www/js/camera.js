@@ -38,7 +38,6 @@ function getConfig() {
             $('#'+config_info[0]).attr("value",config_info[1]);
        }
     });
-
 }
 
 //Function loaded when script load
