@@ -49,7 +49,7 @@ E:/
 5. Insert the microSD card and power up the camera.
 6. You can now login at https://dafang or your cameras ip adress with the default credentials root/ismart12
 
-Hint: The security warning about the unsafe https certificate can safely be ignored. A self-signed certificate is automatically generated on your camera during the first startup. By its nature your little camera's own certificate authority is not an never will be among the trusted ones delivered with the major browsers. 
+Hint: The security warning about the unsafe https certificate can safely be ignored. A self-signed certificate is automatically generated on your camera during the first startup. By its nature your little camera's own certificate authority is not and never will be among the trusted ones delivered with the major browsers. 
 
 ## Updating the microsd-bootloader
 
