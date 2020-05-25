@@ -74,14 +74,18 @@ function getCookie(cname) {
       <a href="?url=softnight" class="w3-bar-item w3-button">Software Night Detection</a>
     </div>
   </div>
-    <div class="w3-dropdown-hover">
-      <a class="w3-bar-item w3-button" href="?url=control"><i class="fa fa-server"></i></a>
-  </div>
+  <a class="w3-bar-item w3-button" href="?url=control"><i class="fa fa-server"></i></a>
   <a class="w3-bar-item w3-button" href="?url=info"><i class="fa fa-info-circle"></i></a>
- 
-    <div class="w3-dropdown-hover">
-    <a class="w3-bar-item w3-button" href="?url=sdcard"><i class="fa fa-sd-card"></i></a>
-  </div>
+  <a class="w3-bar-item w3-button" href="?url=sdcard"><i class="fa fa-sd-card"></i></a>
+  <div class="w3-dropdown-hover w3-right">
+    <button class="w3-button" id="notifAlarm"><i  class="fa fa-bell"></i></button>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4" style="width:250px">
+      <div class="w3-container" id="notifContent">
+        <p>Everything OK :)</p>
+      </div>
+    </div>
+  
+</div>
 </div>
 <div  id="content" class="w3-container">
 
