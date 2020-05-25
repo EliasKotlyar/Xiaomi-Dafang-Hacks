@@ -10,6 +10,14 @@ echo ""
 
 if [ -n "$F_cmd" ]; then
   case "$F_cmd" in
+  check_sdcard)
+	  mount|grep "/system/sdcard"|grep "rw,">/dev/null
+	  if [ $? == 1 ]; then
+		  echo -n "nok"
+	  else
+		  echo -n "ok"
+	  fi
+	  ;;
   getFiles)
     for file in $(find /system/sdcard/DCIM/${F_dir}/ -type f)
       do                                                 
