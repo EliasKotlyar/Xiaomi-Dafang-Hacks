@@ -59,11 +59,24 @@ function getCookie(cname) {
   return "";
 }
 
+function checkSDCard() {
+  $.get("/cgi-bin/sdcard.cgi", {cmd: "check_sdcard"}, function (result) {
+    if ( result == "nok") {
+      $('#notifAlarm').attr('style','color:red');
+      $('#notifContent').html("<p></p>Your sdcard is mounted read-only. Settings can't be saved. \
+      <br><p>Please try rebooting. If the problem persists, please <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/search?q=read+only+sdcard&type=Issues'> \
+      search for possible solutions.</a></p>");
+    }
+  });
+}
+
 $(document).ready(function () {
   
     // Set git version to bottom page
     $.get("cgi-bin/state.cgi", {cmd: "version"}, function(version){document.getElementById("version").innerHTML = version;});
 
+    // Check SD Card
+    checkSDCard();
     // Display content depend url parameter
     if ( $.urlParam('url') != null )
         var url = $.urlParam('url')+".html"
