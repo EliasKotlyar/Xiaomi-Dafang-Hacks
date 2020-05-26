@@ -14,28 +14,12 @@
 <!-- image select -->
 <script src="js/jquery.selectareas.min.js" type="text/javascript"></script>
 <script type="text/javascript">
-//Get cookie infos
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
-  if (getCookie("w3theme") != "") {
-    css = getCookie("w3theme");
-  } else {
-    css = "w3-theme-teal.css";
-  }
-  $('head').append("<link rel='stylesheet' href='css/"+css+"'>");
+//Check if theme configured
+var css = localStorage.getItem('theme')
+if ( css == null )
+    css = "w3-theme-teal";
+$('head').append("<link rel='stylesheet' href='css/"+css+".css'>");
+
 </script>
 </head>
 <body>
@@ -93,15 +77,58 @@ function getCookie(cname) {
 <div class="w3-panel w3-card">LOADING...</div>
 </div>
 
-<!-- Footer -->
-<div class="w3-container w3-card w3-theme">
-  <p>
-    <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks" target="_blank"><strong>Dafang Hacks</strong></a>
-    Version: <em id="version">VERSION</em>
-    <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Issues?</a>
-    <a href="index.html">Main UI</a>
-  </p>
+<!-- About modal -->
+<div id="about" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-theme">
+        <span onclick="document.getElementById('about').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+       <h2>About</h2>
+     </header>
+     <div class="w3-container">
+     <p id="about">
+        <strong>Dafang Hacks : </strong><br />
+        Version: <em id="version">VERSION</em><br />
+        <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Report issues</a> | 
+        <a href="index.html">Back main UI</a><br />
+     </p>
+    </div>
+  </div>
 </div>
+
+<!-- Theme modal -->
+<div id="theme" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-theme">
+        <span onclick="document.getElementById('theme').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+       <h2>Theme</h2>
+     </header>
+     <div class="w3-container">
+     <p id="theme">
+      <label>Choose your theme</label>
+      <select id="theme" class="w3-select" name="option">
+          <option value="w3-theme-black">Black</option>
+          <option value="w3-theme-night-blue">Night blue</option>
+          <option value="w3-theme-grey">Grey</option>
+          <option value="w3-theme-indigo">Indigo</option>
+          <option value="w3-theme-light-green">Light green</option>
+          <option value="w3-theme-orange">Orange</option>
+          <option value="w3-theme-pink">Pink</option>
+          <option value="w3-theme-teal">Teal</option>
+          <option value="w3-theme-w3schools">W3 School</option>
+      </select>
+     </p>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-card w3-theme w3-center">
+    <a class="w3-bar-item w3-button" href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks" target="_blank"><i class="fab fa-github"></i></a>
+    <span class="w3-bar-item w3-button" onclick="document.getElementById('about').style.display='block'"><i class="fas fa-info-circle"></i></span>
+    <span class="w3-bar-item w3-button" onclick="document.getElementById('theme').style.display='block'"><i class="fas fa-palette"></i></span>
+</footer>
 </div>
 
 <script type="text/javascript" src="js/index.js"></script>
