@@ -42,22 +42,6 @@ function accordion() {
   }
 }
 
-//Get cookie infos
-function getCookie(cname) {
-  var name = cname + "=";
-  var decodedCookie = decodeURIComponent(document.cookie);
-  var ca = decodedCookie.split(';');
-  for(var i = 0; i <ca.length; i++) {
-    var c = ca[i];
-    while (c.charAt(0) == ' ') {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
-}
 
 function checkSDCard() {
   $.get("/cgi-bin/sdcard.cgi", {cmd: "check_sdcard"}, function (result) {
@@ -77,12 +61,26 @@ $(document).ready(function () {
 
     // Check SD Card
     checkSDCard();
+
     // Display content depend url parameter
     if ( $.urlParam('url') != null )
         var url = $.urlParam('url')+".html"
     else
         var url = "live.html"
 
+    //Check if theme configured
+    var css = localStorage.getItem('theme')
+    if ( css == null )
+      css = "w3-theme-teal";
+    //Select theme for theme modal
+    $('#theme  option[value="'+css+'"]').prop("selected", true);
+    // Set theme when changed in theme modal
+    $('#theme').change(function () {
+      var optionSelected = $(this).find("option:selected");
+      localStorage.setItem("theme", optionSelected.val());
+      location.reload();
+    });
+    
     $("#content").load(url);
 
 });
