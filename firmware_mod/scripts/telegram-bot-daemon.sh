@@ -94,13 +94,15 @@ main() {
   messageAttr="message"
   messageVal=$(echo "$json" | $JQ -r '.result[0].message // ""')
   [ -z "$messageVal" ] && messageAttr="edited_message"
+  messageVal=$(echo "$json" | $JQ -r '.result[0].edited_message // ""')
+  [ -z "$messageVal" ] && messageAttr="channel_post"
   chatId=$(echo "$json" | $JQ -r ".result[0].$messageAttr.chat.id // \"\"")
   updateId=$(echo "$json" | $JQ -r '.result[0].update_id // ""')
-  if [ "$updateId" != "" ] && [ -z "$chatId" ]; then                                                                           
-  markAsRead $updateId                                                                                 
-  return 0                                                                                             
+  if [ "$updateId" != "" ] && [ -z "$chatId" ]; then
+  markAsRead $updateId
+  return 0
   fi;
-  
+
   [ -z "$chatId" ] && return 0 # no new messages
 
   cmd=$(echo "$json" | $JQ -r ".result[0].$messageAttr.text // \"\"")
