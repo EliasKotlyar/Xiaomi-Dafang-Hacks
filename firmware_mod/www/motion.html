@@ -22,14 +22,14 @@
     <p><form class="w3-container" onsubmit="saveConfig('general');return false" id="general"></p>
     <div class="w3-container">
         <label>Motion detection</label>
-        <select id="motionDetection" class="w3-select" name="option">
+        <select id="motionDetection" class="w3-select">
             <option value="off">Deactivate</option>
             <option value="on">Activate</option>
         </select>
     </div>
     <div class="w3-container">
         <label>Set sensitivity</label>
-        <select id="motionSensitivity" class="w3-select" name="option">
+        <select id="motionSensitivity" class="w3-select">
             <option value="0">Very Low</option>
             <option value="1">Low</option>
             <option value="2">Moderate</option>
@@ -39,7 +39,7 @@
     </div>
     <div class="w3-container">
         <label>Display motion indicator if motion is detected</label>
-        <select id="motionIndicatorColor" class="w3-select" name="option">
+        <select id="motionIndicatorColor" class="w3-select">
             <option value="-1">Deactivated</option>
             <option value="0">White</option>
             <option value="1">Black</option>
@@ -53,14 +53,14 @@
     </div>
     <div class="w3-container">
         <label>Enable motion tracking (Custom set motion detection region will be ignored)</label>
-        <select id="motionTracking" class="w3-select" name="option">
+        <select id="motionTracking" class="w3-select">
             <option value="off">Deactivate</option>
             <option value="on">Activate</option>
         </select>
     </div>
     <div class="w3-container">
         <label>Motion Timeout</label>
-        <input class="w3-input" id="motionTimeout" name="motion_timeout" type="number" size="6">
+        <input class="w3-input" id="motionTimeout" type="number" size="6">
     </div>
     <p><button class="w3-btn w3-theme" >Save</button></form></p>
 </div>
@@ -73,25 +73,25 @@
       <p></p>
     <div class="w3-container">
         <label>Save snapshots on motion</label>
-        <select id="saveSnaphot" class="w3-select" name="option">
+        <select id="saveSnaphot" class="w3-select">
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
     </div>
     <div class="w3-container">
         <label>Maximun snapshots retention (in days)</label>
-        <input class="w3-input" id="maxSnaphotDays" name="motion_timeout" type="number" size="6">
+        <input class="w3-input" id="maxSnaphotDays" type="number" size="6">
     </div>
     <div class="w3-container">
         <label>Save videos on motion</label>
-        <select id="saveVideo" class="w3-select" name="option">
+        <select id="saveVideo" class="w3-select" >
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
     </div>
     <div class="w3-container">
         <label>Maximun video retention (in days)</label>
-        <input class="w3-input" id="maxVideoDays" name="motion_timeout" type="number" size="6">
+        <input class="w3-input" id="maxVideoDays" type="number" size="6">
     </div>
     <p></p>
   </div>
@@ -101,37 +101,37 @@
     <p></p>
     <div class="w3-container">
         <label>Save snapshots on motion</label>
-        <select id="smbSnapshot" class="w3-select" name="option">
+        <select id="smbSnapshot" class="w3-select">
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
     </div>
     <div class="w3-container">
         <label>Save videos on motion</label>
-        <select id="smbVideo" class="w3-select" name="option">
+        <select id="smbVideo" class="w3-select" >
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
     </div>
     <div class="w3-container">
         <label>Samba share path</label>
-        <input class="w3-input" id="smbShare" name="motion_timeout">
+        <input class="w3-input" id="smbShare" type="text">
     </div>
     <div class="w3-container">
         <label>Samba username</label>
-        <input class="w3-input" id="smbUsername" name="motion_timeout">
+        <input class="w3-input" id="smbUsername" type="text">
     </div>
     <div class="w3-container">
         <label>Samba password</label>
-        <input class="w3-input" id="smbPassword" name="motion_timeout">
+        <input class="w3-input" id="smbPassword" type="password">
     </div>
     <div class="w3-container">
         <label>Samba snapshots remote directory</label>
-        <input class="w3-input" id="smbStillsDir" name="motion_timeout">
+        <input class="w3-input" id="smbStillsDir" type="text">
     </div>
     <div class="w3-container">
         <label>Samba videos remote directory</label>
-        <input class="w3-input" id="smbVideosDir" name="motion_timeout">
+        <input class="w3-input" id="smbVideosDir" type="text">
     </div>
     <p></p>
   </div>
@@ -141,41 +141,41 @@
       <p></p>
       <div class="w3-container">
         <label>Save snapshots on motion</label>
-        <select id="ftpSnapshot" class="w3-select" name="option">
+        <select id="ftpSnapshot" class="w3-select">
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
     </div>
     <div class="w3-container">
         <label>Save videos on motion</label>
-        <select id="ftpVideo" class="w3-select" name="option">
+        <select id="ftpVideo" class="w3-select" >
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
     </div>
     <div class="w3-container">
         <label>FTP Hostname</label>
-        <input class="w3-input" id="ftpHost" name="motion_timeout">
+        <input class="w3-input" id="ftpHost">
     </div>
     <div class="w3-container">
         <label>FTP Port</label>
-        <input class="w3-input" id="ftpPort" name="motion_timeout">
+        <input class="w3-input" id="ftpPort" >
     </div>
     <div class="w3-container">
         <label>FTP username</label>
-        <input class="w3-input" id="ftpUsername" name="motion_timeout">
+        <input class="w3-input" id="ftpUsername">
     </div>
     <div class="w3-container">
         <label>FTP password</label>
-        <input class="w3-input" id="ftpPassword" name="motion_timeout">
+        <input class="w3-input" id="ftpPassword"  type="password">
     </div>
     <div class="w3-container">
         <label>FTP snapshots remote directory</label>
-        <input class="w3-input" id="ftpStillsDir" name="motion_timeout">
+        <input class="w3-input" id="ftpStillsDir" type="text">
     </div>
     <div class="w3-container">
         <label>FTP videos remote directory</label>
-        <input class="w3-input" id="ftpVideosDir" name="motion_timeout">
+        <input class="w3-input" id="ftpVideosDir" type="text">
     </div>
       <p></p>
     </div>
