@@ -75,7 +75,7 @@ function showupdatepage(result) {
             }
         } 
         else if (update_status == -1) {
-            $('#updatemsg').html("No version file found. <br /> You can update the running firmware on this camera by the latest available from its <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
+            $('#updatemsg').html("No version file found. <br /> You can update the firmware on this camera to the latest from <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
             $('#updatemsg').append('\
             <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (stable)" onclick="start(\'master\',\'cumul\')"/><br /> \
             <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (beta)" onclick="start(\'beta\',\'cumul\')"/><br />');
@@ -100,7 +100,7 @@ function showupdatepage(result) {
             }
         }
         else {
-            $('#updatemsg').text("Problem with your VERSION file. Need a full update to get a correct VERSION file.");
+            $('#updatemsg').text("There is a problem with your VERSION file. Please do a full update to create a correct VERSION file.");
             $('#updatemsg').append('\
             <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (stable)" onclick="start(\'master\',\'cumul\')"/><br /> \
             <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (beta)" onclick="start(\'beta\',\'cumul\')"/><br />');
@@ -205,7 +205,7 @@ function system(command) {
         $.get("cgi-bin/action.cgi?cmd=reboot");
     }
     else {
-        $('#modal_content').html("Camera shutting down...");
+        $('#modal_content').html("The camera is shutting down ...");
         $.get("cgi-bin/action.cgi?cmd=shutdown");
     }
 }
