@@ -114,9 +114,9 @@ function start(branch,mode) {
     //     login = "login=" + $('#login').val() + ":" + $('#password').val();
     // }
     //Open modal window
-    document.getElementById('confirm_box').style.display='block'
-    $('#confirm_title').html('Update in progress');
-    $('#confirm_content').html('<h4>Please note: at the end of this process the camera will reboot without notice</h4> \
+    document.getElementById('modal_box').style.display='block'
+    $('#modal_title').html('Update in progress');
+    $('#modal_content').html('<h4>Please note: at the end of this process the camera will reboot without notice</h4> \
     <div class="w3-light-grey"><div id="progress" class="w3-container w3-theme" style="width:0%"><span id="progressValue">0%</span></div></div><br><h4 id=message></h4>');
 
     var url = 'cgi-bin/action.cgi?cmd=update&release='+branch+'&mode='+mode;
@@ -129,7 +129,7 @@ function start(branch,mode) {
         if (result.length > 0) {
             update(false);
         } else {
-            $('#confrim_content').text("Error starting update progress");
+            $('#modal_content').text("Error starting update progress");
         }
     });
 }
@@ -197,14 +197,15 @@ function getServices() {
 
 function system(command) {
     //Open modal window
-    document.getElementById('confirm_box').style.display='block'
-    $('#confirm_title').html(command);
+    document.getElementById('modal_box').style.display='block'
+    $('#modal_title').html(command);
     if (command == "reboot") {
-        $('#confirm_content').html("Waiting for camera to reboot...");
+        $('#modal_content').html("<h4 id=message></h4>");
+        timedRefresh(45);
         $.get("cgi-bin/action.cgi?cmd=reboot");
     }
     else {
-        $('#confirm_content').html("Camera shutting down...");
+        $('#modal_content').html("Camera shutting down...");
         $.get("cgi-bin/action.cgi?cmd=shutdown");
     }
 }
