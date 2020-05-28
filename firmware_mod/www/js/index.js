@@ -9,6 +9,13 @@ $.urlParam = function(name){
     return decodeURI(results[1]) || 0;
 }
 
+//Function open page 
+function openPage(page) {
+  $.get(page+".html",function(data) {
+    $('#content').html(data);
+  });
+}
+
 //Function to open tab in pages
 function openTab(evt, tabName) {
     var i, x, tablinks;

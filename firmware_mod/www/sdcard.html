@@ -15,36 +15,27 @@
 
   <div id="motion" class="w3-container tab" >
     <p></p>
-    <h1>Loading your files...</h1>
+    <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i><br/>LOADING</p>
     <p></p>
   </div>
 
   <div id="recording" class="w3-container tab" style="display:none">
     <p></p>
-    <h1>Loading your files...</h1>
+    <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i><br/>LOADING</p>
     <p></p>
   </div>
 
   <div id="timelapse" class="w3-container tab" style="display:none">
     <p></p>
-    <h1>Loading your files...</h1>
+    <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i><br/>LOADING</p>
     <p></p>
   </div>
 
-<!-- Modal confirm delete box -->
-<div id="delete_confirm" class="w3-modal">
-  <div class="w3-modal-content">
-    <header class="w3-container w3-theme">
-        <span onclick="document.getElementById('delete_confirm').style.display='none'"
-        class="w3-button w3-display-topright">&times;</span>
-       <h2>Delete file</h2>
-     </header>
-     <div class="w3-container">
-     <p id="delete_result"></p>
-    </div>
-  </div>
+<!-- Modal for open picure-->
+<div id="modal_picture" class="w3-modal w3-animate-zoom" onclick="this.style.display='none'">
+  <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
+  <div id="modal_picture_content" class="w3-modal-content w3-animate-zoom"></div>
+</div>
 </div>
 
-</div>
-<script type="text/javascript" src="js/datatables.min.js"></script>
 <script type="text/javascript" src="js/sdcard.js"></script>
