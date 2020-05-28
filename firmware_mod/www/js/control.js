@@ -36,6 +36,18 @@ function update(onStart) {
     });
 
 }
+
+//Function show/hide accordion
+function accordionUpdate(param) {
+    param.classList.toggle("active");
+    var panel = param.nextElementSibling;
+    if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+    } else {
+        panel.style.maxHeight = panel.scrollHeight + "px";
+    } 
+}
+
 function showupdatepage(result) {
     $.ajax({
         'url': 'cgi-bin/action.cgi?cmd=check_update'
@@ -47,36 +59,51 @@ function showupdatepage(result) {
         if (update_status == 0) {
             $('#updatemsg').html("You have already the lastest version from branch " + update[0])
             if (update[0] == "master") {
-                $('#switchBeta').removeAttr('style');
-                $('#fullStable').removeAttr('style');
+                $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Others Update options</button> \
+                <div class="panel"> <p></p>\
+                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to beta firmware" onclick="start(\'beta\',\'full\')"/><br /> \
+                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to stable (remove version file + update)" onclick="start(\'master\',\'full\')"/><br /> \
+                </div>');
+                
             }
             else {
-                $('#switchStable').removeAttr('style');
-                $('#fullBeta').removeAttr('style');
+                $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Others Update options</button> \
+                <div class="panel"> <p></p>\
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to stable firmware" onclick="start(\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to beta(remove version file + update)" onclick="start(\'beta\',\'full\')"/><br /> \
+                </div>');
             }
         } 
         else if (update_status == -1) {
-            $('#updatemsg').html("No version file found. <br /> You can update the running firmware on this camera by the latest available from its <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
-            $('#updateStable').removeAttr('style');
-            $('#updateBeta').removeAttr('style');
+            $('#updatemsg').html("No version file found. <br /> You can update the firmware on this camera to the latest from <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
+            $('#updatemsg').append('\
+            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (stable)" onclick="start(\'master\',\'cumul\')"/><br /> \
+            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (beta)" onclick="start(\'beta\',\'cumul\')"/><br />');
         }
         else if (update_status > 0) {
             $('#updatemsg').html("You are "+ update_status +" commits behind "+ update[0] + " branch");
             if (update[0] == "master") {
-                $('#updateStable').removeAttr('style');
-                $('#switchBeta').removeAttr('style');
-                $('#fullStable').removeAttr('style');
+                $('#updatemsg').append('<input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (stable)" onclick="start(\'master\',\'cumul\')"/><br />');
+                $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Others Update options</button> \
+                <div class="panel"><p></p> \
+                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to beta firmware" onclick="start(\'beta\',\'full\')"/><br /> \
+                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to stable (remove version file + update)" onclick="start(\'master\',\'full\')"/><br /> \
+                </div>');
             }
             else {
-                $('#updateBeta').removeAttr('style');
-                $('#switchStable').removeAttr('style');
-                $('#fullBeta').removeAttr('style');
+                $('#updatemsg').append('<input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (beta)" onclick="start(\'beta\',\'cumul\')"/><br />');
+                $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Others Update options</button> \
+                <div class="panel"> <p></p>\
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to stable firmware" onclick="start(\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to beta(remove version file + update)" onclick="start(\'beta\',\'full\')"/><br /> \
+                </div>');
             }
         }
         else {
-            $('#updatemsg').text("Problem with your VERSION file. Need a full update to get a correct VERSION file.");
-            $('#fullStable').removeAttr('style');
-            $('#fullBeta').removeAttr('style');
+            $('#updatemsg').text("There is a problem with your VERSION file. Please do a full update to create a correct VERSION file.");
+            $('#updatemsg').append('\
+            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (stable)" onclick="start(\'master\',\'cumul\')"/><br /> \
+            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (beta)" onclick="start(\'beta\',\'cumul\')"/><br />');
         }
     });
 }
@@ -87,9 +114,9 @@ function start(branch,mode) {
     //     login = "login=" + $('#login').val() + ":" + $('#password').val();
     // }
     //Open modal window
-    document.getElementById('confirm_box').style.display='block'
-    $('#confirm_title').html('Update in progress');
-    $('#confirm_content').html('<h4>Please note: at the end of this process the camera will reboot without notice</h4> \
+    document.getElementById('modal_box').style.display='block'
+    $('#modal_title').html('Update in progress');
+    $('#modal_content').html('<h4>Please note: at the end of this process the camera will reboot without notice</h4> \
     <div class="w3-light-grey"><div id="progress" class="w3-container w3-theme" style="width:0%"><span id="progressValue">0%</span></div></div><br><h4 id=message></h4>');
 
     var url = 'cgi-bin/action.cgi?cmd=update&release='+branch+'&mode='+mode;
@@ -102,7 +129,7 @@ function start(branch,mode) {
         if (result.length > 0) {
             update(false);
         } else {
-            $('#confrim_content').text("Error starting update progress");
+            $('#modal_content').text("Error starting update progress");
         }
     });
 }
@@ -170,14 +197,15 @@ function getServices() {
 
 function system(command) {
     //Open modal window
-    document.getElementById('confirm_box').style.display='block'
-    $('#confirm_title').html(command);
+    document.getElementById('modal_box').style.display='block'
+    $('#modal_title').html(command);
     if (command == "reboot") {
-        $('#confirm_content').html("Waiting for camera to reboot...");
+        $('#modal_content').html("<h4 id=message></h4>");
+        timedRefresh(45);
         $.get("cgi-bin/action.cgi?cmd=reboot");
     }
     else {
-        $('#confirm_content').html("Camera shutting down...");
+        $('#modal_content').html("The camera is shutting down ...");
         $.get("cgi-bin/action.cgi?cmd=shutdown");
     }
 }

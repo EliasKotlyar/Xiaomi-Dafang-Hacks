@@ -19,10 +19,10 @@ if [ -n "$F_cmd" ]; then
 	  fi
 	  ;;
   getFiles)
+    ip_addr=$(ip -o -4 addr show  | sed 's/.* inet \([^/]*\).*/\1/' | grep -v "127.0.0.1")
     for file in $(find /system/sdcard/DCIM/${F_dir}/ -type f)
       do                                                 
         if [[ -f $file ]]; then                           
-          ip_addr=$(ip -o -4 addr show  | sed 's/.* inet \([^/]*\).*/\1/' | grep -v "127.0.0.1")
           file_size=$(ls -lh $file | awk '{print $5}')                                          
           file_url=$(ls -lh $file | awk '{print $9}' | sed 's/\/system\/sdcard\/DCIM/\/viewer/')
           file_date=$(ls -lh $file | awk '{print $6 "-" $7 "-" $8}')                            

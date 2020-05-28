@@ -39,6 +39,8 @@ function getConfig() {
 
 //Function loaded when script load
 function onLoad() {
+    //Activate accordion
+    accordion();
     getConfig();
 }
 
