@@ -1,8 +1,9 @@
 body { background-color: #121212; color:white}
-
-div.w3-container { background-color: #444444;}
-
-.w3-table-all { color: black}
+.w3-container{ background-color: #444444;}
+.w3-table-all { color: black;}
+.w3-sidebar {background-color: #444444;}
+.panel {color: black;}
+#cam-control,  #btn-ptz-left, #btn-ptz-right, #btn-ptz-up, #btn-ptz-down, #btn-ptz-calibrate { background-color: transparent;}
 
 .w3-theme-l5 {color:#000 !important; background-color:#f6f6f6 !important}
 .w3-theme-l4 {color:#000 !important; background-color:#dfdfdf !important}
