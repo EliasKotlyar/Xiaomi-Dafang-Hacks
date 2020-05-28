@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Dafang Hacks</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="css/w3.css" />
 <link rel="stylesheet" href="css/jquery.selectareas.css" media="screen"  type="text/css" />
@@ -23,8 +23,9 @@ var css = localStorage.getItem('theme')
 if ( css == null )
     css = "w3-theme-teal";
 $('head').append("<link rel='stylesheet' href='css/"+css+".css'>");
-
+$.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title = hostname;});
 </script>
+<title>Dafang Hacks</title>
 </head>
 <body>
 <!-- Sidebar for control camera -->
