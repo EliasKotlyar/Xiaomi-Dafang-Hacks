@@ -202,7 +202,7 @@ if [ -n "$F_cmd" ]; then
     if [ -s "/system/sdcard/VERSION" ]; then   
     V_BRANCH=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
     V_COMMIT=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
-    echo "commit <b>${V_COMMIT}</b> from branch <b>${V_BRANCH}</b>"
+    echo "commit <b>${V_COMMIT}</b> from the <b>${V_BRANCH}</b> branch"
     else                                    
        echo "Need to update to create a version file." 
     fi                                      

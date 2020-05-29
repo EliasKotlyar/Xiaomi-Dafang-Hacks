@@ -52,7 +52,7 @@
             var update_status = parseInt(update[1],10);
 
             if (update_status == 0) {
-                $('#updatemsg').html("You have already the lastest version from branch " + update[0])
+                $('#updatemsg').html("You have already the lastest version from the " + update[0] + " branch")
                 if (update[0] == "master") {
                     $('#btn_switch_beta').removeAttr('style');
                     $('#btn_force_update_master').removeAttr('style');
