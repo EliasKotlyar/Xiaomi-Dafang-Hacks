@@ -94,6 +94,9 @@ if [ -n "$F_cmd" ]; then
   motion_mqtt_video)
     motion_mqtt_video $F_action
     ;;
+  recording)
+    recording $F_action
+    ;;
   *)
     echo "Unsupported command '$F_cmd'"
     ;;

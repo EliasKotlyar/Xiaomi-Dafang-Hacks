@@ -60,6 +60,19 @@ function PTZControl(view) {
     }
 }
 
+function record(action) {
+    $.get("cgi-bin/live.cgi",{cmd: "recording", action: action},function (result) {
+        if (action == "on" || result == "ON\n") {
+            $("#btn-record span").attr("style","color:red");
+            $("#btn-record").attr("onclick","record('off')");
+        }
+        else {
+            $("#btn-record span").removeAttr("style");
+            $("#btn-record").attr("onclick","record('on')");
+        }
+    });
+}
+
 //Function to show control buttons
 function camControl(view) {
     if( view == "show") {
@@ -122,6 +135,8 @@ function onLoad() {
         $("#hostname").html(hostname);
     });
 
+    //Get record status 
+    record("status");
     // Make liveview self refresh
     $("#liveview").attr("onload", "scheduleRefreshJob('live','refreshLiveImage()',1000);");
 }
