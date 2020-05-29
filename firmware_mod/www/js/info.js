@@ -11,7 +11,7 @@ function getConfig() {
 
 }
 
-//Get network informations
+//Get network information
 function getInfo(infoname) {
     $.get("cgi-bin/info2.cgi", {cmd: "get_info", info: infoname}, function(config){             
         config = config.replace(/\n/g,'<br />');
