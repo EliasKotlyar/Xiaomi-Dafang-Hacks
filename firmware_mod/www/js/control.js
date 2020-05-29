@@ -189,7 +189,7 @@ function getServices() {
          if(config_info[2] == "true")
             checked = "checked onclick='autoStartService(\"false\",\""+config_info[0]+"\")')";
          
-         $('#tabServices').append("<tr><td>"+config_info[0]+"</td><td><i class='fa fa-play-circle w3-xxlarge "+color_start+"</i> <i class='fa fa-stop-circle w3-xxlarge "+color_stop+"</i></td><td>Off <label class='switch'><input id='autoStart_"+config_info[0]+"' class='w3-check' type='checkbox' "+checked+"> <span class='slider round w3-theme'></span></label> On</td></tr>");
+         $('#tabServices').append("<tr><td>"+config_info[0]+"</td><td><i class='fa fa-play-circle w3-xxlarge "+color_start+"</i> <i class='fa fa-stop-circle w3-xxlarge "+color_stop+"</i></td><td>Off <label class='switch'><input id='autoStart_"+config_info[0]+"' class='w3-check' type='checkbox' "+checked+"> <span class='slider round'></span></label> On</td></tr>");
         }
     });
 
