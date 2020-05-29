@@ -32,14 +32,14 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
 <div class="w3-sidebar w3-bar-block w3-animate-left" style="display:none;z-index:5" id="sideBar">
   <button class="w3-bar-item w3-button w3-large w3-theme" onclick="w3_close()">Close &times;</button>
   <p class="w3-large">Camera</p>
-  <label class="switch"><input id="auto_night_mode" type="checkbox"><span class="slider round"></span></label> Auto night detecion<br />
+  <label class="switch"><input id="auto_night_mode" type="checkbox"><span class="slider round"></span></label> Auto Night Detecion<br />
   <label class="switch"><input id="ir_led" type="checkbox"><span class="slider round"></span></label> IR Led<br />
   <label class="switch"><input id="ir_cut" type="checkbox"><span class="slider round"></span></label> IR Filter<br />
-  <label class="switch"><input id="blue_led" type="checkbox"><span class="slider round"></span></label> Blue led<br />
-  <label class="switch"><input id="yellow_led" type="checkbox"><span class="slider round"></span></label> Yellow led<br />
+  <label class="switch"><input id="blue_led" type="checkbox"><span class="slider round"></span></label> Blue LED<br />
+  <label class="switch"><input id="yellow_led" type="checkbox"><span class="slider round"></span></label> Yellow LED<br />
   <p class="w3-large">Motion</p>
   <label class="switch"><input id="motion_detection" type="checkbox"><span class="slider round"></span></label> Detection<br />
-  <label class="switch"><input id="motion_mail" type="checkbox"><span class="slider round"></span></label> Send emails<br />
+  <label class="switch"><input id="motion_mail" type="checkbox"><span class="slider round"></span></label> Send Emails<br />
   <label class="switch"><input id="motion_telegram" type="checkbox"><span class="slider round"></span></label> Send Telegram<br />
   <label class="switch"><input id="motion_led" type="checkbox"><span class="slider round"></span></label> LED<br />
   <label class="switch"><input id="motion_snapshot" type="checkbox"><span class="slider round"></span></label> Snapshots<br />
@@ -63,8 +63,8 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
       <button onclick="openPage('softnight');" class="w3-bar-item w3-button">Software Night Detection</button>
     </div>
   </div>
-  <button class="w3-bar-item w3-button" onclick="openPage('control');" title="System control"><i class="fas fa-tools"></i></button>
-  <button class="w3-bar-item w3-button" onclick="openPage('info');" title="System informations"><i class="fa fa-info-circle"></i></button>
+  <button class="w3-bar-item w3-button" onclick="openPage('control');" title="System Control"><i class="fas fa-tools"></i></button>
+  <button class="w3-bar-item w3-button" onclick="openPage('info');" title="System Information"><i class="fa fa-info-circle"></i></button>
   <button class="w3-bar-item w3-button" onclick="openPage('sdcard');" title="View files on SD Card"><i class="fa fa-sd-card"></i></button>
   <div class="w3-dropdown-hover w3-right">
     <button class="w3-button" id="notifAlarm"><i  class="fa fa-bell"></i></button>
@@ -92,8 +92,8 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
      <p id="about">
         <strong>Dafang Hacks : </strong><br />
         Version: <em id="version">VERSION</em><br />
-        <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Report issues</a> | 
-        <a href="index.html">Back main UI</a><br />
+        <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Report and view issues</a> | 
+        <a href="index.html">Back to original UI</a><br />
      </p>
     </div>
   </div>
@@ -109,14 +109,14 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
      </header>
      <div class="w3-container">
      <p id="theme">
-      <label>Choose your theme</label>
+      <label>Choose your theme:</label>
       <select id="theme" class="w3-select" name="option">
-          <option value="w3-theme-dark-grey">Dark grey</option>
+          <option value="w3-theme-dark-grey">Dark Grey</option>
           <option value="w3-theme-black">Black</option>
-          <option value="w3-theme-night-blue">Light blue</option>
+          <option value="w3-theme-night-blue">Light Blue</option>
           <option value="w3-theme-grey">Grey</option>
           <option value="w3-theme-indigo">Indigo</option>
-          <option value="w3-theme-light-green">Light green</option>
+          <option value="w3-theme-light-green">Light Green</option>
           <option value="w3-theme-orange">Orange</option>
           <option value="w3-theme-pink">Pink</option>
           <option value="w3-theme-teal">Teal</option>
@@ -130,8 +130,8 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
 <!-- Footer -->
 <footer class="w3-container w3-card w3-theme w3-center">
     <a class="w3-bar-item w3-button" href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks" target="_blank" title="GitHub project page"><i class="fab fa-github"></i></a>
-    <span class="w3-bar-item w3-button" onclick="document.getElementById('about').style.display='block'" title="Camera information"><i class="fas fa-info-circle"></i></span>
-    <span class="w3-bar-item w3-button" onclick="document.getElementById('theme').style.display='block'" title="Choose theme color"><i class="fas fa-palette"></i></span>
+    <span class="w3-bar-item w3-button" onclick="document.getElementById('about').style.display='block'" title="Camera Information"><i class="fas fa-info-circle"></i></span>
+    <span class="w3-bar-item w3-button" onclick="document.getElementById('theme').style.display='block'" title="Choose Theme Color"><i class="fas fa-palette"></i></span>
 </footer>
 </div>
 

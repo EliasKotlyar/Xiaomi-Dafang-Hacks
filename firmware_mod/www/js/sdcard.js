@@ -30,7 +30,7 @@ function getFiles(dir) {
         <tbody>");
         var config_all = config.split("\n");    
         if ( config_all.length == 1)
-            $('#'+dir).html("<h1>No file found</h1>");
+            $('#'+dir).html("<h1>No files found</h1>");
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");
          var file_info = config_info[3].split(".");       
@@ -45,7 +45,7 @@ function getFiles(dir) {
              <a href=\""+config_info[3]+"\" download><i class='fas fa-download' title='Download file'></i></a> \
             <span onclick=\"deleteFile('"+config_info[3]+"','"+dir+"')\"><i class='fas fa-trash' title='Delete file'></i></span>\
             "+html_photo+"\
-            </td></tr>");       
+            </td></tr>");
         }
         $('#'+dir).append("</tbody></table><p></p>");
 
