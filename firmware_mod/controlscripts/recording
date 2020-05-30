@@ -2,11 +2,10 @@
 . /system/sdcard/config/rtspserver.conf
 
 PIDFILE="/run/recording.pid"
-DCIM_PATH="/system/sdcard/DCIM/Recording"
 
 ## UserName and password
 if [ "$USERNAME" != "" ]; then
-    CREDENTIALS="$USERNAME:$USERPASSWORD@"
+	CREDENTIALS="$USERNAME:$USERPASSWORD@"
 fi
 
 if [ ! -d "$DCIM_PATH" ]; then
@@ -17,32 +16,29 @@ status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
-    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+	kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
   fi
 }
 
 start()
 {
   if [ -f $PIDFILE ]; then
-    echo "Recording already running.";
+	echo "Recording already running.";
   else
-    echo "Started recording."
-	# Add sub directory to main dcim path seperated by date then by
-	# hour for faster loading over ftp
-    SUB_DIR="$(date +%Y-%m-%d)/$(date +%H)"
-    if [ ! -d "$DCIM_PATH/$SUB_DIR" ]; then
-      mkdir -p "$DCIM_PATH/$SUB_DIR"
-    fi
+	echo "Started recording."
+
+	if [ ! -d "$DCIM_PATH/$SUB_DIR" ]; then
+	  mkdir -p "$DCIM_PATH/$SUB_DIR"
+	fi
 	# Create the recording with timestamp
-    FILE_NAME="REC_$(date +%H-%M-%S.h264)"
-    RECORDING_PATH="$DCIM_PATH/$SUB_DIR/$FILE_NAME"
-    # wait for rtspserver to become available
-    until pids=$(pidof v4l2rtspserver-master)
-    do
-      sleep 1
-    done
-    /system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -flags low_delay -fflags nobuffer -probesize 32 -i rtsp://"$CREDENTIALS"0.0.0.0:$PORT/unicast -strict experimental -y -vcodec copy -an $RECORDING_PATH &>/dev/null &
-    echo "$!" > "$PIDFILE"
+	RECORDING_PATH="$DCIM_PATH/$SUB_DIR/$FILE_NAME"
+	# wait for rtspserver to become available
+	until pids=$(pidof v4l2rtspserver-master)
+	do
+	  sleep 1
+	done
+	/system/sdcard/bin/busybox nohup /system/sdcard/bin/avconv -flags low_delay -fflags nobuffer -probesize 32 -i rtsp://"$CREDENTIALS"0.0.0.0:$PORT/unicast -strict experimental -y -vcodec copy -an $RECORDING_PATH &>/dev/null &
+	echo "$!" > "$PIDFILE"
   fi
 }
 
@@ -50,11 +46,11 @@ stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
-    kill "$pid"
-    rm "$PIDFILE" 1> /dev/null 2>&1
-    echo "Stopped recording."
+	kill "$pid"
+	rm "$PIDFILE" 1> /dev/null 2>&1
+	echo "Stopped recording."
   else
-    echo "Could not find a running recording to stop."
+	echo "Could not find a running recording to stop."
   fi
 }
 
@@ -62,7 +58,7 @@ if [ $# -eq 0 ]; then
   start
 else
   case $1 in start|stop|status)
-      $1
-      ;;
+	  $1
+	  ;;
   esac
 fi

@@ -39,7 +39,7 @@ STATUSINTERVAL=30
 # If the device doesn't come with a hardware sensor, your only option is to use 'virtual'.
 # 
 #  Options:
-#     hw = Use 'hw' if the device has build in hardware light sensor. For more details, see . See issue eg. #1120 for more details...
-#     virtual = Use 'virtual' calculations, based on the lightlevel on the image, also known as ISP exposure (from /proc/jz/isp/isp_info)
-#     false = Use 'false' (default) to DISABLE the topic (It will not publishing details about light level)
+#	hw = Use 'hw' if the device has build in hardware light sensor. For more details, see . See issue eg. #1120 for more details...
+#	virtual = Use 'virtual' calculations, based on the lightlevel on the image, also known as ISP exposure (from /proc/jz/isp/isp_info)
+#	false = Use 'false' (default) to DISABLE the topic (It will not publishing details about light level)
 LIGHT_SENSOR="false"

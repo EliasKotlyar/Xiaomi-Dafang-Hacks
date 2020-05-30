@@ -5,7 +5,7 @@
 
     function timedRefresh(timeoutPeriod) {
         timeoutPeriod -= 1;
-        $('#message').text("Rebooting ... wait..." + timeoutPeriod);
+        $('#message').text("Rebooting ... please wait..." + timeoutPeriod);
 
         if (timeoutPeriod == 0) {
             window.location.href = window.location.href;
@@ -35,7 +35,7 @@
                 $('#progress').val(log);
                 // This is the end, start the reboot count down
                 if (log >= 100) {
-                    timedRefresh(45);
+                    timedRefresh(30);
                 } else {
                     setTimeout(update, 500);
                 }
