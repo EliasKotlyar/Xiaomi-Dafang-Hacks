@@ -28,7 +28,7 @@ function update(onStart) {
             $('#progressValue').html(log+'%');
             // This is the end, start the reboot count down
             if (log >= 100) {
-                timedRefresh(45);
+                timedRefresh(30);
             } else {
                 setTimeout(update, 500);
             }

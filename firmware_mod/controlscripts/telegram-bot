@@ -16,18 +16,18 @@ status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
-    kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+	kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
   fi
 }
 
 start()
 {
   if [ -f $PIDFILE ]; then
-    echo "Bot already running";
+	echo "Bot already running";
   else
-    echo "Starting bot"
-    /system/sdcard/bin/busybox nohup /system/sdcard/scripts/telegram-bot-daemon.sh >/dev/null 2>&1 &
-    echo "$!" > "$PIDFILE"
+	echo "Starting bot"
+	/system/sdcard/bin/busybox nohup /system/sdcard/scripts/telegram-bot-daemon.sh >/dev/null 2>&1 &
+	echo "$!" > "$PIDFILE"
   fi
 }
 
@@ -35,11 +35,11 @@ stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
-    kill -9 "$pid"
-    rm "$PIDFILE"
-    echo "Bot stopped"
+	kill -9 "$pid"
+	rm "$PIDFILE"
+	echo "Bot stopped"
   else
-    echo "Could not find a bot to stop."
+	echo "Could not find a bot to stop."
   fi
 }
 
@@ -47,7 +47,7 @@ if [ $# -eq 0 ]; then
   start
 else
   case $1 in start|stop|status)
-      $1
-      ;;
+	  $1
+	  ;;
   esac
 fi

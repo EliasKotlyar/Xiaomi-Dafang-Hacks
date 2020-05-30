@@ -23,7 +23,7 @@ record_video () {
 		# Got the lock
 		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
 
-        if [ "$video_use_rtsp" = true ]; then
+		if [ "$video_use_rtsp" = true ]; then
 			output_buffer_size="$((($BITRATE*100)+150000))"
 			if [ -z "$USERNAME" ]; then
 				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://127.0.0.1:$PORT/unicast > "$video_tempfile"
@@ -31,19 +31,19 @@ record_video () {
 				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast > "$video_tempfile"
 			fi
 
-        else
-            # Use avconv to stitch multiple JPEGs into 1fps video.
-            # I couldn't get it working another way.
-            # /dev/videoX inputs fail.
-            # Localhost rtsp takes very long (10+ seconds) to start streaming and gets flaky when when memory or cpu are pegged.
-            # This is a clungy method, but works well even at high res, fps, cpu, and memory load!
-            ( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/recording_video.flock)" + "$video_duration")" ]; do
-                    /system/sdcard/bin/getimage
-                    sleep 1
-                done ) | /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f mp4 -y "$video_tempfile"
-        fi
+		else
+			# Use avconv to stitch multiple JPEGs into 1fps video.
+			# I couldn't get it working another way.
+			# /dev/videoX inputs fail.
+			# Localhost rtsp takes very long (10+ seconds) to start streaming and gets flaky when when memory or cpu are pegged.
+			# This is a clungy method, but works well even at high res, fps, cpu, and memory load!
+			( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/recording_video.flock)" + "$video_duration")" ]; do
+					/system/sdcard/bin/getimage
+					sleep 1
+				done ) | /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f mp4 -y "$video_tempfile"
+		fi
 
-        debug_msg "Finished recording"
+		debug_msg "Finished recording"
 	fi
 }
 
@@ -171,30 +171,30 @@ fi
 
 # SMB snapshot and video
 if [ "$smb_snapshot" = true -o "$smb_video" = true ]; then
-    (
-    smbclient_cmd="/system/bin/smbclient $smb_share"
-    if [ "$smb_password" != "" ]; then
-        smbclient_cmd="$smbclient_cmd $smb_password"
-    else
-        smbclient_cmd="$smbclient_cmd -N"
-    fi
-    if [ "$smb_username" != "" ]; then
-        smbclient_cmd="$smbclient_cmd -U $smb_username"
-    fi
+	(
+	smbclient_cmd="/system/bin/smbclient $smb_share"
+	if [ "$smb_password" != "" ]; then
+		smbclient_cmd="$smbclient_cmd $smb_password"
+	else
+		smbclient_cmd="$smbclient_cmd -N"
+	fi
+	if [ "$smb_username" != "" ]; then
+		smbclient_cmd="$smbclient_cmd -U $smb_username"
+	fi
 
-    # Save snapshot
-    if [ "$smb_snapshot" = true ]; then
-        debug_msg "Saving SMB snapshot to $smb_share/$smb_stills_path"
-        snapshot_tempfilename=${snapshot_tempfile:5}
-        $smbclient_cmd -D "$smb_stills_path" -c "lcd /tmp; mkdir $groupname; cd $groupname; put $snapshot_tempfilename; rename $snapshot_tempfilename $filename.jpg"
-    fi
-    # Save video
-    if [ "$smb_video" = true ]; then
-        debug_msg "Saving SMB video to $smb_share/$smb_videos_path"
-        video_tempfilename=${video_tempfile:5}
+	# Save snapshot
+	if [ "$smb_snapshot" = true ]; then
+		debug_msg "Saving SMB snapshot to $smb_share/$smb_stills_path"
+		snapshot_tempfilename=${snapshot_tempfile:5}
+		$smbclient_cmd -D "$smb_stills_path" -c "lcd /tmp; mkdir $groupname; cd $groupname; put $snapshot_tempfilename; rename $snapshot_tempfilename $filename.jpg"
+	fi
+	# Save video
+	if [ "$smb_video" = true ]; then
+		debug_msg "Saving SMB video to $smb_share/$smb_videos_path"
+		video_tempfilename=${video_tempfile:5}
 		$smbclient_cmd -D "$smb_videos_path" -c "lcd /tmp; mkdir $groupname; cd $groupname; put $video_tempfilename; rename $video_tempfilename $filename.mp4"
-    fi
-    ) &
+	fi
+	) &
 fi
 
 # Publish a mqtt message
@@ -243,7 +243,7 @@ if [ "$send_telegram" = true ]; then
 		debug_msg "Send telegram video"
 		if [ "$video_use_rtsp" = true ]; then
 			/system/sdcard/bin/telegram v "$video_tempfile"
-        	else
+			else
 			/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
 			/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
 			rm "$video_tempfile-lo.mp4"
@@ -263,10 +263,10 @@ fi
 
 # Run any user scripts.
 for i in /system/sdcard/config/userscripts/motiondetection/*; do
-    if [ -x "$i" ]; then
-        debug_msg "Running: $i on $snapshot_tempfile"
-        $i on "$snapshot_tempfile" &
-    fi
+	if [ -x "$i" ]; then
+		debug_msg "Running: $i on $snapshot_tempfile"
+		$i on "$snapshot_tempfile" &
+	fi
 done
 
 # Wait for all background jobs to finish before existing and deleting tempfile
