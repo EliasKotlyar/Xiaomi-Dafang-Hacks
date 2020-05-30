@@ -34,7 +34,7 @@ if [ -n "$F_cmd" ]; then
     fi
     if $F_action ; then
       echo "#!/bin/sh" > "/system/sdcard/config/autostart/${F_service}"
-      echo "/system/sdcard/controlscript/${F_service}" >> "/system/sdcard/config/autostart/${F_service}"
+      echo "/system/sdcard/controlscripts/${F_service}" >> "/system/sdcard/config/autostart/${F_service}"
     else
       rm "/system/sdcard/config/autostart/${F_service}"
     fi
