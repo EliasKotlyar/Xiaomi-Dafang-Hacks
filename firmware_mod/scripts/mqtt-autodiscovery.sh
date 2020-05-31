@@ -47,7 +47,7 @@
 
   # Light Sensor
   if [ "$LIGHT_SENSOR" != "false" ]; then
-    $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/sensor/$DEVICE_NAME/light_sensor/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME light sensor\", \"unique_id\": \"$MAC_SIMPLE-light-sensor\", $DEVICE_INFO, \"icon\": \"mdi:brightness-5\", \"unit_of_measurement\": \"%\", \"state_topic\": \"$TOPIC/brightness\"}"
+	$MQTT_COMMAND "$AUTODISCOVERY_PREFIX/sensor/$DEVICE_NAME/light_sensor/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME light sensor\", \"unique_id\": \"$MAC_SIMPLE-light-sensor\", $DEVICE_INFO, \"icon\": \"mdi:brightness-5\", \"unit_of_measurement\": \"%\", \"state_topic\": \"$TOPIC/brightness\"}"
   fi
 
   # Night mode

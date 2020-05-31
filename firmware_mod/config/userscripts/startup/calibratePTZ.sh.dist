@@ -13,12 +13,12 @@
 FILECAMERAPOS=/system/sdcard/config/cameraposition
 
 if [ -f ${FILECAMERAPOS} ]; then
-    # Get values in saved config file
-    origin_x_axis=`grep "x:" ${FILECAMERAPOS} | sed "s/x: //"`
-    origin_y_axis=`grep "y:" ${FILECAMERAPOS} | sed "s/y: //"`
+	# Get values in saved config file
+	origin_x_axis=`grep "x:" ${FILECAMERAPOS} | sed "s/x: //"`
+	origin_y_axis=`grep "y:" ${FILECAMERAPOS} | sed "s/y: //"`
 else
-    # No such file exists: create it with the current values
-    /system/sdcard/bin/motor -d s > ${FILECAMERAPOS}
+	# No such file exists: create it with the current values
+	/system/sdcard/bin/motor -d s > ${FILECAMERAPOS}
 fi
 
 # go to home for both axis

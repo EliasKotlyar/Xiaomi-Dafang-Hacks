@@ -4,8 +4,8 @@
 
 while true; do
   if [ -f /system/sdcard/config/ldr-average.conf ]; then
-    . /system/sdcard/config/ldr-average.conf 2>/dev/null
-    #read config in every iteration, so we can change the average online
+	. /system/sdcard/config/ldr-average.conf 2>/dev/null
+	#read config in every iteration, so we can change the average online
   fi
 
   if [ -z "$AVG" ]; then AVG=1; fi
@@ -28,9 +28,9 @@ while true; do
 
 
   if [ "$AVGMEASUREMENT" -lt 50 ]; then  # Light detected
-    night_mode off
+	night_mode off
   else # nothing in Buffer -> no light
-    night_mode on
+	night_mode on
   fi
   sleep 10
 done
