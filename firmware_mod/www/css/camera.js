@@ -19,7 +19,7 @@ function saveConfig(elements) {
 
 //Function get config
 function getConfig() {
-    // get config and put to hmtl elements
+    //Get config and apply to html elements
     $.get("cgi-bin/camera.cgi", {cmd: "get_config"}, function(config){             
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
