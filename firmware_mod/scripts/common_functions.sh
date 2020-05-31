@@ -358,19 +358,19 @@ ftp_server(){
 mqtt_control(){
   case "$1" in
   on)
-	/system/sdcard/controlscripts/mqtt_control start
-	;;
+    /system/sdcard/controlscripts/mqtt-control start
+    ;;
   off)
-	/system/sdcard/controlscripts/mqtt_control stop
-	;;
+    /system/sdcard/controlscripts/mqtt-control stop
+    ;;
   status)
-	if /system/sdcard/controlscripts/mqtt_control status | grep -q "PID"
-	then
-		echo "ON"
-	else
-		echo "OFF"
-	fi
-	;;
+    if /system/sdcard/controlscripts/mqtt-control status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
   esac
 }
 
@@ -378,19 +378,19 @@ mqtt_control(){
 mqtt_status(){
   case "$1" in
   on)
-	/system/sdcard/controlscripts/mqtt_status start
-	;;
+    /system/sdcard/controlscripts/mqtt-status start
+    ;;
   off)
-	/system/sdcard/controlscripts/mqtt_status stop
-	;;
+    /system/sdcard/controlscripts/mqtt-status stop
+    ;;
   status)
-	if /system/sdcard/controlscripts/mqtt_status status | grep -q "PID"
-	then
-		echo "ON"
-	else
-		echo "OFF"
-	fi
-	;;
+    if /system/sdcard/controlscripts/mqtt-status status | grep -q "PID"
+    then
+        echo "ON"
+    else
+        echo "OFF"
+    fi
+    ;;
   esac
 }
 

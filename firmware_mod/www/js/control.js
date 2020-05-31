@@ -108,6 +108,76 @@ function showupdatepage(result) {
     });
 }
 
+function saveConfig() {
+    $.get("cgi-bin/control.cgi",{cmd: "save_config"},function(result) {
+        getFiles('config');
+    });
+    
+}
+
+function deleteConfig(fileName,dir) {
+    var del = confirm("Confirm delete file: "+fileName);
+    if ( del ) { 
+        $.get("cgi-bin/control.cgi", {cmd: "del_config",file: fileName});
+        getFiles(dir);
+    }
+}
+
+function restoreConfig(fileName) {
+    var restore = confirm("Are you sure to restore config file: "+fileName+"\n Camera will reboot at the end of the process");
+    if ( restore ) {
+        $.get("cgi-bin/control.cgi",{cmd: "restore_config",file: fileName});  
+    }
+}
+
+//Function to get video and images files from dir
+function getFiles(dir) {
+    // Get files from dir
+    $('#'+dir).html("<p><button class='w3-btn w3-theme' onclick='saveConfig();'>Take config snapshot</button></p>");
+    $.get("cgi-bin/control.cgi", {cmd: "getFiles", dir: dir}, function(config){             
+        var config_all = config.split("\n");    
+        if ( config_all.length == 1)
+            $('#'+dir).append("<h1>No snapshot available.</h1>");
+        else {
+            $('#'+dir).append("\
+            <table class='w3-table-all' id='result_"+dir+"'>\
+            <thead>\
+              <tr class='w3-theme'>\
+                <th>Filename</th>\
+                <th>Size</th>\
+                <th>Date</th>\
+                <th>Actions</th>\
+              </tr>\
+            </thead>\
+            <tbody>");
+            for (var i = 0; i < config_all.length-1; i++) {
+                var config_info = config_all[i].split("#:#");
+                var file_info = config_info[3].split(".");       
+                var html_photo = "";
+                $('#result_'+dir).append("<tr> \
+                <td>"+config_info[0]+"</td> \
+                <td>"+config_info[1]+"</td> \
+                <td>"+config_info[2]+"</td> \
+                <td> \
+                <a href=\""+config_info[3]+"\" download><i class='fas fa-download' title='Download file'></i></a> \
+                <span onclick=\"deleteConfig('"+config_info[3]+"','"+dir+"')\"><i class='fas fa-trash' title='Delete file'></i></span>\
+                <span onclick=\"restoreConfig('"+config_info[3]+"')\" title='Restore config'><i class='fas fa-hdd'></i></span>\
+                </td></tr>");
+            }
+            $('#'+dir).append("</tbody></table><p></p>");
+            var table = $('#result_'+dir).DataTable();
+            $('#result'+dir).on( 'click', 'tr', function () {
+                //$(this).toggleClass('selected');
+            } );
+            $('#result'+dir).click( function () {
+               //alert( table.rows('.selected').data().length +' row(s) selected' );
+            } );
+        }
+    });
+
+}
+
+
 function start(branch,mode) {
     var login = "";   
     // if ($('#login').val().length > 0) {
