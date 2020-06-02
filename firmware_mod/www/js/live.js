@@ -11,7 +11,7 @@ function refreshLiveImage() {
 
 //Function to refresh side bar buttons
 function refreshSideBar() {
-    $.get("/cgi-bin/live.cgi", {cmd: "status_all"}, function (result) {
+    $.get("/cgi-bin/ui_live.cgi", {cmd: "status_all"}, function (result) {
        var switches = result.split("\n");
        for (var i = 0; i < switches.length-1; i++) {
         var switch_info = switches[i].split(":");
@@ -61,7 +61,7 @@ function PTZControl(view) {
 }
 
 function record(action) {
-    $.get("cgi-bin/live.cgi",{cmd: "recording", action: action},function (result) {
+    $.get("cgi-bin/ui_live.cgi",{cmd: "recording", action: action},function (result) {
         if (action == "on" || result == "ON\n") {
             $("#btn-record span").attr("style","color:red");
             $("#btn-record").attr("onclick","record('off')");
@@ -87,7 +87,7 @@ function camControl(view) {
 
 //Function to move the camra
 function moveCamera(move) {
-    var cmd = "cgi-bin/live.cgi?cmd=motor&move=" + move;
+    var cmd = "cgi-bin/ui_live.cgi?cmd=motor&move=" + move;
     $.get(cmd);
     setTimeout(refreshLiveImage, 500);
 }
@@ -117,7 +117,7 @@ function toggleSideBar() {
         var action="off";
         if (this.checked)
             action="on"
-        var cmd = "cgi-bin/live.cgi?cmd="+ this.id +"&action=" + action;
+        var cmd = "cgi-bin/ui_live.cgi?cmd="+ this.id +"&action=" + action;
         $.get(cmd);      
     });
 
@@ -126,12 +126,12 @@ function toggleSideBar() {
 //Function loaded when script load
 function onLoad() {
     // Show dpad according camera version
-    $.get("cgi-bin/live.cgi", {cmd: "show_HWmodel"}, function(model){      
+    $.get("cgi-bin/ui_live.cgi", {cmd: "show_HWmodel"}, function(model){      
         if (model != "Xiaomi Dafang\n") 
             $("#btn-ptz").addClass("w3-hide");
     });
 
-    $.get("cgi-bin/live.cgi", {cmd: "hostname"}, function(hostname){
+    $.get("cgi-bin/ui_live.cgi", {cmd: "hostname"}, function(hostname){
         $("#hostname").html(hostname);
     });
 

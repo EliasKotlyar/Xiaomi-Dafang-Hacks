@@ -9,7 +9,7 @@ function saveConfig() {
                      timezone: $('#timezone').children("option:selected").val(),
                      ntp: $('#ntp').val()};
   
-    $.post("cgi-bin/system.cgi",postData,function(result){
+    $.post("cgi-bin/ui_system.cgi",postData,function(result){
         //Open modal window
         if ( result != "")
             $('#save_result').html(result);
@@ -23,7 +23,7 @@ function saveConfig() {
 //Function get config
 function getConfig() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/system.cgi", {cmd: "get_config"}, function(config){             
+    $.get("cgi-bin/ui_system.cgi", {cmd: "get_config"}, function(config){             
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");       

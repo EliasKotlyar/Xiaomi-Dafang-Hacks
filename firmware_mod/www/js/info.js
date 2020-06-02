@@ -1,7 +1,7 @@
 //Function get config
 function getConfig() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/info2.cgi", {cmd: "get_config"}, function(config){             
+    $.get("cgi-bin/ui_info.cgi", {cmd: "get_config"}, function(config){             
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");       
@@ -13,7 +13,7 @@ function getConfig() {
 
 //Get network information
 function getInfo(infoname) {
-    $.get("cgi-bin/info2.cgi", {cmd: "get_info", info: infoname}, function(config){             
+    $.get("cgi-bin/ui_info.cgi", {cmd: "get_info", info: infoname}, function(config){             
         config = config.replace(/\n/g,'<br />');
         $('#'+infoname).html(config);
     });
