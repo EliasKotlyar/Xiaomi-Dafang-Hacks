@@ -8,7 +8,7 @@ function saveConfig(elements) {
         var input = $(this);
         postData[input.attr('id')] = input.val();
     });
-    $.post("cgi-bin/camera.cgi",postData,function(result){
+    $.post("cgi-bin/ui_camera.cgi",postData,function(result){
         if ( result != "")
             $('#save_result').html(result);
         else
@@ -20,7 +20,7 @@ function saveConfig(elements) {
 //Function get config
 function getConfig() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/camera.cgi", {cmd: "get_config"}, function(config){             
+    $.get("cgi-bin/ui_camera.cgi", {cmd: "get_config"}, function(config){             
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");       

@@ -109,7 +109,7 @@ function showupdatepage(result) {
 }
 
 function saveConfig() {
-    $.get("cgi-bin/control.cgi",{cmd: "save_config"},function(result) {
+    $.get("cgi-bin/ui_control.cgi",{cmd: "save_config"},function(result) {
         getFiles('config');
     });
     
@@ -118,7 +118,7 @@ function saveConfig() {
 function deleteConfig(fileName,dir) {
     var del = confirm("Confirm delete file: "+fileName);
     if ( del ) { 
-        $.get("cgi-bin/control.cgi", {cmd: "del_config",file: fileName});
+        $.get("cgi-bin/ui_control.cgi", {cmd: "del_config",file: fileName});
         getFiles(dir);
     }
 }
@@ -126,7 +126,7 @@ function deleteConfig(fileName,dir) {
 function restoreConfig(fileName) {
     var restore = confirm("Are you sure to restore config file: "+fileName+"\n Camera will reboot at the end of the process");
     if ( restore ) {
-        $.get("cgi-bin/control.cgi",{cmd: "restore_config",file: fileName});  
+        $.get("cgi-bin/ui_control.cgi",{cmd: "restore_config",file: fileName});  
     }
 }
 
@@ -134,7 +134,7 @@ function restoreConfig(fileName) {
 function getFiles(dir) {
     // Get files from dir
     $('#'+dir).html("<p><button class='w3-btn w3-theme' onclick='saveConfig();'>Take config snapshot</button></p>");
-    $.get("cgi-bin/control.cgi", {cmd: "getFiles", dir: dir}, function(config){             
+    $.get("cgi-bin/ui_control.cgi", {cmd: "getFiles", dir: dir}, function(config){             
         var config_all = config.split("\n");    
         if ( config_all.length == 1)
             $('#'+dir).append("<h1>No snapshot available.</h1>");
@@ -206,7 +206,7 @@ function start(branch,mode) {
 
 //Function control service (stop/start)
 function controlService(action,serviceName) {
-    $.get("cgi-bin/control.cgi", {cmd: "services",service: serviceName, action: action}, function(result){
+    $.get("cgi-bin/ui_control.cgi", {cmd: "services",service: serviceName, action: action}, function(result){
         if (action == 'on') {
             $('#start_'+serviceName).removeAttr('onclick');
             $('#stop_'+serviceName).attr('onclick','controlService("off","'+serviceName+'")');
@@ -229,7 +229,7 @@ function controlService(action,serviceName) {
 
 //Function to control autostart
 function autoStartService(action,serviceName) {
-    $.get("cgi-bin/control.cgi", {cmd: "autoStartService",service: serviceName, action: action});
+    $.get("cgi-bin/ui_control.cgi", {cmd: "autoStartService",service: serviceName, action: action});
     $('#autoStart_'+serviceName).removeAttr('onclick');
     if(action == "true") {
         $('#autoStart_'+serviceName).attr('onclick','autoStartService("false","'+serviceName+'")');
@@ -242,7 +242,7 @@ function autoStartService(action,serviceName) {
 //Function get config
 function getServices() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/control.cgi", {cmd: "get_services"}, function(config){             
+    $.get("cgi-bin/ui_control.cgi", {cmd: "get_services"}, function(config){             
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");       
