@@ -17,7 +17,7 @@ if [ -n "$F_cmd" ]; then
     echo "hostname#:#$(hostname)"
     echo "theme#:#"
     echo "ntp#:#$(cat /system/sdcard/config/ntp_srv.conf)"
-    echo "timezone#:#$(/system/sdcard/bin/busybox awk -F '\t' -v tzn="$(cat /system/sdcard/config/timezone.conf)" '{print "<option value=\""$1"\""; if ($1==tzn) print "selected"; print ">" $1 "</option>"}' /system/sdcard/www/timezones.tsv | tr -d '\n')"
+    echo "timezone#:#$(/system/sdcard/bin/busybox awk -F '\t' -v tzn="$(cat /system/sdcard/config/timezone.conf)" '{print "<option value=\""$1"\""; if ($1==tzn) print "selected"; print ">" $1 "</option>"}' /system/sdcard/www/json/timezones.tsv | tr -d '\n')"
     echo "currenttime#:#Current time is $(date) - $(cat /etc/TZ)"
   ;;
   save_config)

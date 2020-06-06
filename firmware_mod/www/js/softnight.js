@@ -4,7 +4,7 @@ var cur_wb=-1;
 var cur_day=true;
 var eq2_count = 0;
 var eq3_count = 0;
-var fake = false;
+
 
 
 var exposure = new TimeSeries();
@@ -15,17 +15,10 @@ var iridix = new TimeSeries();
 var gain = new TimeSeries();
 
 function readIspInfo(){
-  if(fake){
-      $.get("getispinfo.html", function(data, status)
+      $.get("/cgi-bin/ui_softnight.cgi", function(data, status)
       {
       parseIspInfo(data);
       });
-  }else{
-      $.get("/cgi-bin/getIspInfo.cgi", function(data, status)
-      {
-      parseIspInfo(data);
-      });
-  }
 }
 function parseIspInfo(data){
   var lines = data.split('\n');
@@ -188,13 +181,13 @@ function ir_cut(val){
 
 function night_mode(val){
   var cmd = 'cgi-bin/action.cgi?cmd=toggle-rtsp-nightvision-' + ((val) ? "on" : "off");
-  if(!fake) ir_led(true);
+  ir_led(true);
   if(val){
-      if(!fake) $.get(cmd, function(data, status){});
-      if(!fake) ir_cut(!val);
+      $.get(cmd, function(data, status){});
+      ir_cut(!val);
   }else{
-      if(!fake) ir_cut(!val);
-      if(!fake) $.get(cmd, function(data, status){});
+      ir_cut(!val);
+      $.get(cmd, function(data, status){});
   }
   cur_day = !val;
   $('#cur_mode')[0].innerText = (cur_day) ? "Day mode" : "Night mode";

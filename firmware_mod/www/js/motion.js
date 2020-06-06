@@ -47,7 +47,7 @@ function saveConfig(elements) {
 		});
 	}
 	
-    $.post("cgi-bin/motion.cgi",postData,function(result){
+    $.post("cgi-bin/ui_motion.cgi",postData,function(result){
         if ( result != "")
             $('#save_result').html(result);
         else
@@ -59,7 +59,7 @@ function saveConfig(elements) {
 //Function get config
 function getConfig() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/motion.cgi", {cmd: "get_config"}, function(config){             
+    $.get("cgi-bin/ui_motion.cgi", {cmd: "get_config"}, function(config){             
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");       

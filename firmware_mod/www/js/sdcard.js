@@ -2,7 +2,7 @@
 function deleteFile(fileName,dir) {
     var del = confirm("Confirm delete file: "+fileName);
     if ( del ) { 
-        $.get("cgi-bin/sdcard.cgi", {cmd: "del_file",file: fileName});
+        $.get("cgi-bin/ui_sdcard.cgi", {cmd: "del_file",file: fileName});
         getFiles(dir);
     }
 }
@@ -16,7 +16,7 @@ function openPicture(img) {
 //Function to get video and images files from dir
 function getFiles(dir) {
     // Get files from dir
-    $.get("cgi-bin/sdcard.cgi", {cmd: "getFiles", dir: dir}, function(config){             
+    $.get("cgi-bin/ui_sdcard.cgi", {cmd: "getFiles", dir: dir}, function(config){             
         $('#'+dir).html(" <p></p>\
         <table class='w3-table-all' id='result_"+dir+"'>\
         <thead>\

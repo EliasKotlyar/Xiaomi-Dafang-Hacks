@@ -9,7 +9,7 @@ function saveConfig(elements) {
         var input = $(this);
         postData[input.attr('id')] = input.val();
 	});
-    $.post("cgi-bin/net_services.cgi",postData,function(result){
+    $.post("cgi-bin/ui_net_services.cgi",postData,function(result){
         if ( result != "")
             $('#save_result').html(result);
         else
@@ -21,7 +21,7 @@ function saveConfig(elements) {
 //Function get config
 function getConfig(service) {
     // get config and put to hmtl elements
-    $.get("cgi-bin/net_services.cgi", {cmd: "get_config_"+service}, function(config){             
+    $.get("cgi-bin/ui_net_services.cgi", {cmd: "get_config_"+service}, function(config){             
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");       
