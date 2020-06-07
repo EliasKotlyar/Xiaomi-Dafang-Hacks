@@ -1,5 +1,5 @@
 #!/bin/sh
-PIDFILE="/run/v4l2rtspserver-master-mjpeg.pid"
+PIDFILE="/run/rtsp-mpjeg.pid"
 LOGDIR="/tmp"
 LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
 export LD_LIBRARY_PATH='/system/sdcard/lib:/thirdlib:/system/lib'
