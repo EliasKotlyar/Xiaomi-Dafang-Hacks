@@ -207,23 +207,13 @@ function start(branch,mode) {
 //Function control service (stop/start)
 function controlService(action,serviceName) {
     $.get("cgi-bin/ui_control.cgi", {cmd: "services",service: serviceName, action: action}, function(result){
-        if (action == 'on') {
-            $('#start_'+serviceName).removeAttr('onclick');
-            $('#stop_'+serviceName).attr('onclick','controlService("off","'+serviceName+'")');
-            $('#start_'+serviceName).removeClass('w3-text-green');
-            $('#start_'+serviceName).addClass('w3-text-grey');
-            $('#stop_'+serviceName).removeClass('w3-text-grey');
-            $('#stop_'+serviceName).addClass('w3-text-red');
+        $('#control_'+serviceName).removeAttr('onclick');
+        if (action == 'start') {
+            $('#control_'+serviceName).attr('onclick','controlService("stop","'+serviceName+'")')
         }
         else {
-            $('#stop_'+serviceName).removeAttr('onclick');
-            $('#start_'+serviceName).attr('onclick','controlService("on","'+serviceName+'")');
-            $('#start_'+serviceName).removeClass('w3-text-grey');
-            $('#start_'+serviceName).addClass('w3-text-green');
-            $('#stop_'+serviceName).removeClass('w3-text-red');
-            $('#stop_'+serviceName).addClass('w3-text-grey');
+            $('#control_'+serviceName).attr('onclick','controlService("start","'+serviceName+'")')
         }
-        $('#start').append("<tr><td>"+config_info[0]+"</td><td><i class='fa fa-play-circle w3-xxlarge "+color_start+"</i> <i class='fa fa-stop-circle w3-xxlarge "+color_stop+"</i></td><td><input class='w3-check' type='checkbox' "+checked+"></td></tr>");
     });
 }
 
@@ -247,19 +237,15 @@ function getServices() {
         for (var i = 0; i < config_all.length-1; i++) {
          var config_info = config_all[i].split("#:#");       
          // Select button color accrding status
-         if (config_info[1] == "ON") {
-             var color_start = "w3-text-grey' style='cursor:not-allowed' id='start_"+config_info[0]+"'>";
-             var color_stop = "w3-text-red'onclick='controlService(\"off\",\""+config_info[0]+"\")' id='stop_"+config_info[0]+"'>";
-         }
-         else {
-            var color_start = "w3-text-green' onclick='controlService(\"on\",\""+config_info[0]+"\")' id='start_"+config_info[0]+"'>";
-            var color_stop = "w3-text-grey' style='cursor:not-allowed' id='stop_"+config_info[0]+"'>";
-         }
-         var checked = "onclick='autoStartService(\"true\",\""+config_info[0]+"\")')";
+         var control_checked = "onclick='controlService(\"start\",\""+config_info[0]+"\")')";
+         if (config_info[1] == "started")
+            control_checked = "checked onclick='controlService(\"stop\",\""+config_info[0]+"\")')";
+         var autostart_checked = "onclick='autoStartService(\"true\",\""+config_info[0]+"\")')";
          if(config_info[2] == "true")
-            checked = "checked onclick='autoStartService(\"false\",\""+config_info[0]+"\")')";
-         
-         $('#tabServices').append("<tr><td>"+config_info[0]+"</td><td><i class='fa fa-play-circle w3-xxlarge "+color_start+"</i> <i class='fa fa-stop-circle w3-xxlarge "+color_stop+"</i></td><td>Off <label class='switch'><input id='autoStart_"+config_info[0]+"' class='w3-check' type='checkbox' "+checked+"> <span class='slider round'></span></label> On</td></tr>");
+            autostart_checked = "checked onclick='autoStartService(\"false\",\""+config_info[0]+"\")')";
+         $('#tabServices').append("<tr><td>"+config_info[0]+"</td>\
+         <td>Stop <label class='switch'><input id='control_"+config_info[0]+"' class='w3-check' type='checkbox' "+control_checked+"> <span class='slider round'></span></label> Start</td>\
+         <td>Off <label class='switch'><input id='autoStart_"+config_info[0]+"' class='w3-check' type='checkbox' "+autostart_checked+"> <span class='slider round'></span></label> On</td></tr>");
         }
     });
 
