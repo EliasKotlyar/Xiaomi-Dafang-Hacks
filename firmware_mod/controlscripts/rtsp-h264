@@ -1,5 +1,5 @@
 #!/bin/sh
-PIDFILE="/run/v4l2rtspserver-master-h264.pid"
+PIDFILE="/run/rtsp-h264.pid"
 export LD_LIBRARY_PATH='/system/sdcard/lib/:/thirdlib:/system/lib'
 
 if [ ! -f /system/sdcard/config/rtspserver.conf ]; then
@@ -109,6 +109,7 @@ stop()
   if [ "$pid" ]; then
 	kill "$pid"
 	rm "$PIDFILE" 1> /dev/null 2>&1
+
   fi
 }
 

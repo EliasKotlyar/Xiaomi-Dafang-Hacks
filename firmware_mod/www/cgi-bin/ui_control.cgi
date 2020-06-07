@@ -1,7 +1,6 @@
 #!/bin/sh
 
 . /system/sdcard/www/cgi-bin/func.cgi
-. /system/sdcard/scripts/common_functions.sh
 
 export LD_LIBRARY_PATH=/system/lib
 export LD_LIBRARY_PATH=/thirdlib:$LD_LIBRARY_PATH
@@ -14,18 +13,10 @@ echo ""
 if [ -n "$F_cmd" ]; then
   case "$F_cmd" in
   get_services)
-	  echo "auto_night_mode#:#$(auto_night_mode status)#:#$(test -f /system/sdcard/config/autostart/auto-night-detection && echo 'true' || echo 'false')#:#false"
-    echo "debug-on-osd#:#$(debug_on_osd status)#:#$(test -f /system/sdcard/config/autostart/debug-on-osd && echo 'true' || echo 'false')#:#false"
-    echo "ftp_server#:#$(ftp_server status)#:#$(test -f /system/sdcard/config/autostart/ftp_server && echo 'true' || echo 'false')#:#false"
-    echo "mqtt-control#:#$(mqtt_control status)#:#$(test -f /system/sdcard/config/autostart/mqtt-control && echo 'true' || echo 'false')#:#false"
-    echo "mqtt-status#:#$(mqtt_status status)#:#$(test -f /system/sdcard/config/autostart/mqtt-status && echo 'true' || echo 'false')#:#false"
-    echo "onvif-srvd#:#$(onvif_srvd status)#:#$(test -f /system/sdcard/config/autostart/onvif-srvd && echo 'true' || echo 'false')#:#false"
-    echo "recording#:#$(recording status)#:#$(test -f /system/sdcard/config/autostart/recording && echo 'true' || echo 'false')#:#false"
-    echo "rtsp-h264#:#$(rtsp_h264_server status)#:#$(test -f /system/sdcard/config/autostart/rtsp-h264 && echo 'true' || echo 'false')#:#false"
-    echo "rtsp-mjpeg#:#$(rtsp_mjpeg_server status)#:#$(test -f /system/sdcard/config/autostart/rtsp-mjpeg && echo 'true' || echo 'false')#:#false"
-	  echo "sound-on-startup#:#$(sound_on_startup status)#:#$(test -f /system/sdcard/config/autostart/sound-on-startup && echo 'true' || echo 'false')#:#false"
-	  echo "telegram-bot#:#$(telegram_bot status)#:#$(test -f /system/sdcard/config/autostart/telegram-bot && echo 'true' || echo 'false')#:#false"
-	  echo "timelapse#:#$(timelapse status)#:#$(test -f /system/sdcard/config/autostart/timelapse && echo 'true' || echo 'false')#:#false"
+    services="auto-night-detection debug-on-osd ftp_server mqtt-control mqtt-status onvif-srvd recording rtsp-h264 rtsp-mjpeg sound-on-startup telegram-bot timelapse"
+    for service in $services ; do  
+      echo "${service}#:#$(test -f /run/${service}.pid && echo 'started' || echo 'stopped')#:#$(test -f /system/sdcard/config/autostart/${service} && echo 'true' || echo 'false')#:#false"
+    done
 	return
 	;;
   autoStartService)
@@ -41,7 +32,7 @@ if [ -n "$F_cmd" ]; then
     return
     ;;
   services)
-    $F_service $F_action
+    $(/system/sdcard/controlscripts/${F_service} $F_action) > /dev/null
     return
     ;;
   getFiles)
