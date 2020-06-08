@@ -93,8 +93,7 @@ main() {
 
   messageAttr="message"
   messageVal=$(echo "$json" | $JQ -r '.result[0].message // ""')
-  [ -z "$messageVal" ] && messageAttr="edited_message"
-  messageVal=$(echo "$json" | $JQ -r '.result[0].edited_message // ""')
+  [ -z "$messageVal" ] && messageAttr="edited_message" && messageVal=$(echo "$json" | $JQ -r '.result[0].edited_message // ""')
   [ -z "$messageVal" ] && messageAttr="channel_post"
   chatId=$(echo "$json" | $JQ -r ".result[0].$messageAttr.chat.id // \"\"")
   updateId=$(echo "$json" | $JQ -r '.result[0].update_id // ""')
