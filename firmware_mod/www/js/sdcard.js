@@ -1,7 +1,12 @@
 //Function to delete a file
-function deleteFile(fileName,dir) {
-    var del = confirm("Confirm delete file: "+fileName);
-    if ( del ) { 
+function deleteFile(fileName,dir,confirm) {
+    if (confirm)
+        var del = confirm("Confirm delete file: "+fileName);
+        if ( del ) { 
+            $.get("cgi-bin/ui_sdcard.cgi", {cmd: "del_file",file: fileName});
+            getFiles(dir);
+        }
+    else {
         $.get("cgi-bin/ui_sdcard.cgi", {cmd: "del_file",file: fileName});
         getFiles(dir);
     }
@@ -17,7 +22,7 @@ function openPicture(img) {
 function getFiles(dir) {
     // Get files from dir
     $.get("cgi-bin/ui_sdcard.cgi", {cmd: "getFiles", dir: dir}, function(config){             
-        $('#'+dir).html(" <p></p>\
+        $('#'+dir).html(" <p><button id='del_"+dir+"' class='w3-btn w3-theme'>Delete selected</button></p>\
         <table class='w3-table-all' id='result_"+dir+"'>\
         <thead>\
           <tr class='w3-theme'>\
@@ -43,19 +48,25 @@ function getFiles(dir) {
          <td>"+config_info[2]+"</td> \
          <td> \
              <a href=\""+config_info[3]+"\" download><i class='fas fa-download' title='Download file'></i></a> \
-            <span onclick=\"deleteFile('"+config_info[3]+"','"+dir+"')\"><i class='fas fa-trash' title='Delete file'></i></span>\
+            <span onclick=\"deleteFile('"+config_info[3]+"','"+dir+",true')\"><i class='fas fa-trash' title='Delete file'></i></span>\
             "+html_photo+"\
             </td></tr>");
         }
         $('#'+dir).append("</tbody></table><p></p>");
 
         var table = $('#result_'+dir).DataTable();
-        $('#result'+dir).on( 'click', 'tr', function () {
-            //$(this).toggleClass('selected');
+        $('#result_'+dir+' tbody').on( 'click', 'tr', function () {
+            $(this).toggleClass('selected');
         } );
      
-        $('#result'+dir).click( function () {
-            //alert( table.rows('.selected').data().length +' row(s) selected' );
+        $('#del_'+dir).click( function () {
+            var del = confirm("Confirm delete of "+ table.rows('.selected').data().length +" files");
+            if(del) {
+                table.rows('.selected').data().each( function ( value, index ) {   
+                    filename = value[3].split("\"");                 
+                    deleteFile(filename[1],dir,false);
+                } );
+            }
         } );
 
     });
@@ -67,8 +78,6 @@ function onLoad() {
     accordion();
     //Get configuration
     getFiles('motion');
-
-   
 }
 
 onLoad();
