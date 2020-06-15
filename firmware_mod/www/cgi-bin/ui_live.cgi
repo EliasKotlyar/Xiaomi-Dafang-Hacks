@@ -97,6 +97,13 @@ if [ -n "$F_cmd" ]; then
   recording)
     recording $F_action
     ;;
+  flip)
+    if [ $(/system/sdcard/bin/setconf -g f) == "0" ]; then
+      /system/sdcard/bin/setconf -k f -v 1
+    else 
+      /system/sdcard/bin/setconf -k f -v 0
+    fi
+    ;;
   *)
     echo "Unsupported command '$F_cmd'"
     ;;
