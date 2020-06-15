@@ -176,8 +176,7 @@ if [ -n "$F_cmd" ]; then
 		fi
 	fi
 	if [ -n  "${F_osdEnable+x}" ]; then
-		enabled=$(printf '%b' "${F_osdEnable}")
-		if [ ! -z "$enabled" ]; then
+		if [ "${F_osdEnable}" == "true" ]; then
 	  		echo "ENABLE_OSD=true" > /system/sdcard/config/osd.conf
 	  		update_axis
 	  		echo "OSD enabled <br />"
@@ -194,7 +193,7 @@ if [ -n "$F_cmd" ]; then
 		echo "OSD set text ${osdtext}<br />"
 	fi
 	if [ -n "${F_osdAxis+x}" ];then
-		if [[ ${F_osdAxis}]]; then
+		if [ "${F_osdAxis}" == "true" ]; then
 			echo "DISPLAY_AXIS=true" >> /system/sdcard/config/osd.conf
 			echo "OSD Display axis enabled<br />"
 		else
