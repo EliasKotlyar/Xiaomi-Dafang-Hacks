@@ -2,6 +2,11 @@
 var timeoutJobs = {};
 var stateSideBar = false;
 
+//Function for flip image
+function flip() {
+    $.get("/cgi-bin/ui_live.cgi", {cmd: "flip"});
+}
+
 //Functions for live stream with images
 function refreshLiveImage() {
     var ts = new Date().getTime();
