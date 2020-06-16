@@ -19,7 +19,10 @@ if [ -n "$F_cmd" ]; then
 	source /system/sdcard/config/ldr-average.conf
 	source /system/sdcard/config/timelapse.conf
 	source /system/sdcard/config/osd.conf
-    echo "videoSize#:#${RTSPH264OPTS}"
+    echo "multicast#:#${MULTICASTDEST}"
+	echo "flip#:#${FLIP}"
+	echo "codec#:#${CODEC}"
+	echo "videoSize#:#${RTSPH264OPTS}"
 	echo "bitRate#:#${BITRATE}"
 	echo "format#:#${VIDEOFORMAT}"
 	echo "frmRateNum#:#${FRAMERATE_NUM}"
@@ -49,10 +52,14 @@ if [ -n "$F_cmd" ]; then
 	echo "osdFonts#:#$(getFonts)"
   ;;
   save_config)
+	if [ -n "${F_codec+x}" ]; then
+		video_codec=$(echo "${F_codec}"| sed -e 's/+/ /g')
+		rewrite_config /system/sdcard/config/rtspserver.conf CODEC "\"$video_codec\""
+		echo "Server video codec set to $video_codec<br/>"
+	fi
 	if [ -n "${F_videoSize+x}" ]; then
 	  	video_size=$(echo "${F_videoSize}"| sed -e 's/+/ /g')
-		rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"$video_size\""
-		rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"$video_size\""
+		rewrite_config /system/sdcard/config/rtspserver.conf RTSPOPTS "\"$video_size\""
 		echo "Video resolution set to $video_size<br/>"
 	fi
 	if [ -n "${F_bitRate+x}" ]; then
@@ -64,6 +71,11 @@ if [ -n "$F_cmd" ]; then
 		video_format=$(printf '%b' "${F_format/%/\\x}")
 		rewrite_config /system/sdcard/config/rtspserver.conf VIDEOFORMAT "$video_format"
 		echo "Video format set to $video_format (0 = FixedQp, 1 = CBR, 2 = VBR and 3 = SMART)<br/>"
+	fi
+	if [ -n "${F_flip+x}" ]; then
+		video_flip=$(echo "${F_flip}"| sed -e 's/+/ /g')
+		rewrite_config /system/sdcard/config/rtspserver.conf FLIP "\"$video_flip\""
+		echo "Server video flip set to $video_flip<br/>"
 	fi
 	if [ -n  "${F_frmRateNum+x}" ]; then
 		frmRateNum=$(printf '%b' "${F_frmRateNum/%/\\x}")
@@ -88,6 +100,11 @@ if [ -n "$F_cmd" ]; then
 		videopassword=$(printf '%b' "${F_videoPassword//%/\\x}")
 		rewrite_config /system/sdcard/config/rtspserver.conf USERPASSWORD "$videopassword"
 		echo "Set user and password for video stream<br />"
+	fi
+	if [ -n  "${F_multicast+x}" ]; then
+		multicast_dest=$(printf '%b' "${F_multicast//%/\\x}")
+		rewrite_config /system/sdcard/config/rtspserver.conf MULTICASTDEST "$multicast_dest"
+		echo "Set multicast address to ${multicast_dest}<br />"
 	fi
 	if [ -n  "${F_videoPort+x}" ]; then
 		videoport=$(echo "${F_videoPort}"| tr '\n')
@@ -236,15 +253,10 @@ if [ -n "$F_cmd" ]; then
 		/system/sdcard/bin/setconf -k e -v "${fontName}"
 		echo "Set OSD font to ${fontName}<br />"
 	fi
-	if [ "$(rtsp_h264_server status)" = "ON" ]; then
-	  echo "Restart H264 rtsp server"
-	  rtsp_h264_server off
-	  rtsp_h264_server on
-	fi
-	if [ "$(rtsp_mjpeg_server status)" = "ON" ]; then
-	  echo "Restart MJPEG rtsp server"
-	  rtsp_mjpeg_server off
-	  rtsp_mjpeg_server on
+	if [ "$(/system/sdcard/controlscripts/rtsp status)" != "" ]; then
+	  echo "Restart rtsp server"
+	  /system/sdcard/controlscripts/rtsp stop
+	  /system/sdcard/controlscripts/rtsp start
 	fi
 	return
 	;;
