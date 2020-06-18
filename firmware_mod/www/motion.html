@@ -70,28 +70,33 @@
   <!-- Local storage accordion-->
   <button class="accordion" type='button'>Local storage</button>
   <div class="panel">
-      <p></p>
-    <div class="w3-container">
-        <label>Save snapshots on motion</label>
-        <select id="saveSnaphot" class="w3-select">
-            <option value="false">Deactivate</option>
-            <option value="true">Activate</option>
-        </select>
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Save snapshots on motion</label>
+            <select id="saveSnaphot" class="w3-select">
+                <option value="false">Deactivate</option>
+                <option value="true">Activate</option>
+            </select>
+        </div>
+        <div class="w3-half">
+            <label>Maximun snapshots retention (in days)</label>
+            <input class="w3-input" id="maxSnaphotDays" type="number" size="6">
+        </div>
     </div>
-    <div class="w3-container">
-        <label>Maximun snapshots retention (in days)</label>
-        <input class="w3-input" id="maxSnaphotDays" type="number" size="6">
-    </div>
-    <div class="w3-container">
-        <label>Save videos on motion</label>
-        <select id="saveVideo" class="w3-select" >
-            <option value="false">Deactivate</option>
-            <option value="true">Activate</option>
-        </select>
-    </div>
-    <div class="w3-container">
-        <label>Maximun video retention (in days)</label>
-        <input class="w3-input" id="maxVideoDays" type="number" size="6">
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Save videos on motion</label>
+            <select id="saveVideo" class="w3-select" >
+                <option value="false">Deactivate</option>
+                <option value="true">Activate</option>
+            </select>
+        </div>
+        <div class="w3-half">
+            <label>Maximun video retention (in days)</label>
+            <input class="w3-input" id="maxVideoDays" type="number" size="6">
+        </div>
     </div>
     <p></p>
   </div>
@@ -100,83 +105,110 @@
   <div class="panel">
     <p></p>
     <div class="w3-container">
-        <label>Save snapshots on motion</label>
-        <select id="smbSnapshot" class="w3-select">
-            <option value="false">Deactivate</option>
-            <option value="true">Activate</option>
-        </select>
-    </div>
-    <div class="w3-container">
-        <label>Save videos on motion</label>
-        <select id="smbVideo" class="w3-select" >
-            <option value="false">Deactivate</option>
-            <option value="true">Activate</option>
-        </select>
-    </div>
-    <div class="w3-container">
         <label>Samba share path</label>
         <input class="w3-input" id="smbShare" type="text">
     </div>
-    <div class="w3-container">
-        <label>Samba username</label>
-        <input class="w3-input" id="smbUsername" type="text">
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Samba username</label>
+            <input class="w3-input" id="smbUsername" type="text">
+        </div>
+        <div class="w3-half">
+            <label>Samba password</label>
+            <input class="w3-input" id="smbPassword" type="password">
+        </div>
     </div>
-    <div class="w3-container">
-        <label>Samba password</label>
-        <input class="w3-input" id="smbPassword" type="password">
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Save snapshots on motion</label>
+            <select id="smbSnapshot" class="w3-select">
+                <option value="false">Deactivate</option>
+                <option value="true">Activate</option>
+            </select>
+        </div>
+        <div class="w3-half">
+            <label>Samba snapshots remote directory</label>
+            <input class="w3-input" id="smbStillsDir" type="text">
+        </div>
     </div>
-    <div class="w3-container">
-        <label>Samba snapshots remote directory</label>
-        <input class="w3-input" id="smbStillsDir" type="text">
-    </div>
-    <div class="w3-container">
-        <label>Samba videos remote directory</label>
-        <input class="w3-input" id="smbVideosDir" type="text">
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Save videos on motion</label>
+            <select id="smbVideo" class="w3-select" >
+                <option value="false">Deactivate</option>
+                <option value="true">Activate</option>
+            </select>
+        </div>
+        <div class="w3-half">
+            <label>Samba videos remote directory</label>
+            <input class="w3-input" id="smbVideosDir" type="text">
+        </div>
     </div>
     <p></p>
   </div>
     <!-- FTP storage accordio-->
     <button class="accordion" type='button'>FTP storage</button>
     <div class="panel">
-      <p></p>
-      <div class="w3-container">
-        <label>Save snapshots on motion</label>
-        <select id="ftpSnapshot" class="w3-select">
-            <option value="false">Deactivate</option>
-            <option value="true">Activate</option>
-        </select>
-    </div>
-    <div class="w3-container">
-        <label>Save videos on motion</label>
-        <select id="ftpVideo" class="w3-select" >
-            <option value="false">Deactivate</option>
-            <option value="true">Activate</option>
-        </select>
-    </div>
-    <div class="w3-container">
-        <label>FTP Hostname</label>
-        <input class="w3-input" id="ftpHost">
-    </div>
-    <div class="w3-container">
-        <label>FTP Port</label>
-        <input class="w3-input" id="ftpPort" >
-    </div>
-    <div class="w3-container">
-        <label>FTP username</label>
-        <input class="w3-input" id="ftpUsername">
-    </div>
-    <div class="w3-container">
-        <label>FTP password</label>
-        <input class="w3-input" id="ftpPassword"  type="password">
-    </div>
-    <div class="w3-container">
-        <label>FTP snapshots remote directory</label>
-        <input class="w3-input" id="ftpStillsDir" type="text">
-    </div>
-    <div class="w3-container">
-        <label>FTP videos remote directory</label>
-        <input class="w3-input" id="ftpVideosDir" type="text">
-    </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>FTP Hostname</label>
+                <input class="w3-input" id="ftpHost">
+            </div>
+            <div class="w3-half">
+                <label>FTP Port</label>
+                <input class="w3-input" id="ftpPort" >
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>FTP username</label>
+                <input class="w3-input" id="ftpUsername">
+            </div>
+            <div class="w3-half">
+                <label>FTP password</label>
+                <input class="w3-input" id="ftpPassword"  type="password">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+            </div>
+            <div class="w3-half">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Save snapshots on motion</label>
+                <select id="ftpSnapshot" class="w3-select">
+                    <option value="false">Deactivate</option>
+                    <option value="true">Activate</option>
+                </select>
+            </div>
+            <div class="w3-half">
+                <label>FTP snapshots remote directory</label>
+                <input class="w3-input" id="ftpStillsDir" type="text">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Save videos on motion</label>
+                <select id="ftpVideo" class="w3-select" >
+                    <option value="false">Deactivate</option>
+                    <option value="true">Activate</option>
+                </select>
+            </div>
+            <div class="w3-half">
+                <label>FTP videos remote directory</label>
+                <input class="w3-input" id="ftpVideosDir" type="text">
+            </div>
+        </div>
       <p></p>
     </div>
     <p><button class="w3-btn w3-theme" >Save</button></form></p>
