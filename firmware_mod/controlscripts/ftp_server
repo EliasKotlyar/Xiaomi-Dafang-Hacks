@@ -1,6 +1,6 @@
 #!/bin/sh
 
-PIDFILE="/var/run/bftpd.pid"
+PIDFILE="/var/run/ftp_server.pid"
 
 status()
 {

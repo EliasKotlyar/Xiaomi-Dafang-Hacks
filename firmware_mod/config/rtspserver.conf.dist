@@ -6,6 +6,7 @@
 # Configure RTSP Servers
 # Use /system/sdcard/bin/v4l2rtspserver-master -h to see available options
 
+CODEC="H264"
 LOG=false
 LOGDIR="/tmp"
 LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
@@ -27,19 +28,12 @@ SUB_DIR="$(date +%Y-%m-%d)/$(date +%H)"
 #Set the filename format to use
 FILE_NAME="REC_$(date +%H-%M-%S.h264)"
 
-# H264 RTSP server options
+# RTSP server options
 # Examples:
-# RTSPH264OPTS="-W960 -H540"
+# RTSPOPTS="-W960 -H540"
 # To enable authentication:
-# RTSPH264OPTS="-U user:password"
-RTSPH264OPTS=""
-
-# MJPEG RTSP server options
-# Examples:
-# RTSPMJPEGOPTS="-W960 -H540"
-# To enable authentication:
-# RTSPMJPEGOPTS="-U user:password"
-RTSPMJPEGOPTS=""
+# RTSPOPTS="-U user:password"
+RTSPOPTS=""
 
 # Enable multicast stream
 # Example:

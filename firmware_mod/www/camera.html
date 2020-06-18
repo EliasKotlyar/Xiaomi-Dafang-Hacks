@@ -23,31 +23,53 @@
   <form class="w3-container" onsubmit="saveConfig('video');return false" id="video">
   <p></p>
   <!-- Setting accordion-->
-  <button class="accordion" type='button'>Resolution</button>
+  <button class="accordion" type='button'>Format</button>
   <div class="panel">
     <p></p>
-    <label>Video size:</label>
-    <select id="videoSize" class="w3-select" name="option">
-      <option value="-W640 -H360">640x360</option>
-      <option value="-W768 -H432">768x432</option>
-      <option value="-W960 -H540">960x540</option>
-      <option value="-W1280 -H720">1280x720</option>
-      <option value="-W1600 -H900">1600x900</option>
-      <option value="-W1920 -H1080">1920x1080</option>
-    </select>
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <label>Codec for RTSP server</label>
+        <select id="codec" class="w3-select" name="option">
+          <option value="H264">H264</option>
+          <option value="MJPG">MPJEG</option>
+        </select>
+      </div>
+      <div class="w3-third">
+        <label>Video size:</label>
+       <select id="videoSize" class="w3-select" name="option">
+        <option value="-W640 -H360">640x360</option>
+        <option value="-W768 -H432">768x432</option>
+        <option value="-W960 -H540">960x540</option>
+        <option value="-W1280 -H720">1280x720</option>
+        <option value="-W1600 -H900">1600x900</option>
+        <option value="-W1920 -H1080">1920x1080</option>
+      </select>
+      </div>
+      <div class="w3-third">
+        <label>Bitrate (kbps):</label>
+        <input id="bitRate" class="w3-input" type="text">
+      </div>
+    </div>
     <p></p>
-    <label>Bitrate (kbps):</label>
-    <input id="bitRate" class="w3-input" type="text">
-    <p></p>
-    <label>Format:</label>
-    <select id="format" class="w3-select" name="option">
-      <option value="0">FixedQp</option>
-      <option value="1">CBR</option>
-      <option value="2">VBR</option>
-      <option value="3">SMART</option>
-    </select>
-    <p></p>
-    <label>Frame rate (images per secondes):</label>
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <label>Format:</label>
+        <select id="format" class="w3-select" name="option">
+          <option value="0">FixedQp</option>
+          <option value="1">CBR</option>
+          <option value="2">VBR</option>
+          <option value="3">SMART</option>
+        </select>
+      </div>
+      <div class="w3-third">
+        <label>Flip Image:</label>
+        <select id="flip" class="w3-select" name="option">
+          <option value="OFF">Off</option>
+          <option value="ON">On</option>
+        </select>
+      </div>
+      <div class="w3-third">
+        <label>Frame rate (images per secondes):</label>
     <div class="w3-row-padding">
       <div class="w3-half">
         <label>Images:</label>
@@ -58,20 +80,35 @@
         <input id="frmRateDen" class="w3-input" type="text">
       </div>
     </div>
-    <p></p>
+      </div>
+    </div>
+        <p></p>
   </div>
   <!-- Network / Security accordion -->
   <button class="accordion" type='button'>Network / Security</button>
   <div class="panel">
     <p></p>
-    <label>Username:</label>
-    <input id="videoUser" class="w3-input" type="text">
-    <br />
-    <label>Password:</label>
-    <input id="videoPassword" class="w3-input" type="password">
-    <br />
-    <label>Port (default 8554):</label>
-    <input id="videoPort" class="w3-input" type="number">
+    <div class="w3-row-padding">
+      <div class="w3-half">
+        <label>Username:</label>
+        <input id="videoUser" class="w3-input" type="text">
+      </div>
+      <div class="w3-half">
+        <label>Password:</label>
+        <input id="videoPassword" class="w3-input" type="password">
+      </div>
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+      <div class="w3-half">
+        <label>Port (default 8554):</label>
+        <input id="videoPort" class="w3-input" type="number">
+      </div>
+      <div class="w3-half">
+        <label>Multicast address (leave blank to disable multicast):</label>
+        <input id="multicast" class="w3-input" type="text">
+      </div>
+    </div>
     <p></p>
   </div>
   <!-- Auto Night accordion -->
