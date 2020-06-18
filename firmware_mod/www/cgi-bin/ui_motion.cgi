@@ -116,7 +116,7 @@ if [ -n "$F_cmd" ]; then
 		  echo "Save video to samba share set to $F_smbVideo<br/>"
 	  fi
         if [ -n "${F_smbShare+x}" ]; then
-		F_smbShare=$(printf '%b' "${F_smbShare//%/\\x}")
+		F_smbShare=$(printf '%b' "${F_smbShare//%/\\x}" | sed 's/\//\\\//g')
 	    rewrite_config /system/sdcard/config/motion.conf smb_share "\"$F_smbShare\""
 		  echo "Samba share set to $F_smbShare<br/>"
 	  fi
@@ -126,17 +126,17 @@ if [ -n "$F_cmd" ]; then
 		  echo "Samba username set to $F_smbUsername<br/>"
 	  fi
         if [ -n "${F_smbPassword+x}" ]; then
-		F_smbPassword=$(printf '%b' "${F_smbPassword//%/\\x}")
+		F_smbPassword=$(printf '%b' "${F_smbPassword//%/\\x}"  | sed 's/\//\\\//g')
 	    rewrite_config /system/sdcard/config/motion.conf smb_password "\"$F_smbPassword\""
 		  echo "Samba passward set<br/>"
 	  fi
         if [ -n "${F_smbStillsDir+x}" ]; then
-		F_smbStillsDir=$(printf '%b' "${F_smbStillsDir//%/\\x}")
+		F_smbStillsDir=$(printf '%b' "${F_smbStillsDir//%/\\x}" | sed 's/\//\\\//g')
 	    rewrite_config /system/sdcard/config/motion.conf smb_stills_path "\"$F_smbStillsDir\""
 		  echo "Samba snapshot destination directory set to $F_smbStillsDir<br/>"
 	  fi
     if [ -n "${F_smbVideosDir+x}" ]; then
-		F_smbVideosDir=$(printf '%b' "${F_smbVideosDir//%/\\x}")
+		F_smbVideosDir=$(printf '%b' "${F_smbVideosDir//%/\\x}" | sed 's/\//\\\//g')
 	    rewrite_config /system/sdcard/config/motion.conf smb_videos_path "\"$F_smbVideosDir\""
 		  echo "Samba video destination directory set to $F_smbVideosDir<br/>"
 	  fi
@@ -166,19 +166,19 @@ if [ -n "$F_cmd" ]; then
 		  echo "FTP username set to $F_ftpUsername<br/>"
 	  fi
     if [ -n "${F_ftpPassword+x}" ]; then
-		  F_ftpPassword=$(printf '%b' "${F_ftpPassword//%/\\x}")
+		  F_ftpPassword=$(printf '%b' "${F_ftpPassword//%/\\x}" | sed 's/\//\\\//g')
 	      rewrite_config /system/sdcard/config/motion.conf ftp_password "\"$F_ftpPassword\""
 		  echo "FTP password set<br/>"
 	  fi
     if [ -n "${F_ftpStillsDir+x}" ]; then
-		F_ftpStillsDir=$(printf '%b' "${F_ftpStillsDir//%/\\x}")
+		F_ftpStillsDir=$(printf '%b' "${F_ftpStillsDir//%/\\x}"  | sed 's/\//\\\//g')
 	    rewrite_config /system/sdcard/config/motion.conf ftp_stills_dir "\"$F_ftpStillsDir\""
 		  echo "FTP snapshots directory set to $F_ftpStillsDir<br/>"
 	  fi
     if [ -n "${F_ftpVideosDir+x}" ]; then
-		F_ftpVideosDir=$(printf '%b' "${F_ftpVideosDir//%/\\x}")
+		F_ftpVideosDir=$(printf '%b' "${F_ftpVideosDir//%/\\x}"  | sed 's/\//\\\//g')
 	    rewrite_config /system/sdcard/config/motion.conf ftp_videos_dir "\"$F_ftpVideosDir\""
-		  echo "FTP videos directory set to $F_ftpVideosDir<br/>"
+		echo "FTP videos directory set to $F_ftpVideosDir<br/>"
 	  fi
     if [ -n "${F_motionTriggerLed+x}" ]; then
 		F_motionTriggerLed=$(printf '%b' "${F_motionTriggerLed//%/\\x}")
