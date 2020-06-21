@@ -47,7 +47,7 @@ fi
           --cert-file ${ACMEPATH}/host.crt \
           --key-file  ${ACMEPATH}/host.key \
           --fullchain-file ${ACMEPATH}/fullchain.crt \
-          --reloadcmd  "cat ${ACMEPATH}/host.crt ${ACMEPATH}/host.key > ${CONFIGPATH}/lighttpd.pem ;\
+          --reloadcmd  "cat ${ACMEPATH}/fullchain.crt ${ACMEPATH}/host.key > ${CONFIGPATH}/lighttpd.pem ;\
                         pkill lighttpd.bin ;\
                         /system/sdcard/bin/lighttpd -f ${CONFIGPATH}/lighttpd.conf"
 
