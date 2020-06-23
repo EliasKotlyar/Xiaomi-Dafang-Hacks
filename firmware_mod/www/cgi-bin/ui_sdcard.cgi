@@ -10,6 +10,13 @@ echo ""
 
 if [ -n "$F_cmd" ]; then
   case "$F_cmd" in
+  events)
+    echo "["
+    find /system/sdcard/DCIM/${F_dir}/ -type f | xargs ls --full-time \
+      | awk '{sub(/\/system\/sdcard\/DCIM/, "viewer"); printf "{\"file\" : \"%s\", \"date\" : \"%s %s\"},", $9, $6, $7}' \
+      | head -c -1
+    echo "]"    
+    ;;
   check_sdcard)
 	  mount|grep "/system/sdcard"|grep "rw,">/dev/null
 	  if [ $? == 1 ]; then
@@ -27,8 +34,8 @@ if [ -n "$F_cmd" ]; then
           file_url=$(ls -lh $file | awk '{print $9}' | sed 's/\/system\/sdcard\/DCIM/\/viewer/')
           file_date=$(ls -lh $file | awk '{print $6 "-" $7 "-" $8}')                            
           file_name=$(ls -lh $file | awk '{print $9}' | awk -F / '{print $(NF)}')                                                                                                      
-          echo "${file_name}#:#${file_size}#:#${file_date}#:#${file_url}"                                                                                    
-        fi                                        
+          echo "${file_name}#:#${file_size}#:#${file_date}#:#${file_url}"
+	fi                                        
       done             
     return
     ;;

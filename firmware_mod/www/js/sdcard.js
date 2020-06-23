@@ -72,6 +72,34 @@ function getFiles(dir) {
     });
 
 }
+
+function showEvents() {
+
+    $.getJSON("cgi-bin/ui_sdcard.cgi", {cmd: "events"}, function(data){             
+        
+        var events = data.filter(item => item.file.endsWith("jpg") ).map(item => {
+            return { date: new Date(item.date),
+                    detail: { 
+                        file : item.file
+                    }}; 
+        });
+       var chart = eventDrops({
+        range: {
+            start: events.reduce((a, b) => a.date < b.date ? a : b).date,
+            end: events.reduce((a, b) => a.date > b.date ? a : b).date
+          },
+          drop: {
+              date: d => d.date,
+              onClick : data => {
+                openPicture(data.detail.file);
+              }
+          }
+        });
+        d3.select('#events-graph').html("").datum([{ name: "Events", data : events}]).call(chart);
+    });
+
+}
+
 //Function loaded when script load
 function onLoad() {
     //Activate accordion
