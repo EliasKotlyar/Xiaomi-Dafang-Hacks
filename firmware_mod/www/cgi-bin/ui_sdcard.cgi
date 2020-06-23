@@ -35,7 +35,7 @@ if [ -n "$F_cmd" ]; then
           file_date=$(ls -lh $file | awk '{print $6 "-" $7 "-" $8}')                            
           file_name=$(ls -lh $file | awk '{print $9}' | awk -F / '{print $(NF)}')                                                                                                      
           echo "${file_name}#:#${file_size}#:#${file_date}#:#${file_url}"
-	fi                                        
+        fi                                        
       done             
     return
     ;;
