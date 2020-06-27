@@ -423,8 +423,13 @@ done
 	;;
 
 	"${TOPIC}/update/set update")
+	  if [ -f "/system/sdcard/VERSION" ]; then
+	  	branch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
+	  else
+	    branch="master"
+	  fi
 	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/update ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -m "Upgrade started"
-	  result=$(/bin/sh /system/sdcard/autoupdate.sh -s -v -f)
+	  result=$(/bin/sh /system/sdcard/autoupdate.sh -s -v -f -r $branch)
 	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/update ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -m "Upgrade finish: ${result}"	  
 	;;
 
