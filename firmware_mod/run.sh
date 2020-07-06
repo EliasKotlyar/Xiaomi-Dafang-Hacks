@@ -267,11 +267,7 @@ for i in /system/sdcard/config/autostart/*; do
 done
 
 ## Autostart startup userscripts
-for i in /system/sdcard/config/userscripts/startup/*; do
-  if [[ ${i: -3} == ".sh" ]]; then
-    $i &
-  fi
-done
+/bin/find /system/sdcard/config/userscripts/startup/ -executable -name "*.sh" -exec {} \;
 
 echo "Startup finished!" >> $LOGPATH
 echo "" >> $LOGPATH
