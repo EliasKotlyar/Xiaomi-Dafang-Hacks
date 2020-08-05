@@ -8,8 +8,8 @@ function zones() {
 		var zone = new Object();
 		zone.x = zones_d[i] / ratio;
 		zone.y = zones_d[i+1] / ratio;
-		zone.width = zones_d[i+2] / ratio;
-		zone.height = zones_d[i+3] / ratio;
+		zone.width = (zones_d[i+2] - zones_d[i]) / ratio;
+		zone.height = (zones_d[i+3] - zones_d[i+1]) / ratio;
 		zones_r.push(zone);
 	}
 	$('img#motion_picture').selectAreas({
@@ -35,7 +35,9 @@ function saveConfig(elements) {
 			if ( i != 0 )
 				regions += ',';
 			i++;
-			regions += area.x + ',' + area.y  + ',' + area.width + ',' + area.height;
+			var area_x2 = area.x + area.width;
+			var area_y2 = area.y + area.height;
+			regions += area.x + ',' + area.y  + ',' + area_x2 + ',' + area_y2;
 
 		});
 		postData['regions'] = regions;
