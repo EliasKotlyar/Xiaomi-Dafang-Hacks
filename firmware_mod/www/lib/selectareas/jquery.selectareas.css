@@ -12,7 +12,7 @@
 }
 
 .select-areas-outline {
-	background: #fff url('../img/outline.gif');
+	background: #fff url('../../img/outline.gif');
 	overflow: hidden;
 }
 
@@ -25,7 +25,7 @@
 }
 
 .select-areas-delete-area {
-	background: url('../img/bt-delete.png');
+	background: url('../../img/bt-delete.png');
 	cursor: pointer;
 	height: 16px;
 	width: 16px;
