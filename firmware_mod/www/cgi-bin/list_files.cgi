@@ -4,7 +4,7 @@ echo "Content-type: text/html"
 echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
 echo
-if [ "$F_dir" == "recording" ] || [ "$F_dir" == "timelapse" ]; then
+if [ "$F_dir" == "recording" ] || [ "$F_dir" == "timelapse" ] || [ "$F_dir" == "motion" ]; then
 echo "<h1 class='is-size-4' >${F_dir} files on SD card</h1>"
 cat << EOF
       <table id="files">
