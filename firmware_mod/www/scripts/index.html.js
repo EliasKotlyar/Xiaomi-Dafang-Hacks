@@ -172,7 +172,7 @@ $(document).ready(function () {
 
 // set theme cookie
 function setCookie(name, value) {
-    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + "; path=/";
+    document.cookie = encodeURIComponent(name) + "=" + encodeURIComponent(value) + "; path=/; expires=Tue, 19 Jan 2038 03:14:07 GMT";
 }
 // get theme cookie
 function getCookie(name) {
