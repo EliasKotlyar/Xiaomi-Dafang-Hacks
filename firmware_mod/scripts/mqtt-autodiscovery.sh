@@ -3,8 +3,16 @@
   . /system/sdcard/config/mqtt.conf
   . /system/sdcard/scripts/common_functions.sh
 
-  MAC=$(cat /sys/class/net/wlan0/address)
-  MAC_SIMPLE=$(cat /sys/class/net/wlan0/address | tr -d :)
+  if [ -f /sys/class/net/wlan0/address ]; then
+   MAC=$(cat /sys/class/net/wlan0/address)
+   MAC_SIMPLE=$(cat /sys/class/net/wlan0/address | tr -d :)
+  elif [ -f /sys/class/net/eth0/address ]; then
+   MAC=$(cat /sys/class/net/eth0/address)
+   MAC_SIMPLE=$(cat /sys/class/net/eth0/address | tr -d :)
+  else
+   MAC="Unknown"
+   MAC_SIMPLE="Unknown"
+  fi
   MANUFACTURER="Xiaomi"
   MODEL="Dafang"
   JQ="/system/sdcard/bin/jq -r"
