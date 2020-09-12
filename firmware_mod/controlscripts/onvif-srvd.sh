@@ -4,8 +4,8 @@ export LD_LIBRARY_PATH='/system/sdcard/lib:/thirdlib:/system/lib'
 DAEMON=onvif_srvd
 DAEMON_PATH=/system/sdcard/bin
 PID_FILE="/var/run/$DAEMON.pid"
-
-DAEMON_ARGS="--pid_file $PID_FILE --ifs wlan0"
+INTF=$(ifconfig | sed 's/[ \t].*//;/^\(lo\|\)$/d')
+DAEMON_ARGS="--pid_file $PID_FILE --ifs $INTF"
 
 start()
 {
