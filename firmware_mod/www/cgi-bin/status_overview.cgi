@@ -2,6 +2,8 @@
 
 source /system/sdcard/scripts/common_functions.sh
 
+INTF=$(get_current_intf)
+
 echo "Content-type: text/html"
 echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
@@ -87,30 +89,30 @@ cat << EOF
 
 <!-- Network -->
 <div class='card status_card'>
-    <header class='card-header'><p class='card-header-title'>Network (WLAN0)</p></header>
+    <header class='card-header'><p class='card-header-title'>Network ($(echo $INTF))</p></header>
     <div class='card-content'>
         <div class='content'>
             <table>
               <tbody>
                 <tr>
                   <td> SSID </td>
-                  <td> $(/system/bin/iwgetid -r) </td>
+                  <td> $(if [[ ${INTF:0:4} == wlan ]]; then /system/bin/iwgetid -r; else echo '-'; fi) </td>
                 </tr>
                 <tr>
                   <td> Link Quality </td>
-                  <td> $(cat /proc/net/wireless | awk 'END { print $3 }' | sed 's/\.$//') </td>
+                  <td> $(if [[ ${INTF:0:4} == wlan ]]; then cat /proc/net/wireless | awk 'END { print $3 }' | sed 's/\.$//'; else echo '-'; fi) </td>
                 </tr>
                 <tr>
                   <td> IP Address </td>
-                  <td> $(ifconfig | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d:) </td>
+                  <td> $(ifconfig $INTF | grep -E "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 127.0.0.1 | awk '{ print $2 }' | cut -f2 -d:) </td>
                 </tr>
                 <tr>
                   <td> MAC Address </td>
-                  <td> $(cat /sys/class/net/wlan0/address) </td>
+                  <td> $(ifconfig $INTF | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}') </td>
                 </tr>
                 <tr>
                   <td> Netmask </td>
-                  <td> $(ifconfig wlan0 | sed -rn '2s/ .*:(.*)$/\1/p') </td>
+                  <td> $(ifconfig $INTF | sed -rn '2s/ .*:(.*)$/\1/p') </td>
                 </tr>
                 <tr>
                   <td> Gateway </td>

@@ -13,6 +13,12 @@ MIN_X=0
 MIN_Y=0
 STEP=100
 
+# Try to fetch the currently-active network interface
+get_current_intf(){
+  INTF=$(ifconfig | sed 's/[ \t].*//;/^\(lo\|\)$/d')
+  echo $INTF
+}
+
 # Try to detect hardware model
 detect_model(){
   if [ -f /driver/8189es.ko ]; then
@@ -26,6 +32,7 @@ detect_model(){
     echo "Wyzecam V2"
   fi
 }
+
 # Initialize  gpio pin
 init_gpio(){
   GPIOPIN=$1

@@ -6,6 +6,7 @@
 ################################################
 
 source ./func.cgi
+source /system/sdcard/scripts/common_functions.sh
 
 # START VARIABLES
 PATH="/system/bin:/bin:/usr/bin:/sbin:/usr/sbin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
@@ -13,6 +14,7 @@ CONFIGPATH=/system/sdcard/config
 BINPATH=/system/sdcard/bin
 SDPATH=/system/sdcard
 VERSION="v0.0.5 Beta"
+INTF=$(get_current_intf)
 # END VARIABLES
 
 # START FUNCTIONS
@@ -123,16 +125,16 @@ if [ -n "$F_action" ]; then
       \"time\": \"$(date +'%T')\"
     },
     \"network\": {
-      \"mac\": \"$(cat /params/config/.product_config | grep MAC | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')\",
+      \"mac\": \"$(ifconfig $INTF | grep -o -E '([[:xdigit:]]{1,2}:){5}[[:xdigit:]]{1,2}')\",
       \"router\": {
         \"name\": \"$(iwgetid -r)\",
         \"mac\": \"$(iwgetid -r -a)\",
-        \"ip\": \"$(ifconfig wlan0 | grep 'inet addr'| cut -d: -f2 | cut -d' ' -f1)\",
-        \"channel\": $(iwgetid -r -c),
+        \"ip\": \"$(ifconfig $INTF | grep 'inet addr'| cut -d: -f2 | cut -d' ' -f1)\",
+        \"channel\": $(if [[ ${INTF:0:4} == wlan ]]; then iwgetid -r -c; else echo 0; fi),
         \"freq\": \"$(iwgetid -r -f | cut -de -f1)\",
-        \"rx\": $(ifconfig wlan0 | grep 'RX bytes' | cut -d: -f2 | cut -d' ' -f1),
-        \"tx\": $(ifconfig wlan0 | grep 'TX bytes' | cut -d: -f3 | cut -d' ' -f1),
-        \"signal\": $(cat /proc/net/wireless | tr -s ' ' $'\t' | grep wlan0: | cut -f4 | cut -d. -f1)
+        \"rx\": $(ifconfig $INTF | grep 'RX bytes' | cut -d: -f2 | cut -d' ' -f1),
+        \"tx\": $(ifconfig $INTF | grep 'TX bytes' | cut -d: -f3 | cut -d' ' -f1),
+        \"signal\": $(if [[ ${INTF:0:4} == wlan ]]; then cat /proc/net/wireless | tr -s ' ' $'\t' | grep $INTF: | cut -f4 | cut -d. -f1; else echo 0; fi)
       }
     },
     \"disk_space\": {
