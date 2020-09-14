@@ -1,5 +1,11 @@
 #!/bin/sh
 
+source /system/sdcard/scripts/common_functions.sh
+
+PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
+INTF=$(get_current_intf)
+IP=$(ifconfig $INTF |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
+
 echo "Content-type: text/html"
 echo "Pragma: no-cache"
 echo "Cache-Control: max-age=0, no-store, no-cache"
@@ -283,9 +289,7 @@ cat << EOF
         <button class="button is-warning" onClick="call('cgi-bin/action.cgi?cmd=rtsp_stop')">Stop</button>
 EOF
 
-PATH="/bin:/sbin:/usr/bin:/media/mmcblk0p2/data/bin:/media/mmcblk0p2/data/sbin:/media/mmcblk0p2/data/usr/bin"
 
-IP=$(ifconfig wlan0 |grep "inet addr" |awk '{print $2}' |awk -F: '{print $2}')
 echo "<p>Path to feed: <a href='rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast'>rtsp://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast</a></p>"
 echo "<p>HLS: <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.m3u8'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)/unicast.m3u8</a></p>"
 echo "<p>hls.js web player: <a href='http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)'>http://$IP:$(source /system/sdcard/config/rtspserver.conf; echo $PORT)</a></p>"
