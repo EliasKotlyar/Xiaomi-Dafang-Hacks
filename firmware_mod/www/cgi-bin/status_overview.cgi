@@ -23,7 +23,7 @@ cat << EOF
     <div class="message-body">
       Your sdcard is mounted read-only. Settings can't be saved.
       <br>
-      <p>Please try rebooting. If the problem persists, please <a target="_blank" href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/search?q=read+only+sdcard&type=Issues">search
+      <p>Please try rebooting. If the problem persists, please <a target="_blank" href="https://github.com/stoickish/Xiaomi-Dafang-Hacks/search?q=read+only+sdcard&type=Issues">search
       for possible solutions.</a></p>
     </div>
   </article>

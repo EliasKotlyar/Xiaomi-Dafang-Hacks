@@ -63,7 +63,7 @@
                 }
             } 
             else if (update_status == -1) {
-                $('#updatemsg').html("No version file found. <br /> You can update the running firmware on this camera by the latest available from its <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
+                $('#updatemsg').html("No version file found. <br /> You can update the running firmware on this camera by the latest available from its <a target='_blank' href='https://github.com/stoickish/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
                 $('#btn_update_master').removeAttr('style');
                 $('#btn_update_beta').removeAttr('style');
             }

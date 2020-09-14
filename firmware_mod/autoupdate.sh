@@ -6,7 +6,7 @@
 # Depends on curl, jq (json parser), openssl (SHA calculation)
 
 # owner name and repo name
-REPO="EliasKotlyar/Xiaomi-Dafang-Hacks"
+REPO="stoickish/Xiaomi-Dafang-Hacks"
 # Branch to use
 BRANCH="master"
 # Initial remote folder
