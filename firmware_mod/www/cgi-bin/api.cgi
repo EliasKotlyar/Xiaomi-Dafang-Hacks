@@ -153,7 +153,8 @@ if [ -n "$F_action" ]; then
     },
     \"motor\": {
       \"x\": $($MOTOR -d s | sed -n '1 p' | awk '{print $2}'),
-      \"y\": $($MOTOR -d s | sed -n '2 p' | awk '{print $2}')
+      \"y\": $($MOTOR -d s | sed -n '2 p' | awk '{print $2}'),
+      \"speed\": $($MOTOR -d s | sed -n '3 p' | awk '{print $2}')
     }
   }
 }"
