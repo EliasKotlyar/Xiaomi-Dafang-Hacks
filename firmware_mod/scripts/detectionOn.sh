@@ -265,7 +265,7 @@ fi
 for i in /system/sdcard/config/userscripts/motiondetection/*; do
     if [ -x "$i" ]; then
         debug_msg "Running: $i on $snapshot_tempfile"
-        $i on "$snapshot_tempfile" &
+        $i on "$snapshot_tempfile" "$video_tempfile" &
     fi
 done
 
