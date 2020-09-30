@@ -22,7 +22,7 @@ if [ -n "$F_cmd" ]; then
     echo "multicast#:#${MULTICASTDEST}"
 	echo "flip#:#${FLIP}"
 	echo "codec#:#${CODEC}"
-	echo "videoSize#:#${RTSPH264OPTS}"
+	echo "videoSize#:#${RTSPOPTS}"
 	echo "bitRate#:#${BITRATE}"
 	echo "format#:#${VIDEOFORMAT}"
 	echo "frmRateNum#:#${FRAMERATE_NUM}"

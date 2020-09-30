@@ -20,4 +20,4 @@ AUDIOFORMAT=PCMU
 
 AUDIOOUTBR=8000:8000
 
-RTSPH264OPTS="-W1280 -H720 -U root:your_password"
+RTSPOPTS="-W1280 -H720 -U root:your_password"
