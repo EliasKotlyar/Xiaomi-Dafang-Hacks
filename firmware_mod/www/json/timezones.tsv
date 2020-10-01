@@ -156,6 +156,7 @@ America/Port_of_Spain	AST4
 America/Port-au-Prince	EST5
 America/Porto_Velho	AMT4
 America/Puerto_Rico	AST4
+America/Punta_Arenas	CLT
 America/Rainy_River	CST6CDT,M3.2.0,M11.1.0
 America/Rankin_Inlet	CST6CDT,M3.2.0,M11.1.0
 America/Recife	BRT3
@@ -163,6 +164,7 @@ America/Regina	CST6
 America/Rio_Branco	AMT4
 America/Santa_Isabel	PST8PDT,M4.1.0,M10.5.0
 America/Santarem	BRT3
+America/Santiago	CLT4CLST,M8.2.6/24,M5.2.6/24
 America/Santo_Domingo	AST4
 America/Sao_Paulo	BRT3BRST,M10.3.0/0,M2.3.0/0
 America/Scoresbysund	EGT1EGST,M3.5.0/0,M10.5.0/1
@@ -362,6 +364,7 @@ Indian/Reunion	RET-4
 Pacific/Apia	WST11
 Pacific/Auckland	NZST-12NZDT,M9.5.0,M4.1.0/3
 Pacific/Chatham	CHAST-12:45CHADT,M9.5.0/2:45,M4.1.0/3:45
+Pacific/Easter	EAST6EASST,M8.2.6/22,M5.2.6/22
 Pacific/Efate	VUT-11
 Pacific/Enderbury	PHOT-13
 Pacific/Fakaofo	TKT10
