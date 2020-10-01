@@ -243,7 +243,7 @@ done
         
     "${TOPIC}/snapshot/image GET")
       /system/sdcard/bin/getimage > "/tmp/mqtt_snapshot"
-      /system/sdcard/bin/jpegoptim -S 25k "/tmp/mqtt_snapshot"
+      /system/sdcard/bin/jpegoptim -m 50 "/tmp/mqtt_snapshot"
       /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/snapshot/image ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -f "/tmp/mqtt_snapshot"
       rm "/tmp/mqtt_snapshot"
     ;;
