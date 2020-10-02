@@ -247,8 +247,8 @@ action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 if [ -f "$VERSION_FILE" ]; then
     LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})  
     if [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
-        logerror "You are currently on the lastest version"
-        echo "You are currently on the lastest version"
+        logerror "You are currently on the latest version"
+        echo "You are currently on the latest version"
         exit 1
     else
         echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
