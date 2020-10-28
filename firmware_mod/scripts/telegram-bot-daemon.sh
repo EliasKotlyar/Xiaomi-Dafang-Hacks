@@ -56,17 +56,17 @@ respond() {
   cmd=$1
   [ $chatId -lt 0 ] && cmd=${1%%@*}
   case $cmd in
-    /mem) sendMem;;
-    /shot) sendShot;;
-    /on) detectionOn;;
-    /off) detectionOff;;
-    /nighton) nightOn;;
-    /nightoff) nightOff;;
-    /textalerts) textAlerts;;
-    /imagealerts) imageAlerts;;
-    /videoalerts) videoAlerts;;
-    /help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a snapshot\n# /on - motion detection on\n# /off - motion detection off\n# /nighton - night mode on\n# /nightoff - night mode off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection\n# /videoalerts - Video alerts on motion detection";;
-    *) $TELEGRAM m "I can't respond to '$cmd' command"
+	/mem) sendMem;;
+	/shot) sendShot;;
+	/on) detectionOn;;
+	/off) detectionOff;;
+	/nighton) nightOn;;
+	/nightoff) nightOff;;
+	/textalerts) textAlerts;;
+	/imagealerts) imageAlerts;;
+	/videoalerts) videoAlerts;;
+	/help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a snapshot\n# /on - motion detection on\n# /off - motion detection off\n# /nighton - night mode on\n# /nightoff - night mode off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection\n# /videoalerts - Video alerts on motion detection";;
+	*) $TELEGRAM m "I can't respond to '$cmd' command"
   esac
 }
 
@@ -86,9 +86,9 @@ main() {
 
   [ -z "$json" ] && return 0
   if [ "$(echo "$json" | $JQ -r '.ok')" != "true" ]; then
-    echo "$(date '+%F %T') Bot error: $json" >> /tmp/telegram.log
-    [ "$(echo "$json" | $JQ -r '.error_code')" == "401" ] && return 1
-    return 0
+	echo "$(date '+%F %T') Bot error: $json" >> /tmp/telegram.log
+	[ "$(echo "$json" | $JQ -r '.error_code')" == "401" ] && return 1
+	return 0
   fi;
 
   messageAttr="message"
@@ -107,11 +107,11 @@ main() {
   cmd=$(echo "$json" | $JQ -r ".result[0].$messageAttr.text // \"\"")
 
   if [ "$chatId" != "$userChatId" ]; then
-    username=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.username // \"\"")
-    firstName=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.first_name // \"\"")
-    $TELEGRAM m "Received message from unauthorized chat id: $chatId\nUser: $username($firstName)\nMessage: $cmd"
+	username=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.username // \"\"")
+	firstName=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.first_name // \"\"")
+	$TELEGRAM m "Received message from unauthorized chat id: $chatId\nUser: $username($firstName)\nMessage: $cmd"
   else
-    respond $cmd
+	respond $cmd
   fi;
 
   markAsRead $updateId

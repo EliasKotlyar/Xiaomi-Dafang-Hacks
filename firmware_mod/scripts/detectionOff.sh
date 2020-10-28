@@ -17,8 +17,8 @@ fi
 
 # Run any user scripts.
 for i in /system/sdcard/config/userscripts/motiondetection/*; do
-    if [ -x $i ]; then
-        echo "Running: $i off"
-        $i off
-    fi
+	if [ -x $i ]; then
+		echo "Running: $i off"
+		$i off
+	fi
 done

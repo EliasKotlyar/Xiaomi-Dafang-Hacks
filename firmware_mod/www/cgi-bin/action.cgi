@@ -389,8 +389,7 @@ auto_night_mode_status)
 	frmRateDen=$(printf '%b' "${F_frmRateDen/%/\\x}")
 	frmRateNum=$(printf '%b' "${F_frmRateNum/%/\\x}")
 
-	rewrite_config /system/sdcard/config/rtspserver.conf RTSPH264OPTS "\"$video_size\""
-	rewrite_config /system/sdcard/config/rtspserver.conf RTSPMJPEGOPTS "\"$video_size\""
+	rewrite_config /system/sdcard/config/rtspserver.conf RTSPOPTS "\"$video_size\""
 	rewrite_config /system/sdcard/config/rtspserver.conf BITRATE "$brbitrate"
 	rewrite_config /system/sdcard/config/rtspserver.conf VIDEOFORMAT "$video_format"
 	rewrite_config /system/sdcard/config/rtspserver.conf USERNAME "$videouser"

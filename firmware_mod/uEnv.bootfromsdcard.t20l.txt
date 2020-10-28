@@ -1,0 +1,14 @@
+baudrate=115200
+bootargs=console=ttyS1,115200n8 mem=39M@0x0    ispmem=5M@0x2700000 rmem=20M@0x2C00000    init=/linuxrc rootfstype=squashfs root=/dev/mtdblock2 rw mtdparts=jz_sfc:256k(boot),2048k(kernel),3392k(root),640k(driver),4736k(appfs),2048k(backupk),640k(backupd),2048k(backupa),256k(config),256k(para),-(flag)
+bootcmd=fatload mmc 0:1 0x80600000 kernel.bin;bootm 0x80600000
+bootdelay=1
+ethact=Jz4775-9161
+ethaddr=00:11:22:33:44:55
+gatewayip=193.169.4.1
+ipaddr=193.169.4.81
+loads_echo=1
+netmask=255.255.255.0
+serverip=193.169.4.2
+stderr=serial
+stdin=serial
+stdout=serial

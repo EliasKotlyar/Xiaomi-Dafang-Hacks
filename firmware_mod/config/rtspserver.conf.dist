@@ -1,11 +1,12 @@
 #######################################################################
 # Edit this file and move it to /system/sdcard/config/rtspserver.conf #
-# if you need to add options, otherwise defaults will be used         #
+# if you need to add options, otherwise defaults will be used	      #
 #######################################################################
 
 # Configure RTSP Servers
 # Use /system/sdcard/bin/v4l2rtspserver-master -h to see available options
 
+CODEC="H264"
 LOG=false
 LOGDIR="/tmp"
 LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
@@ -15,19 +16,24 @@ PORT=8554
 USERNAME=
 USERPASSWORD=
 
-# H264 RTSP server options
-# Examples:
-# RTSPH264OPTS="-W960 -H540"
-# To enable authentication:
-# RTSPH264OPTS="-U user:password"
-RTSPH264OPTS=""
+#Path to save recordings to:
+#Set to main Recording directory
+DCIM_PATH="/system/sdcard/DCIM/Recording"
 
-# MJPEG RTSP server options
+#Add a subdirectory if required:
+#Add sub directory to main DCIM path seperated by date then by
+#hour for faster loading over ftp
+SUB_DIR="$(date +%Y-%m-%d)/$(date +%H)"
+
+#Set the filename format to use
+FILE_NAME="REC_$(date +%H-%M-%S.h264)"
+
+# RTSP server options
 # Examples:
-# RTSPMJPEGOPTS="-W960 -H540"
+# RTSPOPTS="-W960 -H540"
 # To enable authentication:
-# RTSPMJPEGOPTS="-U user:password"
-RTSPMJPEGOPTS=""
+# RTSPOPTS="-U user:password"
+RTSPOPTS=""
 
 # Enable multicast stream
 # Example:
