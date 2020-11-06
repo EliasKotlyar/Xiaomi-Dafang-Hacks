@@ -1,0 +1,38 @@
+ <!-- Live card -->
+  <div class="w3-panel w3-card">
+    <p id="hostname"> Hostname</p>
+    <div class="w3-display-container" onmouseover="camControl('show')" onmouseleave="camControl('hide');PTZControl('hide')">
+      <img id="liveview" src="/cgi-bin/currentpic.cgi" onerror="this.src='img/unable_load.png';" alt="Camera" style="width:100%" onmouseover="camControl('show')" onmouseout="camControl('hide')" >
+      <div id="btn-ptz-left" class="w3-display-left w3-container w3-hide">
+        <button class="w3-button w3-circle w3-black" onclick="moveCamera('left')"><i class="fa fa-angle-left"></i></button>
+      </div>
+      <div id="btn-ptz-right" class="w3-display-right w3-container w3-hide">
+        <button class="w3-button w3-circle w3-black" onclick="moveCamera('right')"><i class="fa fa-angle-right"></i></button>
+      </div>
+      <div id="btn-ptz-up" class="w3-display-topmiddle w3-container w3-hide">
+        <p></p>
+        <button class="w3-button w3-circle w3-black" onclick="moveCamera('up')"><i class="fa fa-angle-up"></i></button>
+      </div>
+      <div id="btn-ptz-down" class="w3-display-bottommiddle w3-container w3-hide">
+        <button class="w3-button w3-circle w3-black" onclick="moveCamera('down')"><i class="fa fa-angle-down"></i></button>
+        <p></p>
+      </div>
+      <div id="btn-ptz-calibrate" class="w3-display-topright w3-container w3-hide">
+        <p></p>
+        <button class="w3-button w3-circle w3-black" onclick="moveCamera('reset_pos_count')">Calibrate</button>
+        <button class="w3-button w3-circle w3-black" onclick="flip()">Flip</button>
+      </div>
+        <div id="cam-control" class="w3-display-bottomright w3-container w3-hide">
+          <button id="btn-record" class="w3-button w3-circle w3-black" onclick="record('on')" title="Record On/Off"><span><i class="fas fa-video"></i></span></button>
+          <button id="btn-ptz" class="w3-button w3-circle w3-black" onclick="PTZControl('show')" title="PTZ Control"> <i class="fa fa-arrows-alt"></i></button>
+          <button id="btn-settings" class="w3-button w3-circle w3-black" onclick="w3_open()" title="Camera settings"> <i class="fa fa-cog"></i></button>
+          <p></p>
+        </div>
+    </div>
+    <p></p>
+</div>
+
+
+
+
+<script type="text/javascript" src="js/live.js"></script>

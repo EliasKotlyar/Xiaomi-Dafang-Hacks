@@ -1,0 +1,51 @@
+  <div class="w3-panel w3-card">
+  <h1>SD Card Files</h1>
+<div class="w3-row">
+    <a href="javascript:void(0)" onclick="openTab(event, 'motion');getFiles('motion');">
+       <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Motion</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'recording');getFiles('recording');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding ">Recording</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'timelapse');getFiles('timelapse');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Timelapse</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'events');showEvents();">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Motion Events</div>
+    </a>
+  </div>
+
+  <div id="motion" class="w3-container tab" >
+    <p></p>
+    <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i><br/>LOADING</p>
+    <p></p>
+  </div>
+
+  <div id="recording" class="w3-container tab" style="display:none">
+    <p></p>
+    <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i><br/>LOADING</p>
+    <p></p>
+  </div>
+
+  <div id="timelapse" class="w3-container tab" style="display:none">
+    <p></p>
+    <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i><br/>LOADING</p>
+    <p></p>
+  </div>
+
+  <div id="events" class="w3-container tab" style="display:none">
+    <div id="events-graph" style="position: relative; width: 100%">
+      <p><i class="fa fa-spinner w3-spin" style="font-size:64px"></i><br/>LOADING</p>
+      <p></p>
+    </div>
+
+  </div>
+
+<!-- Modal for open picure-->
+<div id="modal_picture" class="w3-modal w3-animate-zoom" onclick="this.style.display='none'">
+  <span class="w3-button w3-hover-red w3-xlarge w3-display-topright">&times;</span>
+  <div id="modal_picture_content" class="w3-modal-content w3-animate-zoom"></div>
+</div>
+</div>
+
+<script type="text/javascript" src="js/sdcard.js"></script>

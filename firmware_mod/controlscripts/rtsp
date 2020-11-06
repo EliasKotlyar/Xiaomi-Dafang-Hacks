@@ -1,0 +1,116 @@
+#!/bin/sh
+PIDFILE="/run/rtsp.pid"
+LOGDIR="/tmp"
+LOGPATH="$LOGDIR/v4l2rtspserver-master.log"
+export LD_LIBRARY_PATH='/system/sdcard/lib:/thirdlib:/system/lib'
+if [ ! -f /system/sdcard/config/rtspserver.conf ]; then
+  cp /system/sdcard/config/rtspserver.conf.dist /system/sdcard/config/rtspserver.conf
+fi
+if [ -f /system/sdcard/config/rtspserver.conf ]; then
+  . /system/sdcard/config/rtspserver.conf
+fi
+
+if [ "$LOG" != true ] ; then
+  LOGPATH="/dev/null"
+fi
+
+if [ -f /system/sdcard/config/osd.conf ]; then
+  . /system/sdcard/config/osd.conf 2>/dev/null
+fi
+if [ -z "${CODEC+x}" ]; then
+    CODEC="H264"
+fi
+status()
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+	# Prints PID: $pid if exists and returns 0(no error) else returns 1(error condition)
+	kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+  fi
+}
+
+start()
+{
+  if [ "$(status)" != "" ]; then
+	echo "A v4l2rtspserver is already running, please stop it or reboot"
+  else
+	echo "Starting v4l2rtspserver-master"
+
+	## Configure OSD
+	if [ -f /system/sdcard/controlscripts/configureOsd ]; then
+	  . /system/sdcard/controlscripts/configureOsd  2>/dev/null
+	fi
+
+	## Configure Motion
+	if [ -f /system/sdcard/controlscripts/configureMotion ]; then
+	  . /system/sdcard/controlscripts/configureMotion  2>/dev/null
+	fi
+	## Bitrate
+	/system/sdcard/bin/setconf -k b -v ${BITRATE} 2>/dev/null
+
+	## Framerate
+	if [ "$FRAMERATE_DEN" != "" ] && [ "$FRAMERATE_NUM" != "" ]; then
+		/system/sdcard/bin/setconf -k d -v "$FRAMERATE_NUM,$FRAMERATE_DEN" 2>/dev/null
+	fi
+
+	## Audio
+	if [ "$AUDIOFORMAT" != "OFF" ] ; then
+		AUDIOPARAM="-E $AUDIOFORMAT:$AUDIOINBR:$AUDIOOUTBR"
+		/system/sdcard/bin/setconf -k h -v "$HWVOLUME" 2>/dev/null
+		/system/sdcard/bin/setconf -k i -v "$SWVOLUME" 2>/dev/null
+		/system/sdcard/bin/setconf -k q -v "$FILTER" 2>/dev/null
+		/system/sdcard/bin/setconf -k l -v "$HIGHPASSFILTER" 2>/dev/null
+		/system/sdcard/bin/setconf -k a -v "$AECFILTER" 2>/dev/null
+	else
+		AUDIOPARAM="-A"
+	fi
+
+	## Video format
+	if [ "$VIDEOFORMAT" != "" ]; then
+		VIDEOFORMAT="-r $VIDEOFORMAT -F $FRAMERATE_NUM"
+	fi
+
+	## UserName and password
+	if [ "$USERNAME" != "" ]; then
+		CREDENTIAL="-U $USERNAME:$USERPASSWORD"
+	fi
+
+	## Port
+	if [ "$PORT" != "" ]; then
+		PORT="-P $PORT"
+	fi
+
+	## Multicast
+	if [ "$MULTICASTDEST" != "" ]; then
+		MULTICASTDEST="-M $MULTICASTDEST"
+	fi
+	## FLIP
+	if [ "$FLIP" == "ON" ]; then
+        /system/sdcard/bin/setconf -k f -v 1
+	else
+        /system/sdcard/bin/setconf -k f -v 0
+	fi
+	echo "================== START ===============" >> "$LOGPATH"
+	echo "/system/sdcard/bin/v4l2rtspserver-master -f$CODEC $RTSPOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT $MULTICASTDEST" >> "$LOGPATH"
+	/system/sdcard/bin/v4l2rtspserver-master -f$CODEC $RTSPOPTS  $AUDIOPARAM $VIDEOFORMAT $CREDENTIAL $PORT $MULTICASTDEST 2>> "$LOGPATH" >> "$LOGPATH" &
+	echo "$!" > "$PIDFILE"
+  fi
+}
+
+stop()
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+	kill "$pid"
+	rm "$PIDFILE" 1> /dev/null 2>&1
+  fi
+}
+
+if [ $# -eq 0 ]; then
+  start
+else
+  case $1 in start|stop|status)
+	$1
+	;;
+  esac
+fi

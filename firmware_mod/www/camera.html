@@ -1,0 +1,315 @@
+<div class="w3-panel w3-card">
+  
+<h1>Camera Configuration</h1>
+
+<!-- Tab menu -->
+<div class="w3-row">
+    <a href="javascript:void(0)" onclick="openTab(event, 'videoTab');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Video</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'audioTab');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Audio</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'timelapseTab');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Timelapse</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'osdTab');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">OSD</div>
+    </a>
+</div>
+
+<!-- Tab video -->
+<div id="videoTab" class="w3-container tab">
+  <form class="w3-container" onsubmit="saveConfig('video');return false" id="video">
+  <p></p>
+  <!-- Setting accordion-->
+  <button class="accordion" type='button'>Format</button>
+  <div class="panel">
+    <p></p>
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <label>Codec for RTSP server</label>
+        <select id="codec" class="w3-select" name="option">
+          <option value="H264">H264</option>
+          <option value="MJPG">MPJEG</option>
+        </select>
+      </div>
+      <div class="w3-third">
+        <label>Video size:</label>
+       <select id="videoSize" class="w3-select" name="option">
+        <option value="-W640 -H360">640x360</option>
+        <option value="-W768 -H432">768x432</option>
+        <option value="-W960 -H540">960x540</option>
+        <option value="-W1280 -H720">1280x720</option>
+        <option value="-W1600 -H900">1600x900</option>
+        <option value="-W1920 -H1080">1920x1080</option>
+      </select>
+      </div>
+      <div class="w3-third">
+        <label>Bitrate (kbps):</label>
+        <input id="bitRate" class="w3-input" type="text">
+      </div>
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <label>Format:</label>
+        <select id="format" class="w3-select" name="option">
+          <option value="0">FixedQp</option>
+          <option value="1">CBR</option>
+          <option value="2">VBR</option>
+          <option value="3">SMART</option>
+        </select>
+      </div>
+      <div class="w3-third">
+        <label>Flip Image:</label>
+        <select id="flip" class="w3-select" name="option">
+          <option value="OFF">Off</option>
+          <option value="ON">On</option>
+        </select>
+      </div>
+      <div class="w3-third">
+        <label>Frame rate (images per secondes):</label>
+    <div class="w3-row-padding">
+      <div class="w3-half">
+        <label>Images:</label>
+        <input id="frmRateNum" class="w3-input" type="text">
+      </div>
+      <div class="w3-half">
+        <label>Seconds:</label>
+        <input id="frmRateDen" class="w3-input" type="text">
+      </div>
+    </div>
+      </div>
+    </div>
+        <p></p>
+  </div>
+  <!-- Network / Security accordion -->
+  <button class="accordion" type='button'>Network / Security</button>
+  <div class="panel">
+    <p></p>
+    <div class="w3-row-padding">
+      <div class="w3-half">
+        <label>Username:</label>
+        <input id="videoUser" class="w3-input" type="text">
+      </div>
+      <div class="w3-half">
+        <label>Password:</label>
+        <input id="videoPassword" class="w3-input" type="password">
+      </div>
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+      <div class="w3-half">
+        <label>Port (default 8554):</label>
+        <input id="videoPort" class="w3-input" type="number">
+      </div>
+      <div class="w3-half">
+        <label>Multicast address (leave blank to disable multicast):</label>
+        <input id="multicast" class="w3-input" type="text">
+      </div>
+    </div>
+    <p></p>
+  </div>
+  <!-- Auto Night accordion -->
+  <button class="accordion" type='button'>Auto Night</button>
+  <div class="panel">
+    <p></p>
+    <label>Auto Night Mode</label>
+    <select id="autoNightMode" class="w3-select" name="option">
+      <option value="hw">Hardware</option>
+      <option value="sw">Software</option>
+    </select>
+    <br />
+    <label>Use average measurement on switching. Number of measurements:</label>
+    <select id="avg" class="w3-select" name="option">
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="10">10</option>
+      <option value="15">15</option>
+    </select>
+    
+  </div>
+  <p><button class="w3-btn w3-theme" >Save</button></p></form>
+</div>
+
+<!-- Tab audio -->
+<div id="audioTab" class="w3-container tab" style="display:none">
+  <p><form class="w3-container" onsubmit="saveConfig('audio');return false" id="audio"></p>
+    <div class="w3-row-padding">
+      <div class="w3-half">
+        <label>Audio format</label>
+        <select id="audioinFormat" class="w3-select">
+          <option value="OFF">OFF</option>
+          <option value="OPUS">OPUS</option>
+          <option value="PCM">PCM</option>
+          <option value="PCMU">PCMU</option>
+          <option value="MP3">MP3</option>
+        </select>
+      </div>
+      <div class="w3-half">
+        <label>Volume</label><br />
+        <input name="audioinVol" step="1" min="-1" max="120" type="range" class="w3-input"> 
+      </div>
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+      <div class="w3-half">
+        <label>Sample rate in</label>
+        <select id="audioinBR" class="w3-select" >
+          <option value="8000">8000</option>
+          <option value="16000">16000</option>
+          <option value="24000">24000</option>
+          <option value="44100">44100</option>
+          <option value="48000">48000</option>
+        </select>
+      </div>
+      <div class="w3-half">
+        <label>Sample rate out</label>
+        <select id="audiooutBR" class="w3-select">
+          <option value="8000">8000</option>
+          <option value="16000">16000</option>
+          <option value="24000">24000</option>
+          <option value="44100">44100</option>
+          <option value="48000">48000</option>
+        </select>
+      </div>
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+      <div class="w3-third">
+        <label>Filter (low filter)</label>
+        <select id="audioinFilter" class="w3-select" name="option">
+          <option value="0">No filter</option>
+          <option value="1">Filter 1</option>
+          <option value="2">Filter 2</option>
+          <option value="3">NS Filter LOW</option>
+          <option value="4">NS Filter MODERATE</option>
+          <option value="5">NS Filter HIGH</option>
+          <option value="6">NS Filter VERY HIGH</option>
+        </select>
+      </div>
+      <div class="w3-third">
+        <label>Hight pass filter</label>
+        <select id="HFEnabled" class="w3-select" name="option">
+          <option value="false">Deactivate</option>
+          <option value="true">Activate</option>
+        </select>
+      </div>
+      <div class="w3-third">
+        <label>AEC Filter</label>
+        <select id="AECEnabled" class="w3-select" name="option">
+          <option value="false">Deactivate</option>
+          <option value="true">Activate</option>
+        </select>
+      </div>
+    </div>
+    <p><button class="w3-btn w3-theme" >Save</button></p></form>
+</div>
+
+<!-- Tab timelapse -->
+<div id="timelapseTab" class="w3-container tab" style="display:none">
+  
+  <p><form class="w3-container" onsubmit="saveConfig('timelapseF');return false" id="timelapseF"></p>
+  <label>Interval (in seconds)</label>
+  <input class="w3-input" id="tlinterval"  type="text">
+  <br />
+  <label>Duration (in minutes)</label>
+  <input class="w3-input" id="tlduration"  type="text">
+  <br />
+  <p><button class="w3-btn w3-theme" >Save</button></p></form>
+</div>
+
+
+
+<!-- Tab OSD-->
+<div id="osdTab" class="w3-container tab" style="display:none">
+  <p><form class="w3-container" onsubmit="saveConfig('osd');return false" id="osd"></p>
+  <div class="w3-row-padding">
+    <div class="w3-third">
+      <label>Date saveConfigate</label>
+      <input id="osdText" class="w3-input" type="text">
+    </div>
+    <div class="w3-third">
+      <label>OSD Text</label>
+      <select id="osdEnable" class="w3-select" name="option">
+        <option value="false">Deactivate</option>
+        <option value="true">Activate</option>
+      </select>
+    </div>
+    <div class="w3-third">
+      <label>OSD Axis</label>
+      <select id="osdAxis" class="w3-select" name="option">
+        <option value="false">Deactivate</option>
+        <option value="true">Activate</option>
+      </select>
+    </div>
+  </div>
+  <p></p>
+  <div class="w3-row-padding">
+    <div class="w3-third">
+      <label>OSD Text color</label>
+      <select id="osdColor" class="w3-select" name="option">
+        <option value="0">White</option>
+        <option value="1">Black</option>
+        <option value="2">Red</option>
+        <option value="3">Green</option>
+        <option value="4">Blue</option>
+        <option value="5">Cyan</option>
+        <option value="6">Yellow</option>
+        <option value="7">Purple</option>
+      </select>
+    </div> 
+    <div class="w3-third">
+      <label>OSD Font name</label>
+      <select id="osdFonts" class="w3-select">
+        
+      </select>
+    </div>  
+    <div class="w3-third">
+      <label>OSD Text size</label>
+      <input id="osdSize" class="w3-input" type="number">
+    </div>  
+  </div> 
+  <p></p>
+  <div class="w3-row-padding">
+    <div class="w3-third">
+      <label>Pixel between chars</label>
+      <input id="osdPixel" class="w3-input" type="text">
+    </div>
+    <div class="w3-third">
+      <label>Y position</label>
+      <input id="osdY" class="w3-input" type="text">
+    </div>
+    <div class="w3-third">
+      <label>Fixed width ( only work for "default" fonts)</label>
+      <select id="osdFixW" class="w3-select" name="option">
+        <option value="false">Deactivate</option>
+        <option value="true">Activate</option>
+      </select>
+    </div>
+  </div>
+  <p><button class="w3-btn w3-theme" >Save</button></form></p>
+</div>
+
+<!-- Modal save box -->
+<div id="save_confirm" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-theme">
+        <span onclick="document.getElementById('save_confirm').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+       <h2>Save config</h2>
+     </header>
+     <div class="w3-container">
+     <p id="save_result"></p>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script type="text/javascript" src="js/camera.js"></script>
+

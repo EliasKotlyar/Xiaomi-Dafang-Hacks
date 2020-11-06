@@ -38,28 +38,28 @@ Content-Disposition: inline
 ${BODY}
 "
 for i in $(seq 1 ${NUMBEROFPICTURES}); do
-    # using sleep and wait so each step takes the specified amount of time
-    # instead of the loop-time + the time between snapshots
-    if [ ${i} -lt ${NUMBEROFPICTURES} ]; then
-        sleep ${TIMEBETWEENSNAPSHOT} &
-    fi
+	# using sleep and wait so each step takes the specified amount of time
+	# instead of the loop-time + the time between snapshots
+	if [ ${i} -lt ${NUMBEROFPICTURES} ]; then
+		sleep ${TIMEBETWEENSNAPSHOT} &
+	fi
 
-    printf '%s\n' "--${boundary}
+	printf '%s\n' "--${boundary}
 Content-Type: image/jpeg
 Content-Transfer-Encoding: base64
 Content-Disposition: attachment; filename=\"${FILENAME}${i}.jpg\"
 "
 
-    if [ ${QUALITY} -eq -1 ]; then
-        /system/sdcard/bin/getimage | /system/sdcard/bin/openssl enc -base64
-    else
-       /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout --quiet  | /system/sdcard/bin/openssl enc -base64
-    fi
+	if [ ${QUALITY} -eq -1 ]; then
+		/system/sdcard/bin/getimage | /system/sdcard/bin/openssl enc -base64
+	else
+	   /system/sdcard/bin/getimage |  /system/sdcard/bin/jpegoptim -m${QUALITY} --stdin --stdout --quiet  | /system/sdcard/bin/openssl enc -base64
+	fi
 
-    echo
+	echo
 
-    # wait for our sleep to finish
-    wait
+	# wait for our sleep to finish
+	wait
 done
 
 # print last boundary with closing --

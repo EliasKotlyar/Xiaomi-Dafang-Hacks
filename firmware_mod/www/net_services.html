@@ -1,0 +1,130 @@
+ <!-- System card-->
+<div class="w3-panel w3-card">
+<h1> Network services configuration</h1>
+<div class="w3-row">
+    <a href="javascript:void(0)" onclick="openTab(event, 'mqttTab');getConfig('mqtt');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">MQTT</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'mailTab');getConfig('mail');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Mail</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'telegramTab');getConfig('telegram');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Telegram</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'matrixTab');getConfig('matrix');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Matrix</div>
+    </a>
+    
+  </div>
+<!-- MQTT Tab -->
+  <div id="mqttTab" class="w3-container tab">
+        <p><form class="w3-container" onsubmit="saveConfig('mqtt');return false" id="mqtt"></p>
+        <label>Server address</label>
+        <input id="mqttHost" class="w3-input" type="text">
+        <br />
+        <label>Server port</label>
+        <input id="mqttPort" class="w3-input" type="text">
+        <br />
+        <label>MQTT user</label>
+        <input id="mqttUser" class="w3-input" type="text">
+        <br />
+        <label>MQTT password</label>
+        <input id="mqttPass" class="w3-input" type="password">
+        <br />
+        <label>Location</label>
+        <input id="mqttLocation" class="w3-input" type="text">
+        <br />
+        <label>Device name</label>
+        <input id="mqttDeviceName" class="w3-input" type="text">
+        <br />
+        <label>Autodiscovery topic</label>
+        <input id="mqttAutodiscoveryPrefix" class="w3-input" type="text">
+        <br />
+        <label>Status interval (in seconds)</label>
+        <input id="mqttStatusInterval" class="w3-input" type="text">
+        <p><button class="w3-btn w3-theme" >Save</button></form></p>
+  </div>
+<!-- Mail Tab -->
+ <div id="mailTab" class="w3-container tab" style="display:none">
+  <p><form class="w3-container" onsubmit="saveConfig('mail');return false" id="mail"></p>
+  <!-- SMTP Server settings accordion-->
+  <button class="accordion" type='button'>SMTP Server settings</button>
+  <div class="panel">
+    <br />
+    <label>SMTP Server</label>
+    <input id="server" class="w3-input" type="text"><br />
+    <label>SMTP Port</label>
+    <input id="port" class="w3-input" type="text"><br />
+    <label>SMTP Authentication user</label>
+    <input id="auth" class="w3-input" type="text"><br />
+    <label>SMTP Authentication password</label>
+    <input id="pass" class="w3-input" type="password"><br />
+  </div>
+  <!-- Mail settings accordion-->
+  <button class="accordion" type='button'>Mail settings</button>
+  <div class="panel">
+    <br />
+    <label>From</label>
+    <input id="from" class="w3-input" type="text"><br />
+    <label>From name</label>
+    <input id="fromName" class="w3-input" type="text"><br />
+    <label>Destination</label>
+    <input id="to" class="w3-input" type="text"><br />
+    <label>Mail subject</label>
+    <input id="subject" class="w3-input" type="text"><br />
+    <label>Mail body</label>
+    <input id="body" class="w3-input" type="text"><br />
+    <label>Numbers of pictures</label>
+    <input id="numberOfPictures" class="w3-input" type="text"><br />
+    <label>Time betweens pictures (in seconds)</label>
+    <input id="timeBetweenSnapshot" class="w3-input" type="text"><br />
+    <label>Quality of compression (Valid quality values: 0 - 100, 100% is best)<br /> Set to -1 for no compression</label>
+    <input id="quality" class="w3-input" type="text"><br />
+  </div>
+  <p><button class="w3-btn w3-theme" >Save</button></form></p>
+</div>
+
+<!-- Telegram Tab-->
+<div id="telegramTab" class="w3-container tab" style="display:none">
+  <p><form class="w3-container" onsubmit="saveConfig('telegram');return false" id="telegram"></p>
+  <label>API Token</label>
+  <input id="apiToken" class="w3-input" type="text"><br />
+  <label>User chat ID</label>
+  <input id="userChatID" class="w3-input" type="text"><br />
+  <p><button class="w3-btn w3-theme" >Save</button></form></p>
+</div>
+<!-- Matrix Tab-->
+<div id="matrixTab" class="w3-container tab" style="display:none">
+  <p><form class="w3-container" onsubmit="saveConfig('matrix');return false" id="matrix"></p>
+    
+    <label>Server host</label>
+    <input id="host" class="w3-input" type="text"><br />
+    <label>Server port</label>
+    <input id="portM" class="w3-input" type="text"><br />
+    <label>Room ID</label>
+    <input id="roomID" class="w3-input" type="text"><br />
+    <label>Sender</label>
+    <input id="sender" class="w3-input" type="text"><br />
+    <label>Access token</label>
+    <input id="accessToken" class="w3-input" type="text"><br />
+    <p><button class="w3-btn w3-theme" >Save</button></form></p>
+</div>
+  
+  
+</div>
+</div>
+<div id="save_confirm" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-theme">
+        <span onclick="document.getElementById('save_confirm').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+       <h2>Save config</h2>
+     </header>
+     <div class="w3-container">
+     <p id="save_result"></p>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+<script type="text/javascript" src="js/net_services.js"></script>
