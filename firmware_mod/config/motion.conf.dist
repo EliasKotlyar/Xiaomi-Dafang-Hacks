@@ -26,9 +26,11 @@ telegram_alert_type=image
 send_matrix=false
 
 # General
-group_date_pattern="+%Y-%m-%d"
+group_date_pattern="+%Y-%m-%d/%H"
 file_date_pattern="+%Y-%m-%d_%H-%M-%S"
 video_duration=10
+save_files_attr="0644"
+save_dirs_attr="0755"
 
 # Record from RTSP (RTSP H264 must be enabled)
 # RTSP is alternative for `record_video` function in `detectionOn.sh` - instead of 1s-getimage gets real video.
@@ -40,13 +42,11 @@ video_rtsp_f=15
 # Snapshots
 save_snapshot=false
 save_snapshot_dir=/system/sdcard/DCIM/Motion/Stills
-save_snapshot_attr="0666"
 max_snapshot_days=20
 
 # Videos
 save_video=false
 save_video_dir=/system/sdcard/DCIM/Motion/Videos
-save_video_attr="0666"
 max_video_days=10
 
 # Configure FTP snapshots and videos

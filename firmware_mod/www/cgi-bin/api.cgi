@@ -13,6 +13,7 @@ CONFIGPATH=/system/sdcard/config
 BINPATH=/system/sdcard/bin
 SDPATH=/system/sdcard
 VERSION="v0.0.5 Beta"
+MOTOR=/system/sdcard/bin/motor.bin
 # END VARIABLES
 
 # START FUNCTIONS
@@ -136,9 +137,9 @@ if [ -n "$F_action" ]; then
       }
     },
     \"disk_space\": {
-      \"total\": $(df | tr -s ' ' $'\t' | grep /dev/mmcblk0p1 | cut -f2),
-      \"used\": $(df | tr -s ' ' $'\t' | grep /dev/mmcblk0p1 | cut -f3),
-      \"free\": $(df | tr -s ' ' $'\t' | grep /dev/mmcblk0p1 | cut -f4)
+      \"total\": $(df | tr -s ' ' $'\t' | grep /dev/mmcblk0p1 | grep /system/sdcard | cut -f2),
+      \"used\": $(df | tr -s ' ' $'\t' | grep /dev/mmcblk0p1 | grep /system/sdcard | cut -f3),
+      \"free\": $(df | tr -s ' ' $'\t' | grep /dev/mmcblk0p1 | grep /system/sdcard | cut -f4)
     },
     \"memory\": {
       \"total\": $(cat /proc/meminfo  | tr -s ' ' $'\t' | grep MemTotal: | cut -f2),
@@ -149,6 +150,11 @@ if [ -n "$F_action" ]; then
         \"total\": $(cat /proc/meminfo  | tr -s ' ' $'\t' | grep SwapTotal: | cut -f2),
         \"free\": $(cat /proc/meminfo  | tr -s ' ' $'\t' | grep SwapFree: | cut -f2)
       }
+    },
+    \"motor\": {
+      \"x\": $($MOTOR -d s | sed -n '1 p' | awk '{print $2}'),
+      \"y\": $($MOTOR -d s | sed -n '2 p' | awk '{print $2}'),
+      \"speed\": $($MOTOR -d s | sed -n '3 p' | awk '{print $2}')
     }
   }
 }"

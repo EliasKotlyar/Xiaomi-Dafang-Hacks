@@ -2,6 +2,10 @@
 # coding=utf-8
 import click
 
+import os
+CHECK_FOLDER = os.path.isdir("flash")
+if not CHECK_FOLDER:
+    os.makedirs("flash")
 
 @click.command()
 @click.argument('inputfile', default="demo_5.5.1.194.bin", type=click.Path(exists=True))

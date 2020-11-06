@@ -177,7 +177,7 @@ if [ ! -f $CONFIGPATH/ntp_srv.conf ]; then
   cp $CONFIGPATH/ntp_srv.conf.dist $CONFIGPATH/ntp_srv.conf
 fi
 ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
-timeout -t 30 sh -c "until ping -c1 \"$ntp_srv\" &>/dev/null; do sleep 3; done";
+timeout 30 sh -c "until ping -c1 \"$ntp_srv\" &>/dev/null; do sleep 3; done";
 /system/sdcard/bin/busybox ntpd -p "$ntp_srv"
 
 ## Load audio driver module:
@@ -267,11 +267,7 @@ for i in /system/sdcard/config/autostart/*; do
 done
 
 ## Autostart startup userscripts
-for i in /system/sdcard/config/userscripts/startup/*; do
-  if [[ ${i: -3} == ".sh" ]]; then
-    $i &
-  fi
-done
+/bin/find /system/sdcard/config/userscripts/startup/ -executable -name "*.sh" -exec {} \;
 
 echo "Startup finished!" >> $LOGPATH
 echo "" >> $LOGPATH

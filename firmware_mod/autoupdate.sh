@@ -247,35 +247,13 @@ action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 if [ -f "$VERSION_FILE" ]; then
     LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})  
     if [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
-        logerror "You are currently on the lastest version"
-        echo "You are currently on the lastest version"
+        logerror "You are currently on the latest version"
+        echo "You are currently on the latest version"
         exit 1
     else
         echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
         log "Getting list of remote files."
-        URL_GITHUB=$(${CURL} -s ${GITHUBURL}/${REPO}/compare/${LOCALCOMMITID}...${REMOTECOMMITID} | ${JQ} -r '.files[] | .raw_url +";"+ .status +";"+ .previous_filename' | grep ${REMOTEFOLDER})
-        for URL in ${URL_GITHUB}
-        do
-            x="1"
-            for i in $(echo $URL | tr ";" "\n")
-            do
-                if [ $x == "1" ]; then
-                    raw_url=$i
-                    x="2"
-                elif [ $x == "2" ]; then
-                    action=$i
-                    x="3"
-                else
-                    FILES_TO_REMOVE="${FILES_TO_REMOVE} ${i}"
-                fi
-            done
-            x="1"
-            if [ $action == "removed" ]; then
-                FILES_TO_REMOVE="${FILES_TO_REMOVE} ${raw_url}"
-            else
-                FILES="${FILES} ${raw_url}"
-            fi 
-        done
+        FILES=$(${CURL} -s ${GITHUBURL}/${REPO}/compare/${LOCALCOMMITID}...${REMOTECOMMITID} | ${JQ} -r '.files[].raw_url' | grep ${REMOTEFOLDER})        
     fi
 else
     echo "Version file missing. Upgrade to last commit ${REMOTECOMMITID}"
@@ -289,14 +267,6 @@ if [ $_PROGRESS = 1 ]; then
    log Number of file to update $_NBTOTALFILES
    echo -n 0 > /tmp/progress
 fi
-
-# Remove file removed from github
-for i in ${FILES_TO_REMOVE}
-do
-    LOCALFILE=$(echo ${i} | awk -F ${REMOTEFOLDER}/ '{print "/system/sdcard/"$2}')
-    rm ${LOCALFILE}
-    echo "Remove file ${LOCALFILE}"
-done
 
 # For all the repository files
 for i in ${FILES}
