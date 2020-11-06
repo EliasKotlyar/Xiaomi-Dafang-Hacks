@@ -1,0 +1,125 @@
+
+<div class="w3-panel w3-card">
+<h1 class="is-size-4">Software Auto Night Settings</h1>
+
+
+Please stop the autonight detection service if its running.
+
+<form id="swNightForm" action="cgi-bin/action.cgi?cmd=save_sw_night_config" method="post">
+<!--button id='play' type="button">Pause</button-->
+
+    <br>
+    <table>
+      <tr>
+        <td><table border="1" class='w3-table mode'>
+            <tr><td><label>Current mode</label></td><td><label id='cur_mode'>Day mode</label></td></tr>
+            <tr><td><label>Seconds</label></td><td><label id='sec'>0</label></td></tr>
+        </table></td>
+        <td><table class='w3-table mode'>
+            <tr><td>Commandline to use:</td>
+            <td><input type="text" id="command_line" disabled=true value="-S" size="60" style="text-align:left;"></td></tr>
+            <tr><td colspan="2"><input style="display: block; text-align: center; margin: auto;" class='button is-primary' id="sw_night_submit" type="submit" value="Save"><button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Save</button></td></tr>
+        </table></td>
+    </tr>
+    </table>
+
+        <br>
+
+
+            <td><table border="1" id="t_jitter" style="margin: 0px;" class='w3-table jitter'>
+                <tr><td class='code_text'>If exposure changes by more than </td>
+                <td class='code_text'><input type="text" id="jitter_percent" value=3  size="3"> %, ignore</td></tr>
+            </table></td>
+
+    <br>
+    <table border="1" id="t_wait" style="margin: 0px;" class='w3-table wait'>
+            <tr><td class='code_text'>Wait </td>
+                <td class='code_text'><input type="text" id="sec_wait" value=3  size="3"> seconds after changing mode</td>
+            </tr>
+    </table>
+
+    <br>
+
+    <table border="1" id="t_eq1" style="margin: 0px;" class='w3-table eq1'>
+            <tr><td class='code_text'>If  <br></td>
+                <td><table border='0'>
+                    <tr><td>  <input type="text" class='code_text' id="exposure_eq1" disabled=true value=90000 size="8">  </td></tr>
+                    <tr><td allign='center' class='code_text'>exposure &gt; &ThinSpace; </td></tr>
+                </table></td>
+                <td><input type="text" id="eq1_user_exposure" value=1200000  size="8"></td>
+                <td allign='center' class='code_text'>enable night mode </td>
+            </td></tr>
+        </table>
+
+    <br>
+    
+    <table border="1" id="t_eq2" style="margin: 0px;" class='w3-table eq2'>
+            <tr><td rowspan='2'><input type="checkbox" checked=true id="eq2" onclick='eq_click("eq2")'></td><td class='code_text'> If  <br></td>
+                <td><table border='0'>
+                    <tr><td>  <input type="text" id="exposure_eq2" disabled=true value=90000 size="8">  </td></tr>
+                    <tr><td class='code_text' allign='center'>exposure &lt;  &ThinSpace; </td></tr>
+                </table></td>
+                <td><input type="text" id="eq2_user_exposure" value=930000 size="8"></td>
+                <td><table border='0' class='eq2_1'><tr>
+                    <tr><td><input type="checkbox" checked=true id="eq2_1"onclick='eq_1_click("eq2")'></td><td class='code_text'> and </td>
+                        <td><table border='0'>
+                            <tr><td>  <input type="text" id="iridix_eq2" disabled=true value=10 size="3">  </td></tr>
+                            <tr border='1' ><td allign='center' class='code_text'>Iridix &lt; &MediumSpace; </td></tr>
+                        </td></table>
+                        <td><input type="text" id="eq2_user_iridix" value=14 size="3"></td>
+                        <td><td class='code_text'> &ThinSpace; then increment count</td>
+                </tr></table></td>
+            </td></tr>
+            <tr><td colspan="3"></td>
+                <td><table>
+                    <tr><td><input type="text" id="count_eq2" disabled=true value=0 size="2"></td></tr>
+                    <tr><td class='code_text'>if count &gt;  <input type="text" id="eq2_count" value=10 size="3"  class='code_text'> switch to day mode  </tr>
+                    </table></td></td>
+            </tr>
+    </table>
+    <br>
+    
+    <table border="1" id="t_eq3" style="margin: 0px;" class='w3-table eq3'>
+            <tr><td rowspan='2'><input type="checkbox" checked=true id="eq3" onclick='eq_click("eq3")'></td><td class='code_text'> If  <br></td>
+                <td><table border='0'>
+                    <tr><td class='code_text'>  <input type="text" id="wb_eq3" disabled=true value=2800 size="5">  </td></tr>
+                    <tr><td allign='center' class='code_text'>WhiteBalance temp &lt;  &ThinSpace;</td></tr>
+                </table></td>
+                <td class='code_text'><input type="text" id="eq3_user_wb" value=3000  size="5"></td>
+                <td><table border='0' class='eq3_1'><tr>
+                    <tr><td><input type="checkbox" checked=true id="eq3_1" onclick='eq_1_click("eq3")'></td><td class='code_text'> and </td>
+                        <td><table border='0'>
+                            <tr><td class='code_text'>  <input type="text" id="iridix_eq3" disabled=true value=10 size="3">  </td></tr>
+                            <tr><td allign='center' class='code_text'>Iridix &gt; &MediumSpace;</td></tr>
+                        </td></table>
+                        <td class='code_text'><input type="text" id="eq3_user_iridix" value=17 size="3"></td>
+                        <td class='code_text'> &ThinSpace; then increment count</td>
+                </tr></table></td>
+            </td></tr>
+            <tr><td colspan="3"></td>
+                <td><table>
+                    <tr><td><input type="text" id="count_eq3" disabled=true value=0 size="2"></td></tr>
+                    <tr><td class='code_text'>if  count &gt;  <input type="text" id="eq3_count" value=8 size="3"  class='code_text'> switch to day mode  </tr>
+                    </table></td></td>
+            </tr>
+        </table>
+    <br>
+</form>
+
+    <table class="w3-table" border="1" width="100%" id="canvas_table" style="margin: 0px;">
+        <tr> <td width="10%"><div>ISP exposure log2 id</div></td> <td><canvas id="exp_chart" height="150"></canvas></td> </tr>
+        <tr> <td><div>ISP WB Temperature</div></td> <td><canvas id="wb_chart" height="150"></canvas></td> </tr>
+        <tr> <td><div>ISP Iridix strength</div></td> <td><canvas id="iridix_chart" height="150"></canvas></td> </tr>
+    </table>
+    <p></p>
+</div>
+<div id="id01" class="w3-modal">
+    <div class="w3-modal-content">
+      <div class="w3-container">
+        <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+        <p>Some text. Some text. Some text.</p>
+        <p>Some text. Some text. Some text.</p>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript" src="js/softnight.js"></script>

@@ -34,22 +34,22 @@ fi
 
 export OPENSSL_CONF="${CONFIGPATH}/openssl.cnf"
 if [ "$LETSENCRYPT_METHOD" = "webroot" ]; then
-    ./acme.sh/acme.sh --issue -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
-          -w ${CONFIGPATH}/../www/ \
-          ${DEBUG}
+	./acme.sh/acme.sh --issue -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
+	  -w ${CONFIGPATH}/../www/ \
+	  ${DEBUG}
 elif [ "$LETSENCRYPT_METHOD" = "dns" ]; then
-    ./acme.sh/acme.sh --issue -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
-          --dns ${LETSENCRYPT_DNS_PROVIDER} \
-          ${DEBUG}
+	./acme.sh/acme.sh --issue -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
+	  --dns ${LETSENCRYPT_DNS_PROVIDER} \
+	  ${DEBUG}
 fi
 
 ./acme.sh/acme.sh --install-cert -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
-          --cert-file ${ACMEPATH}/host.crt \
-          --key-file  ${ACMEPATH}/host.key \
-          --fullchain-file ${ACMEPATH}/fullchain.crt \
-          --reloadcmd  "cat ${ACMEPATH}/fullchain.crt ${ACMEPATH}/host.key > ${CONFIGPATH}/lighttpd.pem ;\
-                        pkill lighttpd.bin ;\
-                        /system/sdcard/bin/lighttpd -f ${CONFIGPATH}/lighttpd.conf"
+	--cert-file ${ACMEPATH}/host.crt \
+	--key-file  ${ACMEPATH}/host.key \
+	--fullchain-file ${ACMEPATH}/fullchain.crt \
+	--reloadcmd  "cat ${ACMEPATH}/host.crt ${ACMEPATH}/host.key > ${CONFIGPATH}/lighttpd.pem ;\
+	  pkill lighttpd.bin ;\
+	  /system/sdcard/bin/lighttpd -f ${CONFIGPATH}/lighttpd.conf"
 
 
 ## Adding cronjob to keep the cert updated

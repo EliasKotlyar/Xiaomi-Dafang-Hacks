@@ -1,0 +1,52 @@
+ <!-- System card-->
+<div class="w3-panel w3-card">
+<form class="w3-container" onsubmit="saveConfig();return false;">
+<h1> System configuration</h1>
+<div class="w3-row">
+    <a href="javascript:void(0)" onclick="openTab(event, 'properties');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Properties</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'time');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Time</div>
+    </a>
+  </div>
+
+  <div id="properties" class="w3-container tab">
+        <p></p>
+        <label>Hostname</label>
+        <input id="hostname" class="w3-input" type="text">
+        <br />
+        <label>HTTP root password</label>
+        <input id="password" class="w3-input" type="password" value="*****">
+  </div>
+
+  <div id="time" class="w3-container tab" style="display:none">
+        <p id='currenttime'></p>
+        <label>Time Zone</label>
+        <select id="timezone" class="w3-select">
+        </select>
+        <br />
+        <label>NTP Server</label>
+        <input id="ntp" class="w3-input" type="text">
+ </div>
+
+  <p></p>
+  <button class="w3-btn w3-theme">Save</button>
+  <p></p>
+
+</div>
+<div id="save_confirm" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-theme">
+        <span onclick="document.getElementById('save_confirm').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+       <h2>Save config</h2>
+     </header>
+     <div class="w3-container">
+     <p id="save_result">Waiting for save result...</p>
+    </div>
+  </div>
+</div>
+</form>
+</div>
+<script type="text/javascript" src="js/system.js"></script>

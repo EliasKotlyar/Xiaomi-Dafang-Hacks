@@ -1,0 +1,310 @@
+ <!-- Motion card-->
+<div class="w3-panel w3-card">
+<h1 class="is-size-4">Motion Settings</h1>
+ <!-- Tab menu -->
+ <div class="w3-row">
+    <a href="javascript:void(0)" onclick="openTab(event, 'generalTab');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">General</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'storageTab');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Storage</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'notificationsTab');">
+        <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Notifications</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'zonesTab');zones();">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Zones</div>
+    </a>
+</div>
+
+<!-- General Tab -->
+<div id="generalTab" class="w3-container tab">
+    <p><form class="w3-container" onsubmit="saveConfig('general');return false" id="general"></p>
+    <div class="w3-container">
+        <label>Motion detection</label>
+        <select id="motionDetection" class="w3-select">
+            <option value="off">Deactivate</option>
+            <option value="on">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Set sensitivity</label>
+        <select id="motionSensitivity" class="w3-select">
+            <option value="0">Very Low</option>
+            <option value="1">Low</option>
+            <option value="2">Moderate</option>
+            <option value="3">High</option>
+            <option value="4">Very High</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Display motion indicator if motion is detected</label>
+        <select id="motionIndicatorColor" class="w3-select">
+            <option value="-1">Deactivated</option>
+            <option value="0">White</option>
+            <option value="1">Black</option>
+            <option value="2">Red</option>
+            <option value="3">Green</option>
+            <option value="4">Blue</option>
+            <option value="5">Cyan</option>
+            <option value="6">Yellow</option>
+            <option value="7">Purple</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Enable motion tracking (Custom set motion detection region will be ignored)</label>
+        <select id="motionTracking" class="w3-select">
+            <option value="off">Deactivate</option>
+            <option value="on">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Motion Timeout</label>
+        <input class="w3-input" id="motionTimeout" type="number" size="6">
+    </div>
+    <p><button class="w3-btn w3-theme" >Save</button></form></p>
+</div>
+<!-- Storage Tab -->
+<div id="storageTab" class="w3-container tab" style="display:none">
+  <p><form class="w3-container" onsubmit="saveConfig('storage');return false" id="storage"></p>
+  <!-- Local storage accordion-->
+  <button class="accordion" type='button'>Local storage</button>
+  <div class="panel">
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Save snapshots on motion</label>
+            <select id="saveSnaphot" class="w3-select">
+                <option value="false">Deactivate</option>
+                <option value="true">Activate</option>
+            </select>
+        </div>
+        <div class="w3-half">
+            <label>Maximun snapshots retention (in days)</label>
+            <input class="w3-input" id="maxSnaphotDays" type="number" size="6">
+        </div>
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Save videos on motion</label>
+            <select id="saveVideo" class="w3-select" >
+                <option value="false">Deactivate</option>
+                <option value="true">Activate</option>
+            </select>
+        </div>
+        <div class="w3-half">
+            <label>Maximun video retention (in days)</label>
+            <input class="w3-input" id="maxVideoDays" type="number" size="6">
+        </div>
+    </div>
+    <p></p>
+  </div>
+  <!-- Samba storage accordio-->
+  <button class="accordion" type='button'>Samba storage</button>
+  <div class="panel">
+    <p></p>
+    <div class="w3-container">
+        <label>Samba share path</label>
+        <input class="w3-input" id="smbShare" type="text">
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Samba username</label>
+            <input class="w3-input" id="smbUsername" type="text">
+        </div>
+        <div class="w3-half">
+            <label>Samba password</label>
+            <input class="w3-input" id="smbPassword" type="password">
+        </div>
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Save snapshots on motion</label>
+            <select id="smbSnapshot" class="w3-select">
+                <option value="false">Deactivate</option>
+                <option value="true">Activate</option>
+            </select>
+        </div>
+        <div class="w3-half">
+            <label>Samba snapshots remote directory</label>
+            <input class="w3-input" id="smbStillsDir" type="text">
+        </div>
+    </div>
+    <p></p>
+    <div class="w3-row-padding">
+        <div class="w3-half">
+            <label>Save videos on motion</label>
+            <select id="smbVideo" class="w3-select" >
+                <option value="false">Deactivate</option>
+                <option value="true">Activate</option>
+            </select>
+        </div>
+        <div class="w3-half">
+            <label>Samba videos remote directory</label>
+            <input class="w3-input" id="smbVideosDir" type="text">
+        </div>
+    </div>
+    <p></p>
+  </div>
+    <!-- FTP storage accordio-->
+    <button class="accordion" type='button'>FTP storage</button>
+    <div class="panel">
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>FTP Hostname</label>
+                <input class="w3-input" id="ftpHost">
+            </div>
+            <div class="w3-half">
+                <label>FTP Port</label>
+                <input class="w3-input" id="ftpPort" >
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>FTP username</label>
+                <input class="w3-input" id="ftpUsername">
+            </div>
+            <div class="w3-half">
+                <label>FTP password</label>
+                <input class="w3-input" id="ftpPassword"  type="password">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+            </div>
+            <div class="w3-half">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Save snapshots on motion</label>
+                <select id="ftpSnapshot" class="w3-select">
+                    <option value="false">Deactivate</option>
+                    <option value="true">Activate</option>
+                </select>
+            </div>
+            <div class="w3-half">
+                <label>FTP snapshots remote directory</label>
+                <input class="w3-input" id="ftpStillsDir" type="text">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Save videos on motion</label>
+                <select id="ftpVideo" class="w3-select" >
+                    <option value="false">Deactivate</option>
+                    <option value="true">Activate</option>
+                </select>
+            </div>
+            <div class="w3-half">
+                <label>FTP videos remote directory</label>
+                <input class="w3-input" id="ftpVideosDir" type="text">
+            </div>
+        </div>
+      <p></p>
+    </div>
+    <p><button class="w3-btn w3-theme" >Save</button></form></p>
+</div>
+<!-- Notifications Tab -->
+<div id="notificationsTab" class="w3-container tab" style="display:none">
+    <p><form class="w3-container" onsubmit="saveConfig('notifications');return false" id="notifications"></p>
+    <div class="w3-container">
+        <label>LED Notification</label>
+        <select id="motionTriggerLed" class="w3-select" name="option">
+            <option value="false">Deactivate</option>
+            <option value="true">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>MQTT Publish message on motion</label>
+        <select id="mqttMessage" class="w3-select" name="option">
+            <option value="false">Deactivate</option>
+            <option value="true">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>MQTT Publish snapshot on motion</label>
+        <select id="mqttSnapshot" class="w3-select" name="option">
+            <option value="false">Deactivate</option>
+            <option value="true">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>MQTT Publish video on motion</label>
+        <select id="mqttVideo" class="w3-select" name="option">
+            <option value="false">Deactivate</option>
+            <option value="true">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Send email (email service need to be configured before)</label>
+        <select id="sendEmail" class="w3-select" name="option">
+            <option value="false">Deactivate</option>
+            <option value="true">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Send telegram (telegram service need to be configured before)</label>
+        <select id="sendTelegram" class="w3-select" name="option">
+            <option value="false">Deactivate</option>
+            <option value="true">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Telegram alert time</label>
+        <select id="telegramAlertType" class="w3-select" name="option">
+            <option value="text">Text</option>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Send matrix (matrix service need to be configured before)</label>
+        <select id="sendMatrix" class="w3-select" name="option">
+            <option value="false">Deactivate</option>
+            <option value="true">Activate</option>
+        </select>
+    </div>
+    <p><button class="w3-btn w3-theme" >Save</button></form></p>
+</div>
+<!-- Zones Tab -->
+<div id="zonesTab" class="w3-container tab" style="display:none">
+    <div class="w3-container">
+    <p><form class="w3-container" onsubmit="saveConfig('regions');return false" id="regions"></p>
+    <div class="w3-container">
+        <label>Current boundaries</label>
+        <input class="w3-input" id="currentRegions" readonly>
+    </div>
+    <p></p>
+    <div class="w3-container">
+        <img id="motion_picture" src="cgi-bin/currentpic.cgi" />
+    </div>
+    <p><button class="w3-btn w3-theme" >Save</button></form></p>
+    </div>
+</div>
+</div>
+
+<!-- Modal save box -->
+<div id="save_confirm" class="w3-modal">
+    <div class="w3-modal-content">
+      <header class="w3-container w3-theme">
+          <span onclick="document.getElementById('save_confirm').style.display='none'"
+          class="w3-button w3-display-topright">&times;</span>
+         <h2>Save config</h2>
+       </header>
+       <div class="w3-container">
+       <p id="save_result"></p>
+      </div>
+    </div>
+</div>
+
+</div>
+<script type="text/javascript" src="js/motion.js"></script>

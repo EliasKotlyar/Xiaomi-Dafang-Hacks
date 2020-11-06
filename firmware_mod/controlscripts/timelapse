@@ -29,7 +29,7 @@ if [ $# -eq 0 ]; then
   start
 else
   case $1 in start|stop|status)
-    $1
-    ;;
+	$1
+	;;
   esac
 fi

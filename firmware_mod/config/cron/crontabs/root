@@ -1,0 +1,6 @@
+# min   hour    day     month   weekday command
+*/15    *       *       *       *       busybox run-parts /system/sdcard/config/cron/periodic/15min
+0       *       *       *       *       busybox run-parts /system/sdcard/config/cron/periodic/hourly
+0       2       *       *       *       busybox run-parts /system/sdcard/config/cron/periodic/daily
+0       3       *       *       6       busybox run-parts /system/sdcard/config/cron/periodic/weekly
+0       5       1       *       *       busybox run-parts /system/sdcard/config/cron/periodic/monthly

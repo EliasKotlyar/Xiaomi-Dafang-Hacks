@@ -15,16 +15,16 @@ mimetype.assign = (
 )
 index-file.names = ( "index.html" )
 server.modules = ("mod_alias",
-                  "mod_auth",
-                  "mod_authn_file",
-                  "mod_redirect",
-                  "mod_rewrite",
-                  "mod_cgi",
-                  "mod_fastcgi",
-                  "mod_dirlisting",
-                  "mod_staticfile",
-                  "mod_accesslog",
-                  "mod_openssl")
+		  "mod_auth",
+		  "mod_authn_file",
+		  "mod_redirect",
+		  "mod_rewrite",
+		  "mod_cgi",
+		  "mod_fastcgi",
+		  "mod_dirlisting",
+		  "mod_staticfile",
+		  "mod_accesslog",
+		  "mod_openssl")
 
 cgi.assign = ( ".cgi" => "/bin/sh" )
 
@@ -40,38 +40,38 @@ $SERVER["socket"] == ":443" {
 # (we don't want to upgrade to SSL nor auth' this path)
 $HTTP["url"] !~ "^/.well-known/(.*)" {
 
-    $HTTP["scheme"] == "https" {
-        auth.backend                = "htdigest"
-        auth.backend.htdigest.userfile = "/system/sdcard/config/lighttpd.user"
-        auth.require = ( "/" => ("method" => "basic", "realm" => "all", "require" => "user=root"))
-        alias.url = ( "/viewer" => "/system/sdcard/DCIM/" )
-        $HTTP["url"] =~ "^/viewer($|/)" { server.dir-listing = "enable" }
-    }
+	$HTTP["scheme"] == "https" {
+		auth.backend				= "htdigest"
+		auth.backend.htdigest.userfile = "/system/sdcard/config/lighttpd.user"
+		auth.require = ( "/" => ("method" => "basic", "realm" => "all", "require" => "user=root"))
+		alias.url = ( "/viewer" => "/system/sdcard/DCIM/" )
+		$HTTP["url"] =~ "^/viewer($|/)" { server.dir-listing = "enable" }
+	}
 
 #If below 7 lines are commented out then SSL is disabled if un-commented SSL is enabled
 #SSL is enabled by default
 #If disabling SSL you must clear your site cookie
-    $HTTP["scheme"] == "http" {
-        # capture vhost name with regex conditiona -> %0 in redirect pattern
-        # must be the most inner block to the redirect rule
-        $HTTP["host"] =~ ".*" {
-            url.redirect = (".*" => "https://%0$0")
-        }
-    }
+	$HTTP["scheme"] == "http" {
+		# capture vhost name with regex conditiona -> %0 in redirect pattern
+		# must be the most inner block to the redirect rule
+		$HTTP["host"] =~ ".*" {
+			url.redirect = (".*" => "https://%0$0")
+		}
+	}
 }
 
 ## enable debugging
-#debug.log-request-header     = "enable"
-#debug.log-response-header    = "enable"
-#debug.log-request-handling   = "enable"
-#debug.log-file-not-found     = "enable"
-#debug.log-condition-handling = "enable"
+#debug.log-request-header	= "enable"
+#debug.log-response-header	= "enable"
+#debug.log-request-handling	= "enable"
+#debug.log-file-not-found	= "enable"
+#debug.log-condition-handling	= "enable"
 
 ## where to send error-messages to
-server.errorlog             = "/tmp/lighttpd-error.log"
+server.errorlog			= "/tmp/lighttpd-error.log"
 
 ## CGI (etc) stderr log
-server.breakagelog = "/tmp/lighttpd-cgi-stderr.log"
+server.breakagelog		= "/tmp/lighttpd-cgi-stderr.log"
 
 ## accesslog module
-accesslog.filename          = "/tmp/lighttpd-access.log"
+accesslog.filename		= "/tmp/lighttpd-access.log"

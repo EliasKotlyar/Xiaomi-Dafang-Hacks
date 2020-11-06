@@ -1,0 +1,75 @@
+ <!-- Control card -->
+ <div class="w3-panel w3-card">
+    <h1> Control System</h1>
+    <div class="w3-row">
+        <a href="javascript:void(0)" onclick="openTab(event, 'services');">
+          <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Services</div>
+        </a>
+        <a href="javascript:void(0)" onclick="openTab(event, 'update');showupdatepage();">
+          <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Update</div>
+        </a>
+        <a href="javascript:void(0)" onclick="openTab(event, 'config');getFiles('config');">
+          <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Backup/Restore config</div>
+        </a>
+        <a href="javascript:void(0)" onclick="openTab(event, 'power');">
+            <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Power</div>
+          </a>
+      </div>
+      <!-- Services Tab-->
+      <div id="services" class="w3-container tab">
+       
+        <p></p>
+        <table class="w3-table-all" id="tabServices">
+          <thead>
+            <tr class="w3-theme">
+              <th>Service Name</th>
+              <th>Control</th>
+              <th>Autostart</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <p></p>
+      </div>
+        
+      <!-- Update Tab-->
+      <div id="update" class="w3-container tab" style="display:none">
+        <h2 id='updatemsg'>Seaching for updates ...</h2>
+        
+
+      </div>
+
+      <!-- Backup/Restore Tab-->
+      <div id="config" class="w3-container tab" style="display:none">
+        <p id=><i class="fa fa-spinner w3-spin" style="font-size:64px"></i><br/>LOADING</p>
+      </div>   
+
+      <!-- Power control Tab-->
+      <div id="power" class="w3-container tab" style="display:none">
+        <p></p>
+        <div class="w3-row-padding">
+          <div class="w3-half">
+            <button class="w3-btn w3-block w3-theme" type="text" onclick="system('reboot');">Reboot</button>
+          </div>
+          <div class="w3-half">
+            <button class="w3-btn w3-block w3-theme" type="text" onclick="system('shutdown');">Shutdown</button>
+          </div>
+        </div>
+        <p></p>
+      </div>
+
+<!-- modal windows-->
+      <div id="modal_box" class="w3-modal">
+        <div class="w3-modal-content">
+          <header class="w3-container w3-theme">
+              <span onclick="document.getElementById('modal_box').style.display='none'"
+              class="w3-button w3-display-topright">&times;</span>
+             <h2 id="modal_title"></h2>
+           </header>
+           <div class="w3-container">
+           <p id="modal_content">Waiting ...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script type="text/javascript" src="js/control.js"></script>

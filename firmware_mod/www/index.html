@@ -1,451 +1,145 @@
 <!DOCTYPE html>
-<html class="has-navbar-fixed-top">
-
+<html>
 <head>
-    <meta charset=utf-8 />
-    <title>Dafang Hacks</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- CSS Framework -->
-    <link href="css/bulma.0.8.2.min.css" rel="stylesheet">
-    <link href="css/bulma-switch.1.0.1.min.css" rel="stylesheet">
-    <link href="css/bulma-badge.1.0.1.min.css" rel="stylesheet">
-    <link href="css/bulma-quickview.1.0.1.min.css" rel="stylesheet">
-
-    <!-- jQuery  -->
-    <script src="scripts/jquery-3.3.1.min.js" type="text/javascript"></script>
-
-    <!-- For Config Motion -->
-    <script src="scripts/jquery.imgareaselect.pack.js" type="text/javascript"></script>
-    <link href="css/imgareaselect-animated.css" rel="stylesheet">
-
-    <script type="text/javascript" src="scripts/smoothie.js"></script>
-    <link href="css/sw_night.css" rel="stylesheet">
-
-    <style id="custom_css">
-        body {
-            display: flex;
-            min-height: 100vh;
-            flex-direction: column;
-        }
-
-        #main {
-            flex: 1 0 auto;
-        }
-
-        /*
-        script_card <= scripts.cgi
-        status_card <= status.cgi
-        */
-
-        .script_card,
-        .status_card {
-            max-width: 100%;
-            margin-bottom: 1em;
-        }
-
-        @media screen and (min-width: 1024px) {
-            .script_card,
-            .status_card {
-                /* reduce width for large screens */
-                max-width: 75%
-            }
-        }
-
-        /* table.motor_control <= status.cgi */
-
-        table.motor_control td {
-            width: 120px;
-        }
-
-        table.motor_control td button {
-            width: 100%;
-        }
-
-        #liveview {
-            padding: 2px;
-            border: dotted 1px #4a4a4a;
-            margin: 0 auto;
-            display: block;
-            max-height: 80vh;
-        }
-
-        #dpad_indicator {
-            position: absolute;
-            top: 3px;
-            left: 0;
-            right: 0;
-            margin: 0 auto;
-            z-index: 4;
-            width: 1.5em;
-            border-radius: 0.25em;
-            background-color: rgba(10, 10, 10, 0.4);
-            text-align: center;
-            font-weight: bold;
-            color: #fff;
-            cursor: pointer;
-            font-size: 0.8em;
-            color: #ffdd57;
-        }
-
-        #dpad_container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            margin: 1em auto;
-            display: none;
-            z-index: 5;
-            width: 9em;
-        }
-
-        #dpad {
-            position: relative;
-            width: 9em;
-            height: 9em;
-        }
-
-        .dpad_button {
-            width: 3em;
-            height: 3em;
-            position: absolute;
-            display: inline-block;
-            text-align: center;
-        }
-
-        #dpad .up {
-            top: 0;
-            left: 3em;
-        }
-
-        #dpad .right {
-            top: 3em;
-            right: 0;
-        }
-
-        #dpad .left {
-            top: 3em;
-            left: 0;
-        }
-
-        #dpad .down {
-            top: 6em;
-            left: 3em;
-        }
-
-        .dpad_button a {
-            font-size: 2em;
-            color: #ff3860;
-            text-shadow: 2px 2px 4px #000000;
-        }
-
-        .dpad_button a:hover {
-            color: #ffdd57;
-        }
-
-        #content:hover #dpad_container {
-            display: block;
-        }
-
-        #content:hover #dpad_indicator {
-            display: none;
-        }
-        .double {
-          zoom: 2;
-          transform: scale(1.5);
-          -ms-transform: scale(1.5);
-          -webkit-transform: scale(1.5);
-          -o-transform: scale(1.5);
-          -moz-transform: scale(1.5);
-          transform-origin: 0 0;
-          -ms-transform-origin: 0 0;
-          -webkit-transform-origin: 0 0;
-          -o-transform-origin: 0 0;
-          -moz-transform-origin: 0 0;
-          -webkit-transform-origin: 0 0;
-        }
-        #files {
-  border-collapse: collapse; /* Collapse borders */
-  width: 100%; /* Full-width */
-  border: 1px solid #ddd; /* Add a grey border */
-  font-size: 18px; /* Increase font-size */
-}
-
-#files th, #files td {
-  text-align: left; /* Left-align text */
-  padding: 12px; /* Add padding */
-}
-
-#files tr {
-  /* Add a bottom border to all table rows */
-  border-bottom: 1px solid #ddd;
-}
-
-#files tr.header, #files tr:hover {
-  /* Add a grey background color to the table header and on hover */
-  background-color: #f1f1f1;
-}
-    </style>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- Third part lib css and js-->
+<!-- W3 School css-->
+<link rel="stylesheet" href="lib/w3css/w3.css" type="text/css" />
+<!-- jQuery  -->
+<script type="text/javascript" src="lib/jquerry/jquery.min.js"></script>
+<!-- fontawesome -->
+<script type="text/javascript" src="lib/fontawesome/js/all.min.js" defer></script>
+<!-- image select -->
+<link rel="stylesheet" href="lib/selectareas/jquery.selectareas.css" media="screen"  type="text/css" />
+<script src="lib/selectareas/jquery.selectareas.min.js" type="text/javascript"></script>
+<!-- datatable -->
+<link rel="stylesheet" href="lib/datatable/datatables.min.css" type="text/css" />
+<script type="text/javascript" src="lib/datatable/datatables.min.js"></script>
+<!-- smoothie-->
+<script type="text/javascript" src="lib/smoothie/smoothie.js"></script>
+<script src="/lib/d3/d3.min.js"></script>
+<script src="/lib/event-drops/index.js"></script>
+<!-- Dafang hack CSS-->
+<link rel="stylesheet" href="css/w3-toggle.css" type="text/css" />
+<link rel="stylesheet" href="css/w3-accordion.css" type="text/css" />
+<link href="/lib/event-drops/style.css" rel="stylesheet" />
+<script type="text/javascript">
+//Check if theme configured
+var css = localStorage.getItem('theme')
+if ( css == null )
+    css = "w3-theme-teal";
+$('head').append("<link rel='stylesheet' href='css/themes/"+css+".css'>");
+$.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title = hostname;});
+</script>
+<title>Dafang Hacks</title>
 </head>
-
 <body>
-    <nav class="navbar is-fixed-top" role="navigation" aria-label="main navigation">
-        <div class="container">
-            <div class="navbar-brand">
-                <a class="navbar-item" href="." id="title">Dafang Hacks</a>
-                <a id="navbar_burger" role="button" class="navbar-burger" data-target="nav_menu" aria-label="menu" aria-expanded="false">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-            </div>
-            <div class="navbar-menu" id="nav_menu">
-                <!-- left menu -->
-                <div class="navbar-start" id="common_nav">
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">SD card</span>
-                        <div class="navbar-dropdown is-boxed">
-                            <a id="viewer" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/list_files.cgi?dir=recording">Recordings</a>
-                            <a id="viewer" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/list_files.cgi?dir=timelapse">Timelapse</a>
-                            <a id="viewer" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/list_files.cgi?dir=motion">Motion</a>
-                       
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">Configuration</span>
-                        <div class="navbar-dropdown is-boxed">
-                            <a id="system" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_system.cgi">System</a>
-                            <a id="admin" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_admin.cgi">Administration</a>
-                            <a id="videoconfig" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_video.cgi">Video</a>
-                            <a id="audioconfig" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_audio.cgi">Audio</a>
-                            <a id="osdconfig" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_osd.cgi">OSD</a>
-                            <a id="ptconfig" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_pt.cgi">Pan / Tilt</a>
-                            <a id="ledconfig" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/system_led.cgi">LED configuration</a>
-                            <a id="configmotion" class="navbar-item onpage" href="javascript: void(0)" data-target="configmotion.html">Motion Detection</a>
-                            <a id="sw_night" class="navbar-item onpage" href="javascript: void(0)" data-target="sw_night_configure.html">SW night configuration</a>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">System</span>
-                        <div class="navbar-dropdown is-boxed">
-                                                        <a id="scripts" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/scripts.cgi">Services</a>
-                            <a id="update" class="navbar-item onpage" href="javascript: void(0)" data-target="update.html">Update</a>
-                            <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to reboot?" data-target="cgi-bin/action.cgi?cmd=reboot">Reboot</a>
-                            <a class="navbar-item prompt" href="javascript: void(0)" data-message="Are you sure you wish to shutdown?" data-target="cgi-bin/action.cgi?cmd=shutdown">Shutdown</a>
-                        </div>
-                    </div>
-                    <div class="navbar-item has-dropdown is-hoverable">
-                        <span class="navbar-link">Information</span>
-                        <div class="navbar-dropdown is-boxed">
-                            <a id="status_overview" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/status_overview.cgi">Overview</a>
-                             <a id="network" class="navbar-item onpage" href="javascript: void(0)" data-target="cgi-bin/network.cgi">Network</a>
-                            <a id="logs" class="navbar-item onpage" href="javascript: void(0)" data-target="logs.html">Logs</a>
-                        </div>
-                    </div>
+<!-- Sidebar for control camera -->
+<div class="w3-sidebar w3-bar-block w3-animate-left" style="display:none;z-index:5" id="sideBar">
+  <button class="w3-bar-item w3-button w3-large w3-theme" onclick="w3_close()">Close &times;</button>
+  <p class="w3-large">Camera</p>
+  <label class="switch"><input id="auto_night_mode" type="checkbox"><span class="slider round"></span></label> Auto Night Detecion<br />
+  <label class="switch"><input id="ir_led" type="checkbox"><span class="slider round"></span></label> IR Led<br />
+  <label class="switch"><input id="ir_cut" type="checkbox"><span class="slider round"></span></label> IR Filter<br />
+  <label class="switch"><input id="blue_led" type="checkbox"><span class="slider round"></span></label> Blue LED<br />
+  <label class="switch"><input id="yellow_led" type="checkbox"><span class="slider round"></span></label> Yellow LED<br />
+  <p class="w3-large">Motion</p>
+  <label class="switch"><input id="motion_detection" type="checkbox"><span class="slider round"></span></label> Detection<br />
+  <label class="switch"><input id="motion_mail" type="checkbox"><span class="slider round"></span></label> Send Emails<br />
+  <label class="switch"><input id="motion_telegram" type="checkbox"><span class="slider round"></span></label> Send Telegram<br />
+  <label class="switch"><input id="motion_led" type="checkbox"><span class="slider round"></span></label> LED<br />
+  <label class="switch"><input id="motion_snapshot" type="checkbox"><span class="slider round"></span></label> Snapshots<br />
+  <label class="switch"><input id="motion_mqtt" type="checkbox"><span class="slider round"></span></label> MQTT Message<br />
+  <label class="switch"><input id="motion_mqtt_snapshot" type="checkbox"><span class="slider round"></span></label> MQTT Snapshot<br />
+  <label class="switch"><input id="motion_mqtt_video" type="checkbox"><span class="slider round"></span></label> MQTT Video<br />
+</div>
+<div class="w3-overlay w3-animate-opacity" onclick="w3_close()" style="cursor:pointer" id="myOverlay"></div>
+<div class="w3-auto">
 
-                </div>
-                <!-- right menu -->
-                <div class="navbar-end">
-                    <div id="camcontrol_link" class="navbar-item has-dropdown">
-                        <!-- Camera Movement Controls -->
-                        <span class="navbar-link">Camera Controls</span>
-                        <div class="navbar-dropdown is-boxed is-right">
-                            <!-- Led: IR -->
-                            <span class="navbar-item">
-                                <input id="ir_led" type="checkbox" name="ir_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=ir_led_on" data-unchecked="cgi-bin/action.cgi?cmd=ir_led_off">
-                                <label for="ir_led">IR Led</label>
-                            </span>
-                            <!-- IR Cut -->
-                            <span class="navbar-item">
-                                <input id="ir_cut" type="checkbox" name="ir_cut" class="switch" data-checked="cgi-bin/action.cgi?cmd=ir_cut_on" data-unchecked="cgi-bin/action.cgi?cmd=ir_cut_off">
-                                <label for="ir_cut">IR Filter</label>
-                            </span>
-                            <!-- Auto Night Detect -->
-                            <span class="navbar-item">
-                                <input id="auto_night_detection" type="checkbox" name="auto_night_detection" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=auto-night-detection"
-                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=auto-night-detection">
-                                <label for="auto_night_detection">Auto Night Detection</label>
-                            </span>
-                            <!-- LED: Blue -->
-                            <span class="navbar-item">
-                                <input id="blue_led" type="checkbox" name="blue_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=blue_led_on" data-unchecked="cgi-bin/action.cgi?cmd=blue_led_off">
-                                <label for="blue_led">Blue LED</label>
-                            </span>
-                            <!-- LED: Yellow -->
-                            <span class="navbar-item">
-                                <input id="yellow_led" type="checkbox" name="yellow_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=yellow_led_on"
-                                    data-unchecked="cgi-bin/action.cgi?cmd=yellow_led_off">
-                                <label for="yellow_led">Yellow LED</label>
-                            </span>
-                            <!-- Motion Detection -->
-                            <span class="navbar-item">
-                                <input id="motion_detection" type="checkbox" name="motion_detection" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_on"
-                                    data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_off">
-                                <label for="motion_detection">Motion Detection</label>
-                            </span>
-                            <!-- RTSP H264 -->
-                            <span class="navbar-item">
-                                <input id="rtsp_h264" type="checkbox" name="rtsp_h264" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=rtsp-h264"
-                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=rtsp-h264">
-                                <label for="rtsp_h264">RTSP H264 Server</label>
-                            </span>
-                            <!-- RTSP MJPEG -->
-                            <span class="navbar-item">
-                                <input id="rtsp_mjpeg" type="checkbox" name="rtsp_mjpeg" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=rtsp-mjpeg"
-                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=rtsp-mjpeg">
-                                <label for="rtsp_mjpeg">RTSP MJPEG Server</label>
-                            </span>
-                            <!-- MQTT Status -->
-                            <span class="navbar-item">
-                                <input id="mqtt_status" type="checkbox" name="mqtt_status" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=mqtt-status"
-                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=mqtt-status">
-                                <label for="mqtt_status">MQTT Status Server</label>
-                            </span>
-                            <!-- MQTT Control -->
-                            <span class="navbar-item">
-                                <input id="mqtt_control" type="checkbox" name="mqtt_control" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=mqtt-control"
-                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=mqtt-control">
-                                <label for="mqtt_control">MQTT Control Server</label>
-                            </span>
-                            <!-- Startup Sound -->
-                            <span class="navbar-item">
-                                <input id="sound_on_startup" type="checkbox" name="sound_on_startup" class="switch" data-checked="cgi-bin/scripts.cgi?cmd=start&script=sound-on-startup"
-                                    data-unchecked="cgi-bin/scripts.cgi?cmd=stop&script=sound-on-startup">
-                                <label for="sound_on_startup">Sound on Startup</label>
-                            </span>
-                            <!-- Motion: mail -->
-                            <span class="navbar-item">
-                                <input id="motion_mail" type="checkbox" name="motion_mail" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_mail_on"
-                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mail_off">
-                                <label for="motion_mail">Motion - Send emails</label>
-                            </span>
-                            <!-- Motion: Telegram -->
-                            <span class="navbar-item">
-                                <input id="motion_telegram" type="checkbox" name="motion_telegram" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_telegram_on"
-                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_telegram_off">
-                                <label for="motion_telegram">Motion - Send Telegram</label>
-                            </span>
-                            <!-- Motion: LED -->
-                            <span class="navbar-item">
-                                <input id="motion_led" type="checkbox" name="motion_led" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_led_on"
-                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_led_off">
-                                <label for="motion_led">Motion - LED</label>
-                            </span>
-                            <!-- Motion: SNAPSHOT -->
-                            <span class="navbar-item">
-                                <input id="motion_snapshot" type="checkbox" name="motion_snapshot" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_snapshot_on"
-                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_snapshot_off">
-                                <label for="motion_snapshot">Motion - Snapshots</label>
-                            </span>
-                            <!-- Motion: MQTT Message -->
-                            <span class="navbar-item">
-                                <input id="motion_mqtt" type="checkbox" name="motion_mqtt" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_publish_on"
-                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_publish_off">
-                                <label for="motion_mqtt">Motion - MQTT Message</label>
-                            </span>
-                            <!-- Motion: MQTT Message -->
-                            <span class="navbar-item">
-                                <input id="motion_mqtt_snapshot" type="checkbox" name="motion_mqtt_snapshot" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_snapshot_on"
-                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_snapshot_off">
-                                <label for="motion_mqtt_snapshot">Motion - MQTT Snapshot</label>
-                            </span>
-                            <!-- Motion: MQTT Message -->
-                            <span class="navbar-item">
-                                <input id="motion_mqtt_video" type="checkbox" name="motion_mqtt_video" class="switch" data-checked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_video_on"
-                                       data-unchecked="cgi-bin/action.cgi?cmd=motion_detection_mqtt_video_off">
-                                <label for="motion_mqtt_video">Motion - MQTT Video</label>
-                            </span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
-
-    <section id="main" class="section">
-        <div id="content" class="container">
-            <img id="liveview" src="cgi-bin/currentpic.cgi" onerror="this.src='css/unable_load.png';">
-            <div id="dpad_container">
-                <div id="dpad">
-                    <div class="dpad_button up">
-                        <!-- up -->
-                        <a class="cam_button" href="javascript:void(0)" data-cmd="motor_up">
-                            &#x25B2;
-                        </a>
-                    </div>
-                    <div class="dpad_button down">
-                        <!-- down -->
-                        <a class="cam_button" href="javascript:void(0)" data-cmd="motor_down">
-                            &#x25BC;
-                        </a>
-                    </div>
-                    <div class="dpad_button left">
-                        <!-- left -->
-                        <a class="cam_button" href="javascript:void(0)" data-cmd="motor_left">
-                            &#x25C0;
-                        </a>
-                    </div>
-                    <div class="dpad_button right">
-                        <!-- right -->
-                        <a class="cam_button" href="javascript:void(0)" data-cmd="motor_right">
-                            &#x25B6;
-                        </a>
-                    </div>
-                </div>
-            </div>
-            <div id="dpad_indicator">
-                &hArr;
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="has-text-centered is-size-7">
-                <p>
-                    <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks" target="_blank">
-                        <strong>Dafang Hacks</strong>
-                    </a> Version: <em id="version">VERSION</em>
-                    <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Issues?</a>
-                </p>
-                <div class="dropdown is-hoverable">
-                    <div class="dropdown-trigger">
-                        <a class="is-small is-link" aria-haspopup="true" aria-controls="dropdown-menu">
-                            <span>Theme</span>
-                        </a>
-                    </div>
-                    <div class="dropdown-menu" role="menu">
-                        <div class="dropdown-content">
-                            <a id="theme_choice_0" href="javascript: setTheme('0')" class="theme_choice dropdown-item" data-css="css/bulma.0.7.2.min.css">
-                                Light
-                            </a>
-                            <a id="theme_choice_1" href="javascript: setTheme('1')" class="theme_choice dropdown-item" data-css="css/bulmaswatch.min.css">
-                                Dark
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-    </footer>
-
-    <div id="quickviewDefault" class="quickview">
-        <header class="quickview-header">
-            <p class="title">Quickview</p>
-            <span id="quickViewClose" class="delete" data-dismiss="quickview"></span>
-        </header>
-
-        <div class="quickview-body">
-            <div class="quickview-block" id="quicViewContent">
-            </div>
-        </div>
-
-        <footer class="quickview-footer">
-
-        </footer>
+<!-- Menu -->
+<div class="w3-container w3-card w3-theme">
+  <button class="w3-bar-item w3-button" onclick="openPage('live');" title="Home"><i class="fa fa-home"></i></button>
+  <div class="w3-dropdown-hover">
+    <button class="w3-button"><i class="fa fa-cog"></i></button>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4">
+      <button onclick="openPage('system');" class="w3-bar-item w3-button">System</button>
+      <button onclick="openPage('camera');" class="w3-bar-item w3-button">Camera</button>
+      <button onclick="openPage('net_services');" class="w3-bar-item w3-button">Network Services</button>
+      <button onclick="openPage('motion');" class="w3-bar-item w3-button">Motion Detection</button>
+      <button onclick="openPage('softnight');" class="w3-bar-item w3-button">Software Night Detection</button>
     </div>
+  </div>
+  <button class="w3-bar-item w3-button" onclick="openPage('control');" title="System Control"><i class="fas fa-tools"></i></button>
+  <button class="w3-bar-item w3-button" onclick="openPage('info');" title="System Information"><i class="fa fa-info-circle"></i></button>
+  <button class="w3-bar-item w3-button" onclick="openPage('sdcard');" title="View files on SD Card"><i class="fa fa-sd-card"></i></button>
+  <div class="w3-dropdown-hover w3-right">
+    <button class="w3-button" id="notifAlarm"><i  class="fa fa-bell"></i></button>
+    <div class="w3-dropdown-content w3-bar-block w3-card-4" style="width:250px">
+      <div class="w3-container" id="notifContent">
+        <p>No notifications</p>
+      </div>
+    </div>
+  
+</div>
+</div>
+<div  id="content" class="w3-container">
 
-    <script src="scripts/index.html.js" type="text/javascript"></script>
+</div>
 
+<!-- About modal -->
+<div id="about" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-theme">
+        <span onclick="document.getElementById('about').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+       <h2>About</h2>
+     </header>
+     <div class="w3-container">
+     <p id="about">
+        <strong>Dafang Hacks : </strong><br />
+        Version: <em id="version">VERSION</em><br />
+        <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Report and view issues</a> | 
+     </p>
+    </div>
+  </div>
+</div>
+
+<!-- Theme modal -->
+<div id="theme" class="w3-modal">
+  <div class="w3-modal-content">
+    <header class="w3-container w3-theme">
+        <span onclick="document.getElementById('theme').style.display='none'"
+        class="w3-button w3-display-topright">&times;</span>
+       <h2>Theme</h2>
+     </header>
+     <div class="w3-container">
+     <p id="theme">
+      <label>Choose your theme:</label>
+      <select id="theme" class="w3-select" name="option">
+          <option value="w3-theme-dark-grey">Dark Grey</option>
+          <option value="w3-theme-black">Black</option>
+          <option value="w3-theme-night-blue">Light Blue</option>
+          <option value="w3-theme-grey">Grey</option>
+          <option value="w3-theme-indigo">Indigo</option>
+          <option value="w3-theme-light-green">Light Green</option>
+          <option value="w3-theme-orange">Orange</option>
+          <option value="w3-theme-pink">Pink</option>
+          <option value="w3-theme-teal">Teal</option>
+          <option value="w3-theme-w3schools">W3 School</option>
+      </select>
+     </p>
+    </div>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="w3-container w3-card w3-theme w3-center">
+    <a class="w3-bar-item w3-button" href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks" target="_blank" title="GitHub project page"><i class="fab fa-github"></i></a>
+    <span class="w3-bar-item w3-button" onclick="document.getElementById('about').style.display='block'" title="Camera Information"><i class="fas fa-info-circle"></i></span>
+    <span class="w3-bar-item w3-button" onclick="document.getElementById('theme').style.display='block'" title="Choose Theme Color"><i class="fas fa-palette"></i></span>
+</footer>
+</div>
+
+<script type="text/javascript" src="js/index.js"></script>
 </body>
-
 </html>
