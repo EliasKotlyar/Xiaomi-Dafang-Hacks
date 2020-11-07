@@ -295,7 +295,7 @@ Australia/Lord_Howe	LHST-10:30LHST-11,M10.1.0,M4.1.0
 Australia/Melbourne	EST-10EST,M10.1.0,M4.1.0/3
 Australia/Perth	WST-8
 Australia/Sydney	EST-10EST,M10.1.0,M4.1.0/3
-Europe/Amsterdam	CET-1CEST,M3.5.0,M10.5.0/3
+Europe/Amsterdam	CET-1CEST-2,M3.5.0,M10.5.0/3
 Europe/Andorra	CET-1CEST,M3.5.0,M10.5.0/3
 Europe/Athens	EET-2EEST,M3.5.0/3,M10.5.0/4
 Europe/Belgrade	CET-1CEST,M3.5.0,M10.5.0/3
