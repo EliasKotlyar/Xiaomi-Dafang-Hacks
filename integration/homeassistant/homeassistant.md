@@ -2,7 +2,7 @@
 
 ### On the Home Assistant side
 
-First let's set up your camera stream. Make sure the _rtsp-h264_ service in the _Services control panel_ is running and you can connect to it via a media player (like [VLC](https://www.videolan.org/)) using the address `rtsp://dafang:8554/unicast`.
+First let's set up your camera stream. Make sure the _rtsp_ service in the _Services control panel_ is running and you can connect to it via a media player (like [VLC](https://www.videolan.org/)) using the address `rtsp://dafang:8554/unicast`.
 
 ![rtsp-h264](rtsp_h264.png)
 
@@ -85,8 +85,7 @@ To put all the sensors & actors conveniently into one group you can use the foll
 ```yaml
 Dafang3:
     - camera.dafang3
-    - switch.dafang3_h264_rtsp_server
-    - switch.dafang3_mjpeg_rtsp_server
+    - switch.dafang3_rtsp_server
     - sensor.dafang3
     - device_tracker.dafang3
     - sensor.dafang3_light_sensor

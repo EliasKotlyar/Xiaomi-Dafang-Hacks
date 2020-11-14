@@ -274,37 +274,18 @@ http_password(){
   echo "$user:$realm:$hash" > /system/sdcard/config/lighttpd.user
 }
 
-# Control the RTSP h264 server
-rtsp_h264_server(){
-  case "$1" in
-  on)
-	/system/sdcard/controlscripts/rtsp-h264 start
-	;;
-  off)
-	/system/sdcard/controlscripts/rtsp-h264 stop
-	;;
-  status)
-	if /system/sdcard/controlscripts/rtsp-h264 status | grep -q "PID"
-	  then
-		echo "ON"
-	else
-		echo "OFF"
-	fi
-	;;
-  esac
-}
 
-# Control the RTSP mjpeg server
-rtsp_mjpeg_server(){
+# Control the RTSP server
+rtsp_server(){
   case "$1" in
   on)
-	/system/sdcard/controlscripts/rtsp-mjpeg start
+	/system/sdcard/controlscripts/rtsp start
 	;;
   off)
-	/system/sdcard/controlscripts/rtsp-mjpeg stop
+	/system/sdcard/controlscripts/rtsp stop
 	;;
   status)
-	if /system/sdcard/controlscripts/rtsp-mjpeg status | grep -q "PID"
+	if /system/sdcard/controlscripts/rtsp status | grep -q "PID"
 	then
 		echo "ON"
 	else

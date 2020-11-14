@@ -148,7 +148,7 @@ case "$F_cmd" in
 	ir_cut off
   ;;
 
-ir_cut_status)
+  ir_cut_status)
 	ir_cut status
 	return
   ;;
@@ -187,35 +187,12 @@ ir_cut_status)
 	return
   ;;
 
-  h264_start)
-	/system/sdcard/controlscripts/rtsp-h264 start
-  ;;
-
-  h264_noseg_start)
-	/system/sdcard/controlscripts/rtsp-h264 start
-  ;;
-
-  mjpeg_start)
-	/system/sdcard/controlscripts/rtsp-mjpeg start
-  ;;
-
-  h264_nosegmentation_start)
-	/system/sdcard/controlscripts/rtsp-h264 start
+  rtsp_start)
+        /system/sdcard/controlscripts/rtsp start
   ;;
 
   rtsp_stop)
-	/system/sdcard/controlscripts/rtsp-mjpeg stop
-	/system/sdcard/controlscripts/rtsp-h264 stop
-  ;;
-
-  h264_status)
-	rtsp_h264_server status
-	return
-  ;;
-
-  mjpeg_status)
-	rtsp_mjpeg_server status
-	return
+	/system/sdcard/controlscripts/rtsp stop
   ;;
 
   settz)
