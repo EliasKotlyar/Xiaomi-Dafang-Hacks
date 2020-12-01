@@ -1,5 +1,6 @@
 #!/bin/sh
 
+. /system/sdcard/config/motion.conf
 . /system/sdcard/config/mqtt.conf
 . /system/sdcard/scripts/common_functions.sh
 
@@ -25,7 +26,11 @@ while true; do
   esac
 done
 
-/system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/# -t "${LOCATION}/set" ${MOSQUITTOOPTS} | while read -r line ; do
+snapshot_num=`cd ${save_snapshot_dir}; ls *.jpg | tail -1 | sed -e 's/\.jpg$//'`
+snapshot_num=${snapshot_num:-0}
+snapshot_num=$(( $snapshot_num + 1 ))
+
+/system/sdcard/bin/mosquitto_sub.bin -v -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t '#' ${MOSQUITTOOPTS} | while read -r line ; do
   case $line in
 	"${LOCATION}/set announce")
 	  /system/sdcard/scripts/mqtt-autodiscovery.sh
@@ -247,6 +252,12 @@ done
 	  /system/sdcard/bin/jpegoptim -m 50 "/tmp/mqtt_snapshot"
 	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/snapshot/image ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -f "/tmp/mqtt_snapshot"
 	  rm "/tmp/mqtt_snapshot"
+	;;
+
+	tele/sonoff_br/RESULT*D51D2E*)
+	  /system/sdcard/bin/getimage > "${save_snapshot_dir}/${snapshot_num}.jpg"
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/snapshot/image ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "${snapshot_num}.jpg"
+          snapshot_num=$(( $snapshot_num + 1 ))
 	;;
 
 	"${TOPIC}/motion/mqtt_snapshot/set ON")
