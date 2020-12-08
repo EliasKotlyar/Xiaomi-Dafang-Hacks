@@ -57,7 +57,7 @@ function showupdatepage(result) {
         var update_status = parseInt(update[1],10);
 
         if (update_status == 0) {
-            $('#updatemsg').html("You have already the lastest version from the " + update[0] + " branch")
+            $('#updatemsg').html("You have already the latest version from the " + update[0] + " branch")
             if (update[0] == "master") {
                 $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
