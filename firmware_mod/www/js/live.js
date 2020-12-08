@@ -13,6 +13,11 @@ function refreshLiveImage() {
     $("#liveview").attr("src", "/cgi-bin/currentpic.cgi?" + ts);
 }
 
+//Function to download a screenshot
+function downloadScreenshot() {
+    var ts = new Date().getTime();
+    window.location.href = "/cgi-bin/downloadpic.cgi?" + ts;
+}
 
 //Function to refresh side bar buttons
 function refreshSideBar() {
