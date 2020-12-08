@@ -17,6 +17,7 @@ if [ -n "$F_cmd" ]; then
   case "$F_cmd" in
   status_all)
     echo "auto_night_mode:$(auto_night_mode status)"
+    echo "night_mode:$(night_mode status)"
     echo "ir_led:$(ir_led status)"
     echo "ir_cut:$(ir_cut status)"  
     echo "blue_led:$(blue_led status)"
@@ -57,6 +58,9 @@ if [ -n "$F_cmd" ]; then
     ;; 
   auto_night_mode)
     auto_night_mode $F_action
+    ;;
+  night_mode)
+    night_mode $F_action
     ;;
   ir_led)
     ir_led $F_action
