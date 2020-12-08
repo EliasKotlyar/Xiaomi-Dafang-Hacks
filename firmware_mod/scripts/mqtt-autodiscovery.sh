@@ -73,3 +73,6 @@
 
   # Recording on/off switch
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/recording/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Recording\", \"unique_id\": \"$MAC_SIMPLE-recording\", $DEVICE_INFO, \"icon\": \"mdi:video\", \"state_topic\": \"$TOPIC/recording\", \"command_topic\": \"$TOPIC/recording/set\"}"
+
+  # Timelapse on/off switch
+  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/timelapse/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Timelapse\", \"unique_id\": \"$MAC_SIMPLE-timelapse\", $DEVICE_INFO, \"icon\": \"mdi:image-multiple\", \"state_topic\": \"$TOPIC/timelapse\", \"command_topic\": \"$TOPIC/timelapse/set\"}"
