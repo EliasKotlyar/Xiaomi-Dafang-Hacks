@@ -2,10 +2,11 @@
 PIDFILE='/run/timelapse.pid'
 
 status()
-{  PID=$(cat $PIDFILE)
-   if [ "$PID" != "" ]; then
-   cat $PIDFILE
-   fi
+{
+  pid="$(cat "$PIDFILE" 2>/dev/null)"
+  if [ "$pid" ]; then
+	kill -0 "$pid" >/dev/null && echo "PID: $pid" || return 1
+  fi
 }
 
 start()
