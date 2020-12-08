@@ -18,7 +18,6 @@ function update(onStart) {
         if (log < 0) {
             if (onStart != true)
             {
-                $('#message').text("Error starting update progress");
                 $('#message').text("Error starting update process");
             }
         } else {
@@ -229,6 +228,21 @@ function autoStartService(action,serviceName) {
     }
 }
 
+//Friendly names for known services
+var serviceFriendlyNames = {
+    "auto-night-detection": "Auto Night Detection",
+    "debug-on-osd": "Debug on OSD",
+    "ftp_server": "FTP Server",
+    "mqtt-control": "MQTT Control",
+    "mqtt-status": "MQTT Live Status Updates",
+    "onvif-srvd": "ONVIF Server",
+    "recording": "Recording",
+    "rtsp": "RTSP Server",
+    "sound-on-startup": "Play Startup Sound",
+    "telegram-bot": "Telegram Bot",
+    "timelapse": "Timelapse",
+};
+
 //Function get config
 function getServices() {
     // get config and put to hmtl elements
@@ -243,7 +257,8 @@ function getServices() {
          var autostart_checked = "onclick='autoStartService(\"true\",\""+config_info[0]+"\")')";
          if(config_info[2] == "true")
             autostart_checked = "checked onclick='autoStartService(\"false\",\""+config_info[0]+"\")')";
-         $('#tabServices').append("<tr><td>"+config_info[0]+"</td>\
+         var friendly_name = serviceFriendlyNames[config_info[0]] || config_info[0];
+         $('#tabServices').append("<tr><td>"+friendly_name+"</td>\
          <td>Stop <label class='switch'><input id='control_"+config_info[0]+"' class='w3-check' type='checkbox' "+control_checked+"> <span class='slider round'></span></label> Start</td>\
          <td>Off <label class='switch'><input id='autoStart_"+config_info[0]+"' class='w3-check' type='checkbox' "+autostart_checked+"> <span class='slider round'></span></label> On</td></tr>");
         }
