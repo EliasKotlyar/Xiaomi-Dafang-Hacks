@@ -238,7 +238,7 @@ if [ -n "$F_cmd" ]; then
 	fi
 	if [ -n  "${F_osdY+x}" ]; then
 		echo "POSY=${F_osdY}" >> /system/sdcard/config/osd.conf
-		system/sdcard/bin/setconf -k x -v "${F_osdY}"
+		/system/sdcard/bin/setconf -k x -v "${F_osdY}"
 		echo "Set OSD Y position to ${F_osdY}<br />"
 	fi
 	if [ -n  "${F_osdFixW+x}" ]; then
