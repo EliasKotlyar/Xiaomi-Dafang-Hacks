@@ -543,8 +543,9 @@ auto_night_mode_status)
 	  if [ "$processId" == "" ]; then
 		  echo "===============" >> /system/sdcard/log/update.log
 		  date >> /var/log/update.log
-		  if [ "$F_login" != "" ]; then
-			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${release} -u $F_login >> "/system/sdcard/log/update.log" &
+      github_token=$(get_config /system/sdcard/config/updates.conf github_token)
+		  if [ "$github_token" != "" ]; then
+			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${release} -t "$github_token" >> "/system/sdcard/log/update.log" &
 		  else
 			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${release} >> "/system/sdcard/log/update.log" &
 		  fi
