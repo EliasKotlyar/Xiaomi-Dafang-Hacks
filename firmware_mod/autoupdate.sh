@@ -232,6 +232,7 @@ do
         -x | --repo)
             REPO=$2;
             shift
+            shift
             ;;
         -r | --branch)
 	    BRANCH=$2
