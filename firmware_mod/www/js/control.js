@@ -87,9 +87,17 @@ function showupdatepage(result) {
                 ' + custom + '</div>');
 
             }
+            else if (branch == "beta") {
+                $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
+                <div class="panel"> <p></p>\
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                ' + custom + '</div>');
+            }
             else {
                 $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
+                <input id="fullCustom" class="w3-btn w3-block w3-theme" type="text" value="Force full update to CUSTOM (remove version file + update)" onclick="start(\'' + repo + '\',\'' + branch + '\',\'full\')"/><br /> \
                 <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
                 <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
                 ' + custom + '</div>');
@@ -103,7 +111,7 @@ function showupdatepage(result) {
         }
         else if (update_status > 0) {
             $('#updatemsg').html("You are "+ update_status +" commits behind the " + branch + " branch of the " + repo + " repo.")
-            if (update[0] == "master") {
+            if (branch == "master") {
                 $('#update').append('<input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'' + repo + '\',\'master\',\'cumul\')"/><br />');
                 $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"><p></p> \
@@ -111,8 +119,16 @@ function showupdatepage(result) {
                 <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
                 ' + custom + '</div>');
             }
-            else {
+            else if (branch == "beta") {
                 $('#update').append('<input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'' + repo + '\',\'beta\',\'cumul\')"/><br />');
+                $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
+                <div class="panel"> <p></p>\
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                ' + custom + '</div>');
+            }
+            else {
+                $('#update').append('<input id="updateCustom" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (CUSTOM)" onclick="start(\'' + repo + '\',\'' + branch + '\',\'cumul\')"/><br />');
                 $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
                 <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
