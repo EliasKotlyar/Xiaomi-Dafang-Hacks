@@ -56,6 +56,7 @@ usage()
 
     echo "-v (--verbose) for verbose"
     echo "-u (--user) githup login/password (not mandatory, but sometime anonymous account get banned)"
+    echo "-t (--token) github API token"
     echo "-h (--help) for this help"
     echo
     echo "Note that ${EXCLUDEFILTER} will be excluded"
@@ -203,6 +204,11 @@ do
             ;;
         -u | --user)
             CURL="${CURL} -u $2"
+            shift
+            shift
+            ;;
+        -t | --token)
+            CURL="${CURL} -H 'Authorization: token $2'"
             shift
             shift
             ;;
