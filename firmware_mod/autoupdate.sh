@@ -271,6 +271,7 @@ action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 if [ -f "$VERSION_FILE" ]; then
     LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})
     LOCALREPO=$(${JQ} -r .repo ${VERSION_FILE})
+    if [ -z "$LOCALREPO" ]; then LOCALREPO="$REPO"; fi
     if [ ${LOCALREPO} = ${REPO} ] && [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
         logerror "You are currently on the latest version"
         echo "You are currently on the latest version"
