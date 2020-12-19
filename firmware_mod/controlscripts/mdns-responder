@@ -1,5 +1,5 @@
 #!/bin/sh
-PIDFILE="/var/run/mDNSResponder.pid"
+PIDFILE="/run/mdns-responder.pid"
 
 status()
 {
@@ -15,7 +15,7 @@ start()
   	echo "mDNSResponder already running";
   else
     echo "Starting mDNSResponder";
-		/system/sdcard/bin/mDNSResponder -b -n "$(hostname)" -t _rtsp._tcp -p 8554
+		/system/sdcard/bin/mDNSResponder -b -P "$PIDFILE" -n "$(hostname)" -t _rtsp._tcp -p 8554
   fi
 }
 
