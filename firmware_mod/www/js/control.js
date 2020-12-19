@@ -68,12 +68,12 @@ function showupdatepage(result) {
 
         var custom = '<div class="w3-panel w3-border w3-round"> \
           <h2>Custom Firmware</h2> \
-          <label>Repository</label> \
+          <label for="custom_repo">Repository</label> \
           <input id="custom_repo" class="w3-input w3-block w3-theme" type="text" value="' + repo + '" /><br /> \
-          <label>Branch</label> \
+          <label for="custom_branch">Branch</label> \
           <input id="custom_branch" class="w3-input w3-block w3-theme" type="text" value="' + branch + '" /><br /> \
           <input id="custom_full" class="w3-check w3-theme" type="checkbox" checked="checked" /> \
-          <label>Force full update</label><br /><br /> \
+          <label for="custom_full">Force full update</label><br /><br /> \
           <button class="w3-btn w3-block w3-theme" onclick="startCustom();">Update custom firmware</Button><br /> \
         </div>';
 
