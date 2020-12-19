@@ -694,10 +694,15 @@ motion_detection_mqtt_snapshot_status)
 		;;
   check_update)
 		if [ -s /system/sdcard/VERSION ]; then
+      CURL=/system/sdcard/bin/curl
+      TOKEN=$(get_config /system/sdcard/config/updates.conf github_token)
+      if [ "$TOKEN" != "" ]; then
+        CURL="$CURL -H 'Authorization: token $TOKEN'"
+      fi
 		  localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
 		  localbranch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
-		  remotecommit=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
-		  commitbehind=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
+		  remotecommit=$($CURL -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
+		  commitbehind=$($CURL -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
 		  if [ ${localcommit} = ${remotecommit} ]; then
 			echo "${localbranch}:0"
 		  else
