@@ -78,7 +78,7 @@ function showupdatepage(result) {
         </div>';
 
         if (update_status == 0) {
-            $('#updatemsg').html("You have already the latest version from the " + branch + " branch of the" + repo + " repo.")
+            $('#updatemsg').html("You have already the latest version from the " + branch + " branch of the " + repo + " repo.")
             if (branch == "master") {
                 $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
@@ -102,7 +102,7 @@ function showupdatepage(result) {
             <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'EliasKotlyar\',\'beta\',\'cumul\')"/><br />' + custom);
         }
         else if (update_status > 0) {
-            $('#updatemsg').html("You are "+ update_status +" commits behind "+ update[0] + " branch");
+            $('#updatemsg').html("You are "+ update_status +" commits behind the " + branch + " branch of the " + repo + " repo.")
             if (update[0] == "master") {
                 $('#update').append('<input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'' + repo + '\',\'master\',\'cumul\')"/><br />');
                 $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
