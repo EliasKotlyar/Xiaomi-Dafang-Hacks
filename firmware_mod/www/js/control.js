@@ -14,7 +14,7 @@ function timedRefresh(timeoutPeriod) {
 function update(onStart) {
     $.ajax({
         'url': 'cgi-bin/action.cgi?cmd=show_updateProgress'
-    }).done(function(log) {   
+    }).done(function(log) {
         if (log < 0) {
             if (onStart != true)
             {
@@ -44,7 +44,7 @@ function accordionUpdate(param) {
         panel.style.maxHeight = null;
     } else {
         panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
+    }
 }
 
 function startCustom(el) {
@@ -60,7 +60,7 @@ function showupdatepage(result) {
     $.ajax({
         'url': 'cgi-bin/action.cgi?cmd=check_update'
     }).done(function(result){
-        
+
         var update = result.split(":")
         var repo = update[0];
         var branch = update[1];
@@ -133,12 +133,12 @@ function saveConfig() {
     $.get("cgi-bin/ui_control.cgi",{cmd: "save_config"},function(result) {
         getFiles('config');
     });
-    
+
 }
 
 function deleteConfig(fileName,dir) {
     var del = confirm("Confirm delete file: "+fileName);
-    if ( del ) { 
+    if ( del ) {
         $.get("cgi-bin/ui_control.cgi", {cmd: "del_config",file: fileName});
         getFiles(dir);
     }
@@ -147,7 +147,7 @@ function deleteConfig(fileName,dir) {
 function restoreConfig(fileName) {
     var restore = confirm("Are you sure to restore config file: "+fileName+"\n Camera will reboot at the end of the process");
     if ( restore ) {
-        $.get("cgi-bin/ui_control.cgi",{cmd: "restore_config",file: fileName});  
+        $.get("cgi-bin/ui_control.cgi",{cmd: "restore_config",file: fileName});
     }
 }
 
@@ -155,8 +155,8 @@ function restoreConfig(fileName) {
 function getFiles(dir) {
     // Get files from dir
     $('#'+dir).html("<p><button class='w3-btn w3-theme' onclick='saveConfig();'>Take config snapshot</button></p>");
-    $.get("cgi-bin/ui_control.cgi", {cmd: "getFiles", dir: dir}, function(config){             
-        var config_all = config.split("\n");    
+    $.get("cgi-bin/ui_control.cgi", {cmd: "getFiles", dir: dir}, function(config){
+        var config_all = config.split("\n");
         if ( config_all.length == 1)
             $('#'+dir).append("<h1>No snapshot available.</h1>");
         else {
@@ -173,7 +173,7 @@ function getFiles(dir) {
             <tbody>");
             for (var i = 0; i < config_all.length-1; i++) {
                 var config_info = config_all[i].split("#:#");
-                var file_info = config_info[3].split(".");       
+                var file_info = config_info[3].split(".");
                 var html_photo = "";
                 $('#result_'+dir).append("<tr> \
                 <td>"+config_info[0]+"</td> \
@@ -199,8 +199,8 @@ function getFiles(dir) {
 }
 
 
-function start(branch,mode) {
-    var login = "";   
+function start(repo,branch,mode) {
+    var login = "";
     // if ($('#login').val().length > 0) {
     //     login = "login=" + $('#login').val() + ":" + $('#password').val();
     // }
@@ -210,7 +210,7 @@ function start(branch,mode) {
     $('#modal_content').html('<h4>Please note: at the end of this process the camera will reboot without notice!</h4> \
     <div class="w3-light-grey"><div id="progress" class="w3-container w3-theme" style="width:0%"><span id="progressValue">0%</span></div></div><br><h4 id=message></h4>');
 
-    var url = 'cgi-bin/action.cgi?cmd=update&release='+branch+'&mode='+mode;
+    var url = 'cgi-bin/action.cgi?cmd=update&repo='+repo+'&release='+branch+'&mode='+mode;
     $.ajax({
         'url': url,
         'type': 'POST',
@@ -268,10 +268,10 @@ var serviceFriendlyNames = {
 //Function get config
 function getServices() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/ui_control.cgi", {cmd: "get_services"}, function(config){             
+    $.get("cgi-bin/ui_control.cgi", {cmd: "get_services"}, function(config){
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
-         var config_info = config_all[i].split("#:#");       
+         var config_info = config_all[i].split("#:#");
          // Select button color accrding status
          var control_checked = "onclick='controlService(\"start\",\""+config_info[0]+"\")')";
          if (config_info[1] == "started")
@@ -312,5 +312,3 @@ function onLoad() {
 }
 
 onLoad();
-
-
