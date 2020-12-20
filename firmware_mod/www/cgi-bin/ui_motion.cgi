@@ -25,6 +25,7 @@ if [ -n "$F_cmd" ]; then
     echo "motionTimeout#:#${motion_timeout}"
     echo "motionTracking#:#${motion_tracking}"
     echo "saveSnapshot#:#${save_snapshot}"
+    echo "saveVideo#:#${save_video}"
     echo "maxSnaphotDays#:#${max_snapshot_days}"
     echo "maxVideoDays#:#${max_video_days}"
     echo "ftpSnapshot#:#${ftp_snapshot}"
@@ -85,10 +86,10 @@ if [ -n "$F_cmd" ]; then
 	    rewrite_config /system/sdcard/config/motion.conf motion_timeout $F_motionTimeout
 		  echo "Motion timeout set to $F_motionTimeout<br/>"
 	  fi
-    if [ -n "${F_saveSnaphot+x}" ]; then
-		F_saveSnaphot=$(printf '%b' "${F_saveSnaphot//%/\\x}")
-	    rewrite_config /system/sdcard/config/motion.conf save_snapshot $F_saveSnaphot
-		  echo "Save snapshot set to $F_saveSnaphot<br/>"
+    if [ -n "${F_saveSnapshot+x}" ]; then
+		F_saveSnapshot=$(printf '%b' "${F_saveSnapshot//%/\\x}")
+	    rewrite_config /system/sdcard/config/motion.conf save_snapshot $F_saveSnapshot
+		  echo "Save snapshot set to $F_saveSnapshot<br/>"
 	  fi
     if [ -n "${F_maxSnaphotDays+x}" ]; then
 		F_maxSnaphotDays=$(printf '%b' "${F_maxSnaphotDays//%/\\x}")
