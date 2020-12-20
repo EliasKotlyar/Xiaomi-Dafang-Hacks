@@ -51,7 +51,7 @@ if [ -n "$F_cmd" ]; then
     echo "sendTelegram#:#${send_telegram}"
     echo "telegramAlertType#:#${telegram_alert_type}"
     echo "sendMatrix#:#${send_matrix}"
-    echo "nightDelay#:#${night_delay}"
+    echo "nightModeEventDelay#:#${night_mode_event_delay}"
 
 	;;
   save_config)
@@ -222,10 +222,10 @@ if [ -n "$F_cmd" ]; then
 	    rewrite_config /system/sdcard/config/motion.conf send_matrix $F_sendMatrix
 		  echo "Send Matrix on motion set to $F_sendMatrix<br/>"
 	  fi
-    if [ -n "${F_nightDelay+x}" ]; then
-  		F_nightDelay=$(printf '%b' "${F_nightDelay//%/\\x}")
-	    rewrite_config /system/sdcard/config/motion.conf night_delay $F_nightDelay
-		  echo "Motion night mode delay set to $F_nightDelay<br/>"
+    if [ -n "${F_nightModeEventDelay+x}" ]; then
+  		F_nightModeEventDelay=$(printf '%b' "${F_nightModeEventDelay//%/\\x}")
+	    rewrite_config /system/sdcard/config/motion.conf night_mode_event_delay $F_nightModeEventDelay
+		  echo "Motion night mode delay set to $F_nightModeEventDelay<br/>"
 	  fi
     if [ -n "${F_regions+x}" ]; then
 	  F_regions=$(printf '%b' "${F_regions//%/\\x}")
