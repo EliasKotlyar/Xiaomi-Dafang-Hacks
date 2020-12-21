@@ -56,6 +56,7 @@ usage()
 
     echo "-v (--verbose) for verbose"
     echo "-u (--user) githup login/password (not mandatory, but sometime anonymous account get banned)"
+    echo "-t (--token) github API token"
     echo "-h (--help) for this help"
     echo
     echo "Note that ${EXCLUDEFILTER} will be excluded"
@@ -146,7 +147,7 @@ getfiles()
 
         for row in $(echo "${1}" | ${JQ} '.[]| select(.type == "dir") | .path' ); do
             flder=$(echo "${row}" | tr -d '"')
-            next=$(${CURL} -s https://api.github.com/repos/${REPO}/contents/${flder}?ref=${BRANCH})
+            next=$(curl -s https://api.github.com/repos/${REPO}/contents/${flder}?ref=${BRANCH})
             getfiles "${next}"
         done
     fi
@@ -169,6 +170,18 @@ countdownreboot()
 generateVersionFile ()
 {
     echo "{\"date\":\"${REMOTECOMMITDATE}\",\"branch\":\"${BRANCH}\",\"commit\":\"${REMOTECOMMITID}\"}" > $VERSION_FILE
+}
+##########################################################################
+# Curl with optional authentication
+curl ()
+{
+    if [ -n "$_TOKEN" ]; then
+      $CURL -H "Authorization: token $_TOKEN" "$@"
+    elif [ -n "$_USER" ]; then
+      $CURL -u "$_USER" "$@"
+    else
+      $CURL "$@"
+    fi
 }
 ##########################################################################
 # Script real start
@@ -202,7 +215,12 @@ do
             shift
             ;;
         -u | --user)
-            CURL="${CURL} -u $2"
+            _USER="$2"
+            shift
+            shift
+            ;;
+        -t | --token)
+            _TOKEN="$2"
             shift
             shift
             ;;
@@ -226,7 +244,7 @@ log "Starting AutoUpdate on branch ${BRANCH}"
 
 ######################################################""
 # Get date and last commit ID from Github
-$(${CURL} -s ${GITHUBURL}/${REPO}/commits/${BRANCH} --output $COMMITS_FILE)
+curl -s ${GITHUBURL}/${REPO}/commits/${BRANCH} --output $COMMITS_FILE
 REMOTECOMMITDATE=$(${JQ} -r '.commit .author .date' ${COMMITS_FILE})
 REMOTECOMMITID=$(${JQ} -r '.sha[0:7]' ${COMMITS_FILE} )
 
@@ -253,12 +271,12 @@ if [ -f "$VERSION_FILE" ]; then
     else
         echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
         log "Getting list of remote files."
-        FILES=$(${CURL} -s ${GITHUBURL}/${REPO}/compare/${LOCALCOMMITID}...${REMOTECOMMITID} | ${JQ} -r '.files[].raw_url' | grep ${REMOTEFOLDER})        
+        FILES=$(curl -s ${GITHUBURL}/${REPO}/compare/${LOCALCOMMITID}...${REMOTECOMMITID} | ${JQ} -r '.files[].raw_url' | grep ${REMOTEFOLDER})
     fi
 else
     echo "Version file missing. Upgrade to last commit ${REMOTECOMMITID}"
     log "Getting list of remote files."
-    FIRST=$(${CURL} -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
+    FIRST=$(curl -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
     FILES=$(getfiles "${FIRST}")
 fi
 
@@ -281,7 +299,7 @@ do
         continue
     fi
     # Get the file temporally to calculate SHA
-    ${CURL} -s ${i} -o ${TMPFILE} 2>/dev/null
+    curl -s ${i} -o ${TMPFILE} 2>/dev/null
     if [ ! -f ${TMPFILE} ]; then
         echo "Can not get remote file $i, exiting."
         exit 1

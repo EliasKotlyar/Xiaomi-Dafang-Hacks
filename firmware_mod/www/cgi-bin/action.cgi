@@ -543,8 +543,9 @@ auto_night_mode_status)
 	  if [ "$processId" == "" ]; then
 		  echo "===============" >> /system/sdcard/log/update.log
 		  date >> /var/log/update.log
-		  if [ "$F_login" != "" ]; then
-			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${release} -u $F_login >> "/system/sdcard/log/update.log" &
+      github_token=$(get_config /system/sdcard/config/updates.conf github_token)
+		  if [ "$github_token" != "" ]; then
+			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${release} -t "$github_token" >> "/system/sdcard/log/update.log" &
 		  else
 			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${release} >> "/system/sdcard/log/update.log" &
 		  fi
@@ -696,12 +697,12 @@ motion_detection_mqtt_snapshot_status)
 		if [ -s /system/sdcard/VERSION ]; then
 		  localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
 		  localbranch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
-		  remotecommit=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
-		  commitbehind=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
+		  remotecommit=$(github_curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
+		  commitbehind=$(github_curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
 		  if [ ${localcommit} = ${remotecommit} ]; then
 			echo "${localbranch}:0"
 		  else
-			echo "${localbranch}:${commitbehind}" 
+			echo "${localbranch}:${commitbehind}"
 		  fi
 		else
 		  echo "null:-1"

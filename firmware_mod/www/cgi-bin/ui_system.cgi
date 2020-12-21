@@ -19,6 +19,7 @@ if [ -n "$F_cmd" ]; then
     echo "ntp#:#$(cat /system/sdcard/config/ntp_srv.conf)"
     echo "timezone#:#$(/system/sdcard/bin/busybox awk -F '\t' -v tzn="$(cat /system/sdcard/config/timezone.conf)" '{print "<option value=\""$1"\""; if ($1==tzn) print "selected"; print ">" $1 "</option>"}' /system/sdcard/www/json/timezones.tsv | tr -d '\n')"
     echo "currenttime#:#Current time is $(date) - $(cat /etc/TZ)"
+    echo "github_token#:#$(get_config /system/sdcard/config/updates.conf github_token)"
   ;;
   save_config)
 	if [ -n ${F_hostname} ]; then
@@ -52,6 +53,13 @@ if [ -n "$F_cmd" ]; then
 		if [ $ntp != $(cat /system/sdcard/config/ntp_srv.conf) ]; then
 	  		echo "<p>Setting NTP Server to ${ntp} "
 	  		echo "$ntp" > /system/sdcard/config/ntp_srv.conf
+		fi
+	fi
+	if [ -n ${F_github_token+x} ]; then
+		github_token=$(printf '%b' "${F_github_token//%/\\x}")
+		if [ "$github_token" != "$(get_config /system/sdcard/config/updates.conf github_token)" ]; then
+	  		echo "<p>Setting GitHub token</p>"
+	  		rewrite_config /system/sdcard/config/updates.conf github_token "$github_token"
 		fi
 	fi
 	return

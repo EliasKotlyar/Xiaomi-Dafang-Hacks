@@ -9,6 +9,9 @@
     <a href="javascript:void(0)" onclick="openTab(event, 'time');">
       <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Time</div>
     </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'updates');">
+      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Updates</div>
+    </a>
   </div>
 
   <div id="properties" class="w3-container tab">
@@ -29,6 +32,12 @@
         <label>NTP Server</label>
         <input id="ntp" class="w3-input" type="text">
  </div>
+
+  <div id="updates" class="w3-container tab" style="display:none">
+        <p></p>
+        <label>GitHub Token</label>
+        <input id="github_token" class="w3-input">
+  </div>
 
   <p></p>
   <button class="w3-btn w3-theme">Save</button>

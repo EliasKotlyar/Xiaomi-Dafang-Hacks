@@ -7,6 +7,7 @@ function saveConfig() {
                      hostname: $('#hostname').val(),
                      password: $('#password').val(),
                      timezone: $('#timezone').children("option:selected").val(),
+                     github_token: $('#github_token').val(),
                      ntp: $('#ntp').val()};
   
     $.post("cgi-bin/ui_system.cgi",postData,function(result){
