@@ -24,6 +24,7 @@ send_email=false
 send_telegram=false
 telegram_alert_type=image
 send_matrix=false
+night_mode_event_delay=30
 
 # General
 group_date_pattern="+%Y-%m-%d/%H"

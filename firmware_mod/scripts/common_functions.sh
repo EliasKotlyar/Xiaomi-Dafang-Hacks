@@ -703,6 +703,7 @@ motion_mqtt_video(){
 night_mode(){
   case "$1" in
   on)
+	touch /tmp/last-night
 	/system/sdcard/bin/setconf -k n -v 1
 	. /system/sdcard/config/autonight.conf
 	if [ -z "$ir_led_off" ] || [ $ir_led_off = false ]; then
@@ -713,6 +714,7 @@ night_mode(){
 	ir_cut off
 	;;
   off)
+	touch /tmp/last-night
 	ir_led off
 	ir_cut on
 	/system/sdcard/bin/setconf -k n -v 0
