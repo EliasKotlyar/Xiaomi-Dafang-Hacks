@@ -53,56 +53,58 @@ function showupdatepage(result) {
     }).done(function(result){
         
         var update = result.split(":")
-        var update_status = parseInt(update[1],10);
+        var repo = update[0];
+        var branch = update[1];
+        var update_status = parseInt(update[2],10);
 
         if (update_status == 0) {
-            $('#updatemsg').html("You have already the latest version from the " + update[0] + " branch")
-            if (update[0] == "master") {
+            $('#updatemsg').html("You have already the latest version from the " + branch + " branch of the" + repo + " repo.")
+            if (branch == "master") {
                 $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
-                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to BETA firmware" onclick="start(\'beta\',\'full\')"/><br /> \
-                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'master\',\'full\')"/><br /> \
+                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to BETA firmware" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
                 </div>');
-                
+
             }
             else {
                 $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
-                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'master\',\'full\')"/><br /> \
-                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'beta\',\'full\')"/><br /> \
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
                 </div>');
             }
-        } 
+        }
         else if (update_status == -1) {
             $('#updatemsg').html("No version file found. <br /> You can update the firmware on this camera to the latest version from <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
             $('#updatemsg').append('\
-            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'master\',\'cumul\')"/><br /> \
-            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'beta\',\'cumul\')"/><br />');
+            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'EliasKotlyar\',\'master\',\'cumul\')"/><br /> \
+            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'EliasKotlyar\',\'beta\',\'cumul\')"/><br />');
         }
         else if (update_status > 0) {
             $('#updatemsg').html("You are "+ update_status +" commits behind "+ update[0] + " branch");
             if (update[0] == "master") {
-                $('#updatemsg').append('<input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'master\',\'cumul\')"/><br />');
+                $('#updatemsg').append('<input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'' + repo + '\',\'master\',\'cumul\')"/><br />');
                 $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"><p></p> \
-                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to BETA firmware" onclick="start(\'beta\',\'full\')"/><br /> \
-                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'master\',\'full\')"/><br /> \
+                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to BETA firmware" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
                 </div>');
             }
             else {
-                $('#updatemsg').append('<input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'beta\',\'cumul\')"/><br />');
+                $('#updatemsg').append('<input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'' + repo + '\',\'beta\',\'cumul\')"/><br />');
                 $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
-                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'master\',\'full\')"/><br /> \
-                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'beta\',\'full\')"/><br /> \
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
                 </div>');
             }
         }
         else {
             $('#updatemsg').text("There is a problem with your VERSION file. Please do a full update to create a valid VERSION file.");
             $('#updatemsg').append('\
-            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'master\',\'cumul\')"/><br /> \
-            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'beta\',\'cumul\')"/><br />');
+            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'EliasKotlyar\',\'master\',\'cumul\')"/><br /> \
+            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'EliasKotlyar\',\'beta\',\'cumul\')"/><br />');
         }
     });
 }
