@@ -832,3 +832,49 @@ getFonts() {
 	echo -n ">`/system/sdcard/bin/busybox basename $i` </option>"
   done
 }
+
+get_wifi_mac() {
+	grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//'
+}
+
+configure_static_net_iface() {
+	local network_interface_name="$1"
+	local CONFIGPATH=/system/sdcard/config
+
+  # Install a resolv.conf if present so DNS can work
+  if [ -f "$CONFIGPATH/resolv.conf" ]; then
+    cp "$CONFIGPATH/resolv.conf" /etc/resolv.conf
+  fi
+
+  # Configure staticip/netmask from config/staticip.conf
+	local staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
+  ifconfig "$network_interface_name" $staticip_and_netmask
+  ifconfig "$network_interface_name" up
+  # Configure default gateway
+  if [ -f "$CONFIGPATH/defaultgw.conf" ]; then
+    local defaultgw=$(cat "$CONFIGPATH/defaultgw.conf" | grep -v "^$" | grep -v "^#")
+    route add default gw $defaultgw $network_interface_name
+    echo "Configured $defaultgw as default gateway"
+  fi
+  echo "Configured $network_interface_name with static address $staticip_and_netmask"
+}
+
+wpa_config_set() {
+	local wpa_config=/system/sdcard/config/wpa_supplicant.conf
+	local key="$1"
+	local val="$2"
+	if [ ! -s "$wpa_config" ]; then cp "$wpa_config.dist" "$wpa_config"; fi
+	if grep -q "^[[:space:]]*$key=" "$wpa_config"; then
+		sed -i "s/^[[:space:]]*$key=.*\$/$key=$val/" "$wpa_config"
+	else
+		sed -i "/}/i $key=$val" "$wpa_config"
+	fi
+}
+
+wpa_config_get() {
+	local wpa_config=/system/sdcard/config/wpa_supplicant.conf
+	local key="$1"
+	if [ -s "$wpa_config" ]; then
+		grep "^[[:space:]]*$key=" "$wpa_config" | cut -d "=" -f2
+	fi
+}

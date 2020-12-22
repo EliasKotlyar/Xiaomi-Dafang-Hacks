@@ -1,0 +1,6 @@
+start 10.0.0.2
+end 10.0.0.10
+interface wlan0
+lease_file /tmp/udhcpd.leases
+option router 10.0.0.1
+option subnet 255.0.0.0

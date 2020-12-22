@@ -121,13 +121,18 @@ if [ -f $CONFIGPATH/usb_eth_driver.conf ]; then
   insmod /system/sdcard/driver/usbnet.ko
   insmod /system/sdcard/driver/asix.ko
 
-  network_interface_name="eth0"
+  ## Configure network address
+  if [ -f "$CONFIGPATH/staticip.conf" ]; then
+    configure_static_net_iface eth0 >> $LOGPATH
+  else
+    # Configure with DHCP client
+    ifconfig eth0 up
+    udhcpc_status=$(udhcpc -i eth0 -p /var/run/udhcpc.eth0.pid -b -x hostname:"$(hostname)")
+    echo "udhcpc: $udhcpc_status" >> $LOGPATH
+  fi
 else
   ## Start Wifi:
-  if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
-  echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
-  fi
-  MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
+  MAC=$(get_wifi_mac)
   if [ -f /driver/8189es.ko ]; then
     # Its a DaFang
     insmod /driver/8189es.ko rtw_initmac="$MAC"
@@ -138,35 +143,7 @@ else
     # Its a Wyzecam V2
     insmod /driver/rtl8189ftv.ko rtw_initmac="$MAC"
   fi
-  wpa_supplicant_status="$(wpa_supplicant -d -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
-  echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
-
-  network_interface_name="wlan0"
-fi
-
-## Configure network address
-if [ -f "$CONFIGPATH/staticip.conf" ]; then
-  # Install a resolv.conf if present so DNS can work
-  if [ -f "$CONFIGPATH/resolv.conf" ]; then
-    cp "$CONFIGPATH/resolv.conf" /etc/resolv.conf
-  fi
-
-  # Configure staticip/netmask from config/staticip.conf
-  staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
-  ifconfig "$network_interface_name" $staticip_and_netmask
-  ifconfig "$network_interface_name" up
-  # Configure default gateway
-  if [ -f "$CONFIGPATH/defaultgw.conf" ]; then
-    defaultgw=$(cat "$CONFIGPATH/defaultgw.conf" | grep -v "^$" | grep -v "^#")
-    route add default gw $defaultgw $network_interface_name
-    echo "Configured $defaultgw as default gateway" >> $LOGPATH
-  fi
-  echo "Configured $network_interface_name with static address $staticip_and_netmask" >> $LOGPATH
-else
-  # Configure with DHCP client
-  ifconfig "$network_interface_name" up
-  udhcpc_status=$(udhcpc -i "$network_interface_name" -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
-  echo "udhcpc: $udhcpc_status" >> $LOGPATH
+  /system/sdcard/scripts/wifi.sh start >> $LOGPATH
 fi
 
 ## Set Timezone

@@ -1,0 +1,14 @@
+interface=wlan0
+ctrl_interface=/var/run/hostapd
+channel=6
+driver=nl80211
+beacon_int=100
+hw_mode=g
+wme_enabled=1
+wpa_key_mgmt=WPA-PSK
+wpa_pairwise=CCMP
+max_num_sta=8
+wpa_group_rekey=86400
+ssid=dafang
+wpa=2
+wpa_passphrase=ismart12
