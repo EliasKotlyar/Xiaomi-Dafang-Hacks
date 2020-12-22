@@ -695,14 +695,16 @@ motion_detection_mqtt_snapshot_status)
 		;;
   check_update)
 		if [ -s /system/sdcard/VERSION ]; then
+		  localrepo=$(/system/sdcard/bin/jq -r .repo /system/sdcard/VERSION)
+      if [ -z "$localrepo" ]; then localrepo="EliasKotlyar"; fi
 		  localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
 		  localbranch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
-		  remotecommit=$(github_curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
-		  commitbehind=$(github_curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
+		  remotecommit=$(github_curl -s https://api.github.com/repos/${localrepo}/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
+		  commitbehind=$(github_curl -s https://api.github.com/repos/${localrepo}/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
 		  if [ ${localcommit} = ${remotecommit} ]; then
-			echo "${localbranch}:0"
+			echo "${localrepo}:${localbranch}:0"
 		  else
-			echo "${localbranch}:${commitbehind}"
+			echo "${localrepo}:${localbranch}:${commitbehind}"
 		  fi
 		else
 		  echo "null:-1"
