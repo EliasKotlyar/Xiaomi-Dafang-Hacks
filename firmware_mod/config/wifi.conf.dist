@@ -1,0 +1,2 @@
+connect_timeout=60
+scan_interval=30
