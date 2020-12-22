@@ -14,7 +14,7 @@ function timedRefresh(timeoutPeriod) {
 function update(onStart) {
     $.ajax({
         'url': 'cgi-bin/action.cgi?cmd=show_updateProgress'
-    }).done(function(log) {   
+    }).done(function(log) {
         if (log < 0) {
             if (onStart != true)
             {
@@ -44,65 +44,103 @@ function accordionUpdate(param) {
         panel.style.maxHeight = null;
     } else {
         panel.style.maxHeight = panel.scrollHeight + "px";
-    } 
+    }
+}
+
+function startCustom(el) {
+  var repo = $('#custom_repo').val();
+  var branch = $('#custom_branch').val();
+  var mode = $('#custom_full').is(":checked") ? 'full' : 'cumul';
+  start(repo, branch, mode);
 }
 
 function showupdatepage(result) {
+    $('#update').html('<h2 id="updatemsg">Seaching for updates ...</h2>');
+
     $.ajax({
         'url': 'cgi-bin/action.cgi?cmd=check_update'
     }).done(function(result){
-        
+
         var update = result.split(":")
-        var update_status = parseInt(update[1],10);
+        var repo = update[0];
+        var branch = update[1];
+        var update_status = parseInt(update[2],10);
+
+        var custom = '<div class="w3-panel w3-border w3-round"> \
+          <h2>Custom Firmware</h2> \
+          <label for="custom_repo">Repository</label> \
+          <input id="custom_repo" class="w3-input w3-block w3-theme" type="text" value="' + repo + '" /><br /> \
+          <label for="custom_branch">Branch</label> \
+          <input id="custom_branch" class="w3-input w3-block w3-theme" type="text" value="' + branch + '" /><br /> \
+          <input id="custom_full" class="w3-check w3-theme" type="checkbox" checked="checked" /> \
+          <label for="custom_full">Force full update</label><br /><br /> \
+          <button class="w3-btn w3-block w3-theme" onclick="startCustom();">Update custom firmware</Button><br /> \
+        </div>';
 
         if (update_status == 0) {
-            $('#updatemsg').html("You have already the latest version from the " + update[0] + " branch")
-            if (update[0] == "master") {
-                $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
+            $('#updatemsg').html("You have already the latest version from the " + branch + " branch of the " + repo + " repo.")
+            if (branch == "master") {
+                $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
-                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to BETA firmware" onclick="start(\'beta\',\'full\')"/><br /> \
-                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'master\',\'full\')"/><br /> \
-                </div>');
-                
+                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to BETA firmware" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                ' + custom + '</div>');
+
+            }
+            else if (branch == "beta") {
+                $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
+                <div class="panel"> <p></p>\
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                ' + custom + '</div>');
             }
             else {
-                $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
+                $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
-                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'master\',\'full\')"/><br /> \
-                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'beta\',\'full\')"/><br /> \
-                </div>');
+                <input id="fullCustom" class="w3-btn w3-block w3-theme" type="text" value="Force full update to CUSTOM (remove version file + update)" onclick="start(\'' + repo + '\',\'' + branch + '\',\'full\')"/><br /> \
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                ' + custom + '</div>');
             }
-        } 
+        }
         else if (update_status == -1) {
             $('#updatemsg').html("No version file found. <br /> You can update the firmware on this camera to the latest version from <a target='_blank' href='https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks'>Github repository</a>. <br />Settings will be retained after update.")
-            $('#updatemsg').append('\
-            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'master\',\'cumul\')"/><br /> \
-            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'beta\',\'cumul\')"/><br />');
+            $('#update').append('\
+            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'EliasKotlyar\',\'master\',\'cumul\')"/><br /> \
+            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'EliasKotlyar\',\'beta\',\'cumul\')"/><br />' + custom);
         }
         else if (update_status > 0) {
-            $('#updatemsg').html("You are "+ update_status +" commits behind "+ update[0] + " branch");
-            if (update[0] == "master") {
-                $('#updatemsg').append('<input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'master\',\'cumul\')"/><br />');
-                $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
+            $('#updatemsg').html("You are "+ update_status +" commits behind the " + branch + " branch of the " + repo + " repo.")
+            if (branch == "master") {
+                $('#update').append('<input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'' + repo + '\',\'master\',\'cumul\')"/><br />');
+                $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"><p></p> \
-                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to BETA firmware" onclick="start(\'beta\',\'full\')"/><br /> \
-                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'master\',\'full\')"/><br /> \
-                </div>');
+                <input id="switchBeta" class="w3-btn w3-block w3-theme" type="text" value="Switch to BETA firmware" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                <input id="fullStable" class="w3-btn w3-block w3-theme" type="text" value="Force full update to STABLE (remove version file + update)" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                ' + custom + '</div>');
+            }
+            else if (branch == "beta") {
+                $('#update').append('<input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'' + repo + '\',\'beta\',\'cumul\')"/><br />');
+                $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
+                <div class="panel"> <p></p>\
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                ' + custom + '</div>');
             }
             else {
-                $('#updatemsg').append('<input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'beta\',\'cumul\')"/><br />');
-                $('#updatemsg').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
+                $('#update').append('<input id="updateCustom" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (CUSTOM)" onclick="start(\'' + repo + '\',\'' + branch + '\',\'cumul\')"/><br />');
+                $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
                 <div class="panel"> <p></p>\
-                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'master\',\'full\')"/><br /> \
-                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'beta\',\'full\')"/><br /> \
-                </div>');
+                <input id="switchStable" class="w3-btn w3-block w3-theme" type="text" value="Switch to STABLE firmware" onclick="start(\'' + repo + '\',\'master\',\'full\')"/><br /> \
+                <input id="fullBeta" class="w3-btn w3-block w3-theme" type="text" value="Force full update to BETA (remove version file + update)" onclick="start(\'' + repo + '\',\'beta\',\'full\')"/><br /> \
+                ' + custom + '</div>');
             }
         }
         else {
             $('#updatemsg').text("There is a problem with your VERSION file. Please do a full update to create a valid VERSION file.");
-            $('#updatemsg').append('\
-            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'master\',\'cumul\')"/><br /> \
-            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'beta\',\'cumul\')"/><br />');
+            $('#update').append('\
+            <input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'EliasKotlyar\',\'master\',\'cumul\')"/><br /> \
+            <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'EliasKotlyar\',\'beta\',\'cumul\')"/><br />' + custom);
         }
     });
 }
@@ -111,12 +149,12 @@ function saveConfig() {
     $.get("cgi-bin/ui_control.cgi",{cmd: "save_config"},function(result) {
         getFiles('config');
     });
-    
+
 }
 
 function deleteConfig(fileName,dir) {
     var del = confirm("Confirm delete file: "+fileName);
-    if ( del ) { 
+    if ( del ) {
         $.get("cgi-bin/ui_control.cgi", {cmd: "del_config",file: fileName});
         getFiles(dir);
     }
@@ -125,7 +163,7 @@ function deleteConfig(fileName,dir) {
 function restoreConfig(fileName) {
     var restore = confirm("Are you sure to restore config file: "+fileName+"\n Camera will reboot at the end of the process");
     if ( restore ) {
-        $.get("cgi-bin/ui_control.cgi",{cmd: "restore_config",file: fileName});  
+        $.get("cgi-bin/ui_control.cgi",{cmd: "restore_config",file: fileName});
     }
 }
 
@@ -133,8 +171,8 @@ function restoreConfig(fileName) {
 function getFiles(dir) {
     // Get files from dir
     $('#'+dir).html("<p><button class='w3-btn w3-theme' onclick='saveConfig();'>Take config snapshot</button></p>");
-    $.get("cgi-bin/ui_control.cgi", {cmd: "getFiles", dir: dir}, function(config){             
-        var config_all = config.split("\n");    
+    $.get("cgi-bin/ui_control.cgi", {cmd: "getFiles", dir: dir}, function(config){
+        var config_all = config.split("\n");
         if ( config_all.length == 1)
             $('#'+dir).append("<h1>No snapshot available.</h1>");
         else {
@@ -151,7 +189,7 @@ function getFiles(dir) {
             <tbody>");
             for (var i = 0; i < config_all.length-1; i++) {
                 var config_info = config_all[i].split("#:#");
-                var file_info = config_info[3].split(".");       
+                var file_info = config_info[3].split(".");
                 var html_photo = "";
                 $('#result_'+dir).append("<tr> \
                 <td>"+config_info[0]+"</td> \
@@ -177,8 +215,8 @@ function getFiles(dir) {
 }
 
 
-function start(branch,mode) {
-    var login = "";   
+function start(repo,branch,mode) {
+    var login = "";
     // if ($('#login').val().length > 0) {
     //     login = "login=" + $('#login').val() + ":" + $('#password').val();
     // }
@@ -188,7 +226,7 @@ function start(branch,mode) {
     $('#modal_content').html('<h4>Please note: at the end of this process the camera will reboot without notice!</h4> \
     <div class="w3-light-grey"><div id="progress" class="w3-container w3-theme" style="width:0%"><span id="progressValue">0%</span></div></div><br><h4 id=message></h4>');
 
-    var url = 'cgi-bin/action.cgi?cmd=update&release='+branch+'&mode='+mode;
+    var url = 'cgi-bin/action.cgi?cmd=update&repo='+repo+'&release='+branch+'&mode='+mode;
     $.ajax({
         'url': url,
         'type': 'POST',
@@ -246,10 +284,10 @@ var serviceFriendlyNames = {
 //Function get config
 function getServices() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/ui_control.cgi", {cmd: "get_services"}, function(config){             
+    $.get("cgi-bin/ui_control.cgi", {cmd: "get_services"}, function(config){
         var config_all = config.split("\n");
         for (var i = 0; i < config_all.length-1; i++) {
-         var config_info = config_all[i].split("#:#");       
+         var config_info = config_all[i].split("#:#");
          // Select button color accrding status
          var control_checked = "onclick='controlService(\"start\",\""+config_info[0]+"\")')";
          if (config_info[1] == "started")
@@ -290,5 +328,3 @@ function onLoad() {
 }
 
 onLoad();
-
-

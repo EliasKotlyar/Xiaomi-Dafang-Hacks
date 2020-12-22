@@ -803,13 +803,15 @@ github_curl() {
 # Check commit between VERSION file and github
 check_commit() {
   if [ -s /system/sdcard/VERSION ]; then
+	localrepo=$(/system/sdcard/bin/jq -r .repo /system/sdcard/VERSION)
+	if [ -z "$localrepo" ]; then localrepo="EliasKotlyar"; fi
 	localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
 	localbranch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
-	remotecommit=$(github_curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
+	remotecommit=$(github_curl -s https://api.github.com/repos/${localrepo}/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
 	if [ ${localcommit} = ${remotecommit} ]; then
 	 echo "${localcommit} ( No update available)"
 	else
-	 commitbehind=$(github_curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
+	 commitbehind=$(github_curl -s https://api.github.com/repos/${localrepo}/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
 	 echo "${localcommit} ( ${commitbehind} commits behind Github)"
 	fi
   else

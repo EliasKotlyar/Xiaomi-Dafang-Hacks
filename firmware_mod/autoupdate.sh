@@ -48,6 +48,7 @@ usage()
     echo "Usage this script to update the ${REPO} github repo from ${BRANCH} (default) branch"
     echo "Options:"
     echo "-b (--backup) backup erased file (add extension ${BACKUPEXT} to the local file before ovewrite it) "
+    echo "-x (--repo) to set the repo"
     echo "-r (--branch) to set the branch"
     echo "-f (--force) force update"
     echo "-d (--dest) set the destination folder (default is ${DESTFOLDER})"
@@ -169,7 +170,7 @@ countdownreboot()
 # Generate VERSION file
 generateVersionFile ()
 {
-    echo "{\"date\":\"${REMOTECOMMITDATE}\",\"branch\":\"${BRANCH}\",\"commit\":\"${REMOTECOMMITID}\"}" > $VERSION_FILE
+    echo "{\"date\":\"${REMOTECOMMITDATE}\",\"repo\":\"${REPO}\",\"branch\":\"${BRANCH}\",\"commit\":\"${REMOTECOMMITID}\"}" > $VERSION_FILE
 }
 ##########################################################################
 # Curl with optional authentication
@@ -228,6 +229,11 @@ do
             _PROGRESS=1;
            shift
            ;;
+        -x | --repo)
+            REPO=$2;
+            shift
+            shift
+            ;;
         -r | --branch)
 	    BRANCH=$2
 	    shift
@@ -263,15 +269,22 @@ fi
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
 if [ -f "$VERSION_FILE" ]; then
-    LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})  
-    if [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
+    LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})
+    LOCALREPO=$(${JQ} -r .repo ${VERSION_FILE})
+    if [ -z "$LOCALREPO" ]; then LOCALREPO="$REPO"; fi
+    if [ ${LOCALREPO} = ${REPO} ] && [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
         logerror "You are currently on the latest version"
         echo "You are currently on the latest version"
         exit 1
-    else
+    elif [ ${LOCALREPO} = ${REPO} ]; then
         echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
         log "Getting list of remote files."
         FILES=$(curl -s ${GITHUBURL}/${REPO}/compare/${LOCALCOMMITID}...${REMOTECOMMITID} | ${JQ} -r '.files[].raw_url' | grep ${REMOTEFOLDER})
+    else
+        echo "Repo has changed. Upgrade to last commit ${REMOTECOMMITID}"
+        log "Getting list of remote files."
+        FIRST=$(curl -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
+        FILES=$(getfiles "${FIRST}")
     fi
 else
     echo "Version file missing. Upgrade to last commit ${REMOTECOMMITID}"
@@ -306,10 +319,10 @@ do
     fi
     # sometimes zero byte files are received, which overwrite the local files, we ignore those files
     # exception: files that are hidden i.e. start with dot. Ex: files like ".gitkeep"
-    if [[ ! -s ${TMPFILE} ]] && [[ $(basename ${LOCALFILE} | cut -c1-1) != "." ]]; then                
-        echo "Received zero byte file $i, exiting."                                                    
-        exit 1                                                                                         
-    fi         
+    if [[ ! -s ${TMPFILE} ]] && [[ $(basename ${LOCALFILE} | cut -c1-1) != "." ]]; then
+        echo "Received zero byte file $i, exiting."
+        exit 1
+    fi
     # Check the file exists in local
     if [ -f "${DESTFOLDER}/${LOCALFILE}" ]; then
         REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)
