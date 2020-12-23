@@ -271,6 +271,7 @@ var serviceFriendlyNames = {
     "auto-night-detection": "Auto Night Detection",
     "debug-on-osd": "Debug on OSD",
     "ftp_server": "FTP Server",
+    "mdns-responder": "mDNSResponder",
     "mqtt-control": "MQTT Control",
     "mqtt-status": "MQTT Live Status Updates",
     "onvif-srvd": "ONVIF Server",
