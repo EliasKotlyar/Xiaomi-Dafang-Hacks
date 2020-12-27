@@ -18,7 +18,7 @@ If you want to test the Xiaofang T20L (newer version) please check out the [beta
 
 If you have a classic XiaoFang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
 
-### Attentention: Do not install the latest Firmware on your Device. It will disable the support of this hack. 
+### Attention: Do not install the latest Firmware on your Device. It will disable the support of this hack. 
 
 Further information about this topic can be found here: https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues/669
 
