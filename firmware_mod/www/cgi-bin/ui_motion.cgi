@@ -95,7 +95,7 @@ if [ -n "$F_cmd" ]; then
     if [ -n "${F_maxSnaphotDays+x}" ]; then
 		F_maxSnaphotDays=$(printf '%b' "${F_maxSnaphotDays//%/\\x}")
 	    rewrite_config /system/sdcard/config/motion.conf max_snapshot_days $F_maxSnaphotDays
-		  echo "Maximun snapshot retention in days set to $F_maxSnaphotDays<br/>"
+		  echo "Maximum snapshot retention in days set to $F_maxSnaphotDays<br/>"
 	  fi
     if [ -n "${F_saveVideo+x}" ]; then
 		F_saveVideo=$(printf '%b' "${F_saveVideo//%/\\x}")
@@ -105,7 +105,7 @@ if [ -n "$F_cmd" ]; then
     if [ -n "${F_maxVideoDays+x}" ]; then
 		F_maxVideoDays=$(printf '%b' "${F_maxVideoDays//%/\\x}")
 	    rewrite_config /system/sdcard/config/motion.conf max_video_days $F_maxVideoDays
-		  echo "Maximun video retention in days set to $F_maxVideoDays<br/>"
+		  echo "Maximum video retention in days set to $F_maxVideoDays<br/>"
 	  fi
         if [ -n "${F_smbSnapshot+x}" ]; then
 		 F_smbSnapshot=$(printf '%b' "${F_smbSnapshot//%/\\x}")
