@@ -225,15 +225,10 @@ if [ -n "$F_cmd" ]; then
 	    rewrite_config /system/sdcard/config/motion.conf region_of_interest $F_regions
 		  echo "Regions set to $F_regions<br/>"
 	  fi
-    if [ "$(rtsp_h264_server status)" = "ON" ]; then
-	    echo "Restart H264 rtsp server"
-	    rtsp_h264_server off
-	    rtsp_h264_server on
-	  fi
-	  if [ "$(rtsp_mjpeg_server status)" = "ON" ]; then
-	    echo "Restart MJPEG rtsp server"
-	    rtsp_mjpeg_server off
-	    rtsp_mjpeg_server on
+    if [ "$(rtsp_server status)" = "ON" ]; then
+	    echo "Restarting rtsp server"
+	    rtsp_server off
+	    rtsp__server on
 	  fi
     ;;
   *)

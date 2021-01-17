@@ -27,7 +27,7 @@
 //Check if theme configured
 var css = localStorage.getItem('theme')
 if ( css == null )
-    css = "w3-theme-teal";
+    css = "w3-theme-night-blue";
 $('head').append("<link rel='stylesheet' href='css/themes/"+css+".css'>");
 $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title = hostname;});
 </script>
