@@ -228,7 +228,7 @@ if [ -n "$F_cmd" ]; then
     if [ "$(rtsp_server status)" = "ON" ]; then
 	    echo "Restarting rtsp server"
 	    rtsp_server off
-	    rtsp__server on
+	    rtsp_server on
 	  fi
     ;;
   *)
