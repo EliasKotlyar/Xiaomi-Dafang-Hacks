@@ -232,20 +232,42 @@ fi
 if [ "$send_telegram" = true ]; then
 	(
 	include /system/sdcard/config/telegram.conf
+	CURL="/system/sdcard/bin/curl"
 
 	if [ "$telegram_alert_type" = "text" ] ; then
 		debug_msg "Send telegram text"
-		/system/sdcard/bin/telegram m "Motion detected"
+		$CURL -s \
+		-X POST \
+		https://api.telegram.org/bot$apiToken/sendMessage \
+		--data-urlencode "text=Motion detected" \
+		-d "chat_id=$userChatId"
 	elif [ "$telegram_alert_type" = "image" ] ; then
 		debug_msg "Send telegram image"
-		/system/sdcard/bin/telegram p "$snapshot_tempfile"
+		caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
+		$CURL -s \
+		-X POST \
+		https://api.telegram.org/bot$apiToken/sendPhoto \
+		-F chat_id="$userChatId" \
+		-F photo="@${snapshot_tempfile}" \
+		-F caption="${caption}"
 	elif [ "$telegram_alert_type" = "video" ] ; then
 		debug_msg "Send telegram video"
+		caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
 		if [ "$video_use_rtsp" = true ]; then
-			/system/sdcard/bin/telegram v "$video_tempfile"
-			else
+			$CURL -s \
+			-X POST \
+			https://api.telegram.org/bot$apiToken/sendVideo \
+			-F chat_id="$userChatId" \
+			-F video="@${video_tempfile}" \
+			-F caption="${caption}"
+		else
 			/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
-			/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
+			$CURL -s \
+			-X POST \
+			https://api.telegram.org/bot$apiToken/sendVideo \
+			-F chat_id="$userChatId" \
+			-F video="@${$video_tempfile-lo.mp4}" \
+			-F caption="${caption}"
 			rm "$video_tempfile-lo.mp4"
 		fi
 	fi
