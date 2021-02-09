@@ -31,6 +31,6 @@
 [Old Development Repository - deprecated](https://github.com/EliasKotlyar/Xiaomi-Dafang-Software)
 
 ## Original Firmware:
-[5.5.1.177](/firmware_original/demo_5.5.1.177.bin)
+[5.5.1.177](/firmware_original/dafang/demo_5.5.1.177.bin)
 
-[5.5.1.194](/firmware_original/demo_5.5.1.194.bin)
+[5.5.1.194](/firmware_original/dafang/demo_5.5.1.194.bin)
