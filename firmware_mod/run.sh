@@ -198,9 +198,21 @@ else
 fi
 
 ## Start SSH Server:
+## Check for .ssh folder, create if not present
+if [ ! -d /system/sdcard/root ]; then
+  mkdir /system/sdcard/root/.ssh
+  chmod 600 /system/sdcard/root/.ssh
+  echo "Created .ssh directory" >> $LOGPATH
+fi
+
+if [ ! -f $CONFIGPATH/ssh.conf ]; then
+  cp $CONFIGPATH/ssh.conf.dist $CONFIGPATH/ssh.conf
+fi
+
+source $CONFIGPATH/ssh.conf
 ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
 touch /var/log/lastlog 2>/dev/null
-dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
+dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R -p $ssh_port)
 echo "dropbear: $dropbear_status" >> $LOGPATH
 
 ## Create a certificate for the webserver

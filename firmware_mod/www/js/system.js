@@ -15,6 +15,9 @@ function saveConfig() {
                      connect_timeout: $('#connect_timeout').val(),
                      scan_interval: $('#scan_interval').val(),
                      usb_eth: $('#usb_eth').is(":checked") ? 'on' : 'off',
+                     ssh_port: $('#ssh_port').val(),
+                     ssh_key: $('#ssh_key').val(),
+                     ssh_password: $('#ssh_password').val(),
                      ntp: $('#ntp').val()};
 
     $.post("cgi-bin/ui_system.cgi",postData,function(result){
