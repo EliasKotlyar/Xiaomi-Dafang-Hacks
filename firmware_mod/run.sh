@@ -199,16 +199,21 @@ fi
 
 ## Start SSH Server:
 ## Check for .ssh folder, create if not present
-if [ ! -d /system/sdcard/root ]; then
+if [ ! -d /system/sdcard/root/.ssh ]; then
   mkdir /system/sdcard/root/.ssh
-  chmod 600 /system/sdcard/root/.ssh
   echo "Created .ssh directory" >> $LOGPATH
+fi
+
+if [ ! -f /root/.ssh/authorized_keys ]; then
+  touch /root/.ssh/authorized_keys
+  echo "Created authorized_keys file" >> $LOGPATH
 fi
 
 if [ ! -f $CONFIGPATH/ssh.conf ]; then
   cp $CONFIGPATH/ssh.conf.dist $CONFIGPATH/ssh.conf
 fi
 
+chmod 600 -R /root/.ssh
 source $CONFIGPATH/ssh.conf
 ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
 touch /var/log/lastlog 2>/dev/null
