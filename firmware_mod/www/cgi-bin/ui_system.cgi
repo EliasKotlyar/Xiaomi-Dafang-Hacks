@@ -82,12 +82,17 @@ if [ -n "$F_cmd" ]; then
 		wpa_config_set psk "\"$wifi_password\""
 	fi
   if [ -n ${F_ssh_port} ]; then
-		ssh_port=$(printf '%b' "${F_ssh_port//%/\\x5}")
+		ssh_port=$(printf '%b' "${F_ssh_port//%/\\x}")
 		echo "<p>Changing SSH port to: $ssh_port</p>"
 		rewrite_config /system/sdcard/config/ssh.conf ssh_port "$ssh_port"
 	fi
+  if [ -n ${F_ssh_password} ]; then
+		ssh_password=$(printf '%b' "${F_ssh_password//%/\\x}")
+		echo "<p>Changing SSH password to: $ssh_password</p>"
+		rewrite_config /system/sdcard/config/ssh.conf ssh_password "$ssh_password"
+	fi
   if [ -n ${F_ssh_key} ]; then
-		ssh_key=$(printf '%b' "${F_ssh_key//%/\\x}")
+		ssh_key=$(printf '%b' "${F_ssh_key//%/\\x}" | sed 's/%20/ /g')
 		echo "<p>Changing SSH key to: $ssh_key</p>"
 		echo "$ssh_key" > /system/sdcard/root/.ssh/authorized_keys
 	fi
