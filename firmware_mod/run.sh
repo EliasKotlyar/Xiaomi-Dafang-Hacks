@@ -217,10 +217,10 @@ chmod 600 -R /root/.ssh
 source $CONFIGPATH/ssh.conf
 ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
 touch /var/log/lastlog 2>/dev/null
-if [ "$ssh_password" = "on" ]; then
-  dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R -p $ssh_port)
-else
+if [ "$ssh_password" = "off" ]; then
   dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -s -R -p $ssh_port)
+else
+  dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R -p $ssh_port)
 fi
 echo "dropbear: $dropbear_status" >> $LOGPATH
 
