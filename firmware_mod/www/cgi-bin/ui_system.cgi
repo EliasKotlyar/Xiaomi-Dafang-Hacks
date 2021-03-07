@@ -25,6 +25,9 @@ if [ -n "$F_cmd" ]; then
     echo "scan_interval#:#$(get_config /system/sdcard/config/wifi.conf scan_interval)"
     echo "ap_ssid#:#$(get_config /system/sdcard/config/hostapd.conf ssid)"
     echo "usb_eth#:#$([ -f /system/sdcard/config/usb_eth_driver.conf ] && echo on || echo off)"
+    echo "ssh_key#:#$(cat /system/sdcard/root/.ssh/authorized_keys)"
+    echo "ssh_port#:#$(get_config /system/sdcard/config/ssh.conf ssh_port)"
+    echo "ssh_password#:#$(get_config /system/sdcard/config/ssh.conf ssh_password)"
   ;;
   save_config)
 	if [ -n ${F_hostname} ]; then
@@ -77,6 +80,21 @@ if [ -n "$F_cmd" ]; then
 		wifi_password=$(printf '%b' "${F_wifi_password//%/\\x}")
 		echo "<p>Setting wifi password to: $wifi_password</p>"
 		wpa_config_set psk "\"$wifi_password\""
+	fi
+  if [ -n ${F_ssh_port} ]; then
+		ssh_port=$(printf '%b' "${F_ssh_port//%/\\x}")
+		echo "<p>Changing SSH port to: $ssh_port</p>"
+		rewrite_config /system/sdcard/config/ssh.conf ssh_port "$ssh_port"
+	fi
+  if [ -n ${F_ssh_password} ]; then
+		ssh_password=$(printf '%b' "${F_ssh_password//%/\\x}")
+		echo "<p>Changing SSH password to: $ssh_password</p>"
+		rewrite_config /system/sdcard/config/ssh.conf ssh_password "$ssh_password"
+	fi
+  if [ -n ${F_ssh_key} ]; then
+		ssh_key=$(printf '%b' "${F_ssh_key//%/\\x}" | sed 's/%20/ /g')
+		echo "<p>Changing SSH key to: $ssh_key</p>"
+		echo "$ssh_key" > /system/sdcard/root/.ssh/authorized_keys
 	fi
   if [ -n ${F_connect_timeout} ]; then
     F_connect_timeout=$(echo "$F_connect_timeout" | sed 's/+/ /g')
