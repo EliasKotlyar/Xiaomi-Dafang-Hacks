@@ -36,6 +36,11 @@ if [ -n "$F_cmd" ]; then
     echo "ftpPassword#:#${ftp_password}"
     echo "ftpStillsDir#:#${ftp_stills_dir}"
     echo "ftpVideosDir#:#${ftp_videos_dir}"
+    echo "dropboxStillsDir#:#${dropbox_stills_dir}"
+    echo "dropboxVideosDir#:#${dropbox_videos_dir}"
+    echo "dropboxSnapshot#:#${dropbox_snapshot}"
+    echo "dropboxVideo#:#${dropbox_video}"
+    echo "dropboxToken#:#${dropbox_token}"
     echo "smbSnapshot#:#${smb_snapshot}"
     echo "smbVideo#:#${smb_video}"
     echo "smbShare#:#${smb_share}"
@@ -181,6 +186,39 @@ if [ -n "$F_cmd" ]; then
 		F_ftpVideosDir=$(printf '%b' "${F_ftpVideosDir//%/\\x}"  | sed 's/\//\\\//g')
 	    rewrite_config /system/sdcard/config/motion.conf ftp_videos_dir "\"$F_ftpVideosDir\""
 		echo "FTP videos directory set to $F_ftpVideosDir<br/>"
+	  fi
+    if [ -n "${F_dropboxSnapshot+x}" ]; then
+		F_dropboxSnapshot=$(printf '%b' "${F_dropboxSnapshot//%/\\x}")
+	    rewrite_config /system/sdcard/config/motion.conf dropbox_snapshot  $F_dropboxSnapshot
+		  echo "Save snapshot to dropbox set to  set to $F_dropboxSnapshot<br/>"
+	  fi
+    if [ -n "${F_dropboxVideo+x}" ]; then
+		F_dropboxVideo=$(printf '%b' "${F_dropboxVideo//%/\\x}")
+	    rewrite_config /system/sdcard/config/motion.conf dropbox_video $F_dropboxVideo
+		  echo "Save video to dropbox set to $F_dropboxVideo<br/>"
+	  fi
+    if [ -n "${F_dropboxToken+x}" ]; then
+		  F_dropboxToken=$(printf '%b' "${F_dropboxToken//%/\\x}" | sed 's/\//\\\//g')
+	      rewrite_config /system/sdcard/config/motion.conf dropbox_token "\"$F_dropboxToken\""
+		  echo "dropbox token set<br/>"
+	  fi
+    if [ -n "${F_dropboxStillsDir+x}" ]; then
+		F_dropboxStillsDir=$(printf '%b' "${F_dropboxStillsDir//%/\\x}"  | sed 's/\//\\\//g')
+		if [[ $F_dropboxStillsDir =~ ^/.* ]];then
+			rewrite_config /system/sdcard/config/motion.conf dropbox_stills_dir "\"$F_dropboxStillsDir\""
+		else
+			rewrite_config /system/sdcard/config/motion.conf dropbox_stills_dir "/\"$F_dropboxStillsDir\""
+		fi
+		echo "dropbox snapshots directory set to $F_dropboxStillsDir<br/>"
+	  fi
+    if [ -n "${F_dropboxVideosDir+x}" ]; then
+		F_dropboxVideosDir=$(printf '%b' "${F_dropboxVideosDir//%/\\x}"  | sed 's/\//\\\//g')
+		if [[ $F_dropboxVideosDir =~ ^/.* ]];then
+			rewrite_config /system/sdcard/config/motion.conf dropbox_videos_dir "\"$F_dropboxVideosDir\""
+		else
+			rewrite_config /system/sdcard/config/motion.conf dropbox_videos_dir "/\"$F_dropboxVideosDir\""
+		fi
+		echo "dropbox videos directory set to $F_dropboxVideosDir<br/>"
 	  fi
     if [ -n "${F_motionTriggerLed+x}" ]; then
 		F_motionTriggerLed=$(printf '%b' "${F_motionTriggerLed//%/\\x}")

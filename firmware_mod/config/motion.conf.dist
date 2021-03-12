@@ -57,8 +57,15 @@ ftp_host="ftp.myserver.net"
 ftp_port=21
 ftp_username="user1"
 ftp_password="password2"
-ftp_stills_dir="motion/stills"
-ftp_videos_dir="motion/videos"
+ftp_stills_dir="/motion/stills"
+ftp_videos_dir="/motion/videos"
+
+# Configure Dropbox snapshots and videos
+dropbox_snapshot=false
+dropbox_video=false
+dropbox_token="token"
+dropbox_stills_dir="motion/stills"
+dropbox_videos_dir="motion/videos"
 
 # Configure SMB snapshots and videos
 smb_snapshot=false
