@@ -211,7 +211,54 @@
         </div>
       <p></p>
     </div>
-    <p><button class="w3-btn w3-theme" >Save</button></form></p>
+    <!-- Dropbox storage accordio-->
+    <button class="accordion" type='button'>Dropbox storage</button>
+    <div class="panel">
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Dropbox Long Lived Token</label>
+                <input class="w3-input" id="dropboxToken">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+            </div>
+            <div class="w3-half">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Save snapshots on motion</label>
+                <select id="dropboxSnapshot" class="w3-select">
+                    <option value="false">Deactivate</option>
+                    <option value="true">Activate</option>
+                </select>
+            </div>
+            <div class="w3-half">
+                <label>Dropbox snapshots remote directory</label>
+                <input class="w3-input" id="dropboxStillsDir" type="text">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Save videos on motion</label>
+                <select id="dropboxVideo" class="w3-select" >
+                    <option value="false">Deactivate</option>
+                    <option value="true">Activate</option>
+                </select>
+            </div>
+            <div class="w3-half">
+                <label>Dropbox videos remote directory</label>
+                <input class="w3-input" id="dropboxVideosDir" type="text">
+            </div>
+        </div>
+      <p></p>
+    </div>
+      <p><button class="w3-btn w3-theme" >Save</button></form></p>
 </div>
 <!-- Notifications Tab -->
 <div id="notificationsTab" class="w3-container tab" style="display:none">

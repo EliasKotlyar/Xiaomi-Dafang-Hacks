@@ -78,6 +78,19 @@ send_snapshot() {
 		) &
 	fi
 
+        #save Dropbox snapshot
+	if [ "$dropbox_snapshot" = true ]; then
+		(
+
+		debug_msg "Sending Dropbox snapshot to $dropbox_stills_dir/$filename.jpg"
+		/system/sdcard/bin/curl -X POST https://content.dropboxapi.com/2/files/upload \
+			--header "Authorization: Bearer $dropbox_token" \
+			--header "Dropbox-API-Arg: {\"path\": \"$dropbox_stills_dir/$filename.jpg\"}" \
+			--header "Content-Type: application/octet-stream" \
+			--data-binary @"$snapshot_tempfile"
+		) &
+	fi
+
 
 
         # Save a snapshot
@@ -265,6 +278,22 @@ if [ "$ftp_video" = true ]; then
 	exec 5>&-
 	) &
 fi
+
+        #save Dropbox video
+	if [ "$dropbox_video" = true ]; then
+		(
+
+		debug_msg "Saving Dropbox snapshot to $dropbox_videos_dir/$filename.mp4"
+		/system/sdcard/bin/curl -X POST https://content.dropboxapi.com/2/files/upload \
+			--header "Authorization: Bearer $dropbox_token" \
+			--header "Dropbox-API-Arg: {\"path\": \"$dropbox_videos_dir/$filename.mp4\"}" \
+			--header "Content-Type: application/octet-stream" \
+			--data-binary @"$video_tempfile"
+		) &
+	fi
+
+
+
 
 # SMB snapshot and video
 if [ "$smb_video" = true ]; then
