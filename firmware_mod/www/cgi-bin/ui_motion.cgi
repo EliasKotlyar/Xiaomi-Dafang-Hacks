@@ -204,20 +204,12 @@ if [ -n "$F_cmd" ]; then
 	  fi
     if [ -n "${F_dropboxStillsDir+x}" ]; then
 		F_dropboxStillsDir=$(printf '%b' "${F_dropboxStillsDir//%/\\x}"  | sed 's/\//\\\//g')
-		if [[ $F_dropboxStillsDir =~ ^/.* ]];then
-			rewrite_config /system/sdcard/config/motion.conf dropbox_stills_dir "\"$F_dropboxStillsDir\""
-		else
-			rewrite_config /system/sdcard/config/motion.conf dropbox_stills_dir "/\"$F_dropboxStillsDir\""
-		fi
+		rewrite_config /system/sdcard/config/motion.conf dropbox_stills_dir "\"$F_dropboxStillsDir\""
 		echo "dropbox snapshots directory set to $F_dropboxStillsDir<br/>"
 	  fi
     if [ -n "${F_dropboxVideosDir+x}" ]; then
 		F_dropboxVideosDir=$(printf '%b' "${F_dropboxVideosDir//%/\\x}"  | sed 's/\//\\\//g')
-		if [[ $F_dropboxVideosDir =~ ^/.* ]];then
-			rewrite_config /system/sdcard/config/motion.conf dropbox_videos_dir "\"$F_dropboxVideosDir\""
-		else
-			rewrite_config /system/sdcard/config/motion.conf dropbox_videos_dir "/\"$F_dropboxVideosDir\""
-		fi
+		rewrite_config /system/sdcard/config/motion.conf dropbox_videos_dir "\"$F_dropboxVideosDir\""
 		echo "dropbox videos directory set to $F_dropboxVideosDir<br/>"
 	  fi
     if [ -n "${F_motionTriggerLed+x}" ]; then
@@ -273,7 +265,7 @@ if [ -n "$F_cmd" ]; then
     if [ "$(rtsp_server status)" = "ON" ]; then
 	    echo "Restarting rtsp server"
 	    rtsp_server off
-	    rtsp__server on
+	    rtsp_server on
 	  fi
     ;;
   *)
