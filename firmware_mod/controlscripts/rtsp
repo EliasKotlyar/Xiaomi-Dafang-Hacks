@@ -20,6 +20,7 @@ fi
 if [ -z "${CODEC+x}" ]; then
     CODEC="H264"
 fi
+
 status()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
@@ -97,10 +98,17 @@ start()
   fi
 }
 
+# now the .pid file will now be removed and you can start it again from the web UI
+stop_dependents()
+{
+	/system/sdcard/controlscripts/recording stop
+}
+
 stop()
 {
   pid="$(cat "$PIDFILE" 2>/dev/null)"
   if [ "$pid" ]; then
+	stop_dependents
 	kill "$pid"
 	rm "$PIDFILE" 1> /dev/null 2>&1
   fi

@@ -66,7 +66,7 @@ respond() {
 	/imagealerts) imageAlerts;;
 	/videoalerts) videoAlerts;;
 	/help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a snapshot\n# /on - motion detection on\n# /off - motion detection off\n# /nighton - night mode on\n# /nightoff - night mode off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection\n# /videoalerts - Video alerts on motion detection";;
-	*) $TELEGRAM m "I can't respond to '$cmd' command"
+	/*) $TELEGRAM m "I can't respond to '$cmd' command"
   esac
 }
 

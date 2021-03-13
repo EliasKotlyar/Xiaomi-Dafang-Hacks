@@ -81,6 +81,7 @@ Remove the "run.sh" file from the microSD card.
 2. If the bootloader step is not working, double check the microSD card again for files or folders created by the stock firmware. (Sometimes if your timing is off with the setup press the camera will create a time stamp related folder that needs to be deleted before trying again).
 3. Make a note of the MAC for the camera and if possible set up DHCP to assign a specific IP address that can be monitored visually in DHCP logs.
 4. Start with fewer entries in your wpa_supplicant.conf to isolate WiFi issues.
+5. SD card troubles may be fixed by formatting the card using the <a href = 'https://www.sdcard.org/downloads/formatter/'>official SD Memory Card Formatter</a>
 ```
 ctrl_interface=/var/run/wpa_supplicant
 ctrl_interface_group=0
