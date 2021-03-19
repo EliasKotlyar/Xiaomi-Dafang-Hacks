@@ -339,7 +339,10 @@ if [ "$send_telegram" = true ]; then
 	if [ "$telegram_alert_type" = "video" -o  "$telegram_alert_type" = "video+image" ] ; then
 		debug_msg "Send telegram video"
 		if [ "$video_use_rtsp" = true ]; then
-			/system/sdcard/bin/telegram v "$video_tempfile"
+			#Convert file to mp4 and remove audio stream so video plays in telegram app
+			/system/sdcard/bin/avconv -i "$video_tempfile" -c:v copy -an "$video_tempfile"-telegram.mp4
+			/system/sdcard/bin/telegram v "$video_tempfile"-telegram.mp4
+			rm "$video_tempfile"-telegram.mp4 
 			else
 			/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
 			/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
