@@ -96,6 +96,12 @@ if [ -n "$F_cmd" ]; then
 		echo "<p>Changing SSH key to: $ssh_key</p>"
 		echo "$ssh_key" > /system/sdcard/root/.ssh/authorized_keys
 	fi
+
+  if [ -n ${F_ssh_key} ] || [ -n ${F_ssh_password} ] || [ -n ${F_ssh_port} ]; then
+  		echo "Re" 
+		/system/sdcard/controlscripts/dropbear stop 
+          	/system/sdcard/controlscripts/dropbear start
+  fi
   if [ -n ${F_connect_timeout} ]; then
     F_connect_timeout=$(echo "$F_connect_timeout" | sed 's/+/ /g')
     connect_timeout=$(printf '%b' "${F_connect_timeout//%/\\x}")

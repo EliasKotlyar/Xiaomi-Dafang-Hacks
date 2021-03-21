@@ -197,33 +197,6 @@ else
   insmod /system/sdcard/driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 fi
 
-## Start SSH Server:
-## Check for .ssh folder, create if not present
-if [ ! -d /system/sdcard/root/.ssh ]; then
-  mkdir /system/sdcard/root/.ssh
-  echo "Created .ssh directory" >> $LOGPATH
-fi
-
-if [ ! -f /root/.ssh/authorized_keys ]; then
-  touch /root/.ssh/authorized_keys
-  echo "Created authorized_keys file" >> $LOGPATH
-fi
-
-if [ ! -f $CONFIGPATH/ssh.conf ]; then
-  cp $CONFIGPATH/ssh.conf.dist $CONFIGPATH/ssh.conf
-fi
-
-chmod 600 -R /root/.ssh
-source $CONFIGPATH/ssh.conf
-ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
-touch /var/log/lastlog 2>/dev/null
-if [ "$ssh_password" = "off" ]; then
-  dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -s -R -p $ssh_port)
-else
-  dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R -p $ssh_port)
-fi
-echo "dropbear: $dropbear_status" >> $LOGPATH
-
 ## Create a certificate for the webserver
 if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
   export OPENSSL_CONF=$CONFIGPATH/openssl.cnf

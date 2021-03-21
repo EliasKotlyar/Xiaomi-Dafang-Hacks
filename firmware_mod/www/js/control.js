@@ -269,6 +269,7 @@ function autoStartService(action,serviceName) {
 //Friendly names for known services
 var serviceFriendlyNames = {
     "auto-night-detection": "Auto Night Detection",
+    "dropbear": "SSH Server",
     "debug-on-osd": "Debug on OSD",
     "ftp_server": "FTP Server",
     "mdns-responder": "mDNSResponder",
