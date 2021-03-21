@@ -281,6 +281,7 @@ var serviceFriendlyNames = {
     "sound-on-startup": "Play Startup Sound",
     "telegram-bot": "Telegram Bot",
     "timelapse": "Timelapse",
+    "lighttpd": "Web server",
 };
 
 //Function get config
