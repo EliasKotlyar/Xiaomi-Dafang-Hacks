@@ -197,21 +197,6 @@ else
   insmod /system/sdcard/driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 fi
 
-## Create a certificate for the webserver
-if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
-  export OPENSSL_CONF=$CONFIGPATH/openssl.cnf
-  /system/sdcard/bin/openssl req -new -x509 -keyout $CONFIGPATH/lighttpd.pem -out $CONFIGPATH/lighttpd.pem -days 365 -nodes -subj "/C=DE/ST=Bavaria/L=Munich/O=.../OU=.../CN=.../emailAddress=..."
-  chmod 400 $CONFIGPATH/lighttpd.pem
-  echo "Created new certificate for webserver" >> $LOGPATH
-fi
-
-## Start Webserver:
-if [ ! -f $CONFIGPATH/lighttpd.conf ]; then
-  cp $CONFIGPATH/lighttpd.conf.dist $CONFIGPATH/lighttpd.conf
-fi
-lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
-echo "lighttpd: $lighttpd_status" >> $LOGPATH
-
 ## Copy autonight configuration:
 if [ ! -f $CONFIGPATH/autonight.conf ]; then
   cp $CONFIGPATH/autonight.conf.dist $CONFIGPATH/autonight.conf
