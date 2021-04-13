@@ -131,6 +131,12 @@ send_snapshot() {
 		$smbclient_cmd -D "$smb_stills_path" -c "lcd /tmp; mkdir $groupname; cd $groupname; put $snapshot_tempfilename; rename $snapshot_tempfilename $filename.jpg"
 		) &
 	fi
+	# Wait for all background jobs to finish before existing
+	debug_msg "Waiting for background jobs to end in send_snapshot function:"
+	for jobpid in $(jobs -p); do
+		wait "$jobpid"
+		debug_msg "Job in send_snapshot function $jobpid ended"
+	done
 
 }
 
