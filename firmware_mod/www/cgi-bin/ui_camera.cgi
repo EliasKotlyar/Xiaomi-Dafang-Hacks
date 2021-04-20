@@ -234,7 +234,7 @@ if [ -n "$F_cmd" ]; then
 	if [ -n  "${F_osdPixel+x}" ]; then
 		echo "SPACE=${F_osdPixel}" >> /system/sdcard/config/osd.conf
 		/system/sdcard/bin/setconf -k p -v "${F_osdPixel}"
-		echo "Set OSD pixel betwwen chars to ${F_osdPixel}<br />"
+		echo "Set OSD pixel between chars to ${F_osdPixel}<br />"
 	fi
 	if [ -n  "${F_osdY+x}" ]; then
 		echo "POSY=${F_osdY}" >> /system/sdcard/config/osd.conf
