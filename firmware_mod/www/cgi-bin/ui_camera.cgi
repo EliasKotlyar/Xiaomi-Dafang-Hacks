@@ -109,7 +109,7 @@ if [ -n "$F_cmd" ]; then
 	if [ -n  "${F_videoPort+x}" ]; then
 		videoport=$(echo "${F_videoPort}"| tr '\n')
 		rewrite_config /system/sdcard/config/rtspserver.conf PORT "$videoport"
-		echo "Set video port tp ${videoport}<br />"
+		echo "Set video port to ${videoport}<br />"
 	fi
 	if [ -n "${F_autoNightMode+x}" ]; then
 		rewrite_config /system/sdcard/config/autonight.conf autonight_mode $F_autoNightMode

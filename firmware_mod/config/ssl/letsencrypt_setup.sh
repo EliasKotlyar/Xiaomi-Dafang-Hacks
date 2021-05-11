@@ -53,6 +53,7 @@ fi
 
 
 ## Adding cronjob to keep the cert updated
+mkdir -p ${CONFIGPATH}/cron/periodic/weekly
 cat > ${CONFIGPATH}/cron/periodic/weekly/letsencrypt <<EOF
 #!/bin/sh
 PATH=/system/sdcard/bin:/system/bin:/bin:/sbin:/usr/bin:/usr/sbin

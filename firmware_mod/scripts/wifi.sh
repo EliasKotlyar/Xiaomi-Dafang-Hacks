@@ -165,7 +165,7 @@ wpa_action_watchdog_stop() {
 }
 
 ap_scanner_ssid() {
-  grep -v '^[[:space:]]*#' "$WPA_CONFIG" | grep "ssid=" | head -1 | cut -d "=" -f2
+  grep -v '^[[:space:]]*#' "$WPA_CONFIG" | grep "ssid=" | cut -d "=" -f2
 }
 
 ap_scanner_scan() {

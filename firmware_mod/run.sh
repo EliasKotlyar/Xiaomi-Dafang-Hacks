@@ -85,26 +85,15 @@ if [ ! "$SWAP_ZRAM" = false ]; then
     swapon -p 20 /dev/zram0
 fi
 
-## Create crontab dir and start crond:
-if [ ! -d /system/sdcard/config/cron ]; then
-  mkdir -p ${CONFIGPATH}/cron/crontabs
-  CRONPERIODIC="${CONFIGPATH}/cron/periodic"
-  echo ${CONFIGPATH}/cron/crontabs/periodic
-  # Wish busybox sh had brace expansion...
+## Create cron periodic dirs and start crond:
+CRONPERIODIC="${CONFIGPATH}/cron/periodic"
+if [ ! -d $CRONPERIODIC ]; then
   mkdir -p ${CRONPERIODIC}/15min \
            ${CRONPERIODIC}/hourly \
            ${CRONPERIODIC}/daily \
            ${CRONPERIODIC}/weekly \
            ${CRONPERIODIC}/monthly
-  cat > ${CONFIGPATH}/cron/crontabs/root <<EOF
-# min   hour    day     month   weekday command
-*/15    *       *       *       *       busybox run-parts ${CRONPERIODIC}/15min
-0       *       *       *       *       busybox run-parts ${CRONPERIODIC}/hourly
-0       2       *       *       *       busybox run-parts ${CRONPERIODIC}/daily
-0       3       *       *       6       busybox run-parts ${CRONPERIODIC}/weekly
-0       5       1       *       *       busybox run-parts ${CRONPERIODIC}/monthly
-EOF
-  echo "Created cron directories and standard interval jobs" >> $LOGPATH
+  echo "Created cron periodic directories" >> $LOGPATH
 fi
 /system/sdcard/bin/busybox crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
 
