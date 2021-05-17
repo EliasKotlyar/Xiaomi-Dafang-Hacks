@@ -4,7 +4,7 @@ The Xiaofang T20L is different from the T20, which requires some more steps to g
 
 ## Installation of the bootloader
 
-The cfw-1.0 bootloader used on the T20 is compatible with the T20L. So follow the [installation instructions](/hacks/install_cwf.md)
+The cfw-1.0 bootloader used on the T20 is compatible with the T20L. So follow the [installation instructions](/hacks/install_cfw.md)
 for installation of the bootloader (this is the first part of the installation instruction).
 
 ## Installation of the firmware
