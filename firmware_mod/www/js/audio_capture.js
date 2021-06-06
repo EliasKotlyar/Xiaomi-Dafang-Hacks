@@ -7,8 +7,6 @@ var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext //audio context to help us record
 
 function startRecording() {
-    console.log("Push to talk pressed");
-
     /*
     	Simple constraints object, for more advanced audio features see
     	https://addpipe.com/blog/audio-constraints-getusermedia/
@@ -53,13 +51,13 @@ function startRecording() {
         //start the recording process
         rec.record()
 
-        console.log("Recording started");
+        alert("Recording started");
 
     });
 }
 
 function stopRecording() {
-    console.log("Push to talk released");
+    alert("Push to talk released");
 
     //tell the recorder to stop the recording
 
