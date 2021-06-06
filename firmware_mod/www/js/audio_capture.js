@@ -63,17 +63,20 @@ function stopRecording() {
         //stop microphone access
         gumStream.getAudioTracks()[0].stop();
 	    
-	var xhr = new XMLHttpRequest();
-        xhr.onload = function (e) {
-            if (this.readyState === 4) {
-                console.log("Server returned: ", e.target.responseText);
-            }
-        };
-        var fd = new FormData();
-        fd.append("audio_data", rec.exportWAV(), 'recording.wav');
-        xhr.open("POST", "/cgi-bin/audio_upload.cgi", true);
-        xhr.send(fd);
-	    
+	rec.exportWAV(sendAudio);
+	
+	function sendAudio(blob) {
+		var xhr = new XMLHttpRequest();
+		xhr.onload = function (e) {
+		    if (this.readyState === 4) {
+			console.log("Server returned: ", e.target.responseText);
+		    }
+		};
+		var fd = new FormData();
+		fd.append("audio_data", blob, 'recording.wav');
+		xhr.open("POST", "/cgi-bin/audio_upload.cgi", true);
+		xhr.send(fd);
+	}
 	alert("Audio sent");
     }, 2000);
 }
