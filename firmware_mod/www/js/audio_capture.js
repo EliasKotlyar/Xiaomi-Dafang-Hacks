@@ -77,7 +77,7 @@ function stopRecording() {
 		xhr.open("POST", "/cgi-bin/audio_upload.cgi", true);
 		xhr.send(fd);
 	}
-	alert("Audio sent");
+	alert("Audio sent")
     }, 2000);
 }
 
