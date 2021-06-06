@@ -64,8 +64,18 @@ function stopRecording() {
 
         //stop microphone access
         gumStream.getAudioTracks()[0].stop();
-
-        //create the wav blob and pass it on to createDownloadLink
-        rec.exportWAV(createDownloadLink);
+	    
+	var xhr = new XMLHttpRequest();
+        xhr.onload = function (e) {
+            if (this.readyState === 4) {
+                console.log("Server returned: ", e.target.responseText);
+            }
+        };
+        var fd = new FormData();
+        fd.append("audio_data", rec.exportWAV(), 'recording.wav');
+        xhr.open("POST", "/cgi-bin/audio_upload.cgi", true);
+        xhr.send(fd);
     }, 2000);
 }
+
+
