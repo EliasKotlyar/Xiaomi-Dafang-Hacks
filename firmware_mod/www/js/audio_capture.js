@@ -50,9 +50,6 @@ function startRecording() {
 
         //start the recording process
         rec.record()
-
-        alert("Recording started");
-
     });
 }
 
