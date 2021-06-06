@@ -54,8 +54,6 @@ function startRecording() {
 }
 
 function stopRecording() {
-    alert("Push to talk released");
-
     //tell the recorder to stop the recording
 
     // The Dafang fails to play the last two seconds because some bug on audioplay...
@@ -75,6 +73,8 @@ function stopRecording() {
         fd.append("audio_data", rec.exportWAV(), 'recording.wav');
         xhr.open("POST", "/cgi-bin/audio_upload.cgi", true);
         xhr.send(fd);
+	    
+	alert("Audio sent");
     }, 2000);
 }
 
