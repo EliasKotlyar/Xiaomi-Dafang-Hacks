@@ -75,8 +75,10 @@ function pushToTalk(action) {
         $("#btn-record span").attr("style","color:red");
         $("#btn-record span").removeAttr("onmousedown");
         $("#btn-record").attr("onmouseup","pushToTalk('off')");
+        startRecording();
     }
     else {
+        stopRecording();
         $("#btn-record span").removeAttr("style");
         $("#btn-record span").removeAttr("onmouseup");
         $("#btn-record").attr("onmousedown","pushToTalk('on')");
