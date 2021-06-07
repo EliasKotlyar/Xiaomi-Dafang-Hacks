@@ -7,6 +7,7 @@ var AudioContext = window.AudioContext || window.webkitAudioContext;
 var audioContext //audio context to help us record
 
 function startRecording() {
+    console.log("Recording started");
     /*
     	Simple constraints object, for more advanced audio features see
     	https://addpipe.com/blog/audio-constraints-getusermedia/
@@ -77,7 +78,7 @@ function stopRecording() {
 		xhr.open("POST", "/cgi-bin/audio_upload.cgi", true);
 		xhr.send(fd);
 	}
-	alert("Audio sent")
+	console.log("Audio sent");
     }, 2000);
 }
 
