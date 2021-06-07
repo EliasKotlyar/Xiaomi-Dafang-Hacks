@@ -73,15 +73,15 @@ function PTZControl(view) {
 function pushToTalk(action) {
     if (action == "on") {
         $("#btn-ptt span").attr("style","color:red");
-        $("#btn-ptt span").removeAttr("onmousedown");
-        $("#btn-ptt").attr("onmouseup","pushToTalk('off')");
+        $("#btn-ptt span").removeAttr("onpointerdown");
+        $("#btn-ptt").attr("onpointerup","pushToTalk('off')");
         startRecording();
     }
     else {
         stopRecording();
         $("#btn-ptt span").removeAttr("style");
-        $("#btn-ptt span").removeAttr("onmouseup");
-        $("#btn-ptt").attr("onmousedown","pushToTalk('on')");
+        $("#btn-ptt span").removeAttr("onpointerup");
+        $("#btn-ptt").attr("onpointerdown","pushToTalk('on')");
     }
 }
 
