@@ -70,6 +70,21 @@ function PTZControl(view) {
     }
 }
 
+function pushToTalk(action) {
+    if (action == "on") {
+        $("#btn-ptt span").attr("style","color:red");
+        $("#btn-ptt span").removeAttr("onpointerdown");
+        $("#btn-ptt").attr("onpointerup","pushToTalk('off')");
+        startRecording();
+    }
+    else {
+        stopRecording();
+        $("#btn-ptt span").removeAttr("style");
+        $("#btn-ptt span").removeAttr("onpointerup");
+        $("#btn-ptt").attr("onpointerdown","pushToTalk('on')");
+    }
+}
+
 function record(action) {
     $.get("cgi-bin/ui_live.cgi",{cmd: "recording", action: action},function (result) {
         if (action == "on" || result == "ON\n") {

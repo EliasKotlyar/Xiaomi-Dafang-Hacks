@@ -14,7 +14,7 @@ Neos SmartCam | ![XiaoFang](/xiaofang.png)
 Sannce I21AG, MixSight HX-I2110T2, WanScam HW0036, Digoo BB-M2 | ![XiaoFang](/sannce.jpg)
 Any other Device with Ingenic T10/T20 Device https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues/980 | ![T20](/t20.png)
 
-If you want to test the Xiaofang T20L (newer version) please check out the [beta branch in this repository](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/tree/beta).
+If you want to test the Xiaofang T20L (newer version) please check out the [additional instructions](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/hacks/install_cwf_t20l.md).
 
 If you have a classic XiaoFang with a ARM-Processor, consider using https://github.com/samtap/fang-hacks
 
