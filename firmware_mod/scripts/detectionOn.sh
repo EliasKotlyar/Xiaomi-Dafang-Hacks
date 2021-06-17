@@ -83,7 +83,7 @@ send_snapshot() {
 		(
 
 		debug_msg "Sending Dropbox snapshot to $dropbox_stills_dir/$filename.jpg"
-		/system/sdcard/bin/curl -X POST https://content.dropboxapi.com/2/files/upload \
+		/system/sdcard/bin/curl -X POST "$dropbox_url" \
 			--header "Authorization: Bearer $dropbox_token" \
 			--header "Dropbox-API-Arg: {\"path\": \"$dropbox_stills_dir/$filename.jpg\"}" \
 			--header "Content-Type: application/octet-stream" \
@@ -290,7 +290,7 @@ fi
 		(
 
 		debug_msg "Saving Dropbox snapshot to $dropbox_videos_dir/$filename.mp4"
-		/system/sdcard/bin/curl -X POST https://content.dropboxapi.com/2/files/upload \
+		/system/sdcard/bin/curl -X POST "$dropbox_url" \
 			--header "Authorization: Bearer $dropbox_token" \
 			--header "Dropbox-API-Arg: {\"path\": \"$dropbox_videos_dir/$filename.mp4\"}" \
 			--header "Content-Type: application/octet-stream" \
