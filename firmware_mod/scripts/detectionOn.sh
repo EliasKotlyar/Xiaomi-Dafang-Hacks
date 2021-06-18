@@ -210,7 +210,7 @@ debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 send_snapshot &
 
 # Then, record video (if necessary)
-if [ "$save_video" = true -o "$smb_video" = true -o "$telegram_alert_type" = "video+image" -o "$telegram_alert_type" = "video" -o "$publish_mqtt_video" = true ] ; then
+if [ "$save_video" = true -o "$smb_video" = true -o "$ftp_video" = true -o "$dropbox_video" = true -o "$telegram_alert_type" = "video+image" -o "$telegram_alert_type" = "video" -o "$publish_mqtt_video" = true ] ; then
 	record_video
 fi
 
