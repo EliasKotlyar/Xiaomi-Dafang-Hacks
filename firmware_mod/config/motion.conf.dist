@@ -63,6 +63,7 @@ ftp_videos_dir="motion/videos"
 # Configure Dropbox snapshots and videos
 dropbox_snapshot=false
 dropbox_video=false
+dropbox_url="https://content.dropboxapi.com/2/files/upload"
 dropbox_token="token"
 dropbox_stills_dir="/motion/stills"
 dropbox_videos_dir="/motion/videos"

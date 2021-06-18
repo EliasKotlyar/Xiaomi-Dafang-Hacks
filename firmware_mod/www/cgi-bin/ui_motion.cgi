@@ -40,6 +40,7 @@ if [ -n "$F_cmd" ]; then
     echo "dropboxVideosDir#:#${dropbox_videos_dir}"
     echo "dropboxSnapshot#:#${dropbox_snapshot}"
     echo "dropboxVideo#:#${dropbox_video}"
+    echo "dropboxUrl#:#${dropbox_url}"
     echo "dropboxToken#:#${dropbox_token}"
     echo "smbSnapshot#:#${smb_snapshot}"
     echo "smbVideo#:#${smb_video}"
@@ -196,6 +197,11 @@ if [ -n "$F_cmd" ]; then
 		F_dropboxVideo=$(printf '%b' "${F_dropboxVideo//%/\\x}")
 	    rewrite_config /system/sdcard/config/motion.conf dropbox_video $F_dropboxVideo
 		  echo "Save video to dropbox set to $F_dropboxVideo<br/>"
+	  fi
+    if [ -n "${F_dropboxUrl+x}" ]; then
+		  F_dropboxUrl=$(printf '%b' "${F_dropboxUrl//%/\\x}" | sed 's/\//\\\//g')
+	      rewrite_config /system/sdcard/config/motion.conf dropbox_url "\"$F_dropboxUrl\""
+		  echo "dropbox url set<br/>"
 	  fi
     if [ -n "${F_dropboxToken+x}" ]; then
 		  F_dropboxToken=$(printf '%b' "${F_dropboxToken//%/\\x}" | sed 's/\//\\\//g')
