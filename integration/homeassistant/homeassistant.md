@@ -65,7 +65,7 @@ cp /system/sdcard/config/mqtt.conf.dist /system/sdcard/config/mqtt.conf
 ```
 
 Set up your broker, LOCATION and DEVICE_NAME
-and uncomment AUTODISCOVERY_PREFIX (only then the dafang configurations will be published):
+and uncomment AUTODISCOVERY_PREFIX (only then the dafang configurations will be published, IMPORTANT: LOCATION and DEVICE_NAME need to be snake case!):
 
 ```shell
 vi /system/sdcard/config/mqtt.conf
