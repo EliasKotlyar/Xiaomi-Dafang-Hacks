@@ -15,7 +15,7 @@ var iridix = new TimeSeries();
 var gain = new TimeSeries();
 
 function readIspInfo(){
-      $.get("/cgi-bin/ui_softnight.cgi", function(data, status)
+      $.get("cgi-bin/ui_softnight.cgi", function(data, status)
       {
       parseIspInfo(data);
       });
@@ -78,7 +78,7 @@ function startGraph(){
 }
 
 $(document).ready(function () {
-  $.get("/cgi-bin/action.cgi?cmd=get_sw_night_config", function(data, status)
+  $.get("cgi-bin/action.cgi?cmd=get_sw_night_config", function(data, status)
       {
           var list = data.split('-');
           var valid=false;

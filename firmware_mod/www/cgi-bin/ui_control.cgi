@@ -41,7 +41,7 @@ if [ -n "$F_cmd" ]; then
       do                                                 
         if [[ -f $file ]]; then                           
           file_size=$(ls -lh $file | awk '{print $5}')                                          
-          file_url=$(ls -lh $file | awk '{print $9}' | sed 's/\/system\/sdcard\/DCIM/\/viewer/')
+          file_url=$(ls -lh $file | awk '{print $9}' | sed 's/\/system\/sdcard\/DCIM/viewer/')
           file_date=$(ls -lh $file | awk '{print $6 "-" $7 "-" $8}')                            
           file_name=$(ls -lh $file | awk '{print $9}' | awk -F / '{print $(NF)}')                                                                                                      
           echo "${file_name}#:#${file_size}#:#${file_date}#:#${file_url}"                                                                                    
@@ -51,12 +51,12 @@ if [ -n "$F_cmd" ]; then
     ;;
 
   del_config)
-    F_file=$(echo ${F_file} | sed -e 's/%2F/\//g' | sed -e 's/viewer/system\/sdcard\/DCIM/') 
+    F_file=$(echo ${F_file} | sed -e 's/%2F/\//g' | sed -e 's/viewer/\/system\/sdcard\/DCIM/')
     echo "Remove ${F_file}"
     rm $F_file
   ;;
   restore_config)
-    F_file=$(echo ${F_file} | sed -e 's/%2F/\//g' | sed -e 's/viewer/system\/sdcard\/DCIM/') 
+    F_file=$(echo ${F_file} | sed -e 's/%2F/\//g' | sed -e 's/viewer/\/system\/sdcard\/DCIM/')
     tar -xf $F_file -C /system/sdcard/config/
     echo "Restore done"
     /sbin/reboot
