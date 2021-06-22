@@ -51,7 +51,7 @@ function accordion() {
 
 
 function checkSDCard() {
-  $.get("/cgi-bin/ui_sdcard.cgi", {cmd: "check_sdcard"}, function (result) {
+  $.get("cgi-bin/ui_sdcard.cgi", {cmd: "check_sdcard"}, function (result) {
     if ( result == "nok") {
       $('#notifAlarm').attr('style','color:red');
       $('#notifContent').html("<p></p>Your sdcard is mounted read-only. Settings can't be saved. \

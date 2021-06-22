@@ -75,7 +75,7 @@ function stopRecording() {
 		};
 		var fd = new FormData();
 		fd.append("audio_data", blob, 'recording.wav');
-		xhr.open("POST", "/cgi-bin/audio_upload.cgi", true);
+		xhr.open("POST", "cgi-bin/audio_upload.cgi", true);
 		xhr.send(fd);
 	}
 	console.log("Audio sent");
