@@ -1,0 +1,13 @@
+#######################################################################
+# Edit this file and move it to /system/sdcard/config/recording.conf  #
+# if you need to add options, otherwise defaults will be used	      #
+#######################################################################
+
+# Configure Recording
+
+# Roll recording means that the recording file will be split, not just one big file
+# the recording will be split every 30 minutes, for now it is not configurable
+ROLL_RECORDING_ENABLE=false
+
+# The recording will be deleted after some period of time, default is 24H
+ROLL_RECORDING_RETENTION_MINUTES=1440

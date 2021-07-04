@@ -1,0 +1,28 @@
+#!/bin/sh
+
+roll()
+{
+	if [ ! -f /system/sdcard/config/recording.conf ]; then
+		cp /system/sdcard/config/recording.conf.dist /system/sdcard/config/recording.conf
+	fi
+
+	if [ ! -f /run/recording.pid ]; then
+		exit
+	fi
+
+	. /system/sdcard/config/recording.conf
+	if [ "$ROLL_RECORDING_ENABLE" = true ]; then
+		find $DCIM_PATH -mmin +${ROLL_RECORDING_RETENTION_MINUTES} -name "REC*" -delete
+		/system/sdcard/controlscripts/recording stop
+		/system/sdcard/controlscripts/recording start
+	fi
+}
+
+if [ $# -eq 0 ]; then
+  roll
+else
+  case $1 in roll)
+	  $1
+	  ;;
+  esac
+fi

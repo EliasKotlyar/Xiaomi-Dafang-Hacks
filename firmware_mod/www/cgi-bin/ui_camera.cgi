@@ -15,6 +15,7 @@ if [ -n "$F_cmd" ]; then
   case "$F_cmd" in
   get_config)
   	source /system/sdcard/config/rtspserver.conf
+  	source /system/sdcard/config/recording.conf
 	source /system/sdcard/config/autonight.conf
 	source /system/sdcard/config/ldr-average.conf
 	source /system/sdcard/config/timelapse.conf
@@ -27,6 +28,8 @@ if [ -n "$F_cmd" ]; then
 	echo "format#:#${VIDEOFORMAT}"
 	echo "frmRateNum#:#${FRAMERATE_NUM}"
 	echo "frmRateDen#:#${FRAMERATE_DEN}"
+	echo "recordingRollover#:#${ROLL_RECORDING_ENABLE}"
+	echo "recordingRetention#:#${ROLL_RECORDING_RETENTION_MINUTES}"
 	echo "videoUser#:#${USERNAME}"
 	echo "videoPassword#:#${USERPASSWORD}"
 	echo "videoPort#:#${PORT}"
@@ -90,6 +93,16 @@ if [ -n "$F_cmd" ]; then
 		fi
 		echo "FrameRate set to $frmRateDen/$frmRateNum <br/>"
 		/system/sdcard/bin/setconf -k d -v "$frmRateNum,$frmRateDen" 2>/dev/null
+	fi
+	if [ -n  "${F_recordingRollover+x}" ]; then
+		recordingRollover=$(printf '%b' "${F_recordingRollover//%/\\x}")
+		rewrite_config /system/sdcard/config/recording.conf ROLL_RECORDING_ENABLE "$recordingRollover"
+		echo "Recording rollover enable toggle set to: $recordingRollover <br/>"
+	fi
+	if [ -n  "${F_recordingRetention+x}" ]; then
+		recordingRetention=$(printf '%b' "${F_recordingRetention//%/\\x}")
+		rewrite_config /system/sdcard/config/recording.conf ROLL_RECORDING_RETENTION_MINUTES "$recordingRetention"
+		echo "Recording retention in minutes set to: $recordingRetention <br/>"
 	fi
 	if [ -n  "${F_videoUser+x}" ]; then
 		videouser=$(printf '%b' "${F_videoUser//%/\\x}")
