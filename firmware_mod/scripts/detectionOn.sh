@@ -40,7 +40,7 @@ send_snapshot() {
 		if [ "$telegram_alert_type" = "text" ] ; then
 			debug_msg "Send telegram text"
 			/system/sdcard/bin/telegram m "Motion detected"
-		elif [ "$telegram_alert_type" = "image" -o  "$telegram_alert_type" = "video+image" ] ; then
+		elif [ "$telegram_alert_type" = "image" -o "$telegram_alert_type" = "video+image" ] ; then
 			debug_msg "Send telegram image"
 			/system/sdcard/bin/telegram p "$snapshot_tempfile"
 		fi
@@ -56,8 +56,7 @@ send_snapshot() {
 		) &
 	fi
 
-
-        #save FTP snapshot
+	#save FTP snapshot
 	if [ "$ftp_snapshot" = true ]; then
 		(
 		ftpput_cmd="/system/sdcard/bin/busybox ftpput"
@@ -78,10 +77,9 @@ send_snapshot() {
 		) &
 	fi
 
-        #save Dropbox snapshot
+	#save Dropbox snapshot
 	if [ "$dropbox_snapshot" = true ]; then
 		(
-
 		debug_msg "Sending Dropbox snapshot to $dropbox_stills_dir/$filename.jpg"
 		/system/sdcard/bin/curl -X POST "$dropbox_url" \
 			--header "Authorization: Bearer $dropbox_token" \
@@ -91,17 +89,15 @@ send_snapshot() {
 		) &
 	fi
 
+	# Save a snapshot
+	if [ "$save_snapshot" = true ] ; then
+		(
+		debug_msg "Save snapshot to $save_snapshot_dir/$groupname/$filename.jpg"
 
-
-        # Save a snapshot
-        if [ "$save_snapshot" = true ] ; then
-	        (
-	        debug_msg "Save snapshot to $save_snapshot_dir/$groupname/$filename.jpg"
-
-	        if [ ! -d "$save_snapshot_dir/$groupname" ]; then
-		        mkdir -p "$save_snapshot_dir/$groupname"
-		        chmod "$save_dirs_attr" "$save_snapshot_dir/$groupname"
-        	fi
+		if [ ! -d "$save_snapshot_dir/$groupname" ]; then
+			mkdir -p "$save_snapshot_dir/$groupname"
+			chmod "$save_dirs_attr" "$save_snapshot_dir/$groupname"
+		fi
 
 		# Limit the number of snapshots
 		if [ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshot_days" ]; then
@@ -131,6 +127,7 @@ send_snapshot() {
 		$smbclient_cmd -D "$smb_stills_path" -c "lcd /tmp; mkdir $groupname; cd $groupname; put $snapshot_tempfilename; rename $snapshot_tempfilename $filename.jpg"
 		) &
 	fi
+
 	# Wait for all background jobs to finish before existing
 	debug_msg "Waiting for background jobs to end in send_snapshot function:"
 	for jobpid in $(jobs -p); do
@@ -141,11 +138,11 @@ send_snapshot() {
 }
 
 record_video () {
-	# We only want one video stream at a time. Try to grab an
-	# exclusive flock on file descriptor 5. Bail out if another
-	# process already has it. Touch the flock to update it's mod
-	# time as a signal to the background process to keep recording
-	# when motion is repeatedly observed.
+	# We only want one video stream at a time. Try to grab an exclusive
+	# flock on file descriptor 5. Bail out if another process already has
+	# it. Touch the flock to update its mod time as a signal to the
+	# background process to keep recording when motion is repeatedly
+	# observed.
 	touch /run/recording_video.flock
 	exec 5<> /run/recording_video.flock
 	if /system/sdcard/bin/busybox flock -n -x 5; then
@@ -210,12 +207,16 @@ debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 send_snapshot &
 
 # Then, record video (if necessary)
-if [ "$save_video" = true -o "$smb_video" = true -o "$ftp_video" = true -o "$dropbox_video" = true -o "$telegram_alert_type" = "video+image" -o "$telegram_alert_type" = "video" -o "$publish_mqtt_video" = true ] ; then
+if [ "$save_video" = true ] ||
+   [ "$smb_video" = true ] ||
+   [ "$dropbox_video" = true ] ||
+  ([ "$send_telegram" = true ] && ([ "$telegram_alert_type" = video+image ] || [ "$telegram_alert_type" = video ])) ||
+   [ "$publish_mqtt_video" = true ]
+then
 	record_video
 fi
 
 # Next, start background tasks for all configured video notifications
-
 
 # Save the video
 if [ "$save_video" = true ] ; then
@@ -252,11 +253,11 @@ if [ "$ftp_video" = true ]; then
 	fi
 	ftpput_cmd="$ftpput_cmd $ftp_host"
 
-	# We only want one video stream at a time. Try to grab an
-	# exclusive flock on file descriptor 5. Bail out if another
-	# process already has it. Touch the flock to update it's mod
-	# time as a signal to the background process to keep recording
-	# when motion is repeatedly observed.
+	# We only want one video stream at a time. Try to grab an exclusive
+	# flock on file descriptor 5. Bail out if another process already has
+	# it. Touch the flock to update it's mod time as a signal to the
+	# background process to keep recording when motion is repeatedly
+	# observed.
 	touch /run/ftp_motion_video_stream.flock
 	exec 5<> /run/ftp_motion_video_stream.flock
 	if /system/sdcard/bin/busybox flock -n -x 5; then
@@ -265,10 +266,10 @@ if [ "$ftp_video" = true ]; then
 
 		# XXX Uses avconv to stitch multiple JPEGs into 1fps video.
 		#  I couldn't get it working another way. /dev/videoX inputs
-		#  fail. Localhost rtsp takes very long (10+ seconds) to
-		#  start streaming and gets flaky when when memory or cpu
-		#  are pegged. This is a clugy method, but works well even
-		# at high res, fps, cpu, and memory load!
+		#  fail. Localhost rtsp takes very long (10+ seconds) to start
+		#  streaming and gets flaky when when memory or cpu are pegged.
+		#  This is a clugy method, but works well even at high res,
+		#  fps, cpu, and memory load!
 		( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/ftp_motion_video_stream.flock)" + "$video_duration")" ]; do
 				/system/sdcard/bin/getimage
 				sleep 1
@@ -285,21 +286,17 @@ if [ "$ftp_video" = true ]; then
 	) &
 fi
 
-        #save Dropbox video
-	if [ "$dropbox_video" = true ]; then
-		(
-
-		debug_msg "Saving Dropbox snapshot to $dropbox_videos_dir/$filename.mp4"
-		/system/sdcard/bin/curl -X POST "$dropbox_url" \
-			--header "Authorization: Bearer $dropbox_token" \
-			--header "Dropbox-API-Arg: {\"path\": \"$dropbox_videos_dir/$filename.mp4\"}" \
-			--header "Content-Type: application/octet-stream" \
-			--data-binary @"$video_tempfile"
-		) &
-	fi
-
-
-
+#save Dropbox video
+if [ "$dropbox_video" = true ]; then
+	(
+	debug_msg "Saving Dropbox snapshot to $dropbox_videos_dir/$filename.mp4"
+	/system/sdcard/bin/curl -X POST "$dropbox_url" \
+		--header "Authorization: Bearer $dropbox_token" \
+		--header "Dropbox-API-Arg: {\"path\": \"$dropbox_videos_dir/$filename.mp4\"}" \
+		--header "Content-Type: application/octet-stream" \
+		--data-binary @"$video_tempfile"
+	) &
+fi
 
 # SMB snapshot and video
 if [ "$smb_video" = true ]; then
@@ -342,14 +339,14 @@ if [ "$send_telegram" = true ]; then
 	(
 	include /system/sdcard/config/telegram.conf
 
-	if [ "$telegram_alert_type" = "video" -o  "$telegram_alert_type" = "video+image" ] ; then
+	if [ "$telegram_alert_type" = "video" -o "$telegram_alert_type" = "video+image" ] ; then
 		debug_msg "Send telegram video"
 		if [ "$video_use_rtsp" = true ]; then
 			#Convert file to mp4 and remove audio stream so video plays in telegram app
 			/system/sdcard/bin/avconv -i "$video_tempfile" -c:v copy -an "$video_tempfile"-telegram.mp4
 			/system/sdcard/bin/telegram v "$video_tempfile"-telegram.mp4
 			rm "$video_tempfile"-telegram.mp4 
-			else
+		else
 			/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
 			/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
 			rm "$video_tempfile-lo.mp4"
@@ -360,10 +357,10 @@ fi
 
 # Run any user scripts.
 for i in /system/sdcard/config/userscripts/motiondetection/*; do
-    if [ -x "$i" ]; then
-        debug_msg "Running: $i on $snapshot_tempfile"
-        $i on "$snapshot_tempfile" "$video_tempfile" &
-    fi
+	if [ -x "$i" ]; then
+		debug_msg "Running: $i on $snapshot_tempfile"
+		$i on "$snapshot_tempfile" "$video_tempfile" &
+	fi
 done
 
 # Wait for all background jobs to finish before existing and deleting tempfile
