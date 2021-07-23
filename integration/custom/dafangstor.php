@@ -27,6 +27,12 @@
    # Make sure the web user has access permissions for this directory.
    $OUTDIR = "/media/securitycam";
 
+   # Allowed file extensions
+   $ALLOWEDFILETYPES = array('jpg', 'mp4', 'avi');
+
+   # Maximum upload file size (50MB shown)
+   $MAXFILESIZE = 50 * 1024 * 1024;
+
    ############################################################################
 
    if (!array_key_exists('HTTP_AUTHORIZATION', $_SERVER) || !array_key_exists('HTTP_DROPBOX_API_ARG', $_SERVER))
@@ -80,10 +86,19 @@
    $dirname = dirname($path);
    $filename = basename($path);
 
-   if (strlen($filename) < 1)
+   $ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+   if (!$ext || strlen($filename) < 1)
    {
       header("HTTP/1.1 500 Internal Server Error");
       error_log("ERROR: Bad file path");
+      exit();
+   }
+
+   if (!in_array(strtolower($ext), $ALLOWEDFILETYPES))
+   {
+      header("HTTP/1.1 403 Forbidden");
+      error_log("ERROR: File extension not allowed");
       exit();
    }
 
@@ -114,7 +129,7 @@
       exit();
    }
 
-   $data = file_get_contents('php://input');
+   $data = file_get_contents('php://input', false, null, 0, $MAXFILESIZE);
    $numbytes = fwrite($fp, $data);
    fclose($fp);
 
