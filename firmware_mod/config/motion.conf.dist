@@ -24,6 +24,7 @@ send_email=false
 send_telegram=false
 telegram_alert_type=image
 send_matrix=false
+matrix_alert_type=image
 night_mode_event_delay=30
 
 # General
