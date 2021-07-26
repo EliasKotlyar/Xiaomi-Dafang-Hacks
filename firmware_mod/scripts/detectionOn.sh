@@ -47,12 +47,18 @@ send_snapshot() {
 		) &
 	fi
 
-	# Send a matrix message
+	# Send a matrix message or image
 	if [ "$send_matrix" = true ]; then
 		(
 		include /system/sdcard/config/matrix.conf
-		debug_msg "Send matrix message"
-		/system/sdcard/bin/matrix m "Motion detected"
+
+		if [ "$matrix_alert_type" = "text" ] ; then
+			debug_msg "Send matrix text"
+			/system/sdcard/bin/matrix m "Motion detected"
+		elif [ "$matrix_alert_type" = "image" -o "$matrix_alert_type" = "video+image" ] ; then
+			debug_msg "Send matrix image"
+			/system/sdcard/bin/matrix p "$filename" "$snapshot_tempfile"
+		fi
 		) &
 	fi
 
@@ -211,6 +217,7 @@ if [ "$save_video" = true ] ||
    [ "$smb_video" = true ] ||
    [ "$dropbox_video" = true ] ||
   ([ "$send_telegram" = true ] && ([ "$telegram_alert_type" = video+image ] || [ "$telegram_alert_type" = video ])) ||
+  ([ "$send_matrix" = true ] && ([ "$matrix_alert_type" = video+image ] || [ "$matrix_alert_type" = video ])) ||
    [ "$publish_mqtt_video" = true ]
 then
 	record_video
@@ -350,6 +357,24 @@ if [ "$send_telegram" = true ]; then
 			/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
 			/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
 			rm "$video_tempfile-lo.mp4"
+		fi
+	fi
+	) &
+fi
+
+# Send a matrix video
+if [ "$send_matrix" = true ]; then
+	(
+	include /system/sdcard/config/matrix.conf
+
+	if [ "$matrix_alert_type" = "video" -o "$matrix_alert_type" = "video+image" ] ; then
+		debug_msg "Send matrix video"
+		if [ "$video_use_rtsp" = true ]; then
+			/system/sdcard/bin/matrix v "$filename" "$video_tempfile"
+		else
+			/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
+			/system/sdcard/bin/matrix v "$filename" "$video_tempfile-lo.mp4"
+			rm -f "$video_tempfile-lo.mp4"
 		fi
 	fi
 	) &
