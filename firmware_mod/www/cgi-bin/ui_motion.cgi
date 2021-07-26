@@ -57,6 +57,7 @@ if [ -n "$F_cmd" ]; then
     echo "sendTelegram#:#${send_telegram}"
     echo "telegramAlertType#:#${telegram_alert_type}"
     echo "sendMatrix#:#${send_matrix}"
+    echo "matrixAlertType#:#${matrix_alert_type}"
     echo "nightModeEventDelay#:#${night_mode_event_delay}"
 
 	;;
@@ -257,6 +258,11 @@ if [ -n "$F_cmd" ]; then
 		F_sendMatrix=$(printf '%b' "${F_sendMatrix//%/\\x}")
 	    rewrite_config /system/sdcard/config/motion.conf send_matrix $F_sendMatrix
 		  echo "Send Matrix on motion set to $F_sendMatrix<br/>"
+	  fi
+    if [ -n "${F_matrixAlertType+x}" ]; then
+	    F_matrixAlertType=$(printf '%b' "${F_matrixAlertType//%/\\x}")
+	    rewrite_config /system/sdcard/config/motion.conf matrix_alert_type $F_matrixAlertType
+		  echo "Matrix alert type set to $F_matrixAlertType<br/>"
 	  fi
     if [ -n "${F_nightModeEventDelay+x}" ]; then
   		F_nightModeEventDelay=$(printf '%b' "${F_nightModeEventDelay//%/\\x}")
