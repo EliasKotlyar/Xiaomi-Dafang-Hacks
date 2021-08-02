@@ -211,7 +211,7 @@ filename=$(date "$filename_pattern")
 /system/sdcard/bin/getimage > "$snapshot_tempfile"
 debug_msg "Got snapshot_tempfile=$snapshot_tempfile"
 
-#Next send picture alerts in the background
+# Next send picture alerts in the background
 
 send_snapshot &
 
@@ -355,13 +355,19 @@ if [ "$send_telegram" = true ]; then
 	include /system/sdcard/config/telegram.conf
 
 	if [ "$telegram_alert_type" = "video" -o  "$telegram_alert_type" = "video+image" ] ; then
-		debug_msg "Send telegram video"
 		if [ "$video_use_rtsp" = true ]; then
-			#Convert file to mp4 and remove audio stream so video plays in telegram app
-			/system/sdcard/bin/avconv -i "$video_tempfile" -c:v copy -an "$video_tempfile"-telegram.mp4
-			/system/sdcard/bin/telegram v "$video_tempfile"-telegram.mp4
-			rm "$video_tempfile"-telegram.mp4 
+			if [ "$AUDIOFORMAT" = "PCMU" ] || [ "$AUDIOFORMAT" = "OFF" ] ; then
+				# Convert file to mp4 and remove audio stream so video plays in telegram app
+				debug_msg "Send telegram video"
+				/system/sdcard/bin/avconv -i "$video_tempfile" -c:v copy -an "$video_tempfile"-telegram.mp4
+				/system/sdcard/bin/telegram v "$video_tempfile"-telegram.mp4
+				rm "$video_tempfile"-telegram.mp4
 			else
+				# avconv can't strip audio it doesn't understand
+				debug_msg "Send telegram video (only viable for external playback)"
+	                        /system/sdcard/bin/telegram v "$video_tempfile"
+			fi
+		else
 			/system/sdcard/bin/avconv -i "$video_tempfile" "$video_tempfile-lo.mp4"
 			/system/sdcard/bin/telegram v "$video_tempfile-lo.mp4"
 			rm "$video_tempfile-lo.mp4"
@@ -396,7 +402,7 @@ for i in /system/sdcard/config/userscripts/motiondetection/*; do
     fi
 done
 
-# Wait for all background jobs to finish before existing and deleting tempfile
+# Wait for all background jobs to finish before exiting and deleting tempfile
 debug_msg "Waiting for background jobs to end:"
 for jobpid in $(jobs -p); do
 	wait "$jobpid"

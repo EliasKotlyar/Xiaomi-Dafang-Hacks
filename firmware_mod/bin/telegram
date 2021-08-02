@@ -18,45 +18,66 @@ sendMessage() {
 }
 
 sendFile() {
-  echo "Sending file: $1"
-  $CURL -s \
-    -X POST \
-    https://api.telegram.org/bot$apiToken/sendDocument \
-    -F chat_id="$userChatId" \
-    -F document=@"$1"
+  if [ -r $1 ]
+  then 
+    echo "Sending file: $1"
+    $CURL -s \
+      -X POST \
+      https://api.telegram.org/bot$apiToken/sendDocument \
+      -F chat_id="$userChatId" \
+      -F document=@"$1"
+  else
+    echo "File not found: $1"
+  fi
 }
 
 sendPhoto() {
-  caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
-  echo "Sending Photo: $1 $caption" >> /tmp/telegram.log
-  $CURL -s \
-    -X POST \
-    https://api.telegram.org/bot$apiToken/sendPhoto \
-    -F chat_id="$userChatId" \
-    -F photo="@${1}" \
-    -F caption="${caption}"
+  if [ -r $1 ]
+  then
+    caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
+    echo "Sending Photo: $1 $caption" >> /tmp/telegram.log
+    $CURL -s \
+      -X POST \
+      https://api.telegram.org/bot$apiToken/sendPhoto \
+      -F chat_id="$userChatId" \
+      -F photo="@${1}" \
+      -F caption="${caption}"
+  else
+    echo "File not found: $1"
+  fi
 }
 
 sendVideo() {
-  caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
-  echo "Sending Video: $1 $caption" >> /tmp/telegram.log
-  $CURL -s \
-    -X POST \
-    https://api.telegram.org/bot$apiToken/sendVideo \
-    -F chat_id="$userChatId" \
-    -F video="@${1}" \
-    -F caption="${caption}"
+  if [ -r $1 ]
+  then
+    bytes=$(busybox stat -c %s $1)
+    caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
+    echo "Sending Video: $1 $caption (${bytes}bytes)" >> /tmp/telegram.log
+    $CURL -s \
+      -X POST \
+      https://api.telegram.org/bot$apiToken/sendVideo \
+      -F chat_id="$userChatId" \
+      -F video="@${1}" \
+      -F caption="${caption}"
+  else
+    echo "File not found: $1"
+  fi
 }
 
 sendAnimation() {
-  caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
-  echo "Sending Animation: $1 $caption" >> /tmp/telegram.log
-  $CURL -s \
-    -X POST \
-    https://api.telegram.org/bot$apiToken/sendAnimation \
-    -F chat_id="$userChatId" \
-    -F animation="@${1}" \
-    -F caption="${caption}"
+  if [ -r $1 ]
+  then
+    caption="$(hostname)-$(date +"%d%m%Y_%H%M%S")"
+    echo "Sending Animation: $1 $caption" >> /tmp/telegram.log
+    $CURL -s \
+      -X POST \
+      https://api.telegram.org/bot$apiToken/sendAnimation \
+      -F chat_id="$userChatId" \
+      -F animation="@${1}" \
+      -F caption="${caption}"
+  else
+    echo "File not found: $1"
+  fi
 }
 
 [ "$what" == "m" ] && sendMessage $data
