@@ -40,6 +40,7 @@ if [ -n "$F_cmd" ]; then
     echo "dropboxVideosDir#:#${dropbox_videos_dir}"
     echo "dropboxSnapshot#:#${dropbox_snapshot}"
     echo "dropboxVideo#:#${dropbox_video}"
+    echo "dropboxUrl#:#${dropbox_url}"
     echo "dropboxToken#:#${dropbox_token}"
     echo "smbSnapshot#:#${smb_snapshot}"
     echo "smbVideo#:#${smb_video}"
@@ -56,6 +57,7 @@ if [ -n "$F_cmd" ]; then
     echo "sendTelegram#:#${send_telegram}"
     echo "telegramAlertType#:#${telegram_alert_type}"
     echo "sendMatrix#:#${send_matrix}"
+    echo "matrixAlertType#:#${matrix_alert_type}"
     echo "nightModeEventDelay#:#${night_mode_event_delay}"
 
 	;;
@@ -197,6 +199,11 @@ if [ -n "$F_cmd" ]; then
 	    rewrite_config /system/sdcard/config/motion.conf dropbox_video $F_dropboxVideo
 		  echo "Save video to dropbox set to $F_dropboxVideo<br/>"
 	  fi
+    if [ -n "${F_dropboxUrl+x}" ]; then
+		  F_dropboxUrl=$(printf '%b' "${F_dropboxUrl//%/\\x}" | sed 's/\//\\\//g')
+	      rewrite_config /system/sdcard/config/motion.conf dropbox_url "\"$F_dropboxUrl\""
+		  echo "dropbox url set<br/>"
+	  fi
     if [ -n "${F_dropboxToken+x}" ]; then
 		  F_dropboxToken=$(printf '%b' "${F_dropboxToken//%/\\x}" | sed 's/\//\\\//g')
 	      rewrite_config /system/sdcard/config/motion.conf dropbox_token "\"$F_dropboxToken\""
@@ -251,6 +258,11 @@ if [ -n "$F_cmd" ]; then
 		F_sendMatrix=$(printf '%b' "${F_sendMatrix//%/\\x}")
 	    rewrite_config /system/sdcard/config/motion.conf send_matrix $F_sendMatrix
 		  echo "Send Matrix on motion set to $F_sendMatrix<br/>"
+	  fi
+    if [ -n "${F_matrixAlertType+x}" ]; then
+	    F_matrixAlertType=$(printf '%b' "${F_matrixAlertType//%/\\x}")
+	    rewrite_config /system/sdcard/config/motion.conf matrix_alert_type $F_matrixAlertType
+		  echo "Matrix alert type set to $F_matrixAlertType<br/>"
 	  fi
     if [ -n "${F_nightModeEventDelay+x}" ]; then
   		F_nightModeEventDelay=$(printf '%b' "${F_nightModeEventDelay//%/\\x}")

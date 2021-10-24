@@ -11,6 +11,10 @@ JQ="/system/sdcard/bin/jq"
 [ -z $apiToken ] && echo "api token not configured yet" && exit 1
 [ -z $userChatId ] && echo "chat id not configured yet" && exit 1
 
+status() {
+  $TELEGRAM m "Motion detection `motion_detection status`\nNight mode `night_mode status`\nAlert type `get_config /system/sdcard/config/motion.conf telegram_alert_type`"
+}
+
 sendShot() {
   /system/sdcard/bin/getimage > "/tmp/telegram_image.jpg" &&\
   $TELEGRAM p "/tmp/telegram_image.jpg"
@@ -52,10 +56,16 @@ videoAlerts() {
   $TELEGRAM m "Video alerts on motion detection enabled"
 }
 
+imageThenVideoAlerts() {
+  rewrite_config /system/sdcard/config/motion.conf telegram_alert_type "video+image"
+  $TELEGRAM m "Image then video alerts on motion detection enabled"
+}
+
 respond() {
   cmd=$1
   [ $chatId -lt 0 ] && cmd=${1%%@*}
   case $cmd in
+	/status) status;;
 	/mem) sendMem;;
 	/shot) sendShot;;
 	/on) detectionOn;;
@@ -65,7 +75,8 @@ respond() {
 	/textalerts) textAlerts;;
 	/imagealerts) imageAlerts;;
 	/videoalerts) videoAlerts;;
-	/help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /shot - take a snapshot\n# /on - motion detection on\n# /off - motion detection off\n# /nighton - night mode on\n# /nightoff - night mode off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection\n# /videoalerts - Video alerts on motion detection";;
+	/dualalerts) imageThenVideoAlerts;;
+	/help | /start) $TELEGRAM m "######### Bot commands #########\n# /mem - show memory information\n# /status - show current camera status\n# /shot - take a snapshot\n# /on - motion detection on\n# /off - motion detection off\n# /nighton - night mode on\n# /nightoff - night mode off\n# /textalerts - Text alerts on motion detection\n# /imagealerts - Image alerts on motion detection\n# /videoalerts - Video alerts on motion detection\n# /dualalerts - Image snapshot then video alerts on motion detection";;
 	/*) $TELEGRAM m "I can't respond to '$cmd' command"
   esac
 }
@@ -109,7 +120,8 @@ main() {
   if [ "$chatId" != "$userChatId" ]; then
 	username=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.username // \"\"")
 	firstName=$(echo "$json" | $JQ -r ".result[0].$messageAttr.from.first_name // \"\"")
-	$TELEGRAM m "Received message from unauthorized chat id: $chatId\nUser: $username($firstName)\nMessage: $cmd"
+	# Uncomment to get notified of attempted chat spam
+	# $TELEGRAM m "Received message from unauthorized chat id: $chatId\nUser: $username($firstName)\nMessage: $cmd"
   else
 	respond $cmd
   fi;

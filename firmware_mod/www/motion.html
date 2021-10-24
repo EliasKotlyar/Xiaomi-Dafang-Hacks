@@ -215,18 +215,14 @@
     <button class="accordion" type='button'>Dropbox storage</button>
     <div class="panel">
         <p></p>
-        <div class="w3-row-padding">
-            <div class="w3-half">
-                <label>Dropbox Long Lived Token</label>
-                <input class="w3-input" id="dropboxToken">
-            </div>
+        <div class="w3-container">
+           <label>Dropbox URL</label>
+           <input class="w3-input" id="dropboxUrl" type="text">
         </div>
         <p></p>
-        <div class="w3-row-padding">
-            <div class="w3-half">
-            </div>
-            <div class="w3-half">
-            </div>
+        <div class="w3-container">
+            <label>Dropbox Long Lived Token</label>
+            <input class="w3-input" id="dropboxToken" type="text">
         </div>
         <p></p>
         <div class="w3-row-padding">
@@ -319,6 +315,15 @@
         <select id="sendMatrix" class="w3-select" name="option">
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Matrix alert type</label>
+        <select id="matrixAlertType" class="w3-select" name="option">
+            <option value="text">Text</option>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+            <option value="video+image">Video and Image</option>
         </select>
     </div>
     <div class="w3-container">

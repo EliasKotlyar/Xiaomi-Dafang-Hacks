@@ -24,6 +24,7 @@ send_email=false
 send_telegram=false
 telegram_alert_type=image
 send_matrix=false
+matrix_alert_type=image
 night_mode_event_delay=30
 
 # General
@@ -63,6 +64,7 @@ ftp_videos_dir="motion/videos"
 # Configure Dropbox snapshots and videos
 dropbox_snapshot=false
 dropbox_video=false
+dropbox_url="https://content.dropboxapi.com/2/files/upload"
 dropbox_token="token"
 dropbox_stills_dir="/motion/stills"
 dropbox_videos_dir="/motion/videos"
