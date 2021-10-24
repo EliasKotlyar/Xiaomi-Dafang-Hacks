@@ -2,7 +2,7 @@
   <div class="w3-panel w3-card">
     <p id="hostname"> Hostname</p>
     <div class="w3-display-container" onmouseover="camControl('show')" onmouseleave="camControl('hide');PTZControl('hide')">
-      <img id="liveview" src="/cgi-bin/currentpic.cgi" onerror="this.src='img/unable_load.png';" alt="Camera" style="width:100%" onmouseover="camControl('show')" onmouseout="camControl('hide')" >
+      <img id="liveview" src="cgi-bin/currentpic.cgi" onerror="this.src='img/unable_load.png';" alt="Camera" style="width:100%" onmouseover="camControl('show')" onmouseout="camControl('hide')" >
       <div id="btn-ptz-left" class="w3-display-left w3-container w3-hide">
         <button class="w3-button w3-circle w3-black" onclick="moveCamera('left')"><i class="fa fa-angle-left"></i></button>
       </div>
@@ -23,6 +23,7 @@
         <button class="w3-button w3-circle w3-black" onclick="flip()">Flip</button>
       </div>
         <div id="cam-control" class="w3-display-bottomright w3-container w3-hide">
+          <button id="btn-ptt" class="w3-button w3-circle w3-black" onpointerdown="pushToTalk('on')" title="Push To Talk"><span><i class="fas fa-microphone"></i></span></button>
           <button id="btn-record" class="w3-button w3-circle w3-black" onclick="record('on')" title="Record On/Off"><span><i class="fas fa-video"></i></span></button>
           <button id="btn-screenshot" class="w3-button w3-circle w3-black" onclick="downloadScreenshot()" title="Download Screenshot"><span><i class="fas fa-image"></i></span></button>
           <button id="btn-ptz" class="w3-button w3-circle w3-black" onclick="PTZControl('show')" title="PTZ Control"> <i class="fa fa-arrows-alt"></i></button>
@@ -33,7 +34,6 @@
     <p></p>
 </div>
 
-
-
-
+<script type="text/javascript" src="js/audio_recorder.js"></script>
+<script type="text/javascript" src="js/audio_capture.js"></script>
 <script type="text/javascript" src="js/live.js"></script>

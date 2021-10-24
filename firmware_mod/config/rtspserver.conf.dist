@@ -49,7 +49,7 @@ FRAMERATE_NUM=25
 VIDEOFORMAT=2
 
 # AudioFormat
-# Can be: OPUS | MP3 | PCM | PCMU
+# Can be: OPUS | MP3 | PCM | PCMU | OFF
 AUDIOFORMAT=MP3
 # Audio sampling rate
 AUDIOINBR=16000

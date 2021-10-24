@@ -4,24 +4,24 @@ var stateSideBar = false;
 
 //Function for flip image
 function flip() {
-    $.get("/cgi-bin/ui_live.cgi", {cmd: "flip"});
+    $.get("cgi-bin/ui_live.cgi", {cmd: "flip"});
 }
 
 //Functions for live stream with images
 function refreshLiveImage() {
     var ts = new Date().getTime();
-    $("#liveview").attr("src", "/cgi-bin/currentpic.cgi?" + ts);
+    $("#liveview").attr("src", "cgi-bin/currentpic.cgi?" + ts);
 }
 
 //Function to download a screenshot
 function downloadScreenshot() {
     var ts = new Date().getTime();
-    window.location.href = "/cgi-bin/downloadpic.cgi?" + ts;
+    window.location.href = "cgi-bin/downloadpic.cgi?" + ts;
 }
 
 //Function to refresh side bar buttons
 function refreshSideBar() {
-    $.get("/cgi-bin/ui_live.cgi", {cmd: "status_all"}, function (result) {
+    $.get("cgi-bin/ui_live.cgi", {cmd: "status_all"}, function (result) {
        var switches = result.split("\n");
        for (var i = 0; i < switches.length-1; i++) {
         var switch_info = switches[i].split(":");
@@ -67,6 +67,21 @@ function PTZControl(view) {
         $("#btn-ptz").attr("onclick","PTZControl('show')");
         $("#btn-ptz").removeClass("w3-grey");   
         $("#btn-ptz").addClass("w3-black");
+    }
+}
+
+function pushToTalk(action) {
+    if (action == "on") {
+        $("#btn-ptt span").attr("style","color:red");
+        $("#btn-ptt span").removeAttr("onpointerdown");
+        $("#btn-ptt").attr("onpointerup","pushToTalk('off')");
+        startRecording();
+    }
+    else {
+        stopRecording();
+        $("#btn-ptt span").removeAttr("style");
+        $("#btn-ptt span").removeAttr("onpointerup");
+        $("#btn-ptt").attr("onpointerdown","pushToTalk('on')");
     }
 }
 

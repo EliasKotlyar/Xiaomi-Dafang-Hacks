@@ -1,18 +1,54 @@
 #!/bin/sh
 
+CURL="/system/sdcard/bin/curl --silent"
+JQ="/system/sdcard/bin/jq"
+
 what="$1"
-shift
-data="$@"
-CURL="/system/sdcard/bin/curl"
+
+if [ "$what" = "m" ]; then
+  shift
+  sendtext="${@//\"/\\\"}"
+else
+  filename="$2"
+  datafile="$3"
+fi
 
 . /system/sdcard/config/matrix.conf
 
-sendMessage() {
-  text="$(echo "${@}" | sed 's:\\n:\n:g')"
-  echo "Sending message: $text"
+uploadData() {
+  mimetype="$1"
+  msgtype="$2"
 
-  $CURL -XPOST -d '{"msgtype":"m.text", "body":"'$text'"}' "https://$host:$port/_matrix/client/r0/rooms/$room_id/send/m.room.message?access_token=$access_token"
+  mxcuri="$($CURL -XPOST -H "Content-Type: $mimetype" --data-binary @"$datafile" "https://$host:$port/_matrix/media/r0/upload?filename=$filename&access_token=$access_token" | $JQ -cMr ".content_uri")"
+  if [ -n "$mxcuri" ] && [ "$mxcuri" != "null" ]; then
+    $CURL -XPOST -d '{"msgtype":"'"$msgtype"'", "body":"'"$filename"'", "url":"'"$mxcuri"'"}' "https://$host:$port/_matrix/client/r0/rooms/$room_id/send/m.room.message?access_token=$access_token"
+  fi
 }
 
-[ "$what" = "m" ] && sendMessage $data
-[ -z "$what" ] && echo -e "$0 <m|f|p> <data>\n m: message\n f: file\n p: picture"
+sendFile() {
+  echo "Sending file: $datafile"
+  uploadData "application/octet-stream" "m.file"
+}
+
+sendMessage() {
+  echo "Sending message: $sendtext"
+  $CURL -XPOST -d '{"msgtype":"m.notice", "body":"'"$sendtext"'"}' "https://$host:$port/_matrix/client/r0/rooms/$room_id/send/m.room.message?access_token=$access_token"
+}
+
+sendPicture() {
+  echo "Sending picture: $datafile"
+  filename="$filename.jpg"
+  uploadData "image/jpeg" "m.image"
+}
+
+sendVideo() {
+  echo "Sending video: $datafile"
+  filename="$filename.mp4"
+  uploadData "video/mp4" "m.video"
+}
+
+[ "$what" = "f" ] && sendFile
+[ "$what" = "m" ] && sendMessage
+[ "$what" = "p" ] && sendPicture
+[ "$what" = "v" ] && sendVideo
+[ -z "$what" ] && echo -e "$0 <m|f|p|v> <data|filename>\n m: message\n f: file\n p: picture\n v: video"
