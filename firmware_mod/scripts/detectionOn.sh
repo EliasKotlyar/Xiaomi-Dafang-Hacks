@@ -214,6 +214,7 @@ send_snapshot &
 # Then, record video (if necessary)
 if [ "$save_video" = true ] ||
    [ "$smb_video" = true ] ||
+   [ "$ftp_video" = true ] ||
    [ "$dropbox_video" = true ] ||
   ([ "$send_telegram" = true ] && ([ "$telegram_alert_type" = video+image ] || [ "$telegram_alert_type" = video ])) ||
   ([ "$send_matrix" = true ] && ([ "$matrix_alert_type" = video+image ] || [ "$matrix_alert_type" = video ])) ||
@@ -259,36 +260,10 @@ if [ "$ftp_video" = true ]; then
 	fi
 	ftpput_cmd="$ftpput_cmd $ftp_host"
 
-	# We only want one video stream at a time. Try to grab an exclusive
-	# flock on file descriptor 5. Bail out if another process already has
-	# it. Touch the flock to update it's mod time as a signal to the
-	# background process to keep recording when motion is repeatedly
-	# observed.
-	touch /run/ftp_motion_video_stream.flock
-	exec 5<> /run/ftp_motion_video_stream.flock
-	if /system/sdcard/bin/busybox flock -n -x 5; then
-		# Got the lock
-		debug_msg "Begin FTP video stream to ftp://$ftp_host/$ftp_videos_dir/$filename.avi for $video_duration seconds"
+	debug_msg "Saving FTP video to ftp://$ftp_host/$ftp_videos_dir/$filename.mp4" 
 
-		# XXX Uses avconv to stitch multiple JPEGs into 1fps video.
-		#  I couldn't get it working another way. /dev/videoX inputs
-		#  fail. Localhost rtsp takes very long (10+ seconds) to start
-		#  streaming and gets flaky when when memory or cpu are pegged.
-		#  This is a clugy method, but works well even at high res,
-		#  fps, cpu, and memory load!
-		( while [ "$(/system/sdcard/bin/busybox date "+%s")" -le "$(/system/sdcard/bin/busybox expr "$(/system/sdcard/bin/busybox stat -c "%X" /run/ftp_motion_video_stream.flock)" + "$video_duration")" ]; do
-				/system/sdcard/bin/getimage
-				sleep 1
-			done ) \
-		| /system/sdcard/bin/avconv -analyzeduration 0 -f image2pipe -r 1 -c:v mjpeg -c:a none -i - -c:v copy -c:a none -f avi - 2>/dev/null \
-		| $ftpput_cmd "$ftp_videos_dir/$filename.avi" - &
-	else
-		debug_msg "FTP video stream already running, continued another $video_duration seconds"
-	fi
+	$ftpput_cmd "$ftp_videos_dir/$filename.mp4" "$video_tempfile" 
 
-	# File descriptor 5 is inherited across fork to preserve lock,
-	# so we can close it here.
-	exec 5>&-
 	) &
 fi
 
