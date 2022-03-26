@@ -8,7 +8,7 @@
     [Xiaomi XiaoFang T20](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/xiaofang/cfw-1.0.bin) | 333053c3e98af24e0e90746d95e310a3c65b61f697288f974b702a5bcbba48a9
     [Wyzecam V2/Neos SmartCam](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_v2/cfw-1.2.bin) | 3b2deb32d0cd3ef75afef8788854883d868c09cf78c690f4b78fc26862793af3
     [Wyzecam Pan](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_pan/cfw-1.0.bin) | f76990d187e763f160f5ad39331d6a3209d3025fe3719cb43c92dbad92cebba2
-    Xiaomi XiaoFang T20L | [Start here](/hacks/install_cfw_t10l.md.md)
+    Xiaomi XiaoFang T20L | [Start here](/hacks/install_cfw_t20l.md)
     Sannce & clones | [Start here](/hacks/install_sannce.md)
     Other Ingenic T10/T20 Device | [Start here](/hacks/newdevices.md)
 
