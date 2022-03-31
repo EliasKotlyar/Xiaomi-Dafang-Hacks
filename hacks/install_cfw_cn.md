@@ -2,14 +2,15 @@
 
 1.下载相机的CFW-Binary
 
-    名称| SHA3​​-256
-    --- | ---
-    [Xiaomi DaFang]（https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/dafang/cfw-1.3.bin）| d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb
-    [Xiaomi XiaoFang T20]（https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/xiaofang/cfw-1.0.bin）| 333053c3e98af24e0e90746d95e310a3c65b61f697288f974b702a5bcbba48a9
-    [Wyzecam V2]（https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_v2/cfw-1.1.bin）| ca8fd695fe1903bd12aca2752c86b62c9694430c9c41b2804b006c22e84f409d
-    [Wyzecam Pan]（https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_pan/cfw-1.0.bin）| f76990d187e763f160f5ad39331d6a3209d3025fe3719cb43c92dbad92cebba2
-    Sannce＆clones | [从这里开始]（/ hacks / install_sannce.md）
-    其他Ingenic T10 / T20设备| [从这里开始]（/ hacks / newdevices.md）
+    Name | SHA3-256 
+    --- | --- 
+    [Xiaomi DaFang](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/dafang/cfw-1.3.bin) | d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb
+    [Xiaomi XiaoFang T20](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/xiaofang/cfw-1.0.bin) | 333053c3e98af24e0e90746d95e310a3c65b61f697288f974b702a5bcbba48a9
+    [Wyzecam V2/Neos SmartCam](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_v2/cfw-1.2.bin) | 3b2deb32d0cd3ef75afef8788854883d868c09cf78c690f4b78fc26862793af3
+    [Wyzecam Pan](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_pan/cfw-1.0.bin) | f76990d187e763f160f5ad39331d6a3209d3025fe3719cb43c92dbad92cebba2
+    Xiaomi XiaoFang T20L | [Start here](/hacks/install_cfw_t10l.md.md)
+    Sannce & clones | [Start here](/hacks/install_sannce.md)
+    其它君正 T10/T20 设备 | [Start here](/hacks/newdevices.md)
 
 2.将microSD格式化为FAT32。 NTFS，EXFAT等不起作用。尝试使用较小的旧SD卡（如512 MB）或仅在其上创建一个主512 MB分区以获得最大成功率。
 
@@ -38,19 +39,19 @@
 
 它应该如下所示：
 ```
-E：/
-├──媒体
-├──autoupdate.sh
-├──宾
-├──配置
-├──对照
-├──司机
-├──run.sh
-├──脚本
-├──uEnv.bootfromnand.txt
-├──uEnv.bootfromsdcard.txt
-├──uboot-flash
-└──www
+E:/
+├── autoupdate.sh
+├── bin
+├── config
+├── controlscripts
+├── driver
+├── media
+├── run.sh
+├── scripts
+├── uEnv.bootfromnand.txt
+├── uEnv.bootfromsdcard.txt
+├── uboot-flash
+└── www
 
 ```
 
