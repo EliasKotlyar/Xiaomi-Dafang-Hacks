@@ -74,13 +74,13 @@
     <div class="w3-row-padding">
         <div class="w3-half">
             <label>Save snapshots on motion</label>
-            <select id="saveSnaphot" class="w3-select">
+            <select id="saveSnapshot" class="w3-select">
                 <option value="false">Deactivate</option>
                 <option value="true">Activate</option>
             </select>
         </div>
         <div class="w3-half">
-            <label>Maximun snapshots retention (in days)</label>
+            <label>Maximum snapshots retention (in days)</label>
             <input class="w3-input" id="maxSnaphotDays" type="number" size="6">
         </div>
     </div>
@@ -94,7 +94,7 @@
             </select>
         </div>
         <div class="w3-half">
-            <label>Maximun video retention (in days)</label>
+            <label>Maximum video retention (in days)</label>
             <input class="w3-input" id="maxVideoDays" type="number" size="6">
         </div>
     </div>
@@ -211,7 +211,50 @@
         </div>
       <p></p>
     </div>
-    <p><button class="w3-btn w3-theme" >Save</button></form></p>
+    <!-- Dropbox storage accordio-->
+    <button class="accordion" type='button'>Dropbox storage</button>
+    <div class="panel">
+        <p></p>
+        <div class="w3-container">
+           <label>Dropbox URL</label>
+           <input class="w3-input" id="dropboxUrl" type="text">
+        </div>
+        <p></p>
+        <div class="w3-container">
+            <label>Dropbox Long Lived Token</label>
+            <input class="w3-input" id="dropboxToken" type="text">
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Save snapshots on motion</label>
+                <select id="dropboxSnapshot" class="w3-select">
+                    <option value="false">Deactivate</option>
+                    <option value="true">Activate</option>
+                </select>
+            </div>
+            <div class="w3-half">
+                <label>Dropbox snapshots remote directory (must start with / )</label>
+                <input class="w3-input" id="dropboxStillsDir" type="text">
+            </div>
+        </div>
+        <p></p>
+        <div class="w3-row-padding">
+            <div class="w3-half">
+                <label>Save videos on motion</label>
+                <select id="dropboxVideo" class="w3-select" >
+                    <option value="false">Deactivate</option>
+                    <option value="true">Activate</option>
+                </select>
+            </div>
+            <div class="w3-half">
+                <label>Dropbox videos remote directory (must start with / )</label>
+                <input class="w3-input" id="dropboxVideosDir" type="text">
+            </div>
+        </div>
+      <p></p>
+    </div>
+      <p><button class="w3-btn w3-theme" >Save</button></form></p>
 </div>
 <!-- Notifications Tab -->
 <div id="notificationsTab" class="w3-container tab" style="display:none">
@@ -245,33 +288,47 @@
         </select>
     </div>
     <div class="w3-container">
-        <label>Send email (email service need to be configured before)</label>
+        <label>Send email (email service needs to be configured before)</label>
         <select id="sendEmail" class="w3-select" name="option">
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
     </div>
     <div class="w3-container">
-        <label>Send telegram (telegram service need to be configured before)</label>
+        <label>Send telegram (telegram service needs to be configured before)</label>
         <select id="sendTelegram" class="w3-select" name="option">
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
     </div>
     <div class="w3-container">
-        <label>Telegram alert time</label>
+        <label>Telegram alert type (audio track will be removed from video alerts so they play in Telegram app)</label>
         <select id="telegramAlertType" class="w3-select" name="option">
             <option value="text">Text</option>
             <option value="image">Image</option>
             <option value="video">Video</option>
+            <option value="video+image">Video and Image</option>
         </select>
     </div>
     <div class="w3-container">
-        <label>Send matrix (matrix service need to be configured before)</label>
+        <label>Send matrix (matrix service needs to be configured before)</label>
         <select id="sendMatrix" class="w3-select" name="option">
             <option value="false">Deactivate</option>
             <option value="true">Activate</option>
         </select>
+    </div>
+    <div class="w3-container">
+        <label>Matrix alert type</label>
+        <select id="matrixAlertType" class="w3-select" name="option">
+            <option value="text">Text</option>
+            <option value="image">Image</option>
+            <option value="video">Video</option>
+            <option value="video+image">Video and Image</option>
+        </select>
+    </div>
+    <div class="w3-container">
+        <label>Night mode delay (ignore motion events for 'delay' seconds after switching to night mode)</label>
+        <input class="w3-input" id="nightModeEventDelay" type="number" size="6">
     </div>
     <p><button class="w3-btn w3-theme" >Save</button></form></p>
 </div>

@@ -81,12 +81,8 @@ if [ -n "$F_cmd" ]; then
     echo $(night_mode status)
     ;;
 
-  rtsp_h264)
-    echo $(rtsp_h264_server status)
-    ;;
-
-  rtsp_mjpeg)
-    echo $(rtsp_mjpeg_server status)
+  rtsp)
+    echo $(rtsp_server status)
     ;;
 
   auto_night_detection)

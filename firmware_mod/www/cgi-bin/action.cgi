@@ -148,7 +148,7 @@ case "$F_cmd" in
 	ir_cut off
   ;;
 
-ir_cut_status)
+  ir_cut_status)
 	ir_cut status
 	return
   ;;
@@ -187,35 +187,12 @@ ir_cut_status)
 	return
   ;;
 
-  h264_start)
-	/system/sdcard/controlscripts/rtsp-h264 start
-  ;;
-
-  h264_noseg_start)
-	/system/sdcard/controlscripts/rtsp-h264 start
-  ;;
-
-  mjpeg_start)
-	/system/sdcard/controlscripts/rtsp-mjpeg start
-  ;;
-
-  h264_nosegmentation_start)
-	/system/sdcard/controlscripts/rtsp-h264 start
+  rtsp_start)
+        /system/sdcard/controlscripts/rtsp start
   ;;
 
   rtsp_stop)
-	/system/sdcard/controlscripts/rtsp-mjpeg stop
-	/system/sdcard/controlscripts/rtsp-h264 stop
-  ;;
-
-  h264_status)
-	rtsp_h264_server status
-	return
-  ;;
-
-  mjpeg_status)
-	rtsp_mjpeg_server status
-	return
+	/system/sdcard/controlscripts/rtsp stop
   ;;
 
   settz)
@@ -556,20 +533,25 @@ auto_night_mode_status)
 
   update)
 	  processId=$(ps | grep autoupdate.sh | grep -v grep)
-	  release=""
-	  if [ $F_release == "beta" ]; then
-		release="-r beta"
-	  fi
+    repo=$(printf '%b' "${F_repo//%/\\x}")
+    if [ -n "$repo" ]; then
+      repo="-x $repo"
+    fi
+    release=$(printf '%b' "${F_release//%/\\x}")
+    if [ -n "$release" ]; then
+      release="-r $release"
+    fi
 	  if [ $F_mode == "full" ]; then
 		mv /system/sdcard/VERSION /system/sdcard/VERSION.old
 	  fi
 	  if [ "$processId" == "" ]; then
 		  echo "===============" >> /system/sdcard/log/update.log
 		  date >> /var/log/update.log
-		  if [ "$F_login" != "" ]; then
-			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${release} -u $F_login >> "/system/sdcard/log/update.log" &
+      github_token=$(get_config /system/sdcard/config/updates.conf github_token)
+		  if [ "$github_token" != "" ]; then
+			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${repo} ${release} -t "$github_token" >> "/system/sdcard/log/update.log" &
 		  else
-			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${release} >> "/system/sdcard/log/update.log" &
+			  /system/sdcard/bin/busybox nohup /system/sdcard/autoupdate.sh -s -v -f ${repo} ${release} >> "/system/sdcard/log/update.log" &
 		  fi
 		  processId=$(ps | grep autoupdate.sh | grep -v grep)
 	  fi
@@ -717,17 +699,19 @@ motion_detection_mqtt_snapshot_status)
 		;;
   check_update)
 		if [ -s /system/sdcard/VERSION ]; then
+		  localrepo=$(/system/sdcard/bin/jq -r .repo /system/sdcard/VERSION)
+      if [ -z "$localrepo" ]; then localrepo="EliasKotlyar"; fi
 		  localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
 		  localbranch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
-		  remotecommit=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
-		  commitbehind=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
+		  remotecommit=$(github_curl -s https://api.github.com/repos/${localrepo}/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
+		  commitbehind=$(github_curl -s https://api.github.com/repos/${localrepo}/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
 		  if [ ${localcommit} = ${remotecommit} ]; then
-			echo "${localbranch}:0"
+			echo "${localrepo}:${localbranch}:0"
 		  else
-			echo "${localbranch}:${commitbehind}" 
+			echo "${localrepo}:${localbranch}:${commitbehind}"
 		  fi
 		else
-		  echo "null:-1"
+		  echo "null:null:-1"
 		fi
 		return
 		;;

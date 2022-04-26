@@ -17,17 +17,17 @@
 <script type="text/javascript" src="lib/datatable/datatables.min.js"></script>
 <!-- smoothie-->
 <script type="text/javascript" src="lib/smoothie/smoothie.js"></script>
-<script src="/lib/d3/d3.min.js"></script>
-<script src="/lib/event-drops/index.js"></script>
+<script src="lib/d3/d3.min.js"></script>
+<script src="lib/event-drops/index.js"></script>
 <!-- Dafang hack CSS-->
 <link rel="stylesheet" href="css/w3-toggle.css" type="text/css" />
 <link rel="stylesheet" href="css/w3-accordion.css" type="text/css" />
-<link href="/lib/event-drops/style.css" rel="stylesheet" />
+<link href="lib/event-drops/style.css" rel="stylesheet" />
 <script type="text/javascript">
 //Check if theme configured
 var css = localStorage.getItem('theme')
 if ( css == null )
-    css = "w3-theme-teal";
+    css = "w3-theme-night-blue";
 $('head').append("<link rel='stylesheet' href='css/themes/"+css+".css'>");
 $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title = hostname;});
 </script>
@@ -38,8 +38,9 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
 <div class="w3-sidebar w3-bar-block w3-animate-left" style="display:none;z-index:5" id="sideBar">
   <button class="w3-bar-item w3-button w3-large w3-theme" onclick="w3_close()">Close &times;</button>
   <p class="w3-large">Camera</p>
-  <label class="switch"><input id="auto_night_mode" type="checkbox"><span class="slider round"></span></label> Auto Night Detecion<br />
-  <label class="switch"><input id="ir_led" type="checkbox"><span class="slider round"></span></label> IR Led<br />
+  <label class="switch"><input id="auto_night_mode" type="checkbox"><span class="slider round"></span></label> Auto Night Detection<br />
+  <label class="switch"><input id="night_mode" type="checkbox"><span class="slider round"></span></label> Night Mode<br />
+  <label class="switch"><input id="ir_led" type="checkbox"><span class="slider round"></span></label> IR LED<br />
   <label class="switch"><input id="ir_cut" type="checkbox"><span class="slider round"></span></label> IR Filter<br />
   <label class="switch"><input id="blue_led" type="checkbox"><span class="slider round"></span></label> Blue LED<br />
   <label class="switch"><input id="yellow_led" type="checkbox"><span class="slider round"></span></label> Yellow LED<br />
@@ -47,7 +48,7 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
   <label class="switch"><input id="motion_detection" type="checkbox"><span class="slider round"></span></label> Detection<br />
   <label class="switch"><input id="motion_mail" type="checkbox"><span class="slider round"></span></label> Send Emails<br />
   <label class="switch"><input id="motion_telegram" type="checkbox"><span class="slider round"></span></label> Send Telegram<br />
-  <label class="switch"><input id="motion_led" type="checkbox"><span class="slider round"></span></label> LED<br />
+  <label class="switch"><input id="motion_led" type="checkbox"><span class="slider round"></span></label> Yellow LED<br />
   <label class="switch"><input id="motion_snapshot" type="checkbox"><span class="slider round"></span></label> Snapshots<br />
   <label class="switch"><input id="motion_mqtt" type="checkbox"><span class="slider round"></span></label> MQTT Message<br />
   <label class="switch"><input id="motion_mqtt_snapshot" type="checkbox"><span class="slider round"></span></label> MQTT Snapshot<br />
@@ -79,7 +80,7 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
         <p>No notifications</p>
       </div>
     </div>
-  
+
 </div>
 </div>
 <div  id="content" class="w3-container">
@@ -98,7 +99,7 @@ $.get("cgi-bin/state.cgi", {cmd: "hostname"}, function(hostname){document.title 
      <p id="about">
         <strong>Dafang Hacks : </strong><br />
         Version: <em id="version">VERSION</em><br />
-        <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Report and view issues</a> | 
+        <a href="https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/issues" target="_blank">Report and view issues</a> |
      </p>
     </div>
   </div>

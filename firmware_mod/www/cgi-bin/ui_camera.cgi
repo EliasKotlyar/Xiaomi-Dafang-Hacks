@@ -109,7 +109,7 @@ if [ -n "$F_cmd" ]; then
 	if [ -n  "${F_videoPort+x}" ]; then
 		videoport=$(echo "${F_videoPort}"| tr '\n')
 		rewrite_config /system/sdcard/config/rtspserver.conf PORT "$videoport"
-		echo "Set video port tp ${videoport}"
+		echo "Set video port to ${videoport}<br />"
 	fi
 	if [ -n "${F_autoNightMode+x}" ]; then
 		rewrite_config /system/sdcard/config/autonight.conf autonight_mode $F_autoNightMode
@@ -234,11 +234,11 @@ if [ -n "$F_cmd" ]; then
 	if [ -n  "${F_osdPixel+x}" ]; then
 		echo "SPACE=${F_osdPixel}" >> /system/sdcard/config/osd.conf
 		/system/sdcard/bin/setconf -k p -v "${F_osdPixel}"
-		echo "Set OSD pixel betwwen chars to ${F_osdPixel}<br />"
+		echo "Set OSD pixel between chars to ${F_osdPixel}<br />"
 	fi
 	if [ -n  "${F_osdY+x}" ]; then
 		echo "POSY=${F_osdY}" >> /system/sdcard/config/osd.conf
-		system/sdcard/bin/setconf -k x -v "${F_osdY}"
+		/system/sdcard/bin/setconf -k x -v "${F_osdY}"
 		echo "Set OSD Y position to ${F_osdY}<br />"
 	fi
 	if [ -n  "${F_osdFixW+x}" ]; then

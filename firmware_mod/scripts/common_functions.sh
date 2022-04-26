@@ -274,37 +274,18 @@ http_password(){
   echo "$user:$realm:$hash" > /system/sdcard/config/lighttpd.user
 }
 
-# Control the RTSP h264 server
-rtsp_h264_server(){
-  case "$1" in
-  on)
-	/system/sdcard/controlscripts/rtsp-h264 start
-	;;
-  off)
-	/system/sdcard/controlscripts/rtsp-h264 stop
-	;;
-  status)
-	if /system/sdcard/controlscripts/rtsp-h264 status | grep -q "PID"
-	  then
-		echo "ON"
-	else
-		echo "OFF"
-	fi
-	;;
-  esac
-}
 
-# Control the RTSP mjpeg server
-rtsp_mjpeg_server(){
+# Control the RTSP server
+rtsp_server(){
   case "$1" in
   on)
-	/system/sdcard/controlscripts/rtsp-mjpeg start
+	/system/sdcard/controlscripts/rtsp start
 	;;
   off)
-	/system/sdcard/controlscripts/rtsp-mjpeg stop
+	/system/sdcard/controlscripts/rtsp stop
 	;;
   status)
-	if /system/sdcard/controlscripts/rtsp-mjpeg status | grep -q "PID"
+	if /system/sdcard/controlscripts/rtsp status | grep -q "PID"
 	then
 		echo "ON"
 	else
@@ -722,6 +703,7 @@ motion_mqtt_video(){
 night_mode(){
   case "$1" in
   on)
+	touch /tmp/last-night
 	/system/sdcard/bin/setconf -k n -v 1
 	. /system/sdcard/config/autonight.conf
 	if [ -z "$ir_led_off" ] || [ $ir_led_off = false ]; then
@@ -732,6 +714,7 @@ night_mode(){
 	ir_cut off
 	;;
   off)
+	touch /tmp/last-night
 	ir_led off
 	ir_cut on
 	/system/sdcard/bin/setconf -k n -v 0
@@ -807,16 +790,28 @@ remount_sdcard() {
   mount -o remount,rw /system/sdcard
 }
 
+# Run curl with github token if configured
+github_curl() {
+	github_token=$(get_config /system/sdcard/config/updates.conf github_token)
+	if [ -n "$github_token" ]; then
+		/system/sdcard/bin/curl -H "Authorization: token $github_token" "$@"
+	else
+		/system/sdcard/bin/curl "$@"
+	fi
+}
+
 # Check commit between VERSION file and github
 check_commit() {
   if [ -s /system/sdcard/VERSION ]; then
+	localrepo=$(/system/sdcard/bin/jq -r .repo /system/sdcard/VERSION)
+	if [ -z "$localrepo" ]; then localrepo="EliasKotlyar"; fi
 	localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
 	localbranch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
-	remotecommit=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
+	remotecommit=$(github_curl -s https://api.github.com/repos/${localrepo}/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
 	if [ ${localcommit} = ${remotecommit} ]; then
 	 echo "${localcommit} ( No update available)"
 	else
-	 commitbehind=$(/system/sdcard/bin/curl -s https://api.github.com/repos/EliasKotlyar/Xiaomi-Dafang-Hacks/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
+	 commitbehind=$(github_curl -s https://api.github.com/repos/${localrepo}/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
 	 echo "${localcommit} ( ${commitbehind} commits behind Github)"
 	fi
   else
@@ -836,4 +831,50 @@ getFonts() {
 	if [ "$fontName" == "$i" ] ; then echo selected; fi
 	echo -n ">`/system/sdcard/bin/busybox basename $i` </option>"
   done
+}
+
+get_wifi_mac() {
+	grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//'
+}
+
+configure_static_net_iface() {
+	local network_interface_name="$1"
+	local CONFIGPATH=/system/sdcard/config
+
+  # Install a resolv.conf if present so DNS can work
+  if [ -f "$CONFIGPATH/resolv.conf" ]; then
+    cp "$CONFIGPATH/resolv.conf" /etc/resolv.conf
+  fi
+
+  # Configure staticip/netmask from config/staticip.conf
+	local staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
+  ifconfig "$network_interface_name" $staticip_and_netmask
+  ifconfig "$network_interface_name" up
+  # Configure default gateway
+  if [ -f "$CONFIGPATH/defaultgw.conf" ]; then
+    local defaultgw=$(cat "$CONFIGPATH/defaultgw.conf" | grep -v "^$" | grep -v "^#")
+    route add default gw $defaultgw $network_interface_name
+    echo "Configured $defaultgw as default gateway"
+  fi
+  echo "Configured $network_interface_name with static address $staticip_and_netmask"
+}
+
+wpa_config_set() {
+	local wpa_config=/system/sdcard/config/wpa_supplicant.conf
+	local key="$1"
+	local val="$2"
+	if [ ! -s "$wpa_config" ]; then cp "$wpa_config.dist" "$wpa_config"; fi
+	if grep -q "^[[:space:]]*$key=" "$wpa_config"; then
+		sed -i "s/^[[:space:]]*$key=.*\$/$key=$val/" "$wpa_config"
+	else
+		sed -i "/}/i $key=$val" "$wpa_config"
+	fi
+}
+
+wpa_config_get() {
+	local wpa_config=/system/sdcard/config/wpa_supplicant.conf
+	local key="$1"
+	if [ -s "$wpa_config" ]; then
+		grep "^[[:space:]]*$key=" "$wpa_config" | cut -d "=" -f2
+	fi
 }

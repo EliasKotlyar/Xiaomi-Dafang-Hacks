@@ -62,3 +62,6 @@ firmware_mod/config/userscripts/motiondetection/*
 firmware_mod/config/userscripts/startup/*
 !firmware_mod/config/userscripts/startup/*.dist
 firmware_mod/root/.ssh/*
+
+# avoid committing OSX .DS_Store files
+.DS_Store

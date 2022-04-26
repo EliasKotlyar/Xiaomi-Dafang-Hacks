@@ -1,11 +1,12 @@
 //Function to delete a file
-function deleteFile(fileName,dir,confirm) {
-    if (confirm)
+function deleteFile(fileName,dir,askuser) {
+    if (askuser) {
         var del = confirm("Confirm delete file: "+fileName);
         if ( del ) { 
             $.get("cgi-bin/ui_sdcard.cgi", {cmd: "del_file",file: fileName});
             getFiles(dir);
         }
+    }
     else {
         $.get("cgi-bin/ui_sdcard.cgi", {cmd: "del_file",file: fileName});
         getFiles(dir);
@@ -48,7 +49,7 @@ function getFiles(dir) {
          <td>"+config_info[2]+"</td> \
          <td> \
              <a href=\""+config_info[3]+"\" download><i class='fas fa-download' title='Download file'></i></a> \
-            <span onclick=\"deleteFile('"+config_info[3]+"','"+dir+",true')\"><i class='fas fa-trash' title='Delete file'></i></span>\
+            <span onclick=\"deleteFile('"+config_info[3]+"','"+dir+"',true)\"><i class='fas fa-trash' title='Delete file'></i></span>\
             "+html_photo+"\
             </td></tr>");
         }

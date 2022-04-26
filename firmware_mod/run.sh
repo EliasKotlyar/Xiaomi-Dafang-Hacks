@@ -85,26 +85,15 @@ if [ ! "$SWAP_ZRAM" = false ]; then
     swapon -p 20 /dev/zram0
 fi
 
-## Create crontab dir and start crond:
-if [ ! -d /system/sdcard/config/cron ]; then
-  mkdir -p ${CONFIGPATH}/cron/crontabs
-  CRONPERIODIC="${CONFIGPATH}/cron/periodic"
-  echo ${CONFIGPATH}/cron/crontabs/periodic
-  # Wish busybox sh had brace expansion...
+## Create cron periodic dirs and start crond:
+CRONPERIODIC="${CONFIGPATH}/cron/periodic"
+if [ ! -d $CRONPERIODIC ]; then
   mkdir -p ${CRONPERIODIC}/15min \
            ${CRONPERIODIC}/hourly \
            ${CRONPERIODIC}/daily \
            ${CRONPERIODIC}/weekly \
            ${CRONPERIODIC}/monthly
-  cat > ${CONFIGPATH}/cron/crontabs/root <<EOF
-# min   hour    day     month   weekday command
-*/15    *       *       *       *       busybox run-parts ${CRONPERIODIC}/15min
-0       *       *       *       *       busybox run-parts ${CRONPERIODIC}/hourly
-0       2       *       *       *       busybox run-parts ${CRONPERIODIC}/daily
-0       3       *       *       6       busybox run-parts ${CRONPERIODIC}/weekly
-0       5       1       *       *       busybox run-parts ${CRONPERIODIC}/monthly
-EOF
-  echo "Created cron directories and standard interval jobs" >> $LOGPATH
+  echo "Created cron periodic directories" >> $LOGPATH
 fi
 /system/sdcard/bin/busybox crond -L /system/sdcard/log/crond.log -c /system/sdcard/config/cron/crontabs
 
@@ -121,13 +110,18 @@ if [ -f $CONFIGPATH/usb_eth_driver.conf ]; then
   insmod /system/sdcard/driver/usbnet.ko
   insmod /system/sdcard/driver/asix.ko
 
-  network_interface_name="eth0"
+  ## Configure network address
+  if [ -f "$CONFIGPATH/staticip.conf" ]; then
+    configure_static_net_iface eth0 >> $LOGPATH
+  else
+    # Configure with DHCP client
+    ifconfig eth0 up
+    udhcpc_status=$(udhcpc -i eth0 -p /var/run/udhcpc.eth0.pid -b -x hostname:"$(hostname)")
+    echo "udhcpc: $udhcpc_status" >> $LOGPATH
+  fi
 else
   ## Start Wifi:
-  if [ ! -f $CONFIGPATH/wpa_supplicant.conf ]; then
-  echo "Warning: You have to configure wpa_supplicant in order to use wifi. Please see /system/sdcard/config/wpa_supplicant.conf.dist for further instructions."
-  fi
-  MAC=$(grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//')
+  MAC=$(get_wifi_mac)
   if [ -f /driver/8189es.ko ]; then
     # Its a DaFang
     insmod /driver/8189es.ko rtw_initmac="$MAC"
@@ -138,35 +132,7 @@ else
     # Its a Wyzecam V2
     insmod /driver/rtl8189ftv.ko rtw_initmac="$MAC"
   fi
-  wpa_supplicant_status="$(wpa_supplicant -d -B -i wlan0 -c $CONFIGPATH/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid)"
-  echo "wpa_supplicant: $wpa_supplicant_status" >> $LOGPATH
-
-  network_interface_name="wlan0"
-fi
-
-## Configure network address
-if [ -f "$CONFIGPATH/staticip.conf" ]; then
-  # Install a resolv.conf if present so DNS can work
-  if [ -f "$CONFIGPATH/resolv.conf" ]; then
-    cp "$CONFIGPATH/resolv.conf" /etc/resolv.conf
-  fi
-
-  # Configure staticip/netmask from config/staticip.conf
-  staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
-  ifconfig "$network_interface_name" $staticip_and_netmask
-  ifconfig "$network_interface_name" up
-  # Configure default gateway
-  if [ -f "$CONFIGPATH/defaultgw.conf" ]; then
-    defaultgw=$(cat "$CONFIGPATH/defaultgw.conf" | grep -v "^$" | grep -v "^#")
-    route add default gw $defaultgw $network_interface_name
-    echo "Configured $defaultgw as default gateway" >> $LOGPATH
-  fi
-  echo "Configured $network_interface_name with static address $staticip_and_netmask" >> $LOGPATH
-else
-  # Configure with DHCP client
-  ifconfig "$network_interface_name" up
-  udhcpc_status=$(udhcpc -i "$network_interface_name" -p /var/run/udhcpc.pid -b -x hostname:"$(hostname)")
-  echo "udhcpc: $udhcpc_status" >> $LOGPATH
+  /system/sdcard/scripts/wifi.sh start >> $LOGPATH
 fi
 
 ## Set Timezone
@@ -219,27 +185,6 @@ else
   fi
   insmod /system/sdcard/driver/sensor_jxf23.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 fi
-
-## Start SSH Server:
-ln -s /system/sdcard/bin/dropbearmulti /system/bin/scp
-touch /var/log/lastlog 2>/dev/null
-dropbear_status=$(/system/sdcard/bin/dropbearmulti dropbear -R)
-echo "dropbear: $dropbear_status" >> $LOGPATH
-
-## Create a certificate for the webserver
-if [ ! -f $CONFIGPATH/lighttpd.pem ]; then
-  export OPENSSL_CONF=$CONFIGPATH/openssl.cnf
-  /system/sdcard/bin/openssl req -new -x509 -keyout $CONFIGPATH/lighttpd.pem -out $CONFIGPATH/lighttpd.pem -days 365 -nodes -subj "/C=DE/ST=Bavaria/L=Munich/O=.../OU=.../CN=.../emailAddress=..."
-  chmod 400 $CONFIGPATH/lighttpd.pem
-  echo "Created new certificate for webserver" >> $LOGPATH
-fi
-
-## Start Webserver:
-if [ ! -f $CONFIGPATH/lighttpd.conf ]; then
-  cp $CONFIGPATH/lighttpd.conf.dist $CONFIGPATH/lighttpd.conf
-fi
-lighttpd_status=$(/system/sdcard/bin/lighttpd -f /system/sdcard/config/lighttpd.conf)
-echo "lighttpd: $lighttpd_status" >> $LOGPATH
 
 ## Copy autonight configuration:
 if [ ! -f $CONFIGPATH/autonight.conf ]; then

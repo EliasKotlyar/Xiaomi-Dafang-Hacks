@@ -1,5 +1,5 @@
 server.document-root = "/system/sdcard/www"
-
+server.pid-file = "/run/lighttpd.pid"
 server.port = 80
 
 # uncomment to allow more exotic hostnames e.g. with underscores

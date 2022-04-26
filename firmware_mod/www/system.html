@@ -4,10 +4,19 @@
 <h1> System configuration</h1>
 <div class="w3-row">
     <a href="javascript:void(0)" onclick="openTab(event, 'properties');">
-      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Properties</div>
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding w3-border-theme">Properties</div>
     </a>
     <a href="javascript:void(0)" onclick="openTab(event, 'time');">
-      <div class="w3-third tablink w3-bottombar w3-hover-light-grey w3-padding">Time</div>
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Time</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'updates');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Updates</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'network');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">Network</div>
+    </a>
+    <a href="javascript:void(0)" onclick="openTab(event, 'ssh');">
+      <div class="w3-quarter tablink w3-bottombar w3-hover-light-grey w3-padding">SSH</div>
     </a>
   </div>
 
@@ -29,6 +38,49 @@
         <label>NTP Server</label>
         <input id="ntp" class="w3-input" type="text">
  </div>
+
+  <div id="updates" class="w3-container tab" style="display:none">
+        <p></p>
+        <label>GitHub Token</label>
+        <input id="github_token" class="w3-input">
+  </div>
+
+  <div id="network" class="w3-container tab" style="display:none">
+        <p></p>
+        <label>Wifi Network SSID</label>
+        <input id="wifi_ssid" class="w3-input">
+        <br />
+        <label>Wifi Password</label>
+        <input id="wifi_password" class="w3-input" type="password" value="*****">
+        <br />
+        <label>Wifi Connect Timeout</label>
+        <input id="connect_timeout" class="w3-input" type="number" min="30">
+        <br />
+        <label>Access Point SSID</label>
+        <input id="ap_ssid" class="w3-input">
+        <br />
+        <label>Access Point Password</label>
+        <input id="ap_password" class="w3-input" type="password" value="*****">
+        <br />
+        <label>Access Point Scan Interval</label>
+        <input id="scan_interval" class="w3-input" type="number" min="10">
+        <br />
+        <input id="usb_eth" class="w3-check w3-theme" type="checkbox" checked="checked" />
+        <label for="usb_eth">Enable USB Ethernet (Disables Wifi)</label>
+  </div>
+
+  <div id="ssh" class="w3-container tab" style="display:none">
+        <p></p>
+        <label>SSH Authorized Keys</label>
+        <input id="ssh_key" class="w3-input">
+        <br />
+        <label>SSH Port</label>
+        <input id="ssh_port" class="w3-input" type="number">
+        <br />
+        <input id="ssh_password" class="w3-check w3-theme" type="checkbox" checked="checked" />
+        <label for="ssh_password">Allow SSH password login?</label>
+        <br />
+  </div>
 
   <p></p>
   <button class="w3-btn w3-theme">Save</button>

@@ -111,32 +111,18 @@ done
 	  fi
 	;;
 
-	"${TOPIC}/rtsp_h264_server")
-	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_h264_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_h264_server status)"
+	"${TOPIC}/rtsp_server")
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_server status)"
 	;;
 
-	"${TOPIC}/rtsp_h264_server/set ON")
-	  rtsp_h264_server on
-	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_h264_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_h264_server status)"
+	"${TOPIC}/rtsp_server/set ON")
+	  rtsp_server on
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_server status)"
 	;;
 
-	"${TOPIC}/rtsp_h264_server/set OFF")
-	  rtsp_h264_server off
-	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_h264_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_h264_server status)"
-	;;
-
-	"${TOPIC}/rtsp_mjpeg_server")
-	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_mjpeg_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_mjpeg_server status)"
-	;;
-
-	"${TOPIC}/rtsp_mjpeg_server/set ON")
-	  rtsp_mjpeg_server on
-	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_mjpeg_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_mjpeg_server status)"
-	;;
-
-	"${TOPIC}/rtsp_mjpeg_server/set OFF")
-	  rtsp_mjpeg_server off
-	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_mjpeg_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_mjpeg_server status)"
+	"${TOPIC}/rtsp_server/set OFF")
+	  rtsp_server off
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/rtsp_server ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(rtsp_server status)"
 	;;
 
 	"${TOPIC}/night_mode")
@@ -237,13 +223,14 @@ done
 	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/mqtt_publish ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_mqtt_publish status)"
 	;;
 	
+
 	"${TOPIC}/motion/mqtt_snapshot")
 	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motion/mqtt_snapshot ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(motion_mqtt_snapshot status)"
 	;;
 		
 	"${TOPIC}/snapshot/image GET")
 	  /system/sdcard/bin/getimage > "/tmp/mqtt_snapshot"
-	  /system/sdcard/bin/jpegoptim -S 25k "/tmp/mqtt_snapshot"
+	  /system/sdcard/bin/jpegoptim -m 50 "/tmp/mqtt_snapshot"
 	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/snapshot/image ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -f "/tmp/mqtt_snapshot"
 	  rm "/tmp/mqtt_snapshot"
 	;;
@@ -415,6 +402,20 @@ done
 	"${TOPIC}/recording/set OFF")
 	  recording off
 	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/recording ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(recording status)"
+	;;
+
+	"${TOPIC}/timelapse")
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/timelapse ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(timelapse status)"
+	;;
+
+	"${TOPIC}/timelapse/set ON")
+	  timelapse on
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/timelapse ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(timelapse status)"
+	;;
+
+	"${TOPIC}/timelapse/set OFF")
+	  timelapse off
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/timelapse ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(timelapse status)"
 	;;
 
 	"${TOPIC}/snapshot/set ON")

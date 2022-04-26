@@ -31,7 +31,7 @@ function getConfig() {
          else if ($('#'+config_info[0]).is('select'))
             $('#'+config_info[0]+' > option').each(function() {
                 if($(this).val() == config_info[1])
-                    $(this).attr('selected','selected');
+                    $(this).prop('selected',true);
             });
          
          else

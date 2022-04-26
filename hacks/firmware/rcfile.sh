@@ -90,6 +90,7 @@ do
         sleep 1
         echo "Mount sucessful"
         if [ -f /system/sdcard/run.sh ]; then
+            # Turn off blue LED
             echo 1 > /sys/class/gpio/gpio39/value
             echo 39 > /sys/class/gpio/unexport
             echo "Starting run.sh from sdcard"
@@ -111,6 +112,9 @@ echo 1 > /sys/class/gpio/gpio39/value
 echo 39 > /sys/class/gpio/unexport
 
 
-if [ -f /system/init/app_init.sh ]; then
-    /system/init/app_init.sh &
+# Run init script
+APP_INIT=/system/init/app_init.sh
+if [ -f $APP_INIT ]; then
+    chmod a+x $APP_INIT
+    $APP_INIT &
 fi
