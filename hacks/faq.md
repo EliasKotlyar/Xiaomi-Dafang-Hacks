@@ -61,5 +61,43 @@ Recording Audio:
 
 - Any additional software that you may want can be compiled separately, and there is a toolchain available but you will need to do this yourself.
 
+### What are the URLs I can use to integrate with the camera?
+| Type | URLs |
+| --- | --- |
+| RTSP video stream | `rtsp://dafang/unicast` |
+| HTTP live streaming | (not available) |
+| Current image (image/jpeg) | `https://dafang/cgi-bin/currentpic.cgi` |
+| Get camera state | `https://dafang/cgi-bin/state.cgi?cmd=all` |
+| Get system info | `https://dafang/cgi-bin/api.cgi?action=systeminfo` |
+
+### What MQTT messages does the camera use?
+Sent by the camera
+| MQTT topic | Comments |
+| --- | --- |
+| `<location>/<device_name>/motion` | Motion detection status. Payload is either `ON` or `OFF`. |
+| `<discovery_prefix>/<entity_type/<device_name>/<entity_name>/config` | Home Assistant MQTT auto discovery messages. More info: https://www.home-assistant.io/docs/mqtt/discovery/ |
+| `<location>/<device_name>/leds/blue` <br /> `<location>/<device_name>/leds/yellow` <br /> `<location>/<device_name>/leds/ir` <br /> `<location>/<device_name>/ir_cut` <br /> `<location>/<device_name>/rtsp_server` <br /> `<location>/<device_name>/night_mode` <br /> `<location>/<device_name>/night_mode/auto` <br /> `<location>/<device_name>/recording` <br /> `<location>/<device_name>/timelapse` | Camera configuration and status. Payload is either `ON` or `OFF` |
+
+
+```
+<location>/<device_name>/motion/detection
+<location>/<device_name>/motion/led
+<location>/<device_name>/motion/snapshot
+<location>/<device_name>/motion/video
+<location>/<device_name>/motion/mqtt_publish
+<location>/<device_name>/motion/mqtt_snapshot
+<location>/<device_name>/motion/send_mail
+<location>/<device_name>/motion/send_telegram
+<location>/<device_name>/motion/tracking
+``` | Motion detection configuration. Payload is either `ON` or `OFF` |
+| `<location>/<device_name>/brightness` | Unknown |
+
+
+
+Received by the camera
+| MQTT topic | Comments |
+| 
+
+
 ### What if my scripts in config/userscripts/motiondetection are not executed or mqtt/telegram messages/emails are not sent on motion?
 Your camera probably runs out of memory when processing the motion event. This is likely in cameras with 64MB e.g. the Xiaofang 1s. Try to [enable some swap memory](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/firmware_mod/config/swap.conf.dist#L4) by copying `swap.conf.dist` to `swap.conf` and setting `SWAP=true`.
