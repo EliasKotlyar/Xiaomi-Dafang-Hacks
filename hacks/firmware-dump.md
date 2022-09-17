@@ -1,6 +1,7 @@
-# Dumping Firmware:
+# Dumping Firmware
 
-## The Partition Table:
+## The Partition Table
+
 ```
 [root@Ingenic-uc1_1:dev]# cat /proc/mtd 
 dev:    size   erasesize  name
@@ -20,7 +21,8 @@ mtd10: 00010000 00008000 "flag"
 Attention: The Values are in Hex. Convert into Decimal for using DD
 `
 
-## Dump everything:
+## Dump everything
+
 ```
 dd if=/dev/mtdblock0 of=uboot.bin 
 dd if=/dev/mtdblock1 of=kernel.bin
@@ -34,7 +36,3 @@ dd if=/dev/mtdblock8 of=config.bin
 dd if=/dev/mtdblock9 of=para.bin 
 dd if=/dev/mtdblock10 of=flag.bin
 ```
-
-
-
-

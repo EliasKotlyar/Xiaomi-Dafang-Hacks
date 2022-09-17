@@ -1,6 +1,6 @@
-## Xiaomi Dafang Integration in Home Assistant
+# Xiaomi Dafang Integration in Home Assistant
 
-### On the Home Assistant side
+## On the Home Assistant side
 
 First let's set up your camera stream. Make sure the _rtsp_ service in the _Services control panel_ is running and you can connect to it via a media player (like [VLC](https://www.videolan.org/)) using the address `rtsp://dafang:8554/unicast`.
 
@@ -50,7 +50,7 @@ MOSQUITTOOPTS="-V mqttv311"
 
 in `mqtt.conf`.
 
-### On the Xiaomi Dafang Camera side:
+### On the Xiaomi Dafang Camera side
 
 Connect to your camera via SSH (or your preferred FTP client):
 
@@ -65,7 +65,7 @@ cp /system/sdcard/config/mqtt.conf.dist /system/sdcard/config/mqtt.conf
 ```
 
 Set up your broker, LOCATION and DEVICE_NAME
-and uncomment AUTODISCOVERY_PREFIX (only then the dafang configurations will be published):
+and uncomment AUTODISCOVERY_PREFIX (only then the dafang configurations will be published, IMPORTANT: LOCATION and DEVICE_NAME need to be snake case!):
 
 ```shell
 vi /system/sdcard/config/mqtt.conf
@@ -103,7 +103,7 @@ Dafang3:
     - cover.dafang3_move_up_down
 ```
 
-### To set up MQTT motion detection alerts:
+### To set up MQTT motion detection alerts
 
 copy `/system/sdcard/config/motion.conf.dist` to `/system/sdcard/config/motion.conf`:
 

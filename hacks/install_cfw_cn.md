@@ -1,15 +1,16 @@
-##安装microSD bootloader
+# 安装microSD bootloader
 
 1.下载相机的CFW-Binary
 
-    名称| SHA3​​-256
-    --- | ---
-    [Xiaomi DaFang]（https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/dafang/cfw-1.3.bin）| d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb
-    [Xiaomi XiaoFang T20]（https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/xiaofang/cfw-1.0.bin）| 333053c3e98af24e0e90746d95e310a3c65b61f697288f974b702a5bcbba48a9
-    [Wyzecam V2]（https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_v2/cfw-1.1.bin）| ca8fd695fe1903bd12aca2752c86b62c9694430c9c41b2804b006c22e84f409d
-    [Wyzecam Pan]（https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_pan/cfw-1.0.bin）| f76990d187e763f160f5ad39331d6a3209d3025fe3719cb43c92dbad92cebba2
-    Sannce＆clones | [从这里开始]（/ hacks / install_sannce.md）
-    其他Ingenic T10 / T20设备| [从这里开始]（/ hacks / newdevices.md）
+    Name | SHA3-256 
+    --- | --- 
+    [Xiaomi DaFang](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/dafang/cfw-1.3.bin) | d45826d5b471564366b3b9435509df7e8a2c0720656ea2b4bcac6dd0b42cc3eb
+    [Xiaomi XiaoFang T20](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/xiaofang/cfw-1.0.bin) | 333053c3e98af24e0e90746d95e310a3c65b61f697288f974b702a5bcbba48a9
+    [Wyzecam V2/Neos SmartCam](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_v2/cfw-1.2.bin) | 3b2deb32d0cd3ef75afef8788854883d868c09cf78c690f4b78fc26862793af3
+    [Wyzecam Pan](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/raw/master/hacks/cfw/wyzecam_pan/cfw-1.0.bin) | f76990d187e763f160f5ad39331d6a3209d3025fe3719cb43c92dbad92cebba2
+    Xiaomi XiaoFang T20L | [Start here](/hacks/install_cfw_t10l.md.md)
+    Sannce & clones | [Start here](/hacks/install_sannce.md)
+    其它君正 T10/T20 设备 | [Start here](/hacks/newdevices.md)
 
 2.将microSD格式化为FAT32。 NTFS，EXFAT等不起作用。尝试使用较小的旧SD卡（如512 MB）或仅在其上创建一个主512 MB分区以获得最大成功率。
 
@@ -27,30 +28,30 @@
 
 9.取出microSD卡并打开相机电源
 
-10.你应该看到蓝色LED闪耀5秒钟（不闪烁）** **基地开始移动（DaFang / Wyzecam Pan）。如果没有，出了点问题。您应该尝试使用另一张microSD卡，然后查看页面底部的社区提示。从第1步开始。
+10.你应该看到蓝色LED闪耀5秒钟（不闪烁）****基地开始移动（DaFang / Wyzecam Pan）。如果没有，出了点问题。您应该尝试使用另一张microSD卡，然后查看页面底部的社区提示。从第1步开始。
 
-
-##安装新固件
+## 安装新固件
 
 1.从github克隆存储库。如果您在Windows上，请将存储库下载为zip文件。确保没有任何东西获得Windows行结尾。
 
 2.将“firmware_mod”文件夹中的所有内容复制到microSD的**根**中
 
 它应该如下所示：
+
 ```
-E：/
-├──媒体
-├──autoupdate.sh
-├──宾
-├──配置
-├──对照
-├──司机
-├──run.sh
-├──脚本
-├──uEnv.bootfromnand.txt
-├──uEnv.bootfromsdcard.txt
-├──uboot-flash
-└──www
+E:/
+├── autoupdate.sh
+├── bin
+├── config
+├── controlscripts
+├── driver
+├── media
+├── run.sh
+├── scripts
+├── uEnv.bootfromnand.txt
+├── uEnv.bootfromsdcard.txt
+├── uboot-flash
+└── www
 
 ```
 
@@ -62,23 +63,19 @@ E：/
 
 6.您现在可以使用默认凭据root / ismart12登录https：// dafang或您的摄像机IP地址
 
-
 提示：可以安全地忽略有关不安全的https证书的安全警告。首次启动时，相机会自动生成自签名证书。就其本质而言，您的小型相机自己的证书颁发机构并非永远不会成为主流浏览器提供的可信赖的证书。
 
-##更新microsd-bootloader
+## 更新microsd-bootloader
 
 通常，它不需要更新microsd-bootloader。但是，如果您使用的是原始固件，则可能对新版本感兴趣。
 
 您可以通过MI-Home应用程序进行更新。
 
-
 如果您的原始固件低于5.5.200，则必须在之后“重新刷新”microsd-bootloader
 
 如果您使用的是原始固件5.5.200并更新到5.5.243，则引导加载程序不会受到影响。
 
-
-
-##更新固件
+## 更新固件
 
 如果您已安装了安装了自定义引导加载程序的当前自定义固件，则只需更新microSD卡的内容即可
 
@@ -90,12 +87,11 @@ E：/
 
 4.将备份的wpa_supplicant.conf从步骤1复制回config文件夹
 
-
-##卸载
+## 卸载
 
 从microSD卡中删除“run.sh”文件。
 
-##社区提示
+## 社区提示
 
 1.使用小于1 GB的microSD卡（如512 MB）并覆盖相同的卡以最大限度地减少变化。仅格式化前512 MB也适用于某些人。
 
@@ -104,6 +100,7 @@ E：/
 3.记下摄像机的MAC，如果可能，设置DHCP以分配可在DHCP日志中直观监视的特定IP地址。
 
 4.从wpa_supplicant.conf中的较少条目开始，以隔离WiFi问题。
+
 ```
 ctrl_interface =的/ var /运行/的wpa_supplicant
 ctrl_interface_group = 0

@@ -1,7 +1,7 @@
-## Custom Firmware Creation:
+# Custom Firmware Creation
 
-Install following:
-```
-apt-get install python-click
-apt-get install u-boot-tools
+Install the following:
+
+``` sh
+sudo apt-get install python-click u-boot-tools
 ```

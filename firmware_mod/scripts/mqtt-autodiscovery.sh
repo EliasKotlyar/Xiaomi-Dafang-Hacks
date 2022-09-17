@@ -37,7 +37,7 @@
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_mail/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Motion Send Emails\", \"unique_id\": \"$MAC_SIMPLE-motion-send-mail\", $DEVICE_INFO, \"icon\": \"mdi:email-send\", \"state_topic\": \"$TOPIC/motion/send_mail\", \"command_topic\": \"$TOPIC/motion/send_mail/set\"}"
 
   # Motion send telegram alert on/off switch
-  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_telegram/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Motion Send Telegram\", \"unique_id\": \"$MAC_SIMPLE-motion-send-telegram\", $DEVICE_INFO, \"icon\": \"mdi:telegram\", \"state_topic\": \"$TOPIC/motion/send_telegram\", \"command_topic\": \"$TOPIC/motion/send_telegram/set\"}"
+  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_telegram/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Motion Send Telegram\", \"unique_id\": \"$MAC_SIMPLE-motion-send-telegram\", $DEVICE_INFO, \"icon\": \"mdi:send\", \"state_topic\": \"$TOPIC/motion/send_telegram\", \"command_topic\": \"$TOPIC/motion/send_telegram/set\"}"
 
   # Motion detection snapshots
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/camera/$DEVICE_NAME/motion_snapshot/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Motion Snapshot\", \"unique_id\": \"$MAC_SIMPLE-motion-snapshot\", $DEVICE_INFO,\"topic\": \"$TOPIC/motion/snapshot/image\"}"

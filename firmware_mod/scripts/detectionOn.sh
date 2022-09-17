@@ -178,13 +178,17 @@ record_video () {
 	fi
 }
 
-if [ -f /tmp/last-night -a -n "$night_mode_event_delay" -a "$night_mode_event_delay" -gt 0 ]; then
-	now_ts="$(date +%s)"
-	night_ts="$(/system/sdcard/bin/busybox stat -c %Y /tmp/last-night)"
-	dt="$(($now_ts-$night_ts))"
-	if [ "$dt" -lt "$night_mode_event_delay" ]; then
-		exit 0
-	fi
+if [ -f /tmp/last-night ]; then
+        if [ -n "$night_mode_event_delay" ]; then
+                if [ "$night_mode_event_delay" -gt 0 ]; then
+                        now_ts="$(date +%s)"
+                        night_ts="$(/system/sdcard/bin/busybox stat -c %Y /tmp/last-night)"
+                        dt="$(($now_ts-$night_ts))"
+                        if [ "$dt" -lt "$night_mode_event_delay" ]; then
+                                exit 0
+                        fi
+                fi
+        fi
 fi
 
 # Turn on the amber led

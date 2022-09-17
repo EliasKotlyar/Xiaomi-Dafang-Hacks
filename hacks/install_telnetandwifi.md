@@ -1,18 +1,18 @@
-## Installattion of Telnet
+# Installattion of Telnet
 
 1. Go to /system/bin/
 2. Copy file "iCamera" to "iCamera.old"
 3. Create new File "iCamera" and give it chmod 777:
 
-```
+``` sh
 #!/bin/sh
 busybox telnetd &
 ```
 
-
-## Connect to your network:
+## Connect to your network
 
 Copy following File into /system/dafang/wpa_supplicant.conf
+
 ```
 ctrl_interface=/var/run/wpa_supplicant
 ctrl_interface_group=0
@@ -28,10 +28,10 @@ network={
         priority=2
 }
 ```
+
 Run following Commands:
 
-```
+``` sh
 wpa_supplicant -B -i wlan0 -c /system/dafang/wpa_supplicant.conf -P /var/run/wpa_supplicant.pid
 udhcpc -i wlan0 -p /var/run/udhcpc.pid -b
-
 ```
