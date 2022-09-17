@@ -1,22 +1,25 @@
-### Installation on generic T10/T20 Devices
+# Installation on generic T10/T20 Devices
 
 It should be possible to install this hack to any T10 or T20 based devices. If you want to do so, begin with the porting tutorial:
 
 The process consists of 3 steps:
 
-### Information gathering
-1. Disassemble the Device and make a lot of photos. 
-2. Connect via TTL to the camera. You can use the following blog article as a reference: https://nm-projects.de/2016/12/hacking-digoo-bb-m2-mini-wifi-part-1-identify-the-serial-interface/
-3. Get root access: https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/hacks/getroot.md
+## Information gathering
+
+1. Disassemble the Device and make a lot of photos.
+2. Connect via TTL to the camera. You can use the following blog article as a reference: <https://nm-projects.de/2016/12/hacking-digoo-bb-m2-mini-wifi-part-1-identify-the-serial-interface/>
+3. Get root access: <https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/hacks/getroot.md>
 4. Dump the firmware:
-https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/hacks/firmware-dump.md
+<https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/hacks/firmware-dump.md>
 5. Dump a bootlog of your camera
 6. Collect all the information together in a github issue in this repository
 
-### Finding a method to boot into a CFW:
+### Finding a method to boot into a CFW
+
 1. Check the bootlog of your camera. Its often has an option to flash the whole firmware. Often it can be triggered by having a special file on your microsd / holding some button.
 
 In Xiaomi based devices its often called "demo.bin"
+
 ```
 Hit any key to stop autoboot:  0 
 jiabo_do_auto_update!!!!!!!!!!!!!!!!!!!!!!!!
@@ -49,6 +52,7 @@ SF: Detected GD25Q128
 ```
 
 Other manufacturers have often some other routine like:
+
 ```
 Hit any key to stop autoboot:  0 
 >>>>Auto upgrade start!
@@ -81,23 +85,23 @@ SF: 2097152 bytes @ 0x40000 Read: OK
 If there is a possibility of upgrading the firmware trough the bootloader, you can  try to modify the rootfs and include some script to boot from the microsd. Here is a tutorial. You will probably need to adjust the scripts:
 ![Tutorial](/hackshowto_modfirmware.md)
 
-
-
 2. If there is no option for an upgrade of your firmware, you can still try to flash something on your device by stopping the bootloader and flashing a different bootloader, which can boot from microsd.
 
 To do so, please collect the following informations:
+
 1. Which SOC is your device running? T10 or T20?
-2. How much ram does the device has? 
+2. How much ram does the device has?
 
 Both informations can be collected from the bootlog.
 
 As soon as you know how much ram it has, you can try to flash a different bootloader by stopping the bootloader and using the following commands:
 First you need to collect a bootloader which is suitable for your device. You can find different bootloaders here:
-https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader
+<https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader>
 
 Ask for help if needed.
 
 Here are the commands for flashing the bootloader:
+
 ```
 fatls mmc 0:1
 fatload mmc 0:1 0x80600000 bootloader.bin
@@ -105,8 +109,6 @@ sf probe
 sf update 0x80600000 0x0 0x40000
 ```
 
-##Attention: You may brick your camera!! Please consider that before flashing a different bootloader. We are not responsible for a brick. ##
+## Attention: You may brick your camera!! Please consider that before flashing a different bootloader. We are not responsible for a brick
 
 3. Booting into CFW: As soon as you have a possibility to boot your device, you can try to boot into the CFW. Use one of the tutorials depending on your booting method.
-
-

@@ -11,11 +11,13 @@
 7. It is completely [open source](https://github.com/Dafang-Hacks/uboot)
 
 ## What are the disadvantages?
+
 If you flash the wrong u-boot, you can brick your device. I am not taking any responsibility for that!
 
-## Requirements:
+## Requirements
 
 1. Determine how much RAM your device has by running the following command via SSH:
+
 ```$bash
 cat /proc/cmdline 
 ```
@@ -32,9 +34,10 @@ mem + ispmem +rmem = 104M + 8M +16M = 128M
 
 i.e. you have a device with 128 Mb RAM.
 
-## Flashing the U-Boot bootloader:
+## Flashing the U-Boot bootloader
 
 1. Login via SSH
+
 ```bash
 ssh root@dafang.local
 cd /system/sdcard/
@@ -52,12 +55,13 @@ dd if=/dev/mtd0 of=/system/sdcard/original-bootloader.bin
 wget https://github.com/Dafang-Hacks/uboot/raw/master/compiled_bootloader/NAME_OF_YOUR_BOOTLOADER_FILE.bin 
 ```
 
-4. Put the bootloader file in the root of your microsd card `/system/sdcard`. 
+4. Put the bootloader file in the root of your microsd card `/system/sdcard`.
 5. **Verify the MD5 hash of the file!! Do not skip this step or you may brick your camera!**
 
 ```bash
 md5sum NAME_OF_YOUR_NEW_BOOTLOADER_FILE.bin 
 ```
+
 The `md5sum` command will output a string of hex. That should match the hash listed next to the bin file you downloaded for your [bootloader](https://github.com/Dafang-Hacks/uboot/tree/master/compiled_bootloader) Again, do not proceed unless the MD5 matches the version you downloaded.
 
 6. Now erase and write the bootloader. Do not do anything else between these commands once you have erased your bootloader. Your device will be unable to boot until you have written a new bootloader.
@@ -75,9 +79,11 @@ dd if=/system/sdcard/dafang_128mb_v2.bin of=/dev/mtd0
 ```
 
 7. Rename the uEnv.bootfromnand.txt in your minisd card root to uEnv.txt to enable booting from NAND:
+
 ```bash
 mv uEnv.bootfromnand.txt uEnv.txt
 ```
+
 ## Verify that the U-Boot-Loader works correctly
 
 Reboot your camera
@@ -91,14 +97,14 @@ If the led turns blue -> The custom configuration from uEnv.txt is used.
 
 If the led is not turning blue despite having an uEnv.txt on your microsd - try to format the sdcard as FAT16 and try again.
 
+## Enable FullHD (on 128 Mb devices only)
 
-## Enable FullHD (on 128 Mb devices only):
-
-Open the uEnv.txt file 
+Open the uEnv.txt file
 
 ```$bash
 vi /system/sdcard/uEnv.txt
 ```
+
 and change the "boot-line" from:
 
 `mem=104M@0x0 ispmem=8M@0x6800000 rmem=16M@0x7000000`
@@ -114,4 +120,5 @@ cat /proc/cmdline
 ```
 
 ## My camera doesn't boot/I have failed to flash the bootloader. What can I do now?
+
 You will need to desolder your bootrom, [reflash it](https://github.com/Dafang-Hacks/spiflasher) and solder it back.
