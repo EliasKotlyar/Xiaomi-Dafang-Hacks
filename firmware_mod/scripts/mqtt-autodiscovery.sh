@@ -34,7 +34,7 @@
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_detection/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Motion Detection\", \"unique_id\": \"$MAC_SIMPLE-motion-detection\", $DEVICE_INFO, \"icon\": \"mdi:motion-sensor\", \"state_topic\": \"$TOPIC/motion/detection\", \"command_topic\": \"$TOPIC/motion/detection/set\"}"
 
   # Motion send mail alert on/off switch
-  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_mail/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Motion Send Emails\", \"unique_id\": \"$MAC_SIMPLE-motion-send-mail\", $DEVICE_INFO, \"icon\": \"mdi:email-send\", \"state_topic\": \"$TOPIC/motion/send_mail\", \"command_topic\": \"$TOPIC/motion/send_mail/set\"}"
+  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_mail/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Motion Send Emails\", \"unique_id\": \"$MAC_SIMPLE-motion-send-mail\", $DEVICE_INFO, \"icon\": \"mdi:email-arrow-right\", \"state_topic\": \"$TOPIC/motion/send_mail\", \"command_topic\": \"$TOPIC/motion/send_mail/set\"}"
 
   # Motion send telegram alert on/off switch
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/motion_send_telegram/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Motion Send Telegram\", \"unique_id\": \"$MAC_SIMPLE-motion-send-telegram\", $DEVICE_INFO, \"icon\": \"mdi:send\", \"state_topic\": \"$TOPIC/motion/send_telegram\", \"command_topic\": \"$TOPIC/motion/send_telegram/set\"}"
