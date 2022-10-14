@@ -95,6 +95,26 @@ network={
 }
 ```
 
+If your Wi-Fi WPA setup uses protocol WPA2, add proto=WPA2 under ssid=
+```
+ctrl_interface=/var/run/wpa_supplicant
+ctrl_interface_group=0
+ap_scan=1
+
+network={
+ssid="enteryourssidherebutrememebertokeepthequotes"
+        # Uncomment to connect to Hidden SSIDs
+        #scan_ssid=1
+        key_mgmt=WPA-PSK
+        pairwise=CCMP TKIP
+        group=CCMP TKIP WEP104 WEP40
+        psk="enteryourpasswordherebutremembertokeepthequotes"
+        priority=2
+        proto=WPA2
+}
+```
+
+
 5. Inspect you sdcard for logs/startup.log
 
 ### Advanced Installation
