@@ -55,7 +55,7 @@ function startCustom(el) {
 }
 
 function showupdatepage(result) {
-    $('#update').html('<h2 id="updatemsg">Seaching for updates ...</h2>');
+    $('#update').html('<h2 id="updatemsg">Searching for updates ...</h2>');
 
     $.ajax({
         'url': 'cgi-bin/action.cgi?cmd=check_update'
