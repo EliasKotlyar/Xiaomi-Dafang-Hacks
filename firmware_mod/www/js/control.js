@@ -5,7 +5,7 @@ function timedRefresh(timeoutPeriod) {
     if (timeoutPeriod == 0) {
         window.location.href = window.location.href;
     } else {
-        setTimeout(function() {
+        setTimeout(function () {
             timedRefresh(timeoutPeriod)
         }, 1000);
     }
@@ -14,17 +14,16 @@ function timedRefresh(timeoutPeriod) {
 function update(onStart) {
     $.ajax({
         'url': 'cgi-bin/action.cgi?cmd=show_updateProgress'
-    }).done(function(log) {
+    }).done(function (log) {
         if (log < 0) {
-            if (onStart != true)
-            {
+            if (onStart != true) {
                 $('#message').text("Error starting update process");
             }
         } else {
             $('#message').text("Update in progress");
             $('#progress').removeAttr('style');
-            $('#progress').attr('style','width:'+log+'%');
-            $('#progressValue').html(log+'%');
+            $('#progress').attr('style', 'width:' + log + '%');
+            $('#progressValue').html(log + '%');
             // This is the end, start the reboot count down
             if (log >= 100) {
                 timedRefresh(30);
@@ -48,23 +47,23 @@ function accordionUpdate(param) {
 }
 
 function startCustom(el) {
-  var repo = $('#custom_repo').val();
-  var branch = $('#custom_branch').val();
-  var mode = $('#custom_full').is(":checked") ? 'full' : 'cumul';
-  start(repo, branch, mode);
+    var repo = $('#custom_repo').val();
+    var branch = $('#custom_branch').val();
+    var mode = $('#custom_full').is(":checked") ? 'full' : 'cumul';
+    start(repo, branch, mode);
 }
 
 function showupdatepage(result) {
-    $('#update').html('<h2 id="updatemsg">Seaching for updates ...</h2>');
+    $('#update').html('<h2 id="updatemsg">Searching for updates ...</h2>');
 
     $.ajax({
         'url': 'cgi-bin/action.cgi?cmd=check_update'
-    }).done(function(result){
+    }).done(function (result) {
 
         var update = result.split(":")
         var repo = update[0];
         var branch = update[1];
-        var update_status = parseInt(update[2],10);
+        var update_status = parseInt(update[2], 10);
 
         var custom = '<div class="w3-panel w3-border w3-round"> \
           <h2>Custom Firmware</h2> \
@@ -110,7 +109,7 @@ function showupdatepage(result) {
             <input id="updateBeta" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (BETA)" onclick="start(\'EliasKotlyar\',\'beta\',\'cumul\')"/><br />' + custom);
         }
         else if (update_status > 0) {
-            $('#updatemsg').html("You are "+ update_status +" commits behind the " + branch + " branch of the " + repo + " repo.")
+            $('#updatemsg').html("You are " + update_status + " commits behind the " + branch + " branch of the " + repo + " repo.")
             if (branch == "master") {
                 $('#update').append('<input id="updateStable" class="w3-btn w3-block w3-theme" type="text" value="Update firmware (STABLE)" onclick="start(\'' + repo + '\',\'master\',\'cumul\')"/><br />');
                 $('#update').append('<button class="accordion" type="button" onclick="accordionUpdate(this);">Other Update Options</button> \
@@ -146,38 +145,38 @@ function showupdatepage(result) {
 }
 
 function saveConfig() {
-    $.get("cgi-bin/ui_control.cgi",{cmd: "save_config"},function(result) {
+    $.get("cgi-bin/ui_control.cgi", { cmd: "save_config" }, function (result) {
         getFiles('config');
     });
 
 }
 
-function deleteConfig(fileName,dir) {
-    var del = confirm("Confirm delete file: "+fileName);
-    if ( del ) {
-        $.get("cgi-bin/ui_control.cgi", {cmd: "del_config",file: fileName});
+function deleteConfig(fileName, dir) {
+    var del = confirm("Confirm delete file: " + fileName);
+    if (del) {
+        $.get("cgi-bin/ui_control.cgi", { cmd: "del_config", file: fileName });
         getFiles(dir);
     }
 }
 
 function restoreConfig(fileName) {
-    var restore = confirm("Are you sure to restore config file: "+fileName+"\n Camera will reboot at the end of the process");
-    if ( restore ) {
-        $.get("cgi-bin/ui_control.cgi",{cmd: "restore_config",file: fileName});
+    var restore = confirm("Are you sure to restore config file: " + fileName + "\n Camera will reboot at the end of the process");
+    if (restore) {
+        $.get("cgi-bin/ui_control.cgi", { cmd: "restore_config", file: fileName });
     }
 }
 
 //Function to get video and images files from dir
 function getFiles(dir) {
     // Get files from dir
-    $('#'+dir).html("<p><button class='w3-btn w3-theme' onclick='saveConfig();'>Take config snapshot</button></p>");
-    $.get("cgi-bin/ui_control.cgi", {cmd: "getFiles", dir: dir}, function(config){
+    $('#' + dir).html("<p><button class='w3-btn w3-theme' onclick='saveConfig();'>Take config snapshot</button></p>");
+    $.get("cgi-bin/ui_control.cgi", { cmd: "getFiles", dir: dir }, function (config) {
         var config_all = config.split("\n");
-        if ( config_all.length == 1)
-            $('#'+dir).append("<h1>No snapshot available.</h1>");
+        if (config_all.length == 1)
+            $('#' + dir).append("<h1>No snapshot available.</h1>");
         else {
-            $('#'+dir).append("\
-            <table class='w3-table-all' id='result_"+dir+"'>\
+            $('#' + dir).append("\
+            <table class='w3-table-all' id='result_"+ dir + "'>\
             <thead>\
               <tr class='w3-theme'>\
                 <th>Filename</th>\
@@ -187,51 +186,51 @@ function getFiles(dir) {
               </tr>\
             </thead>\
             <tbody>");
-            for (var i = 0; i < config_all.length-1; i++) {
+            for (var i = 0; i < config_all.length - 1; i++) {
                 var config_info = config_all[i].split("#:#");
                 var file_info = config_info[3].split(".");
                 var html_photo = "";
-                $('#result_'+dir).append("<tr> \
-                <td>"+config_info[0]+"</td> \
-                <td>"+config_info[1]+"</td> \
-                <td>"+config_info[2]+"</td> \
+                $('#result_' + dir).append("<tr> \
+                <td>"+ config_info[0] + "</td> \
+                <td>"+ config_info[1] + "</td> \
+                <td>"+ config_info[2] + "</td> \
                 <td> \
-                <a href=\""+config_info[3]+"\" download><i class='fas fa-download' title='Download file'></i></a> \
-                <span onclick=\"deleteConfig('"+config_info[3]+"','"+dir+"')\"><i class='fas fa-trash' title='Delete file'></i></span>\
-                <span onclick=\"restoreConfig('"+config_info[3]+"')\" title='Restore config'><i class='fas fa-hdd'></i></span>\
+                <a href=\""+ config_info[3] + "\" download><i class='fas fa-download' title='Download file'></i></a> \
+                <span onclick=\"deleteConfig('"+ config_info[3] + "','" + dir + "')\"><i class='fas fa-trash' title='Delete file'></i></span>\
+                <span onclick=\"restoreConfig('"+ config_info[3] + "')\" title='Restore config'><i class='fas fa-hdd'></i></span>\
                 </td></tr>");
             }
-            $('#'+dir).append("</tbody></table><p></p>");
-            var table = $('#result_'+dir).DataTable();
-            $('#result'+dir).on( 'click', 'tr', function () {
+            $('#' + dir).append("</tbody></table><p></p>");
+            var table = $('#result_' + dir).DataTable();
+            $('#result' + dir).on('click', 'tr', function () {
                 //$(this).toggleClass('selected');
-            } );
-            $('#result'+dir).click( function () {
-               //alert( table.rows('.selected').data().length +' row(s) selected' );
-            } );
+            });
+            $('#result' + dir).click(function () {
+                //alert( table.rows('.selected').data().length +' row(s) selected' );
+            });
         }
     });
 
 }
 
 
-function start(repo,branch,mode) {
+function start(repo, branch, mode) {
     var login = "";
     // if ($('#login').val().length > 0) {
     //     login = "login=" + $('#login').val() + ":" + $('#password').val();
     // }
     //Open modal window
-    document.getElementById('modal_box').style.display='block'
+    document.getElementById('modal_box').style.display = 'block'
     $('#modal_title').html('Update in progress');
     $('#modal_content').html('<h4>Please note: at the end of this process the camera will reboot without notice!</h4> \
     <div class="w3-light-grey"><div id="progress" class="w3-container w3-theme" style="width:0%"><span id="progressValue">0%</span></div></div><br><h4 id=message></h4>');
 
-    var url = 'cgi-bin/action.cgi?cmd=update&repo='+repo+'&release='+branch+'&mode='+mode;
+    var url = 'cgi-bin/action.cgi?cmd=update&repo=' + repo + '&release=' + branch + '&mode=' + mode;
     $.ajax({
         'url': url,
         'type': 'POST',
         'data': login
-    }).done(function(result) {
+    }).done(function (result) {
 
         if (result.length > 0) {
             update(false);
@@ -242,27 +241,27 @@ function start(repo,branch,mode) {
 }
 
 //Function control service (stop/start)
-function controlService(action,serviceName) {
-    $.get("cgi-bin/ui_control.cgi", {cmd: "services",service: serviceName, action: action}, function(result){
-        $('#control_'+serviceName).removeAttr('onclick');
+function controlService(action, serviceName) {
+    $.get("cgi-bin/ui_control.cgi", { cmd: "services", service: serviceName, action: action }, function (result) {
+        $('#control_' + serviceName).removeAttr('onclick');
         if (action == 'start') {
-            $('#control_'+serviceName).attr('onclick','controlService("stop","'+serviceName+'")')
+            $('#control_' + serviceName).attr('onclick', 'controlService("stop","' + serviceName + '")')
         }
         else {
-            $('#control_'+serviceName).attr('onclick','controlService("start","'+serviceName+'")')
+            $('#control_' + serviceName).attr('onclick', 'controlService("start","' + serviceName + '")')
         }
     });
 }
 
 //Function to control autostart
-function autoStartService(action,serviceName) {
-    $.get("cgi-bin/ui_control.cgi", {cmd: "autoStartService",service: serviceName, action: action});
-    $('#autoStart_'+serviceName).removeAttr('onclick');
-    if(action == "true") {
-        $('#autoStart_'+serviceName).attr('onclick','autoStartService("false","'+serviceName+'")');
+function autoStartService(action, serviceName) {
+    $.get("cgi-bin/ui_control.cgi", { cmd: "autoStartService", service: serviceName, action: action });
+    $('#autoStart_' + serviceName).removeAttr('onclick');
+    if (action == "true") {
+        $('#autoStart_' + serviceName).attr('onclick', 'autoStartService("false","' + serviceName + '")');
     }
     else {
-        $('#autoStart_'+serviceName).attr('onclick','autoStartService("true","'+serviceName+'")');
+        $('#autoStart_' + serviceName).attr('onclick', 'autoStartService("true","' + serviceName + '")');
     }
 }
 
@@ -271,7 +270,7 @@ var serviceFriendlyNames = {
     "auto-night-detection": "Auto Night Detection",
     "dropbear": "SSH Server",
     "debug-on-osd": "Debug on OSD",
-    "ftp_server": "FTP Server",
+    "ftp-server": "FTP Server",
     "mdns-responder": "mDNSResponder",
     "mqtt-control": "MQTT Control",
     "mqtt-status": "MQTT Live Status Updates",
@@ -287,21 +286,21 @@ var serviceFriendlyNames = {
 //Function get config
 function getServices() {
     // get config and put to hmtl elements
-    $.get("cgi-bin/ui_control.cgi", {cmd: "get_services"}, function(config){
+    $.get("cgi-bin/ui_control.cgi", { cmd: "get_services" }, function (config) {
         var config_all = config.split("\n");
-        for (var i = 0; i < config_all.length-1; i++) {
-         var config_info = config_all[i].split("#:#");
-         // Select button color accrding status
-         var control_checked = "onclick='controlService(\"start\",\""+config_info[0]+"\")')";
-         if (config_info[1] == "started")
-            control_checked = "checked onclick='controlService(\"stop\",\""+config_info[0]+"\")')";
-         var autostart_checked = "onclick='autoStartService(\"true\",\""+config_info[0]+"\")')";
-         if(config_info[2] == "true")
-            autostart_checked = "checked onclick='autoStartService(\"false\",\""+config_info[0]+"\")')";
-         var friendly_name = serviceFriendlyNames[config_info[0]] || config_info[0];
-         $('#tabServices').append("<tr><td>"+friendly_name+"</td>\
-         <td>Stop <label class='switch'><input id='control_"+config_info[0]+"' class='w3-check' type='checkbox' "+control_checked+"> <span class='slider round'></span></label> Start</td>\
-         <td>Off <label class='switch'><input id='autoStart_"+config_info[0]+"' class='w3-check' type='checkbox' "+autostart_checked+"> <span class='slider round'></span></label> On</td></tr>");
+        for (var i = 0; i < config_all.length - 1; i++) {
+            var config_info = config_all[i].split("#:#");
+            // Select button color accrding status
+            var control_checked = "onclick='controlService(\"start\",\"" + config_info[0] + "\")')";
+            if (config_info[1] == "started")
+                control_checked = "checked onclick='controlService(\"stop\",\"" + config_info[0] + "\")')";
+            var autostart_checked = "onclick='autoStartService(\"true\",\"" + config_info[0] + "\")')";
+            if (config_info[2] == "true")
+                autostart_checked = "checked onclick='autoStartService(\"false\",\"" + config_info[0] + "\")')";
+            var friendly_name = serviceFriendlyNames[config_info[0]] || config_info[0];
+            $('#tabServices').append("<tr><td>" + friendly_name + "</td>\
+         <td>Stop <label class='switch'><input id='control_"+ config_info[0] + "' class='w3-check' type='checkbox' " + control_checked + "> <span class='slider round'></span></label> Start</td>\
+         <td>Off <label class='switch'><input id='autoStart_"+ config_info[0] + "' class='w3-check' type='checkbox' " + autostart_checked + "> <span class='slider round'></span></label> On</td></tr>");
         }
     });
 
@@ -309,7 +308,7 @@ function getServices() {
 
 function system(command) {
     //Open modal window
-    document.getElementById('modal_box').style.display='block'
+    document.getElementById('modal_box').style.display = 'block'
     $('#modal_title').html(command);
     if (command == "reboot") {
         $('#modal_content').html("<h4 id=message></h4>");

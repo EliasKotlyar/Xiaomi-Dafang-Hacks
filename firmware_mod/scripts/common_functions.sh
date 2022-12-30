@@ -177,6 +177,9 @@ ir_cut(){
 # Calibrate and control the motor
 # use like: motor up 100
 motor(){
+  ov=$(onvif_srvd status)
+  [ "${ov}" == "ON" ] && onvif_srvd off
+
   if [ -z "$2" ]
   then
 	steps=$STEP
@@ -212,7 +215,7 @@ motor(){
 	fi
 	;;
   esac
-
+  [ "${ov}" == "ON" ] && onvif_srvd on
 }
 
 update_motor_pos(){
@@ -319,13 +322,13 @@ recording(){
 ftp_server(){
   case "$1" in
   on)
-	/system/sdcard/controlscripts/ftp_server start
+	/system/sdcard/controlscripts/ftp-server start
 	;;
   off)
-	/system/sdcard/controlscripts/ftp_server stop
+	/system/sdcard/controlscripts/ftp-server stop
 	;;
   status)
-	if /system/sdcard/controlscripts/ftp_server status | grep -q "PID"
+	if /system/sdcard/controlscripts/ftp-server status | grep -q "PID"
 	then
 		echo "ON"
 	else
@@ -339,13 +342,13 @@ ftp_server(){
 mqtt_control(){
   case "$1" in
   on)
-	/system/sdcard/controlscripts/mqtt_control start
+	/system/sdcard/controlscripts/mqtt-control start
 	;;
   off)
-	/system/sdcard/controlscripts/mqtt_control stop
+	/system/sdcard/controlscripts/mqtt-control stop
 	;;
   status)
-	if /system/sdcard/controlscripts/mqtt_control status | grep -q "PID"
+	if /system/sdcard/controlscripts/mqtt-control status | grep -q "PID"
 	then
 		echo "ON"
 	else
@@ -379,13 +382,13 @@ mqtt_status(){
 onvif_srvd(){
   case "$1" in
   on)
-	/system/sdcard/controlscripts/onvif-srvd.sh start
+	/system/sdcard/controlscripts/onvif-srvd start
 	;;
   off)
-	/system/sdcard/controlscripts/onvif-srvd.sh stop
+	/system/sdcard/controlscripts/onvif-srvd stop
 	;;
   status)
-	if /system/sdcard/controlscripts/onvif-srvd.sh status | grep -q "PID"
+	if /system/sdcard/controlscripts/onvif-srvd status | grep -q "PID"
 	then
 		echo "ON"
 	else
