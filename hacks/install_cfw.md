@@ -95,6 +95,9 @@ network={
 }
 ```
 
+
+5. Inspect you sdcard for logs/startup.log
+
 If your Wi-Fi WPA setup uses protocol WPA2, add proto=WPA2 under ssid=
 ```
 ctrl_interface=/var/run/wpa_supplicant
@@ -113,7 +116,6 @@ ssid="enteryourssidherebutrememebertokeepthequotes"
         proto=WPA2
 }
 ```
-
 
 5. Inspect you sdcard for logs/startup.log
 
