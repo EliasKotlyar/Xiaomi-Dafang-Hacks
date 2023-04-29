@@ -514,8 +514,8 @@ auto_night_mode_status)
 	rewrite_config /system/sdcard/config/rtspserver.conf FILTER "$F_audioinFilter"
 	rewrite_config /system/sdcard/config/rtspserver.conf HIGHPASSFILTER "$F_HFEnabled"
 	rewrite_config /system/sdcard/config/rtspserver.conf AECFILTER "$F_AECEnabled"
-	rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
-	rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "-1"
+	rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinHWVol"
+	rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "$F_audioinSWVol"
 
 	echo "Audio format $audioinFormat <br/>"
 	echo "In audio bitrate $audioinBR <br/>"
@@ -523,11 +523,13 @@ auto_night_mode_status)
 	echo "Filter $F_audioinFilter <br/>"
 	echo "High Pass Filter $F_HFEnabled <br/>"
 	echo "AEC Filter $F_AECEnabled <br/>"
-	echo "Volume $F_audioinVol <br/>"
+	echo "HW Volume $F_audioinHWVol <br/>"
+	echo "SW Volume $F_audioinSWVol <br/>"
 	/system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
 	/system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
 	/system/sdcard/bin/setconf -k a -v "$F_AECEnabled" 2>/dev/null
-	/system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
+	/system/sdcard/bin/setconf -k h -v "$F_audioinHWVol" 2>/dev/null
+	/system/sdcard/bin/setconf -k i -v "$F_audioinSWVol" 2>/dev/null
 	return
   ;;
 
