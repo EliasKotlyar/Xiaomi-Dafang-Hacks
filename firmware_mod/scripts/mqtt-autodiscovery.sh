@@ -76,3 +76,9 @@
 
   # Timelapse on/off switch
   $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/switch/$DEVICE_NAME/timelapse/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME Timelapse\", \"unique_id\": \"$MAC_SIMPLE-timelapse\", $DEVICE_INFO, \"icon\": \"mdi:image-multiple\", \"state_topic\": \"$TOPIC/timelapse\", \"command_topic\": \"$TOPIC/timelapse/set\"}"
+  
+  # HW Volume
+  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/number/$DEVICE_NAME/hwvolume/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME HW Volume\", \"unique_id\": \"$MAC_SIMPLE-hwvolume\", $DEVICE_INFO, \"icon\": \"mdi:volume-high\", \"min\": 0, \"max\": 100, \"step\": 1, \"unit_of_measurement\": \"%\", \"state_topic\": \"$TOPIC/hwvolume\", \"command_topic\": \"$TOPIC/hwvolume/set\"}"
+  
+  # SW Volume
+  $MQTT_COMMAND "$AUTODISCOVERY_PREFIX/number/$DEVICE_NAME/swvolume/config" ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "{\"name\": \"$DEVICE_NAME SW Volume\", \"unique_id\": \"$MAC_SIMPLE-swvolume\", $DEVICE_INFO, \"icon\": \"mdi:volume-source\", \"min\": 0, \"max\": 100, \"step\": 1, \"unit_of_measurement\": \"%\", \"state_topic\": \"$TOPIC/swvolume\", \"command_topic\": \"$TOPIC/swvolume/set\"}"
