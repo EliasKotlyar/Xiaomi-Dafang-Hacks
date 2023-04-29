@@ -286,8 +286,9 @@ if [ -n "$F_cmd" ]; then
 		echo "SWVolume $F_audioinSWVol <br/>"
 		/system/sdcard/bin/setconf -k i -v "$F_audioinSWVol" 2>/dev/null
 	fi
-	if [ -n  "${F_frmRateDen+x}" ]; then
+	if [ -n  "${F_frmRateDen+x}" ] && [ -n "${F_frmRateNum+x}" ]; then
 		frmRateDen=$(printf '%b' "${F_frmRateDen/%/\\x}")
+		frmRateNum=$(printf '%b' "${F_frmRateNum/%/\\x}")
 		echo "FrameRate set to $frmRateDen/$frmRateNum <br/>"
 		/system/sdcard/bin/setconf -k d -v "$frmRateNum,$frmRateDen" 2>/dev/null
 	fi

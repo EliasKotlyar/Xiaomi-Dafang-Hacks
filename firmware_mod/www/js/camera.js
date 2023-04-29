@@ -21,7 +21,15 @@ function watchChanges(elements){
     $("#"+elements+" input, #"+elements+" select").on('change', function(e){
         var postData = { cmd: "set_config_live" }
         var input = $(e.target);
-        postData[input.attr('id')] = input.val();
+        var id = input.attr('id')
+        postData[id] = input.val();
+        if (id ==='frmRateDen'){
+            postData['frmRateNum'] = $("#frmRateNum").val();
+        }
+        postData[id] = input.val();
+        if (id === 'frmRateNum'){
+            postData['frmRateDen'] = $("#frmRateDen").val();
+        }
         $.post("cgi-bin/ui_camera.cgi",postData,function(result){
             console.log(result);
         });
