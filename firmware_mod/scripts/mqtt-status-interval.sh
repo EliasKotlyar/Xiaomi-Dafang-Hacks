@@ -50,5 +50,7 @@ do
   fi
   /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/motors/horizontal ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "$TARGET"
   /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}" ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -r -m "$(/system/sdcard/scripts/mqtt-status.sh)"
+  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/hwvolume ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "$(hwvolume status)"
+  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/swvolume ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -r -m "$(swvolume status)"
   sleep $STATUSINTERVAL
 done

@@ -13,8 +13,27 @@ function saveConfig(elements) {
             $('#save_result').html(result);
         else
             $('#save_result').html("Nothing to update");
-    });
-    
+    });    
+}
+
+function watchChanges(elements){
+    //Callback for setting audio settings live
+    $("#"+elements+" input, #"+elements+" select").on('change', function(e){
+        var postData = { cmd: "set_config_live" }
+        var input = $(e.target);
+        var id = input.attr('id')
+        postData[id] = input.val();
+        if (id ==='frmRateDen'){
+            postData['frmRateNum'] = $("#frmRateNum").val();
+        }
+        postData[id] = input.val();
+        if (id === 'frmRateNum'){
+            postData['frmRateDen'] = $("#frmRateDen").val();
+        }
+        $.post("cgi-bin/ui_camera.cgi",postData,function(result){
+            console.log(result);
+        });
+    })
 }
 
 //Function get config
@@ -46,6 +65,11 @@ function onLoad() {
     accordion();
     //Get configuration
     getConfig();
+    //Watch for live changes
+    watchChanges('video')
+    watchChanges('audio')
+    watchChanges('timelapseF')
+    watchChanges('osd')
 
 }
 

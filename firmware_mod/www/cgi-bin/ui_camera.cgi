@@ -38,7 +38,8 @@ if [ -n "$F_cmd" ]; then
 	echo "audioinFilter#:#$(/system/sdcard/bin/setconf -g q)"
 	echo "HFEnabled#:#$(/system/sdcard/bin/setconf -g l)"
 	echo "AECEnabled#:#$(/system/sdcard/bin/setconf -g a)"
-	echo "audioinVol#:#$(/system/sdcard/bin/setconf -g h)"
+	echo "audioinHWVol#:#$(/system/sdcard/bin/setconf -g h)"
+	echo "audioinSWVol#:#$(/system/sdcard/bin/setconf -g i)"
 	echo "tlinterval#:#${TIMELAPSE_INTERVAL}"
 	echo "tlduration#:#${TIMELAPSE_DURATION}"
 	echo "osdEnable#:#${ENABLE_OSD}"
@@ -154,7 +155,7 @@ if [ -n "$F_cmd" ]; then
 	if [ -n  "${F_audioinFilter+x}" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf FILTER "$F_audioinFilter"
 		echo "Filter $F_audioinFilter <br/>"
-		system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
+		/system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
 	fi
 	if [ -n  "${F_HFEnabled+x}" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf HIGHPASSFILTER "$F_HFEnabled"
@@ -166,11 +167,15 @@ if [ -n "$F_cmd" ]; then
 		echo "AEC Filter $F_AECEnabled <br/>"
 		/system/sdcard/bin/setconf -k a -v "$F_AECEnabled" 2>/dev/null
 	fi
-	if [ -n  "${F_audioinVol+x}" ]; then
-		rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinVol"
-		rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "-1"
-		echo "Volume $F_audioinVol <br/>"
-		/system/sdcard/bin/setconf -k h -v "$F_audioinVol" 2>/dev/null
+	if [ -n  "${F_audioinHWVol+x}" ]; then
+		rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$F_audioinHWVol"
+		echo "HWVolume $F_audioinHWVol <br/>"
+		/system/sdcard/bin/setconf -k h -v "$F_audioinHWVol" 2>/dev/null
+	fi
+	if [ -n  "${F_audioinSWVol+x}" ]; then
+		rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "$F_audioinSWVol"
+		echo "SWVolume $F_audioinSWVol <br/>"
+		/system/sdcard/bin/setconf -k i -v "$F_audioinSWVol" 2>/dev/null
 	fi
 	if [ -n  "${F_tlinterval+x}" ]; then
 		tlinterval=$(printf '%b' "${F_tlinterval/%/\\x}")
@@ -259,6 +264,69 @@ if [ -n "$F_cmd" ]; then
 	  /system/sdcard/controlscripts/rtsp start
 	fi
 	return
+	;;
+  set_config_live)
+	if [ -n  "${F_audioinFilter+x}" ]; then
+		echo "Filter $F_audioinFilter <br/>"
+		/system/sdcard/bin/setconf -k q -v "$F_audioinFilter" 2>/dev/null
+	fi
+	if [ -n  "${F_HFEnabled+x}" ]; then
+		echo "High Pass Filter $F_HFEnabled <br/>"
+		/system/sdcard/bin/setconf -k l -v "$F_HFEnabled" 2>/dev/null
+	fi
+	if [ -n  "${F_AECEnabled+x}" ]; then
+		echo "AEC Filter $F_AECEnabled <br/>"
+		/system/sdcard/bin/setconf -k a -v "$F_AECEnabled" 2>/dev/null
+	fi
+	if [ -n  "${F_audioinHWVol+x}" ]; then
+		echo "HWVolume $F_audioinHWVol <br/>"
+		/system/sdcard/bin/setconf -k h -v "$F_audioinHWVol" 2>/dev/null
+	fi
+	if [ -n  "${F_audioinSWVol+x}" ]; then
+		echo "SWVolume $F_audioinSWVol <br/>"
+		/system/sdcard/bin/setconf -k i -v "$F_audioinSWVol" 2>/dev/null
+	fi
+	if [ -n  "${F_frmRateDen+x}" ] && [ -n "${F_frmRateNum+x}" ]; then
+		frmRateDen=$(printf '%b' "${F_frmRateDen/%/\\x}")
+		frmRateNum=$(printf '%b' "${F_frmRateNum/%/\\x}")
+		echo "FrameRate set to $frmRateDen/$frmRateNum <br/>"
+		/system/sdcard/bin/setconf -k d -v "$frmRateNum,$frmRateDen" 2>/dev/null
+	fi
+	if [ -n  "${F_osdColor+x}" ]; then
+		color='white black red green blue cyan yellow purple'
+		echo "COLOR=${F_osdColor}" >> /system/sdcard/config/osd.conf
+		/system/sdcard/bin/setconf -k c -v "${F_osdColor}"
+		echo -n "Set text color to "
+		echo -n $(echo $color | cut -d ' ' -f $(($F_osdColor + 1)))
+		echo "<br />"
+	fi
+	if [ -n  "${F_osdSize+x}" ]; then
+		echo "SIZE=${F_osdSize}" >> /system/sdcard/config/osd.conf
+		/system/sdcard/bin/setconf -k s -v "${F_osdSize}"
+		echo "Set OSD text size to ${F_osdSize}<br />"
+	fi
+	if [ -n  "${F_osdPixel+x}" ]; then
+		echo "SPACE=${F_osdPixel}" >> /system/sdcard/config/osd.conf
+		/system/sdcard/bin/setconf -k p -v "${F_osdPixel}"
+		echo "Set OSD pixel between chars to ${F_osdPixel}<br />"
+	fi
+	if [ -n  "${F_osdY+x}" ]; then
+		echo "POSY=${F_osdY}" >> /system/sdcard/config/osd.conf
+		/system/sdcard/bin/setconf -k x -v "${F_osdY}"
+		echo "Set OSD Y position to ${F_osdY}<br />"
+	fi
+	if [ -n  "${F_osdFixW+x}" ]; then
+		echo "FIXEDW=${F_osdFixW}" >> /system/sdcard/config/osd.conf
+		/system/sdcard/bin/setconf -k w -v "${F_osdFixW}"
+		echo "Set OSD fixed width to ${F_osdFixW}<br />"
+	fi
+	if [ -n  "${F_osdFonts+x}" ]; then
+		fontName=$(printf '%b' "${F_osdFonts//%/\\x}")
+		fontName=$(echo "$fontName" | sed -e "s/\\+/ /g")
+		echo "FONTNAME=${fontName}" >> /system/sdcard/config/osd.conf
+		/system/sdcard/bin/setconf -k e -v "${fontName}"
+		echo "Set OSD font to ${fontName}<br />"
+	fi
 	;;
   *)
     echo "Unsupported command '$F_cmd'"

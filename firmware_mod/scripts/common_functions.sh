@@ -881,3 +881,31 @@ wpa_config_get() {
 		grep "^[[:space:]]*$key=" "$wpa_config" | cut -d "=" -f2
 	fi
 }
+
+# Control the hw volume
+hwvolume() {
+	if [[ "$1" == "status" ]]; then
+		# Get the current volume value
+		local raw=$(/system/sdcard/bin/setconf -g h)
+		echo "$(busybox expr ${raw} \* 100 / 120)"
+	else
+		# Set the new volume value
+		local scaled=$(busybox expr $1 \* 120 / 100)
+		/system/sdcard/bin/setconf -k h -v "$scaled"
+		rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$scaled"
+  fi
+}
+
+# Control the hw volume
+swvolume() {
+	if [[ "$1" == "status" ]]; then
+		# Get the current volume value
+		local raw=$(/system/sdcard/bin/setconf -g i)
+		echo "$(busybox expr ${raw} \* 100 / 1000)"
+	else
+		# Set the new volume value
+		local scaled=$(busybox expr $1 \* 1000 / 100)
+		/system/sdcard/bin/setconf -k i -v "$scaled"
+		rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "$scaled"
+  fi
+}

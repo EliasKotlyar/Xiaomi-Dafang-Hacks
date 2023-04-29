@@ -434,6 +434,26 @@ done
 	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/update ${MOSQUITTOOPTS} ${MOSQUITTOPUBOPTS} -m "Upgrade finish: ${result}"	  
 	;;
 
+	"${TOPIC}/hwvolume")
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/hwvolume ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(hwvolume status)"
+	;;
+
+	"${TOPIC}/hwvolume/set"*)
+		VOLUME=$(echo "$line" | awk '{print $2}')
+		hwvolume "$VOLUME"
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/hwvolume ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(hwvolume status)"
+	;;
+
+	"${TOPIC}/swvolume")
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/swvolume ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(swvolume status)"
+	;;
+
+	"${TOPIC}/swvolume/set"*)
+		VOLUME=$(echo "$line" | awk '{print $2}')
+		swvolume "$VOLUME"
+	  /system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "${TOPIC}"/swvolume ${MOSQUITTOPUBOPTS} ${MOSQUITTOOPTS} -m "$(swvolume status)"
+	;;
+
 	"${TOPIC}/set "*)
 	  COMMAND=$(echo "$line" | awk '{print $2}')
 	  #echo "$COMMAND"
