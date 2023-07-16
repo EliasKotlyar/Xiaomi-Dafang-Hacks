@@ -178,7 +178,7 @@ if [ -n "$F_cmd" ]; then
     if [ -n "${F_userChatID+x}" ]; then
       F_userChatID=$(printf '%b' "${F_userChatID//%/\\x}")
 	    rewrite_config /system/sdcard/config/telegram.conf userChatId "\"$F_userChatID\""
-		  echo "Matrix server host set to $F_userChatID<br/>"
+		  echo "Telegram user chat id set to $F_userChatID<br/>"
 	  fi
     ;;
   save_config_matrix)
