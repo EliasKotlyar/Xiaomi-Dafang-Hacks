@@ -34,7 +34,7 @@ After that, continue to the
 ### Support
 
 If you encounter a problem, please see first if you find similiar open/closed issues. 
-Or ask in our [Gitter channel](https://gitter.im/Xiaomi-Dafang-Hacks) for help.
+Or ask in our [Gitter channel](https://gitter.im/Xiaomi-Dafang-Hacks/Lobby) for help.
 
 If you don't find anything related, feel free to open a new issue.
 If you/we solve your issue, please condense your gained insights into a pull request for continuous self-improvement.
