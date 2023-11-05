@@ -137,7 +137,7 @@ if [ -n "$F_cmd" ]; then
         if [ -n "${F_smbPassword+x}" ]; then
 		F_smbPassword=$(printf '%b' "${F_smbPassword//%/\\x}"  | sed 's/\//\\\//g')
 	    rewrite_config /system/sdcard/config/motion.conf smb_password "\"$F_smbPassword\""
-		  echo "Samba passward set<br/>"
+		  echo "Samba password set<br/>"
 	  fi
         if [ -n "${F_smbStillsDir+x}" ]; then
 		F_smbStillsDir=$(printf '%b' "${F_smbStillsDir//%/\\x}" | sed 's/\//\\\//g')

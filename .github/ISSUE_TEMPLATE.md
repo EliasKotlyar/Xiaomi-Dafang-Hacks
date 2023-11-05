@@ -1,5 +1,5 @@
 This is an issue tracking system only.
-If you have general questions or are a newbie, please ask for help in our [chat channel](https://gitter.im/Xiaomi-Dafang-Hacks).
+If you have general questions or are a newbie, please ask for help in our [chat channel](https://gitter.im/Xiaomi-Dafang-Hacks/Lobby).
 
 To make sure your issue can be resolved as quickly as possible please state your
 
