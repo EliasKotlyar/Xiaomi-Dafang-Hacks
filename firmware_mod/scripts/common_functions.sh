@@ -178,7 +178,7 @@ ir_cut(){
 # use like: motor up 100
 motor(){
   ov=$(onvif_srvd status)
-  [ "${ov}" == "ON" ] && onvif_srvd off
+  [ "${ov}" == "ON" ] && onvif_srvd off >/dev/null 2>&1
 
   if [ -z "$2" ]
   then
@@ -215,7 +215,7 @@ motor(){
 	fi
 	;;
   esac
-  [ "${ov}" == "ON" ] && onvif_srvd on
+  [ "${ov}" == "ON" ] && onvif_srvd on >/dev/null 2>&1
 }
 
 update_motor_pos(){
