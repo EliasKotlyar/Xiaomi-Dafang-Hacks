@@ -146,6 +146,13 @@ ntp_srv="$(cat "$CONFIGPATH/ntp_srv.conf")"
 timeout 30 sh -c "until ping -c1 \"$ntp_srv\" &>/dev/null; do sleep 3; done";
 /system/sdcard/bin/busybox ntpd -p "$ntp_srv"
 
+## Date time fix for static IP:
+if [ -f $CONFIGPATH/staticip.conf -a -f $CONFIGPATH/resolv.conf -a -f $CONFIGPATH/defaultgw.conf ]; then
+  str=$(/system/sdcard/bin/curl -s --head http://google.com | grep ^Date: | sed 's/Date: //g')
+  d=$(date -d "$str" -D "%a, %d %b %Y %T %Z" +'%Y-%m-%d %H:%M:%S')
+  date -s "$d"
+fi
+
 ## Load audio driver module:
 insmod /system/sdcard/driver/audio.ko
 
