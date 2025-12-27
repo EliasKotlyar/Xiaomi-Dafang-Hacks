@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=busybox
 
 # Takes a snapshot every N seconds interval configured
 # in /system/sdcard/config/timelapse.conf
@@ -7,6 +8,7 @@ PIDFILE='/run/timelapse.pid'
 TIMELAPSE_CONF='/system/sdcard/config/timelapse.conf'
 
 if [ -f "$TIMELAPSE_CONF" ]; then
+	# shellcheck source=config/timelapse.conf
 	. "$TIMELAPSE_CONF" 2>/dev/null
 fi
 
@@ -21,15 +23,15 @@ ts_started=$(date +%s)
 
 while true; do
 	SAVE_DIR=$DCIM_PATH
-	if [ $SAVE_DIR_PER_DAY -eq 1 ]; then
+	if [ "$SAVE_DIR_PER_DAY" -eq 1 ]; then
 		SAVE_DIR="$DCIM_PATH/$(date +%Y-%m-%d)/$(date +%H)"
 	fi
 	if [ ! -d "$SAVE_DIR" ]; then
-		mkdir -p $SAVE_DIR
+		mkdir -p "$SAVE_DIR"
 	fi
 	filename_prefix="$(date +%Y-%m-%d_%H-%M-%S)"
 	if [ "$filename_prefix" = "$last_prefix" ]; then
-		counter=$(($counter + 1))
+		counter=$((counter + 1))
 	else
 		counter=1
 		last_prefix="$filename_prefix"
@@ -41,12 +43,12 @@ while true; do
 	else
 		/system/sdcard/bin/getimage | /system/sdcard/bin/jpegoptim -m"$COMPRESSION_QUALITY" --stdin --stdout > "$SAVE_DIR/$filename" &
 	fi
-	sleep $TIMELAPSE_INTERVAL
+	sleep "$TIMELAPSE_INTERVAL"
 
-	if [ $TIMELAPSE_DURATION -gt 0 ]; then
+	if [ "$TIMELAPSE_DURATION" -gt 0 ]; then
 		ts_now=$(date +%s)
-		elapsed=$(($ts_now - $ts_started))
-		if [ $(($TIMELAPSE_DURATION * 60)) -le $elapsed ]; then
+		elapsed=$((ts_now - ts_started))
+		if [ $((TIMELAPSE_DURATION * 60)) -le $elapsed ]; then
 			break
 		fi
 	fi

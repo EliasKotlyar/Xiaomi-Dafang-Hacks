@@ -3,11 +3,11 @@ This page explains what the `mem=41700K@0x0 ispmem=8M@0x28B9000 rmem=15644K@0x30
 
 **1. Why is there only 35404KB `TotalMem` even though 41700K are specified?**
 Some space is taken by the kernel:
-```
+```plaintext
 Memory: 35192k/41700k available (3951k kernel code, 6508k reserved, 1276k data, 212k init, 0k highmem)
 ```
 I think the 212k init make up the difference to the `35404KB` total:
-```
+```plaintext
 [    1.663642] Freeing unused kernel memory: 212K
 ```
 
@@ -46,13 +46,12 @@ Accordingly, v4l2rtspserver fails to start when all memory is used for user-spac
 Use `pmap $(pidof v4l2rtspserver-master) |grep rmem` to examine the `rmem` memory usage.
 
 **3. What's up with the memory region marked `usable after init`  in the boot log?**
-The (automatically) "determined physical RAM map" is never used because we specify a user-defiend physical RAM map:
+The (automatically) "determined physical RAM map" is never used because we specify a user-defined physical RAM map:
 
-```
+```plaintext
 [    0.000000] Determined physical RAM map:  <--- this is automatically determined
 [    0.000000]  memory: 0051b000 @ 00010000 (usable)
 [    0.000000]  memory: 00035000 @ 0052b000 (usable after init)
 [    0.000000] User-defined physical RAM map: <- this overwrites the automatically determined memory maps
 [    0.000000]  memory: 028b9000 @ 00000000 (usable)
 ```
-

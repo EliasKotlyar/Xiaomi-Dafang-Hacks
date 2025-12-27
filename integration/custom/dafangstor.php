@@ -72,7 +72,7 @@
    # disallow any paths with multiple repeating periods.
    $path = preg_replace("(\.+)", ".", $path);
 
-   # Clean repeated path seperators
+   # Clean repeated path separators
    $path = preg_replace("(\/+)", "/", $path);
 
    # Remove all "current directory" paths

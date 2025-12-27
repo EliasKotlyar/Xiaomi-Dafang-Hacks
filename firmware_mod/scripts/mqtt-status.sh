@@ -1,5 +1,8 @@
 #!/bin/sh
+# shellcheck shell=busybox
+# shellcheck source=config/mqtt.conf.dist
 . /system/sdcard/config/mqtt.conf
+# shellcheck source=scripts/common_functions.sh
 . /system/sdcard/scripts/common_functions.sh
 
 ## Uptime

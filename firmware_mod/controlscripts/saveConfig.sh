@@ -8,4 +8,4 @@ if [ ! -d $CONF_DEST ]; then
    mkdir $CONF_DEST
 fi
 
-tar -zcf $CONF_DEST/$CONF_FILE_NAME -C $CONF_PATH --exclude='*.dist' .
+tar -zcf "$CONF_DEST/$CONF_FILE_NAME" -C "$CONF_PATH" --exclude='*.dist' .

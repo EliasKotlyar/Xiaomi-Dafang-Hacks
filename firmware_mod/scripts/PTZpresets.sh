@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=busybox
 
 #######################################################
 # Accepts either presets or step coordinates		  #
@@ -39,6 +40,7 @@ trap 'rm "$PIDFILE"' EXIT
 
 # Include common_functions from Dafang-Hacks
 # shellcheck disable=SC1091
+# shellcheck source=firmware_mod/scripts/common_functions.sh
 . /system/sdcard/scripts/common_functions.sh
 
 # Path to motor binary

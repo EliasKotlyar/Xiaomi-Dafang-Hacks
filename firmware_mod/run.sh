@@ -1,5 +1,7 @@
 #!/bin/sh
-
+# shellcheck shell=busybox
+# shellcheck disable=2129
+# shellcheck disable=1091
 export LD_LIBRARY_PATH='/system/sdcard/lib/:/thirdlib:/system/lib'
 
 CONFIGPATH="/system/sdcard/config"
@@ -16,12 +18,14 @@ echo "==================================================" >> $LOGPATH
 killall telnetd
 
 ## Load some common functions:
+# shellcheck source=firmware_mod/scripts/common_functions.sh
 . /system/sdcard/scripts/common_functions.sh
 echo "Loaded common functions" >> $LOGPATH
 
 ## Create root user home directory and etc directory on sdcard:
 if [ ! -d /system/sdcard/root ]; then
   mkdir /system/sdcard/root
+  # shellcheck disable=2016
   echo 'PATH=/system/sdcard/bin:$PATH' > /system/sdcard/root/.profile
   echo "Created root user home directory" >> $LOGPATH
 fi
@@ -66,21 +70,21 @@ fi
 
 ## Create a swap file on SD if desired
 if [ "$SWAP" = true ]; then
-  if [ ! -f $SWAPPATH ]; then
+  if [ ! -f "$SWAPPATH" ]; then
     echo "Creating ${SWAPSIZE}MB swap file on SD card"  >> $LOGPATH
-    dd if=/dev/zero of=$SWAPPATH bs=1M count=$SWAPSIZE
-    mkswap $SWAPPATH
+    dd if=/dev/zero of="$SWAPPATH" bs=1M count="$SWAPSIZE"
+    mkswap "$SWAPPATH"
     echo "Swap file created in $SWAPPATH" >> $LOGPATH
   fi
   echo "Configuring swap file" >> $LOGPATH
-  swapon -p 10 $SWAPPATH
+  swapon -p 10 "$SWAPPATH"
   echo "Swap set on file $SWAPPATH" >> $LOGPATH
 fi
 
 # Create ZRAM swap as on the original firmware
 if [ ! "$SWAP_ZRAM" = false ]; then
     echo 100 > /proc/sys/vm/swappiness
-    echo $SWAP_ZRAM_SIZE > /sys/block/zram0/disksize
+    echo "$SWAP_ZRAM_SIZE" > /sys/block/zram0/disksize
     mkswap /dev/zram0
     swapon -p 20 /dev/zram0
 fi
@@ -176,7 +180,7 @@ echo "Determined image sensor model as $sensor" >> $LOGPATH
 
 ## Start the image sensor:
 insmod /driver/tx-isp.ko isp_clk=100000000
-if [ $sensor = 'jxf22' ]; then
+if [ "$sensor" = 'jxf22' ]; then
   insmod /driver/sensor_jxf22.ko data_interface=2 pwdn_gpio=-1 reset_gpio=18 sensor_gpio_func=0
 else
   if [ ! -f /etc/sensor/jxf23.bin ]; then

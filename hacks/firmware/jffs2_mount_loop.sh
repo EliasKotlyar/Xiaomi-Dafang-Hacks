@@ -36,7 +36,7 @@ fi
 
 # cleanup if necessary
 umount /tmp/mtdblock0 &>/dev/null
-umount $2 &>/dev/null
+umount "$2" &>/dev/null
 modprobe -r jffs2 &>/dev/null
 modprobe -r block2mtd &>/dev/null
 modprobe -r mtdblock &>/dev/null

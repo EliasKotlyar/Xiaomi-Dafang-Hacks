@@ -22,5 +22,5 @@ Use following Credentials:
 Username: root
 Password:  ismart12
 
-Attention: You will get a lot of debug messages, and you wont be able to work "normal".
+Attention: You will get a lot of debug messages, and you won't be able to work "normal".
 To cirvumvent this, it's recommended to start a telnet daemon: `telnetd &` and connect to the device via telnet.

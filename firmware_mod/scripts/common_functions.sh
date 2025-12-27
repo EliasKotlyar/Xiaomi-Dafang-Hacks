@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=busybox
 
 # This file is supposed to bundle some frequently used functions
 # so they can be easily improved in one place and be reused all over the place
@@ -72,7 +73,7 @@ rewrite_config(){
   $(grep -v '^[[:space:]]*#' "$1"  | grep -q "$2")
   ret="$?"
   if [ "$ret" == "1" ] ; then
-	  echo "$2=$3" >> $1
+	  echo "$2=$3" >> "$1"
   else
 		sed -i -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}" "$cfg_path"
   fi
@@ -221,7 +222,7 @@ motor(){
 update_motor_pos(){
   # Waiting for the motor to run.
   SLEEP_NUM=$(awk -v a="$1" 'BEGIN{printf ("%f",a*1.3/1000)}')
-  sleep ${SLEEP_NUM//-/}
+  sleep "${SLEEP_NUM//-/}"
   # Display AXIS to OSD
   update_axis
 }
@@ -708,8 +709,9 @@ night_mode(){
   on)
 	touch /tmp/last-night
 	/system/sdcard/bin/setconf -k n -v 1
+        # shellcheck source=config/autonight.conf.dist
 	. /system/sdcard/config/autonight.conf
-	if [ -z "$ir_led_off" ] || [ $ir_led_off = false ]; then
+	if [ -z "$ir_led_off" ] || [ "$ir_led_off" = false ]; then
 		ir_led on
 	else
 		ir_led off
@@ -762,6 +764,7 @@ snapshot(){
 
 # Update axis
 update_axis(){
+  # shellcheck source=config/osd.conf
   . /system/sdcard/config/osd.conf > /dev/null 2>/dev/null
   AXIS=$(/system/sdcard/bin/motor -d s | sed '3d' | awk '{printf ("%s ",$0)}' | awk '{print " X="$2,"Y="$4}')
 
@@ -810,11 +813,11 @@ check_commit() {
 	if [ -z "$localrepo" ]; then localrepo="EliasKotlyar"; fi
 	localcommit=$(/system/sdcard/bin/jq -r .commit /system/sdcard/VERSION)
 	localbranch=$(/system/sdcard/bin/jq -r .branch /system/sdcard/VERSION)
-	remotecommit=$(github_curl -s https://api.github.com/repos/${localrepo}/commits/${localbranch} | /system/sdcard/bin/jq -r '.sha[0:7]')
-	if [ ${localcommit} = ${remotecommit} ]; then
+	remotecommit=$(github_curl -s "https://api.github.com/repos/${localrepo}/commits/${localbranch}" | /system/sdcard/bin/jq -r '.sha[0:7]')
+	if [ "${localcommit}" = "${remotecommit}" ]; then
 	 echo "${localcommit} ( No update available)"
 	else
-	 commitbehind=$(github_curl -s https://api.github.com/repos/${localrepo}/compare/${remotecommit}...${localcommit} | /system/sdcard/bin/jq -r '.behind_by')
+	 commitbehind=$(github_curl -s "https://api.github.com/repos/${localrepo}/compare/${remotecommit}...${localcommit}" | /system/sdcard/bin/jq -r '.behind_by')
 	 echo "${localcommit} ( ${commitbehind} commits behind Github)"
 	fi
   else
@@ -828,11 +831,11 @@ getFonts() {
   echo -n "<option value=\"\""
   if [ -n "${fontName-unset}" ] ; then echo selected; fi
   echo -n ">Default fonts </option>"
-  for i in `/system/sdcard/bin/busybox find /system/sdcard/fonts -name *.ttf`
+  for i in $(/system/sdcard/bin/busybox find /system/sdcard/fonts -name '*.ttf')
   do
 	echo -n "<option value=\"$i\" "
 	if [ "$fontName" == "$i" ] ; then echo selected; fi
-	echo -n ">`/system/sdcard/bin/busybox basename $i` </option>"
+	echo -n ">$(/system/sdcard/bin/busybox basename "$i") </option>"
   done
 }
 
@@ -851,12 +854,13 @@ configure_static_net_iface() {
 
   # Configure staticip/netmask from config/staticip.conf
 	local staticip_and_netmask=$(cat "$CONFIGPATH/staticip.conf" | grep -v "^$" | grep -v "^#")
+  # shellcheck disable=2086
   ifconfig "$network_interface_name" $staticip_and_netmask
   ifconfig "$network_interface_name" up
   # Configure default gateway
   if [ -f "$CONFIGPATH/defaultgw.conf" ]; then
     local defaultgw=$(cat "$CONFIGPATH/defaultgw.conf" | grep -v "^$" | grep -v "^#")
-    route add default gw $defaultgw $network_interface_name
+    route add default gw "$defaultgw" "$network_interface_name"
     echo "Configured $defaultgw as default gateway"
   fi
   echo "Configured $network_interface_name with static address $staticip_and_netmask"
@@ -887,10 +891,10 @@ hwvolume() {
 	if [[ "$1" == "status" ]]; then
 		# Get the current volume value
 		local raw=$(/system/sdcard/bin/setconf -g h)
-		echo "$(busybox expr ${raw} \* 100 / 120)"
+		echo "$(busybox expr "${raw}" \* 100 / 120)"
 	else
 		# Set the new volume value
-		local scaled=$(busybox expr $1 \* 120 / 100)
+		local scaled=$(busybox expr "$1" \* 120 / 100)
 		/system/sdcard/bin/setconf -k h -v "$scaled"
 		rewrite_config /system/sdcard/config/rtspserver.conf HWVOLUME "$scaled"
   fi
@@ -901,10 +905,10 @@ swvolume() {
 	if [[ "$1" == "status" ]]; then
 		# Get the current volume value
 		local raw=$(/system/sdcard/bin/setconf -g i)
-		echo "$(busybox expr ${raw} \* 100 / 1000)"
+		echo "$(busybox expr "${raw}" \* 100 / 1000)"
 	else
 		# Set the new volume value
-		local scaled=$(busybox expr $1 \* 1000 / 100)
+		local scaled=$(busybox expr "$1" \* 1000 / 100)
 		/system/sdcard/bin/setconf -k i -v "$scaled"
 		rewrite_config /system/sdcard/config/rtspserver.conf SWVOLUME "$scaled"
   fi

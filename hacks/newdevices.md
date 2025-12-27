@@ -82,17 +82,17 @@ SF: 2097152 bytes @ 0x40000 Read: OK
 --->read spend 272 ms
 ```
 
-If there is a possibility of upgrading the firmware trough the bootloader, you can  try to modify the rootfs and include some script to boot from the microsd. Here is a tutorial. You will probably need to adjust the scripts:
+If there is a possibility of upgrading the firmware through the bootloader, you can  try to modify the rootfs and include some script to boot from the microsd. Here is a tutorial. You will probably need to adjust the scripts:
 ![Tutorial](/hackshowto_modfirmware.md)
 
 2. If there is no option for an upgrade of your firmware, you can still try to flash something on your device by stopping the bootloader and flashing a different bootloader, which can boot from microsd.
 
-To do so, please collect the following informations:
+To do so, please collect the following information:
 
 1. Which SOC is your device running? T10 or T20?
 2. How much ram does the device has?
 
-Both informations can be collected from the bootlog.
+Both pieces of information can be collected from the boot log.
 
 As soon as you know how much ram it has, you can try to flash a different bootloader by stopping the bootloader and using the following commands:
 First you need to collect a bootloader which is suitable for your device. You can find different bootloaders here:

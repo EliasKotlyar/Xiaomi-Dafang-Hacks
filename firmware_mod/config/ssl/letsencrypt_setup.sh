@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=busybox
 
 # This will be verbose, and issue a testing cert
 # When it is successful, comment out the following line
@@ -16,7 +17,8 @@ if [ ! -f "${CONFIGPATH}/letsencrypt.conf" ]; then
   exit 1
 fi
 
-. $CONFIGPATH/letsencrypt.conf
+# shellcheck source=config/letsencrypt.conf.dist
+. "$CONFIGPATH/letsencrypt.conf"
 
 if [ ! -d "acme.sh" ]; then
   echo "- Downloading the acme.sh script..."
@@ -34,16 +36,18 @@ fi
 
 export OPENSSL_CONF="${CONFIGPATH}/openssl.cnf"
 if [ "$LETSENCRYPT_METHOD" = "webroot" ]; then
-	./acme.sh/acme.sh --issue -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
-	  -w ${CONFIGPATH}/../www/ \
+        # shellcheck disable=2086
+	./acme.sh/acme.sh --issue -d "${LETSENCRYPT_DOMAIN}" --home "${ACMEPATH}" \
+	  -w "${CONFIGPATH}/../www/" \
 	  ${DEBUG}
 elif [ "$LETSENCRYPT_METHOD" = "dns" ]; then
-	./acme.sh/acme.sh --issue -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
-	  --dns ${LETSENCRYPT_DNS_PROVIDER} \
+        # shellcheck disable=2086
+	./acme.sh/acme.sh --issue -d "${LETSENCRYPT_DOMAIN}" --home "${ACMEPATH}" \
+	  --dns "${LETSENCRYPT_DNS_PROVIDER}" \
 	  ${DEBUG}
 fi
 
-./acme.sh/acme.sh --install-cert -d ${LETSENCRYPT_DOMAIN} --home ${ACMEPATH} \
+./acme.sh/acme.sh --install-cert -d "${LETSENCRYPT_DOMAIN}" --home "${ACMEPATH}" \
 	--cert-file ${ACMEPATH}/host.crt \
 	--key-file  ${ACMEPATH}/host.key \
 	--fullchain-file ${ACMEPATH}/fullchain.crt \

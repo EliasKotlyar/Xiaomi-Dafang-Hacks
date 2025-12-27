@@ -71,8 +71,3 @@ dd if=/dev/mtdblock5 of=param.bin
 ```
 
 Then zip everything and provide the zip in the issue
-
-
-
-
-

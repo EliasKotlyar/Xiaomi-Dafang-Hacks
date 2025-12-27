@@ -1,5 +1,7 @@
 #!/bin/sh
+# shellcheck shell=busybox
 
+# shellcheck source=scripts/common_functions.sh
 . /system/sdcard/scripts/common_functions.sh
 
 while true; do
@@ -9,12 +11,12 @@ while true; do
   fi
 
   if [ -z "$AVG" ]; then AVG=1; fi
-  # if no config availabe, use 1 as average
+  # if no config available, use 1 as average
 
   dd if=/dev/jz_adc_aux_0 count=20  |  sed -e 's/[^\.]//g' | wc -m >> /var/run/ldr
   # Add new line to file with measurements
 
-  tail -n $AVG /var/run/ldr > /var/run/ldr-temp
+  tail -n "$AVG" /var/run/ldr > /var/run/ldr-temp
   mv /var/run/ldr-temp  /var/run/ldr
   # cut /var/run/ldr to desired number of lines
 
@@ -24,7 +26,7 @@ while true; do
   # this may cause some flickering when starting up
 
   SUM=$(awk '{s+=$1} END {printf "%.0f", s}' /var/run/ldr)
-  [[ ! $SUM -eq 0 || ! $AVG -eq 0 ]] && AVGMEASUREMENT=$(($SUM/$AVG)) || AVGMEASUREMENT=0 # calculate the average
+  [[ ! $SUM -eq 0 || ! $AVG -eq 0 ]] && AVGMEASUREMENT=$((SUM/AVG)) || AVGMEASUREMENT=0 # calculate the average
 
 
   if [ "$AVGMEASUREMENT" -lt 50 ]; then  # Light detected

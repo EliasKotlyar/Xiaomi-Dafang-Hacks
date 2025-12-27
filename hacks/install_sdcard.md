@@ -7,8 +7,8 @@
 
 To achieve this you can use linux tools like fdisk, parted or (in a graphical environment) gparted, combined with the use of mkfs.ext3 .
 
-The following example is an 8GB SD card wih a first primary partition of 512MB for allocating the operating sistem, and a second one with the rest of the space, both formatted as EXT3:
-```
+The following example is an 8GB SD card with a first primary partition of 512MB for allocating the operating system, and a second one with the rest of the space, both formatted as EXT3:
+```plaintext
 # fdisk -l /dev/sdb
 Disk /dev/sdb: 7.41 GiB, 7958691840 bytes, 15544320 sectors
 Disk model: Storage Device  
@@ -30,14 +30,14 @@ Device     Boot   Start      End  Sectors  Size Id Type
 
 4. Put your credentials on etc/wpa_supplicant.conf in your EXT3 partition, refer to the [installation manual](https://github.com/EliasKotlyar/Xiaomi-Dafang-Hacks/blob/master/hacks/install_cfw.md)
 
-5. Depending on the camera version you have to copy the appropiate uEnv_\<model\>.txt file onto an uEnv.tx file at the root-level of de MicroSD Card. For example, for a Dafang Cam with 128MB of memory, you have to do the following:
-```
+5. Depending on the camera version you have to copy the appropriate `uEnv_<model>.txt` file onto an uEnv.tx file at the root-level of the MicroSD Card. For example, for a Dafang Cam with 128MB of memory, you have to do the following:
+```console
     # mv uEnv_dafang128.txt uEnv.txt
 ```
 
 6. Depending on the camera version you have to load the appropriate wireless card driver, this is done commenting out the startup script located in  etc/init.d/rcS, in the EXT3 partition of the microSD card. Locate the following section of the  mentioned file:
 
-```
+```console
 # insmod /lib/modules/$KERNEL_VERSION/rtl8189es.ko rtw_initmac="$MAC" # Uncomment for Dafang
 # insmod /lib/modules/$KERNEL_VERSION/rtl8189fs.ko rtw_initmac="$MAC" # Uncomment for XiaoFang s1 && Wyzecam V2
 # insmod /lib/modules/$KERNEL_VERSION/mt7601Usta.ko # Uncomment for Sannce
@@ -46,7 +46,7 @@ Device     Boot   Start      End  Sectors  Size Id Type
 And remove the first **\#** of the line that matches your camera version (Look at the comments at the end of the line)
 
 For example, for a Dafang 128MB of memory CAM it will look like this:
-```
+```console
 insmod /lib/modules/$KERNEL_VERSION/rtl8189es.ko rtw_initmac="$MAC" # Uncomment for Dafang
 # insmod /lib/modules/$KERNEL_VERSION/rtl8189fs.ko rtw_initmac="$MAC" # Uncomment for XiaoFang s1 && Wyzecam V2
 # insmod /lib/modules/$KERNEL_VERSION/mt7601Usta.ko # Uncomment for Sannce
@@ -57,19 +57,19 @@ insmod /lib/modules/$KERNEL_VERSION/rtl8189es.ko rtw_initmac="$MAC" # Uncomment 
 8. Put the MicroSD card in your camera and boot it
 9. Optional: If you create a second partition, you can mount it in the cam operating system,.For that, connect though ssh to the cam and create a mount point, for example located in /media/storage, and add the proper line to the /etc/fstab file. The following is an example of the procedure:
  
-```
+```console
 # mkdir /media/storage
 
 # vi /etc/fstab
-{ ... content os /etc/fstab ommited ... }
+{ ... content os /etc/fstab omitted ... }
 #Line added to the etc/fstab file
 /dev/mmcblk0p2  /media/storage  ext3 	rw,relatime	0	0
 { ..end of /etc/fstab }
 
 # mount /media/storage
 ``` 
-*Note: The vi command is for editing the /etc/fstab file you dont have to add the comments enclosed by brackets { ... .... }* only th line that begins with /dev is necessary to be **added** an the end of the file
-*Note 2: The mount command is only needed this time, the next reboot it wil be mounted automatically*
+*Note: The vi command is for editing the /etc/fstab file you don't have to add the comments enclosed by brackets { ... .... }* only th line that begins with /dev is necessary to be **added** an the end of the file
+*Note 2: The mount command is only needed this time, the next reboot it will be mounted automatically*
 
 
 ## Features
@@ -89,7 +89,7 @@ It will provide a lot of cool software without compiling (git, python etc.)
 
 ## Troubleshooting
 If you have problems booting up and cannot connect to IP of the cam, remove th card form the camera al mount it on a PC, locate the var/log/startup.log on the root of the MicroSD Card and read it. Also you can put content inside the etc/init.d/rcS, like :
-```
+```bash
 echo "CUSTOM LOG: Loading wireless drivers from /lib/modules/$KERNEL_VERSION" >> $LOGPATH
 
 ```

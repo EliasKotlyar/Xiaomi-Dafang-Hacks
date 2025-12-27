@@ -1,4 +1,5 @@
 #!/bin/sh
+# shellcheck shell=busybox
 ##########################################################################
 # Github autodownload script
 # See usage for help
@@ -11,10 +12,10 @@ REPO="EliasKotlyar/Xiaomi-Dafang-Hacks"
 BRANCH="master"
 # Initial remote folder
 REMOTEFOLDER="firmware_mod"
-# Default destination foler
+# Default destination folder
 DESTFOLDER="/system/sdcard/"
 DESTOVERRIDE="/tmp/Update"
-# The list of exclude, can have multple filter with "*.conf|*.sh"
+# The list of exclude, can have multiple filters with "*.conf|*.sh"
 EXCLUDEFILTER="*.conf|*.user|passwd|shadow"
 GITHUBURL="https://api.github.com/repos"
 GITHUBURLRAW="https://raw.githubusercontent.com"
@@ -47,7 +48,7 @@ usage()
     echo "$1 will update a local folder with the ${REPO} github repo (first copy all the files in ${DESTOVERRIDE}, stop services and reboot"
     echo "Usage this script to update the ${REPO} github repo from ${BRANCH} (default) branch"
     echo "Options:"
-    echo "-b (--backup) backup erased file (add extension ${BACKUPEXT} to the local file before ovewrite it) "
+    echo "-b (--backup) backup erased file (add extension ${BACKUPEXT} to the local file before overwrite it) "
     echo "-x (--repo) to set the repo"
     echo "-r (--branch) to set the branch"
     echo "-f (--force) force update"
@@ -69,8 +70,8 @@ usage()
 # Function to get user input for yes/no/all
 # print the result (yes,no,all)
 ask_yes_or_no() {
-    read R
-    case $(echo ${R} | tr '[A-Z]' '[a-z]') in
+    read -r R
+    case $(echo "${R}" | tr '[A-Z]' '[a-z]') in
         y|yes) echo "yes" ;;
         a|all) echo "all" ;;
         *)     echo "no" ;;
@@ -98,8 +99,8 @@ logerror ()
 progress()
 {
         if [ ${_PROGRESS} -eq 1 ]; then
-           _NBFILES=$((${_NBFILES} + 1))
-           echo -n $((${_NBFILES} *100 / ${_NBTOTALFILES} )) > /tmp/progress
+           _NBFILES=$((_NBFILES + 1))
+           echo -n $((_NBFILES *100 / _NBTOTALFILES )) > /tmp/progress
 #      echo "file = ${_NBFILES}, total=${_NBTOTALFILES} = $((${_NBFILES} *100 / ${_NBTOTALFILES} ))"
         fi
 }
@@ -110,19 +111,21 @@ progress()
 action()
 {
     if [ ${_PRINTONLY} -eq 1 ]; then
-        echo "Action: $@"
+        echo "Action: $*"
     else
         eval "$@"
     fi
     return $?
 }
 ##########################################################################
-# Check if $1 macth with the excluded filter
+# Check if $1 matches with the excluded filter
 ismatch()
 {
-    in=$(${BASENAME} ${1})
+    in=$(${BASENAME} "${1}")
+    # shellcheck disable=2086,2001
     for filter in $(echo ${EXCLUDEFILTER} | sed "s/|/ /g")
     do
+        # shellcheck disable=2295
         if [ "${in#$filter}" == "" ]; then
             echo match
             return 0
@@ -143,12 +146,12 @@ getfiles()
     else
         for row in $(echo "${1}" | ${JQ} '.[]| select(.type=="file") | .download_url' ); do
             filetoget=$(echo "${row}" | tr -d '"')
-            echo ${filetoget}
+            echo "${filetoget}"
         done
 
         for row in $(echo "${1}" | ${JQ} '.[]| select(.type == "dir") | .path' ); do
             flder=$(echo "${row}" | tr -d '"')
-            next=$(curl -s https://api.github.com/repos/${REPO}/contents/${flder}?ref=${BRANCH})
+            next=$(curl -s "https://api.github.com/repos/${REPO}/contents/${flder}?ref=${BRANCH}")
             getfiles "${next}"
         done
     fi
@@ -161,7 +164,7 @@ countdownreboot()
     while [ ${i} -gt 0 ];
     do
         echo "$i seconds remaining before reboot (Press control-c to abort)";
-            i=$((${i} - 1))
+            i=$((i - 1))
         sleep 1;
     done
     action reboot
@@ -239,8 +242,8 @@ do
 	    shift
             shift
            ;;
-        *|-h |\? | --help)
-            usage $0
+        -h |\? | --help|*)
+            usage "$0"
             exit 1
             ;;
     esac
@@ -250,9 +253,9 @@ log "Starting AutoUpdate on branch ${BRANCH}"
 
 ######################################################""
 # Get date and last commit ID from Github
-curl -s ${GITHUBURL}/${REPO}/commits/${BRANCH} --output $COMMITS_FILE
-REMOTECOMMITDATE=$(${JQ} -r '.commit .author .date' ${COMMITS_FILE})
-REMOTECOMMITID=$(${JQ} -r '.sha[0:7]' ${COMMITS_FILE} )
+curl -s "${GITHUBURL}/${REPO}/commits/${BRANCH}" --output $COMMITS_FILE
+REMOTECOMMITDATE=$(${JQ} -r '.commit .author .date' "${COMMITS_FILE}")
+REMOTECOMMITID=$(${JQ} -r '.sha[0:7]' "${COMMITS_FILE}" )
 
 if [ ${_FORCE} = 1 ]; then
     log "Forcing update."
@@ -269,33 +272,33 @@ fi
 action "rm -rf ${DESTOVERRIDE} 2>/dev/null"
 
 if [ -f "$VERSION_FILE" ]; then
-    LOCALCOMMITID=$(${JQ} -r .commit ${VERSION_FILE})
-    LOCALREPO=$(${JQ} -r .repo ${VERSION_FILE})
+    LOCALCOMMITID=$(${JQ} -r .commit "${VERSION_FILE}")
+    LOCALREPO=$(${JQ} -r .repo "${VERSION_FILE}")
     if [ -z "$LOCALREPO" ]; then LOCALREPO="$REPO"; fi
-    if [ ${LOCALREPO} = ${REPO} ] && [ ${LOCALCOMMITID} = ${REMOTECOMMITID} ]; then
+    if [ "${LOCALREPO}" = "${REPO}" ] && [ "${LOCALCOMMITID}" = "${REMOTECOMMITID}" ]; then
         logerror "You are currently on the latest version"
         echo "You are currently on the latest version"
         exit 1
-    elif [ ${LOCALREPO} = ${REPO} ]; then
+    elif [ "${LOCALREPO}" = "${REPO}" ]; then
         echo "Need to upgrade from ${LOCALCOMMITID} to ${REMOTECOMMITID}"
         log "Getting list of remote files."
-        FILES=$(curl -s ${GITHUBURL}/${REPO}/compare/${LOCALCOMMITID}...${REMOTECOMMITID} | ${JQ} -r '.files[].raw_url' | grep ${REMOTEFOLDER})
+        FILES=$(curl -s "${GITHUBURL}/${REPO}/compare/${LOCALCOMMITID}...${REMOTECOMMITID}" | ${JQ} -r '.files[].raw_url' | grep "${REMOTEFOLDER}")
     else
         echo "Repo has changed. Upgrade to last commit ${REMOTECOMMITID}"
         log "Getting list of remote files."
-        FIRST=$(curl -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
+        FIRST=$(curl -s "${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH}")
         FILES=$(getfiles "${FIRST}")
     fi
 else
     echo "Version file missing. Upgrade to last commit ${REMOTECOMMITID}"
     log "Getting list of remote files."
-    FIRST=$(curl -s ${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH})
+    FIRST=$(curl -s "${GITHUBURL}/${REPO}/contents/${REMOTEFOLDER}?ref=${BRANCH}")
     FILES=$(getfiles "${FIRST}")
 fi
 
 if [ $_PROGRESS = 1 ]; then
-   _NBTOTALFILES=$(echo $FILES | wc -w)
-   log Number of file to update $_NBTOTALFILES
+   _NBTOTALFILES=$(echo "$FILES" | wc -w)
+   log "Number of file to update $_NBTOTALFILES"
    echo -n 0 > /tmp/progress
 fi
 
@@ -304,22 +307,22 @@ for i in ${FILES}
 do
     progress
     # String to remove to get the local path
-    LOCALFILE=$(echo ${i} | awk -F ${REMOTEFOLDER}/ '{print $2}')
+    LOCALFILE=$(echo "${i}" | awk -F ${REMOTEFOLDER}/ '{print $2}')
     # Remove files that match the filter
-    res=$(ismatch ${LOCALFILE})
+    res=$(ismatch "${LOCALFILE}")
     if [ "$res" == "match" ]; then
         echo "${LOCALFILE} is excluded due to filter."
         continue
     fi
     # Get the file temporally to calculate SHA
-    curl -s ${i} -o ${TMPFILE} 2>/dev/null
+    curl -s "${i}" -o ${TMPFILE} 2>/dev/null
     if [ ! -f ${TMPFILE} ]; then
         echo "Can not get remote file $i, exiting."
         exit 1
     fi
     # sometimes zero byte files are received, which overwrite the local files, we ignore those files
     # exception: files that are hidden i.e. start with dot. Ex: files like ".gitkeep"
-    if [[ ! -s ${TMPFILE} ]] && [[ $(basename ${LOCALFILE} | cut -c1-1) != "." ]]; then
+    if [[ ! -s ${TMPFILE} ]] && [[ $(basename "${LOCALFILE}" | cut -c1-1) != "." ]]; then
         echo "Received zero byte file $i, exiting."
         exit 1
     fi
@@ -327,7 +330,7 @@ do
     if [ -f "${DESTFOLDER}/${LOCALFILE}" ]; then
         REMOTESHA=$(${SHA} ${TMPFILE} 2>/dev/null | cut -d "=" -f 2)
         # Calculate the remote and local SHA
-        LOCALSHA=$(${SHA} ${DESTFOLDER}${LOCALFILE} 2>/dev/null | cut -d "=" -f 2)
+        LOCALSHA=$(${SHA} "${DESTFOLDER}${LOCALFILE}" 2>/dev/null | cut -d "=" -f 2)
 
         # log "SHA of $LOCALFILE is ${LOCALSHA} ** remote is ${REMOTESHA}"
         if [ "${REMOTESHA}" = "${LOCALSHA}" ] ; then
@@ -335,11 +338,11 @@ do
         else
             if [ ${_FORCE} = 1 ]; then
                 echo "${LOCALFILE} updated."
-                action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+                action "mkdir -p $(dirname "${DESTOVERRIDE}/${LOCALFILE}") 2>/dev/null"
                 if [ ${_BACKUP} = 1 ]; then
-                    action cp ${DESTFOLDER}${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
+                    action cp "${DESTFOLDER}${LOCALFILE}" "${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}"
                 fi
-                action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+                action mv ${TMPFILE} "${DESTOVERRIDE}/${LOCALFILE}"
             else
                 echo "${LOCALFILE} needs to be updated. Overwrite?"
                         echo "[Y]es or [N]o or [A]ll?"
@@ -348,11 +351,11 @@ do
                     echo "${LOCALFILE} not updated"
                     rm -f ${TMPFILE} 2>/dev/null
                 else
-                    action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
+                    action "mkdir -p $(dirname "${DESTOVERRIDE}/${LOCALFILE}") 2>/dev/null"
                     if [ ${_BACKUP} = 1 ]; then
-                        action cp ${DESTFOLDER}${LOCALFILE} ${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}
+                        action cp "${DESTFOLDER}${LOCALFILE}" "${DESTOVERRIDE}/${LOCALFILE}${BACKUPEXT}"
                     fi
-                    action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+                    action mv ${TMPFILE} "${DESTOVERRIDE}/${LOCALFILE}"
 
                 fi
                 if [ "${rep}" = "all" ]; then
@@ -363,8 +366,8 @@ do
     else
         if [ ${_FORCE} = 1 ]; then
             echo "${LOCALFILE} created."
-            action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
-            action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+            action "mkdir -p $(dirname "${DESTOVERRIDE}/${LOCALFILE}") 2>/dev/null"
+            action mv ${TMPFILE} "${DESTOVERRIDE}/${LOCALFILE}"
         else
             echo "${LOCALFILE} doesn't exist, create it?"
             echo "[Y]es or [N]o or [A]ll ?"
@@ -373,8 +376,8 @@ do
                 echo "${LOCALFILE} not created."
                 rm -f ${TMPFILE} 2>/dev/null
             else
-                action "mkdir -p $(dirname ${DESTOVERRIDE}/${LOCALFILE}) 2>/dev/null"
-                action mv ${TMPFILE} ${DESTOVERRIDE}/${LOCALFILE}
+                action "mkdir -p $(dirname "${DESTOVERRIDE}/${LOCALFILE}") 2>/dev/null"
+                action mv ${TMPFILE} "${DESTOVERRIDE}/${LOCALFILE}"
             fi
             if [ "${rep}" = "all" ]; then
                 _FORCE=1
@@ -388,11 +391,11 @@ if [ $_PROGRESS = 1 ]; then
 fi
 
 
-if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 1 ]; then
+if [ -d ${DESTOVERRIDE} ] && [ "$(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null)" -gt 1 ]; then
     echo "--------------- Stopping services ---------"
     for i in /system/sdcard/controlscripts/*; do
-        echo stopping $i
-        $i stop &> /dev/null
+        echo "stopping $i"
+        "$i" stop &> /dev/null
     done
     pkill lighttpd.bin 2> /dev/null
     pkill bftpd  2> /dev/null
@@ -401,7 +404,7 @@ if [ -d ${DESTOVERRIDE} ] && [ $(ls -l ${DESTOVERRIDE}/* | wc -l 2>/dev/null) > 
     action "cp -Rf ${DESTOVERRIDE}/* ${DESTFOLDER} 2>/dev/null"
     action "rm -Rf ${DESTOVERRIDE}/* 2>/dev/null"
 
-    # Everythings was OK, save the date
+    # Everything was OK, save the date
     generateVersionFile
     echo "---------------    Reboot    ------------"
     if [ ${_FORCEREBOOT} = 1 ]; then

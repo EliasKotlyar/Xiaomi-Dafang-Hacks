@@ -1,0 +1,83 @@
+---
+files: ^(.*\.(py|json|md|sh|yaml|yml|cfg|txt))$
+exclude: ^(\.[^/]*cache/.*|firmware_original/.*|firmware_mod/www/lib/.*)$
+repos:
+  - repo: https://github.com/executablebooks/mdformat
+    # Do this before other tools "fixing" the line endings
+    rev: 1.0.0
+    hooks:
+      - id: mdformat
+        name: Format Markdown
+        entry: mdformat # Executable to run, with fixed options
+        stages: [manual] # Currently manual to not change md files too much yet.
+        language: python
+        types: [markdown]
+        exclude: ^(\.github/ISSUE_TEMPLATE.*)$
+        args: [--wrap, "75", --number]
+        additional_dependencies:
+          - mdformat-toc
+          - mdformat-beautysh
+          - mdformat-config
+          - mdformat-gfm
+          - setuptools
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      #- id: no-commit-to-branch
+      #  args: [--branch, main]
+      - id: check-yaml
+        # Exclude because of bug in checker
+        exclude: ^(docker-compose\.yml|.*/release-drafter\.yml)$
+      - id: debug-statements
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+        exclude: ^(.*\.md)$
+      - id: check-json
+      - id: mixed-line-ending
+      - id: check-builtin-literals
+      - id: check-ast
+      - id: check-merge-conflict
+      - id: check-executables-have-shebangs
+      - id: check-shebang-scripts-are-executable
+      - id: check-docstring-first
+      - id: fix-byte-order-marker
+      - id: check-case-conflict
+      - id: pretty-format-json
+        stages: [manual] # Currently manual to not change files too much yet.
+        exclude: ^(\.vscode|\.devcontainer)
+        args:
+          # order of keys in manifest.json is "special"
+          - --no-sort-keys
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v4.0.0-alpha.8
+    hooks:
+      - id: prettier
+        stages: [manual] # Currently manual to not change files too much yet.
+        exclude: ^(.*\.md)$
+  - repo: https://github.com/adrienverge/yamllint.git
+    rev: v1.37.1
+    hooks:
+      - id: yamllint
+        args:
+          - --no-warnings
+          - -d
+          - "{extends: relaxed, rules: {line-length: {max: 90}}}"
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.4.1
+    hooks:
+      - id: codespell
+        args: [-Ldout]
+  - repo: https://github.com/lovesegfault/beautysh.git
+    rev: v6.4.2
+    hooks:
+      - id: beautysh
+        stages: [manual] # Currently manual to not change files too much yet.
+        # exclude: (run.sh)$
+        additional_dependencies:
+          - setuptools
+  - repo: https://github.com/shellcheck-py/shellcheck-py
+    rev: v0.11.0.1
+    hooks:
+      - id: shellcheck
+        files: ^[^\.].*\.sh$
+        args: [-x,-P,firmware_mod,-e,"2143,2090"]

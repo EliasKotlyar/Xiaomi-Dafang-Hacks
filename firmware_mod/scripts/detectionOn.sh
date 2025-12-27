@@ -1,7 +1,11 @@
 #!/bin/sh
+# shellcheck shell=busybox
 # Source your custom motion configurations
+# shellcheck source=config/motion.conf.dist
 . /system/sdcard/config/motion.conf
+# shellcheck source=scripts/common_functions.sh
 . /system/sdcard/scripts/common_functions.sh
+# shellcheck source=config/rtspserver.conf.dist
 . /system/sdcard/config/rtspserver.conf
 
 debug_msg () {
@@ -13,12 +17,14 @@ debug_msg () {
 send_snapshot() {
 
 	# Publish a mqtt message
-	if [ "$publish_mqtt_message" = true -o "$publish_mqtt_snapshot" = true ] ; then
+	if [ "$publish_mqtt_message" = true ] || [ "$publish_mqtt_snapshot" = true ] ; then
 		(
+                # shellcheck source=config/mqtt.conf.dist
 		. /system/sdcard/config/mqtt.conf
 
 		if [ "$publish_mqtt_message" = true ] ; then
 			debug_msg "Send MQTT message"
+                        # shellcheck disable=2086
 			/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -m "ON"
 		fi
 
@@ -26,6 +32,7 @@ send_snapshot() {
 			debug_msg "Send MQTT snapshot"
 			/system/sdcard/bin/jpegtran -scale 1/2 "$snapshot_tempfile" > "$snapshot_tempfile-s"
 			/system/sdcard/bin/jpegoptim -m 70 "$snapshot_tempfile-s"
+                        # shellcheck disable=2086
 			/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/snapshot/image $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$snapshot_tempfile-s"
 			rm "$snapshot_tempfile-s"
 		fi
@@ -35,12 +42,13 @@ send_snapshot() {
 	# Send a telegram message
 	if [ "$send_telegram" = true ]; then
 		(
+		# shellcheck source=config/telegram.conf.dist
 		include /system/sdcard/config/telegram.conf
 
 		if [ "$telegram_alert_type" = "text" ] ; then
 			debug_msg "Send telegram text"
 			/system/sdcard/bin/telegram m "Motion detected"
-		elif [ "$telegram_alert_type" = "image" -o "$telegram_alert_type" = "video+image" ] ; then
+		elif [ "$telegram_alert_type" = "image" ] || [ "$telegram_alert_type" = "video+image" ] ; then
 			debug_msg "Send telegram image"
 			/system/sdcard/bin/telegram p "$snapshot_tempfile"
 		fi
@@ -55,7 +63,7 @@ send_snapshot() {
 		if [ "$matrix_alert_type" = "text" ] ; then
 			debug_msg "Send matrix text"
 			/system/sdcard/bin/matrix m "Motion detected"
-		elif [ "$matrix_alert_type" = "image" -o "$matrix_alert_type" = "video+image" ] ; then
+		elif [ "$matrix_alert_type" = "image" ] || [ "$matrix_alert_type" = "video+image" ] ; then
 			debug_msg "Send matrix image"
 			/system/sdcard/bin/matrix p "$filename" "$snapshot_tempfile"
 		fi
@@ -107,7 +115,7 @@ send_snapshot() {
 
 		# Limit the number of snapshots
 		if [ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshot_days" ]; then
-			rm -rf "$save_snapshot_dir/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
+			rm -rf "${save_snapshot_dir:?}/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
 		fi
 
 		chmod "$save_files_attr" "$snapshot_tempfile"
@@ -156,11 +164,11 @@ record_video () {
 		debug_msg "Begin recording to $video_tempfile for $video_duration seconds"
 
 		if [ "$video_use_rtsp" = true ]; then
-			output_buffer_size="$((($BITRATE*100)+150000))"
+			output_buffer_size="$(((BITRATE*100)+150000))"
 			if [ -z "$USERNAME" ]; then
-				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://127.0.0.1:$PORT/unicast > "$video_tempfile"
+				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" "rtsp://127.0.0.1:$PORT/unicast" > "$video_tempfile"
 			else
-				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast > "$video_tempfile"
+				/system/sdcard/bin/openRTSP -4 -w "$video_rtsp_w" -h "$video_rtsp_h" -f "$video_rtsp_f" -d "$video_duration" -b "$output_buffer_size" "rtsp://$USERNAME:$USERPASSWORD@127.0.0.1:$PORT/unicast" > "$video_tempfile"
 			fi
 		else
 			# Use avconv to stitch multiple JPEGs into 1fps video.
@@ -183,7 +191,7 @@ if [ -f /tmp/last-night ]; then
                 if [ "$night_mode_event_delay" -gt 0 ]; then
                         now_ts="$(date +%s)"
                         night_ts="$(/system/sdcard/bin/busybox stat -c %Y /tmp/last-night)"
-                        dt="$(($now_ts-$night_ts))"
+                        dt="$((now_ts-night_ts))"
                         if [ "$dt" -lt "$night_mode_event_delay" ]; then
                                 exit 0
                         fi
@@ -219,8 +227,8 @@ send_snapshot &
 if [ "$save_video" = true ] ||
    [ "$smb_video" = true ] ||
    [ "$dropbox_video" = true ] ||
-  ([ "$send_telegram" = true ] && ([ "$telegram_alert_type" = video+image ] || [ "$telegram_alert_type" = video ])) ||
-  ([ "$send_matrix" = true ] && ([ "$matrix_alert_type" = video+image ] || [ "$matrix_alert_type" = video ])) ||
+ { [ "$send_telegram" = true ] && { [ "$telegram_alert_type" = video+image ] || [ "$telegram_alert_type" = video ]; }; } ||
+ { [ "$send_matrix" = true ] && { [ "$matrix_alert_type" = video+image ] || [ "$matrix_alert_type" = video ]; }; } ||
    [ "$publish_mqtt_video" = true ]
 then
 	record_video
@@ -240,7 +248,7 @@ if [ "$save_video" = true ] ; then
 
 	# Limit the number of videos
 	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_video_days" ]; then
-		rm -rf "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
+		rm -rf "${save_video_dir:?}/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
 	fi
 
 	chmod "$save_files_attr" "$video_tempfile"
@@ -333,6 +341,7 @@ if [ "$publish_mqtt_video" = true ] ; then
 	. /system/sdcard/config/mqtt.conf
 
 	debug_msg "Send MQTT video"
+        # shellcheck disable=2086
 	/system/sdcard/bin/mosquitto_pub.bin -h "$HOST" -p "$PORT" -u "$USER" -P "$PASS" -t "$TOPIC"/motion/video $MOSQUITTOOPTS $MOSQUITTOPUBOPTS -f "$video_tempfile"
 
 	) &
@@ -349,7 +358,7 @@ if [ "$send_telegram" = true ]; then
 	(
 	include /system/sdcard/config/telegram.conf
 
-	if [ "$telegram_alert_type" = "video" -o "$telegram_alert_type" = "video+image" ] ; then
+	if [ "$telegram_alert_type" = "video" ] || [ "$telegram_alert_type" = "video+image" ] ; then
 		if [ "$video_use_rtsp" = true ]; then
 			if [ "$AUDIOFORMAT" = "PCMU" ] || [ "$AUDIOFORMAT" = "OFF" ] ; then
 				# Convert file to mp4 and remove audio stream so video plays in telegram app
@@ -376,7 +385,7 @@ if [ "$send_matrix" = true ]; then
 	(
 	include /system/sdcard/config/matrix.conf
 
-	if [ "$matrix_alert_type" = "video" -o "$matrix_alert_type" = "video+image" ] ; then
+	if [ "$matrix_alert_type" = "video" ] || [ "$matrix_alert_type" = "video+image" ] ; then
 		debug_msg "Send matrix video"
 		if [ "$video_use_rtsp" = true ]; then
 			/system/sdcard/bin/matrix v "$filename" "$video_tempfile"
