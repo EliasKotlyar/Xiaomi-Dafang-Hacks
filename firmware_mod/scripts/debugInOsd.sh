@@ -1,5 +1,6 @@
 #!/bin/sh
-IF=wlan0
+. /system/sdcard/scripts/common_functions.sh
+IF=$(get_net_iface)
 
 while true
 do

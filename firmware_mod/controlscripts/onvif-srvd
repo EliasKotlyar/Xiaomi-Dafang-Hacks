@@ -5,7 +5,8 @@ DAEMON=onvif_srvd
 DAEMON_PATH=/system/sdcard/bin
 PID_FILE="/var/run/$DAEMON.pid"
 
-DAEMON_ARGS="--pid_file $PID_FILE --ifs wlan0"
+. /system/sdcard/scripts/common_functions.sh
+DAEMON_ARGS="--pid_file $PID_FILE --ifs $(get_net_iface)"
 
 start()
 {

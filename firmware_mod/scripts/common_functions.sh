@@ -840,6 +840,15 @@ get_wifi_mac() {
 	grep MAC < /params/config/.product_config | cut -c16-27 | sed 's/\(..\)/\1:/g;s/:$//'
 }
 
+# Print the main network interface that run.sh selected at boot (wlan0 or a USB Ethernet interface)
+get_net_iface() {
+	if [ -s /run/net_iface ]; then
+		cat /run/net_iface
+	else
+		echo wlan0
+	fi
+}
+
 configure_static_net_iface() {
 	local network_interface_name="$1"
 	local CONFIGPATH=/system/sdcard/config

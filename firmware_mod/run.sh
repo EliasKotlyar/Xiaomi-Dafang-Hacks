@@ -104,23 +104,13 @@ fi
 hostname -F $CONFIGPATH/hostname.conf
 
 ## Load network driver
-if [ -f $CONFIGPATH/usb_eth_driver.conf ]; then
-  ## Start USB Ethernet:
-  echo "USB_ETHERNET: Detected USB config. Loading USB Ethernet driver" >> $LOGPATH
-  insmod /system/sdcard/driver/usbnet.ko
-  insmod /system/sdcard/driver/asix.ko
-
-  ## Configure network address
-  if [ -f "$CONFIGPATH/staticip.conf" ]; then
-    configure_static_net_iface eth0 >> $LOGPATH
-  else
-    # Configure with DHCP client
-    ifconfig eth0 up
-    udhcpc_status=$(udhcpc -i eth0 -p /var/run/udhcpc.eth0.pid -b -x hostname:"$(hostname)")
-    echo "udhcpc: $udhcpc_status" >> $LOGPATH
-  fi
+## usb_eth_driver.conf forces USB Ethernet: no Wi-Fi once a supported adapter is found
+if [ -f $CONFIGPATH/usb_eth_driver.conf ] && /system/sdcard/scripts/net_select.sh force >> $LOGPATH 2>&1; then
+  ## A supported USB Ethernet adapter is up (see config/usb_eth.conf.dist)
+  echo "USB_ETHERNET: Wi-Fi not started" >> $LOGPATH
 else
   ## Start Wifi:
+  echo wlan0 > /run/net_iface
   MAC=$(get_wifi_mac)
   if [ -f /driver/8189es.ko ]; then
     # Its a DaFang
@@ -133,6 +123,13 @@ else
     insmod /driver/rtl8189ftv.ko rtw_initmac="$MAC"
   fi
   /system/sdcard/scripts/wifi.sh start >> $LOGPATH
+  ## Optional: a USB Ethernet adapter for diagnostics beside Wi-Fi (LAN_MODE=diag in usb_eth.conf)
+  if [ ! -f $CONFIGPATH/usb_eth_driver.conf ] && [ -f $CONFIGPATH/usb_eth.conf ] && [ "$(. $CONFIGPATH/usb_eth.conf; echo "$LAN_MODE")" = diag ]; then
+    /system/sdcard/scripts/net_select.sh diag >> $LOGPATH 2>&1 &
+    ## Hot-plug: the helper calls /sbin/mdev for every event, then runs net_select.sh
+    ## when an eth* interface is added or removed. A diag run at the same time exits.
+    echo /system/sdcard/scripts/usb_lan_hotplug.sh > /proc/sys/kernel/hotplug
+  fi
 fi
 
 ## Set Timezone

@@ -1,0 +1,37 @@
+#!/bin/sh
+# shellcheck disable=SC2154 # udhcpc sets interface, ip and subnet.
+# udhcpc script for the diagnostic USB LAN interface (net_select.sh diag).
+# Wi-Fi stays the main interface: no default route, no /etc/resolv.conf change.
+# The LAN subnet route stays in the main table with metric 100, so a Wi-Fi route
+# to the same subnet (metric 0) is preferred for traffic that the camera starts.
+# Packets from the LAN address use table 100, so replies to the LAN address
+# leave through the LAN interface also when Wi-Fi is in the same subnet.
+# The stock busybox has no ip applet, so use the busybox on the SD card.
+BB=/system/sdcard/bin/busybox
+TABLE=100
+
+# Remove the rule and route of an earlier lease
+clear_routing() {
+  while $BB ip rule del table "$TABLE" 2>/dev/null; do :; done
+  $BB ip route flush table "$TABLE" 2>/dev/null
+}
+
+case "$1" in
+  deconfig)
+    clear_routing
+    $BB ifconfig "$interface" 0.0.0.0
+    ;;
+  bound|renew)
+    clear_routing
+    $BB ifconfig "$interface" "$ip" netmask "$subnet"
+    network=$($BB ipcalc -n "$ip" "$subnet")
+    prefix=$($BB ipcalc -p "$ip" "$subnet")
+    route="${network#NETWORK=}/${prefix#PREFIX=}"
+    # Replace the kernel route (metric 0) and the route of an earlier renew
+    while $BB ip route del "$route" dev "$interface" table main 2>/dev/null; do :; done
+    $BB ip route add "$route" dev "$interface" src "$ip" metric 100 table main
+    $BB ip route add "$route" dev "$interface" src "$ip" table "$TABLE"
+    $BB ip rule add from "$ip" table "$TABLE"
+    ;;
+esac
+exit 0

@@ -1,2 +1,3 @@
-# If this file exist as usb_eth_driver.conf the run.sh wont load any WIFI subsystem and instead try to load the usb ethernet subsystem.
-# Currently it only supports the asix.ko driver
+# If this file exists as usb_eth_driver.conf, run.sh uses a USB Ethernet adapter from LAN_USB_DEVICES
+# (usb_eth.conf.dist or usb_eth.conf) instead of Wi-Fi. Wi-Fi starts only if no adapter, driver or interface is found.
+# Its content is not used.

@@ -110,6 +110,14 @@ if [ -n "$F_action" ]; then
     echo "Content-type: application/json; charset=utf-8; Pragma: no-cache; Expires: Wednesday, 27-Dec-95 05:29:10 GMT"
     echo ""
 
+    net_iface=$(cat /run/net_iface 2>/dev/null)
+    [ -n "$net_iface" ] || net_iface=wlan0
+    # Wireless values are null when the camera uses USB Ethernet
+    wifi_channel=$(iwgetid -r -c)
+    [ -n "$wifi_channel" ] || wifi_channel=null
+    wifi_signal=$(cat /proc/net/wireless | tr -s ' ' $'\t' | grep "$net_iface:" | cut -f4 | cut -d. -f1)
+    [ -n "$wifi_signal" ] || wifi_signal=null
+
     echo "{
   \"code\": 123,
   \"status\": \"info\",
@@ -128,12 +136,12 @@ if [ -n "$F_action" ]; then
       \"router\": {
         \"name\": \"$(iwgetid -r)\",
         \"mac\": \"$(iwgetid -r -a)\",
-        \"ip\": \"$(ifconfig wlan0 | grep 'inet addr'| cut -d: -f2 | cut -d' ' -f1)\",
-        \"channel\": $(iwgetid -r -c),
+        \"ip\": \"$(ifconfig "$net_iface" | grep 'inet addr'| cut -d: -f2 | cut -d' ' -f1)\",
+        \"channel\": $wifi_channel,
         \"freq\": \"$(iwgetid -r -f | cut -de -f1)\",
-        \"rx\": $(ifconfig wlan0 | grep 'RX bytes' | cut -d: -f2 | cut -d' ' -f1),
-        \"tx\": $(ifconfig wlan0 | grep 'TX bytes' | cut -d: -f3 | cut -d' ' -f1),
-        \"signal\": $(cat /proc/net/wireless | tr -s ' ' $'\t' | grep wlan0: | cut -f4 | cut -d. -f1)
+        \"rx\": $(ifconfig "$net_iface" | grep 'RX bytes' | cut -d: -f2 | cut -d' ' -f1),
+        \"tx\": $(ifconfig "$net_iface" | grep 'TX bytes' | cut -d: -f3 | cut -d' ' -f1),
+        \"signal\": $wifi_signal
       }
     },
     \"disk_space\": {

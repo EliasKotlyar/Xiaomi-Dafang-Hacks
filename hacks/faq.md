@@ -39,14 +39,28 @@ Yes, uncomment and customize the multicast destination IP and port in /system/sd
 
 ## Can I use USB ethernet cards?
 
-Yes, just create a usb_eth_driver.conf file in /system/sdcard/config.
+Yes, just create a usb_eth_driver.conf file in /system/sdcard/config (or tick "Enable USB Ethernet" in the web UI).
 
 ``` sh
 cp /system/sdcard/config/usb_eth_driver.conf.dist /system/sdcard/config/usb_eth_driver.conf
 reboot
 ```
 
-If this file exists the run.sh won't start the WIFI driver but will instead load the usb ethernet driver. Currently only the asix.ko driver is supported but others can be built.
+If this file exists, run.sh looks for a supported USB ethernet adapter, loads its driver if necessary and uses it instead of Wi-Fi, even without a cable link. The adapter is configured with staticip.conf, or with DHCP that keeps trying in the background. If no supported adapter, driver or network interface is found, run.sh starts Wi-Fi, so the camera stays reachable.
+
+The default list contains the ASIX AX88772/AX88178 adapters (0b95:772b, 0b95:7720, 0b95:772a, 0b95:1780, driver/asix.ko) and the Realtek RTL8152 (0bda:8152). No r8152.ko is shipped: the RTL8152 works only if the kernel has r8152 built in. If your ASIX-based adapter has another ID (see `cat /sys/bus/usb/devices/*/idVendor /sys/bus/usb/devices/*/idProduct`), add it to LAN_USB_DEVICES as `vendorid:productid:usbnet,asix`:
+
+``` sh
+cp /system/sdcard/config/usb_eth.conf.dist /system/sdcard/config/usb_eth.conf
+vi /system/sdcard/config/usb_eth.conf
+reboot
+```
+
+### USB ethernet for diagnostics beside Wi-Fi
+
+Set `LAN_MODE=diag` in /system/sdcard/config/usb_eth.conf (and do not create usb_eth_driver.conf). Wi-Fi then stays the main interface (default route, DNS, ONVIF). After Wi-Fi starts, run.sh looks in the background for a supported adapter and gets a DHCP address on it, for example for SSH when Wi-Fi has problems. The DHCP client keeps trying, so you can connect the cable later. The adapter gets no default route and does not change /etc/resolv.conf; staticip.conf is not used for it. The LAN can be any subnet. Its subnet route has metric 100, so if the LAN is in the same subnet as Wi-Fi, traffic that the camera starts uses Wi-Fi, and replies from the adapter address still go out through the adapter (routing table 100).
+
+In this mode you can also unplug the adapter and plug it in again while the camera runs. run.sh sets scripts/usb_lan_hotplug.sh as the kernel hotplug helper. The helper gives every event to /sbin/mdev as before. When an eth* interface is removed, it stops the DHCP client of the adapter and removes its routing. When an eth* interface is added, it runs the detection and DHCP again.
 
 ## Which Features does the CFW contain?
 

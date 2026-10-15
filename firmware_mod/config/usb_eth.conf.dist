@@ -1,0 +1,22 @@
+# USB Ethernet settings. Copy this file to usb_eth.conf to change the defaults.
+# Without usb_eth.conf, the values below are used.
+#
+# With usb_eth_driver.conf (force), run.sh uses the first adapter in
+# LAN_USB_DEVICES that is plugged in as the main interface (DHCP or staticip.conf).
+# Wi-Fi starts only if no adapter, driver or network interface is found.
+
+# Set LAN_MODE=diag to keep Wi-Fi as the main interface and give a USB Ethernet
+# adapter a DHCP address beside it, for diagnostics (SSH), without default route
+# or DNS. The adapter can be plugged in and out while the camera runs.
+# Not used when usb_eth_driver.conf exists.
+LAN_MODE=""
+
+# Space-separated list of vendorid:productid:modules
+# modules is a comma-separated list of driver/*.ko names in load order
+# A module that is loaded or built into the kernel is not loaded again.
+# No r8152.ko is shipped: RTL8152 (0bda:8152) works only if the kernel has r8152 built in.
+LAN_USB_DEVICES="0b95:772b:usbnet,asix 0b95:7720:usbnet,asix 0b95:772a:usbnet,asix 0b95:1780:usbnet,asix 0bda:8152:r8152"
+# Seconds to wait for the adapter and its network interface
+LAN_ENUM_WAIT=3
+# Optional MAC address for the adapter, for example 02:00:00:00:00:01
+LAN_MAC=""
