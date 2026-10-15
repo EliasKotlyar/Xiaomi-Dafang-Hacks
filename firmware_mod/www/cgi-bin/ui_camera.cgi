@@ -122,20 +122,6 @@ if [ -n "$F_cmd" ]; then
 		echo AVG="$ldravg" > /system/sdcard/config/ldr-average.conf
 		echo "Average set to $ldravg iterations. <br />"
 	fi
-	if [ -n  "${F_audioinFormat+x}" ]; then
-		audioinFormat=$(printf '%b' "${F_audioinFormat/%/\\x}")
-		if [ "$audioinFormat" == "OPUS" ]; then
-		  audioOutBR="48000"
-		fi
-		if [ "$audioinFormat" == "PCM" ]; then
-		  audioOutBR = audioinBR
-		fi
-		if [ "$audioinFormat" == "PCMU" ]; then
-			audioOutBR = audioinBR
-		fi
-		rewrite_config /system/sdcard/config/rtspserver.conf AUDIOFORMAT "$audioinFormat"
-		echo "Audio format $audioinFormat <br/>"
-	fi
 	if [ -n  "${F_audioinBR+x}" ]; then
 		audioinBR=$(printf '%b' "${F_audioinBR/%/\\x}")
 		if [ "$audioinBR" == "" ]; then
@@ -144,11 +130,31 @@ if [ -n "$F_cmd" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf AUDIOINBR "$audioinBR"
 		echo "In audio bitrate $audioinBR <br/>"
 	fi
-	if [ -n  "${F_audiooutBR+x}" ]; then
+	if [ -n  "${F_audioinFormat+x}" ]; then
+		audioinFormat=$(printf '%b' "${F_audioinFormat/%/\\x}")
+		if [ "$audioinBR" == "" ]; then
+		  audioinBR=$(get_config /system/sdcard/config/rtspserver.conf AUDIOINBR)
+		fi
+		if [ "$audioinFormat" == "OPUS" ]; then
+		  audiooutBR="48000"
+		fi
+		if [ "$audioinFormat" == "PCM" ]; then
+		  audiooutBR="$audioinBR"
+		fi
+		if [ "$audioinFormat" == "PCMU" ]; then
+			audiooutBR="$audioinBR"
+		fi
+		rewrite_config /system/sdcard/config/rtspserver.conf AUDIOFORMAT "$audioinFormat"
+		echo "Audio format $audioinFormat <br/>"
+	fi
+	# The output rate implied by the format (as in action.cgi conf_audioin) wins
+	if [ -n  "${F_audiooutBR+x}" ] && [ "$audiooutBR" == "" ]; then
 		audiooutBR=$(printf '%b' "${F_audiooutBR/%/\\x}")
 		if [ "$audiooutBR" == "" ]; then
-			audioOutBR = audioinBR
+			audiooutBR="$audioinBR"
 		fi
+	fi
+	if [ -n "$audiooutBR" ]; then
 		rewrite_config /system/sdcard/config/rtspserver.conf AUDIOOUTBR "$audiooutBR"
 		echo "Out audio bitrate $audiooutBR <br/>"
 	fi
