@@ -25,7 +25,8 @@ TOPIC="$LOCATION/$DEVICE_NAME"
 # AUTODISCOVERY_PREFIX="homeassistant"
 
 # Define additional options for Mosquitto here.
-# For example --cafile /system/sdcard/config/DST_Root_CA_X3.pem --tls-version tlsv1
+# For example --cafile /system/sdcard/config/ssl/cacert/cacert.pem --tls-version tlsv1.2
+# (DST Root CA X3 expired in 2021; for Let's Encrypt brokers a file with only ISRG Root X1 is faster)
 # or use a special id to connect to brokers like azure
 MOSQUITTOOPTS=""
 
