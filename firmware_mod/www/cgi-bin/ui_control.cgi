@@ -37,16 +37,42 @@ if [ -n "$F_cmd" ]; then
     ;;
   getFiles)
     ip_addr=$(ip -o -4 addr show  | sed 's/.* inet \([^/]*\).*/\1/' | grep -v "127.0.0.1")
-    for file in $(find /system/sdcard/DCIM/${F_dir}/ -type f)
-      do                                                 
-        if [[ -f $file ]]; then                           
-          file_size=$(ls -lh $file | awk '{print $5}')                                          
-          file_url=$(ls -lh $file | awk '{print $9}' | sed 's/\/system\/sdcard\/DCIM/viewer/')
-          file_date=$(ls -lh $file | awk '{print $6 "-" $7 "-" $8}')                            
-          file_name=$(ls -lh $file | awk '{print $9}' | awk -F / '{print $(NF)}')                                                                                                      
-          echo "${file_name}#:#${file_size}#:#${file_date}#:#${file_url}"                                                                                    
-        fi                                        
-      done             
+    # One ls per batch of files instead of four ls and six awk/sed processes
+    # per file. Busybox ls sorts its arguments, so each batch prints its size,
+    # its paths in find order and its paths sorted like ls; awk pairs the
+    # sorted paths with the ls lines and prints the files in find order.
+    # Paths that contain $IFS characters are skipped, as the word-split loop
+    # skipped them before. A batch with a file that disappeared is skipped.
+    LC_ALL=C find /system/sdcard/DCIM/${F_dir}/ -type f ! -path "*[$IFS]*" -exec sh -c '
+      printf "%s\n" "$#" "$@"
+      printf "%s\n" "$@" | sort
+      exec ls -lh "$@"' sh {} + |
+    LC_ALL=C awk '
+      function end_batch(  i) {
+        if (paired != sorted_count)
+          for (i = batch_start + 1; i <= sorted_count; i++)
+            delete info[sorted[i]]
+        paired = sorted_count
+      }
+      left == 0 && /^[0-9]+$/ {
+        end_batch(); batch_start = sorted_count; half = $0 + 0; left = 2 * half; next
+      }
+      left > half { order[++count] = $0; left--; next }
+      left > 0 { sorted[++sorted_count] = $0; left--; next }
+      {
+        paired++
+        url = $9
+        sub(/\/system\/sdcard\/DCIM/, "viewer", url)
+        name = $9
+        sub(/.*\//, "", name)
+        info[sorted[paired]] = name "#:#" $5 "#:#" $6 "-" $7 "-" $8 "#:#" url
+      }
+      END {
+        end_batch()
+        for (i = 1; i <= count; i++)
+          if (order[i] in info)
+            print info[order[i]]
+      }'
     return
     ;;
 
