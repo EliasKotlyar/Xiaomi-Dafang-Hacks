@@ -17,6 +17,7 @@ fi
 #echo "Content-type: text/plain"; echo
 
 _IFS=${IFS}; IFS=\&
+set -f
 i=0
 for _VAR in ${QUERY_STRING}
 do
@@ -28,15 +29,23 @@ do
       echo value: `echo ${_VAR} | cut -d= -f2`
   fi
 
-  eval "`echo F_${_VAR} | cut -d= -f1`=`echo ${_VAR} | cut -d= -f2`"
+  _KEY=${_VAR%%=*}
+  _VALUE=${_VAR#*=}
+  case "${_KEY}" in
+    ''|*[!A-Za-z0-9_]* )
+      continue
+      ;;
+  esac
+  export "F_${_KEY}=${_VALUE}"
 
   if [ ${_DEBUG_} ]
   then
       echo "--- EXIT LOOP $i ---"
   fi
 done
+set +f
 IFS=${_IFS}
-unset i _IFS _VAR
+unset i _IFS _VAR _KEY _VALUE
 
 if [ ${_DEBUG_} ]
 then
