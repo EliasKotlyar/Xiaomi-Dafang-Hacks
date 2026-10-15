@@ -845,8 +845,9 @@ configure_static_net_iface() {
 	local CONFIGPATH=/system/sdcard/config
 
   # Install a resolv.conf if present so DNS can work
+  # (write in place: /etc/resolv.conf is a bind mount, cp cannot replace it)
   if [ -f "$CONFIGPATH/resolv.conf" ]; then
-    cp "$CONFIGPATH/resolv.conf" /etc/resolv.conf
+    cat "$CONFIGPATH/resolv.conf" > /etc/resolv.conf
   fi
 
   # Configure staticip/netmask from config/staticip.conf

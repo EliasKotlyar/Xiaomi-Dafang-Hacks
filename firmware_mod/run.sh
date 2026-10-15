@@ -55,6 +55,13 @@ echo "Bind mounted /system/sdcard/root to /root" >> $LOGPATH
 mount -o bind /system/sdcard/etc /etc
 echo "Bind mounted /system/sdcard/etc to /etc" >> $LOGPATH
 
+## Keep /etc/resolv.conf in RAM: udhcpc rewrites it at every DHCP lease renewal.
+## Must run before the network starts.
+cat /etc/resolv.conf > /run/resolv.conf 2> /dev/null
+[ -f /etc/resolv.conf ] || : > /etc/resolv.conf
+mount -o bind /run/resolv.conf /etc/resolv.conf
+echo "Bind mounted /run/resolv.conf to /etc/resolv.conf" >> $LOGPATH
+
 ## Create busybox aliases
 if [ ! -f ~/.busybox_aliases ]; then
   /system/sdcard/bin/busybox --list | sed "s/^\(.*\)$/alias \1='busybox \1'/" > ~/.busybox_aliases

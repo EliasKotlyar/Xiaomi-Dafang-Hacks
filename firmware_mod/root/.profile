@@ -10,5 +10,8 @@ PATH=/system/sdcard/bin:$PATH
 # Add our custom libraries to path
 LD_LIBRARY_PATH=/system/sdcard/lib:$LD_LIBRARY_PATH
 
+# /root is on the SD card: keep the shell history in RAM
+export HISTFILE=/tmp/.ash_history
+
 # Allow "nano" to run
 TERM=xterm-256color
