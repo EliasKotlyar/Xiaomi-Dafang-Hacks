@@ -61,6 +61,30 @@ get_config(){
   grep -v '^[[:space:]]*#' "$1"  | grep "$2" | cut -d "=" -f2
 }
 
+# Replace the content of cfg_path with the output of a command that reads the
+# file on stdin. The file is rewritten in place (cat > cfg_path keeps the inode):
+# sed -i and mv replace the file, which fails on a bind-mounted config file.
+# The temp file can hold secrets: it is private (umask 077) and always removed.
+# Runs in a subshell, so the traps do not change the caller's traps.
+write_config_in_place()(
+  cfg_path=$1
+  shift
+  umask 077
+  tmp=$(mktemp /tmp/config.XXXXXX) || { echo "Cannot create a temp file for $cfg_path" >&2; exit 1; }
+  trap 'rm -f "$tmp"' EXIT
+  trap 'echo "Rewrite of $cfg_path terminated by SIGHUP" >&2; exit 129' HUP
+  trap 'echo "Rewrite of $cfg_path interrupted by SIGINT" >&2; exit 130' INT
+  trap 'echo "Rewrite of $cfg_path terminated by SIGTERM" >&2; exit 143' TERM
+  if ! "$@" < "$cfg_path" > "$tmp"; then
+    echo "Cannot make the new content of $cfg_path, file not changed" >&2
+    exit 1
+  fi
+  if ! cat "$tmp" > "$cfg_path"; then
+    echo "Cannot write $cfg_path" >&2
+    exit 1
+  fi
+)
+
 # Replace the old value of a config_key at the cfg_path with new_value
 # Don't rewrite commented lines
 rewrite_config(){
@@ -74,7 +98,7 @@ rewrite_config(){
   if [ "$ret" == "1" ] ; then
 	  echo "$2=$3" >> $1
   else
-		sed -i -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}" "$cfg_path"
+		write_config_in_place "$cfg_path" sed -e "/\\s*#.*/!{/""$cfg_key""=/ s/=.*/=""$new_value""/}"
   fi
 }
 
@@ -868,9 +892,9 @@ wpa_config_set() {
 	local val="$2"
 	if [ ! -s "$wpa_config" ]; then cp "$wpa_config.dist" "$wpa_config"; fi
 	if grep -q "^[[:space:]]*$key=" "$wpa_config"; then
-		sed -i "s/^[[:space:]]*$key=.*\$/$key=$val/" "$wpa_config"
+		write_config_in_place "$wpa_config" sed "s/^[[:space:]]*$key=.*\$/$key=$val/"
 	else
-		sed -i "/}/i $key=$val" "$wpa_config"
+		write_config_in_place "$wpa_config" sed "/}/i $key=$val"
 	fi
 }
 
