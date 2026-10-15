@@ -25,37 +25,37 @@ if [ -n "$F_cmd" ]; then
     echo "blue_led:$(blue_led status)"
     echo "yellow_led:$(yellow_led status)"
     echo "motion_detection:$(motion_detection status)"
-    if [ get_config "/system/sdcard/config/motion.conf" "send_email" ] ; then
+    if [ "$(get_config "/system/sdcard/config/motion.conf" "send_email")" = "true" ] ; then
         echo "motion_mail:ON"
     else
         echo "motion_mail:OFF"
     fi
-    if [ get_config "/system/sdcard/config/motion.conf" "send_telegram" ]; then
+    if [ "$(get_config "/system/sdcard/config/motion.conf" "send_telegram")" = "true" ]; then
         echo "motion_telegram:ON"
     else
         echo "motion_telegram:OFF"
     fi
-    if [ get_config "/system/sdcard/config/motion.conf" "motion_trigger_led" ]; then
+    if [ "$(get_config "/system/sdcard/config/motion.conf" "motion_trigger_led")" = "true" ]; then
         echo "motion_led:ON"
     else
         echo "motion_led:OFF"
     fi
-    if [ get_config "/system/sdcard/config/motion.conf" "save_snapshot" ]; then
+    if [ "$(get_config "/system/sdcard/config/motion.conf" "^save_snapshot=")" = "true" ]; then
         echo "motion_snapshot:ON"
     else
         echo "motion_snapshot:OFF"
     fi
-    if [ get_config "/system/sdcard/config/motion.conf" "publish_mqtt_message" ]; then
+    if [ "$(get_config "/system/sdcard/config/motion.conf" "publish_mqtt_message")" = "true" ]; then
         echo "motion_mqtt:ON"
     else
         echo "motion_mqtt:OFF"
     fi
-    if [ get_config "/system/sdcard/config/motion.conf" "publish_mqtt_snapshot" ]; then
+    if [ "$(get_config "/system/sdcard/config/motion.conf" "publish_mqtt_snapshot")" = "true" ]; then
         echo "motion_mqtt_snapshot:ON"
     else
         echo "motion_mqtt_snapshot:OFF"
     fi
-    if [ get_config "/system/sdcard/config/motion.conf" "publish_mqtt_video" ]; then
+    if [ "$(get_config "/system/sdcard/config/motion.conf" "publish_mqtt_video")" = "true" ]; then
         echo "motion_mqtt_video:ON"
     else
         echo "motion_mqtt_video:OFF"

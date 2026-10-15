@@ -10,6 +10,29 @@ debug_msg () {
 	fi
 }
 
+# Remove the oldest directory (by modification time) in $1 if it holds more
+# than $2 directories. Never remove the directory of the active group.
+prune_oldest_dir () {
+	dir_count=0
+	oldest_dir=
+	oldest_mtime=
+	for dir in "$1"/*; do
+		[ -d "$dir" ] || continue
+		dir_count=$((dir_count + 1))
+		case "$1/$groupname/" in
+			"$dir"/*) continue ;;
+		esac
+		mtime=$(/system/sdcard/bin/busybox stat -c %Y "$dir") || continue
+		if [ -z "$oldest_mtime" ] || [ "$mtime" -lt "$oldest_mtime" ]; then
+			oldest_mtime=$mtime
+			oldest_dir=$dir
+		fi
+	done
+	if [ "$dir_count" -gt "$2" ] && [ -n "$oldest_dir" ]; then
+		rm -rf "$oldest_dir"
+	fi
+}
+
 send_snapshot() {
 
 	# Publish a mqtt message
@@ -106,9 +129,7 @@ send_snapshot() {
 		fi
 
 		# Limit the number of snapshots
-		if [ "$(ls "$save_snapshot_dir" | wc -l)" -ge "$max_snapshot_days" ]; then
-			rm -rf "$save_snapshot_dir/$(ls -ltr "$save_snapshot_dir" | awk 'NR==2{print $9}')"
-		fi
+		prune_oldest_dir "$save_snapshot_dir" "$max_snapshot_days"
 
 		chmod "$save_files_attr" "$snapshot_tempfile"
 		cp "$snapshot_tempfile" "$save_snapshot_dir/$groupname/$filename.jpg"
@@ -239,9 +260,7 @@ if [ "$save_video" = true ] ; then
 	fi
 
 	# Limit the number of videos
-	if [ "$(ls "$save_video_dir" | wc -l)" -ge "$max_video_days" ]; then
-		rm -rf "$save_video_dir/$(ls -ltr "$save_video_dir" | awk 'NR==2{print $9}')"
-	fi
+	prune_oldest_dir "$save_video_dir" "$max_video_days"
 
 	chmod "$save_files_attr" "$video_tempfile"
 	cp "$video_tempfile" "$save_video_dir/$groupname/$filename.mp4"

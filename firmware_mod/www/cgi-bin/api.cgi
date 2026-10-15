@@ -32,10 +32,17 @@ echo "{
 }"
 }
 #getReturn 123 "sc" "desc"
+
+is_unsigned_integer(){
+  case "$1" in
+    ''|*[!0-9]*) return 1 ;;
+    *) return 0 ;;
+  esac
+}
 # END FUNCTIONS
 
 if [ -n "$F_ns" ]; then
-  if [ "$F_ns" -le 2500 -a "$F_ns" -ge 0 ]; then
+  if is_unsigned_integer "$F_ns" && [ "$F_ns" -le 2500 ]; then
     F_ns=$F_ns
   else
     F_ns=2500
@@ -261,14 +268,14 @@ if [ -n "$F_action" ]; then
     killall v4l2rtspserver-master
   ;;
   get_snaphot)
-    if [ $F_raw == 1 ]; then
+    if [ "$F_raw" == 1 ]; then
       $BINPATH/getimage > /run/snaphot.jpg
     else
       if [ `ps | grep v4l2rtspserver-master | grep -v grep | wc -l` -eq 1 ]; then
         PARAMS=" -v 0 -rtsp_transport tcp -y -i rtsp://0.0.0.0:8554/unicast -vframes 1"
-        if [ -n $F_width -a -n $F_height -a $F_width -eq $F_width -a $F_height -eq $F_height ]; then PARAMS="$PARAMS -s $F_width"x"$F_height"; fi
-        if [ $F_flip == 1 ]; then PARAMS="$PARAMS  -vf transpose=1,transpose=1"; fi
-        if [ $F_nightvision == 1 ]; then PARAMS="$PARAMS -vf lutyuv=u=128:v=128"; fi
+        if is_unsigned_integer "$F_width" && is_unsigned_integer "$F_height"; then PARAMS="$PARAMS -s $F_width"x"$F_height"; fi
+        if [ "$F_flip" == 1 ]; then PARAMS="$PARAMS  -vf transpose=1,transpose=1"; fi
+        if [ "$F_nightvision" == 1 ]; then PARAMS="$PARAMS -vf lutyuv=u=128:v=128"; fi
         PARAMS="$PARAMS -f image2 /run/snaphot.jpg"
 
         $BINPATH/busybox nohup $BINPATH/avconv $PARAMS
@@ -286,9 +293,9 @@ if [ -n "$F_action" ]; then
         $BINPATH/busybox nohup $BINPATH/v4l2rtspserver-master -fMJPG -F 10 &>/dev/null &
 
         PARAMS=" -v 0 -rtsp_transport tcp -y -i rtsp://0.0.0.0:8554/unicast -vframes 1"
-        if [ -n $F_width -a -n $F_height -a $F_width -eq $F_width -a $F_height -eq $F_height ]; then PARAMS="$PARAMS -s $F_width"x"$F_height"; fi
-        if [ $F_flip == 1 ]; then PARAMS="$PARAMS  -vf transpose=1,transpose=1"; fi
-        if [ $F_nightvision == 1 ]; then PARAMS="$PARAMS -vf lutyuv=u=128:v=128"; fi
+        if is_unsigned_integer "$F_width" && is_unsigned_integer "$F_height"; then PARAMS="$PARAMS -s $F_width"x"$F_height"; fi
+        if [ "$F_flip" == 1 ]; then PARAMS="$PARAMS  -vf transpose=1,transpose=1"; fi
+        if [ "$F_nightvision" == 1 ]; then PARAMS="$PARAMS -vf lutyuv=u=128:v=128"; fi
         PARAMS="$PARAMS -f image2 /run/snaphot.jpg"
 
         $BINPATH/busybox nohup $BINPATH/avconv $PARAMS
@@ -298,7 +305,7 @@ if [ -n "$F_action" ]; then
     fi
 
     if [ -e /run/snaphot.jpg ]; then
-      if [ $F_json == 1 ]; then
+      if [ "$F_json" == 1 ]; then
         echo "Content-type: application/json; charset=utf-8; Pragma: no-cache; Expires: Wednesday, 27-Dec-95 05:29:10 GMT"
         echo ""
         echo "{
